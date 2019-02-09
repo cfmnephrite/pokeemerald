@@ -300,5 +300,9 @@ extern const u8 BattleScript_SideSelfWoreOff[];
 extern const u8 BattleScript_ObliviousTaunted[];
 extern const u8 BattleScript_CanNoLongerEscape[];
 extern const u8 BattleScript_EffectHitArgEffect[];
+extern const u8 BattleScript_PsychicSurgeActivates[];
+extern const u8 BattleScript_GrassySurgeActivates[];
+extern const u8 BattleScript_MistySurgeActivates[];
+extern const u8 BattleScript_ElectricSurgeActivates[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H
