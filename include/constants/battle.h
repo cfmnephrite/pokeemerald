@@ -291,7 +291,7 @@
 #define MOVE_EFFECT_SP_DEF_MINUS_1      0x1A
 #define MOVE_EFFECT_ACC_MINUS_1         0x1B
 #define MOVE_EFFECT_EVS_MINUS_1         0x1C
-#define MOVE_EFFECT_RECHARGE            0x1D
+#define MOVE_EFFECT_ATK_DOWN_3          0x1D
 #define MOVE_EFFECT_RAGE                0x1E
 #define MOVE_EFFECT_STEAL_ITEM          0x1F
 #define MOVE_EFFECT_PREVENT_ESCAPE      0x20
@@ -325,7 +325,7 @@
 #define MOVE_EFFECT_SMACK_DOWN          0x3C
 #define MOVE_EFFECT_FLAME_BURST         0x3D
 #define MOVE_EFFECT_FEINT               0x3E
-#define MOVE_EFFECT_NOTHING_3F          0x3F
+#define MOVE_EFFECT_RELEASE_SKY_DROP    0x3F
 #define MOVE_EFFECT_AFFECTS_USER        0x40
 #define MOVE_EFFECT_CERTAIN             0x80
 

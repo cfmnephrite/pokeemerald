@@ -87,6 +87,7 @@ extern const u8 BattleScript_WishComesTrue[];
 extern const u8 BattleScript_IngrainTurnHeal[];
 extern const u8 BattleScript_AtkDefDown[];
 extern const u8 BattleScript_DefSpDefDown[];
+extern const u8 BattleScript_AtkDown3[];
 extern const u8 BattleScript_KnockedOff[];
 extern const u8 BattleScript_MoveUsedIsImprisoned[];
 extern const u8 BattleScript_SelectingImprisionedMove[];
@@ -289,5 +290,15 @@ extern const u8 BattleScript_MoveUsedPsychicTerrainPrevents[];
 extern const u8 BattleScript_MoveUsedPowder[];
 extern const u8 BattleScript_SelectingNotAllowedBelch[];
 extern const u8 BattleScript_SelectingNotAllowedBelchInPalace[];
+extern const u8 BattleScript_MoveEffectSkyDrop[];
+extern const u8 BattleScript_GravityLoop[];
+extern const u8 BattleScript_GravityLoopDefault[];
+extern const u8 BattleScript_GravityLoopSkyDrop[];
+extern const u8 BattleScript_GravityLoopEnd[];
+extern const u8 BattleScript_PostFaintTarget[];
+extern const u8 BattleScript_SideSelfWoreOff[];
+extern const u8 BattleScript_ObliviousTaunted[];
+extern const u8 BattleScript_CanNoLongerEscape[];
+extern const u8 BattleScript_EffectHitArgEffect[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

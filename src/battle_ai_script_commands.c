@@ -278,13 +278,11 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
 static const u16 sDiscouragedPowerfulMoveEffects[] =
 {
     EFFECT_EXPLOSION,
-    EFFECT_DREAM_EATER,
-    EFFECT_RECHARGE,
     EFFECT_SKULL_BASH,
     EFFECT_SOLARBEAM,
     EFFECT_SPIT_UP,
     EFFECT_FOCUS_PUNCH,
-    EFFECT_SUPERPOWER,
+    EFFECT_SELF_STAT_DROP_ARG,
     EFFECT_ERUPTION,
     EFFECT_OVERHEAT,
     0xFFFF

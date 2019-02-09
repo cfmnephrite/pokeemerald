@@ -6,6 +6,7 @@
 #include "battle_anim.h"
 #include "battle_ai_script_commands.h"
 #include "battle_scripts.h"
+#include "battle_util.h"
 #include "constants/moves.h"
 #include "constants/abilities.h"
 #include "item.h"
@@ -1118,7 +1119,8 @@ static bool32 AccuracyCalcHelper(u16 move)
         return TRUE;
     }
 
-    if (!(gHitMarker & HITMARKER_IGNORE_ON_AIR) && gStatuses3[gBattlerTarget] & STATUS3_ON_AIR)
+    if (!(gHitMarker & HITMARKER_IGNORE_ON_AIR) && gStatuses3[gBattlerTarget] & STATUS3_ON_AIR
+	    && !(gDisableStructs[gBattlerTarget].skyDropTrappingBattler == gBattlerAttacker))
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         JumpIfMoveFailed(7, move);
@@ -2494,12 +2496,6 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     gBattlescriptCurrInstr = BattleScript_StatDown;
                 }
                 break;
-            case MOVE_EFFECT_RECHARGE:
-                gBattleMons[gEffectBattler].status2 |= STATUS2_RECHARGE;
-                gDisableStructs[gEffectBattler].rechargeTimer = 2;
-                gLockedMoves[gEffectBattler] = gCurrentMove;
-                gBattlescriptCurrInstr++;
-                break;
             case MOVE_EFFECT_RAGE:
                 gBattleMons[gBattlerAttacker].status2 |= STATUS2_RAGE;
                 gBattlescriptCurrInstr++;
@@ -2573,7 +2569,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
             case MOVE_EFFECT_PREVENT_ESCAPE:
                 gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
                 gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
-                gBattlescriptCurrInstr++;
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = BattleScript_CanNoLongerEscape;
                 break;
             case MOVE_EFFECT_NIGHTMARE:
                 gBattleMons[gBattlerTarget].status2 |= STATUS2_NIGHTMARE;
@@ -2611,6 +2608,10 @@ void SetMoveEffect(bool8 primary, u8 certain)
             case MOVE_EFFECT_DEF_SPDEF_DOWN: // Close Combat
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_DefSpDefDown;
+                break;
+            case MOVE_EFFECT_ATK_DOWN_3: // Rock Wrecker
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = BattleScript_AtkDown3;
                 break;
             case MOVE_EFFECT_RECOIL_33: // Double Edge
                 gBattleMoveDamage = gHpDealt / 3;
@@ -2706,6 +2707,16 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     gStatuses3[gBattlerTarget] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_MoveEffectSmackDown;
+                }
+                break;
+            case MOVE_EFFECT_RELEASE_SKY_DROP:
+                if (gDisableStructs[gBattlerTarget].skyDrop)
+                {
+					gDisableStructs[gBattlerTarget].skyDrop = 0;
+                    gDisableStructs[gBattlerTarget].skyDropTrappingBattler = 0;
+                    gStatuses3[gBattlerTarget] &= ~STATUS3_ON_AIR;
+					BattleScriptPush(gBattlescriptCurrInstr + 1);
+                    gBattlescriptCurrInstr = BattleScript_MoveEffectSkyDrop;
                 }
                 break;
             case MOVE_EFFECT_FLAME_BURST:
@@ -2981,7 +2992,7 @@ static void atk1E_jumpifability(void)
     else
     {
         battlerId = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
-        if (gBattleMons[battlerId].ability == ability)
+        if (GetBattlerAbility(battlerId) == ability)
         {
             gLastUsedAbility = ability;
             gBattlescriptCurrInstr = jumpPtr;
@@ -4425,6 +4436,10 @@ static void atk49_moveend(void)
 
 static void atk4A_sethealblock(void)
 {
+	if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+	{
+		gBattlescriptCurrInstr += 5;
+	}
     if (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
@@ -4433,7 +4448,7 @@ static void atk4A_sethealblock(void)
     {
         gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
         gDisableStructs[gBattlerTarget].healBlockTimer = 5;
-        gBattlescriptCurrInstr += 5;
+        gBattlescriptCurrInstr += 10;
     }
 }
 
@@ -5789,10 +5804,6 @@ static void atk69_setgravity(void)
 
         gFieldStatuses |= STATUS_FIELD_GRAVITY;
         gFieldTimers.gravityTimer = 5;
-
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
-            gStatuses3[i] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
-
         gBattlescriptCurrInstr += 5;
     }
 }
@@ -6321,6 +6332,7 @@ static void atk76_various(void)
     s32 i, j;
     u8 data[10];
     u32 bits;
+	bool8 noFreed = TRUE;
 
     if (gBattleControllerExecFlags)
         return;
@@ -6329,6 +6341,56 @@ static void atk76_various(void)
 
     switch (gBattlescriptCurrInstr[2])
     {
+	case VARIOUS_ARG_TO_EFFECT_SELF:
+		gBattleCommunication[MOVE_EFFECT_BYTE] |= (gBattleMoves[gCurrentMove].argument | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN);
+        break;
+    case VARIOUS_ARG_TO_EFFECT_CHOOSER:
+		gBattleCommunication[MOVE_EFFECT_BYTE] = gBattleMoves[gCurrentMove].argument;
+        break;
+    case VARIOUS_GRAVITY_ON_AIRBORNE_MONS:
+	    if (gStatuses3[gActiveBattler] & STATUS3_ON_AIR){
+			gBattleMons[gActiveBattler].status2 &= ~STATUS2_MULTIPLETURNS;
+            gLockedMoves[gActiveBattler] = 0;
+            gProtectStructs[gActiveBattler].chargingTurn = 0;
+		}
+    	gStatuses3[gActiveBattler] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
+		if (gDisableStructs[gActiveBattler].skyDrop){
+		    gDisableStructs[gActiveBattler].skyDrop = 0;
+		    gDisableStructs[gActiveBattler].skyDropTrappingBattler = 0;
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+		}
+        else
+        {
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
+    case VARIOUS_CHECK_SKY_DROP:
+        if (gCurrentMove == MOVE_SKY_DROP){
+			// Two-turn moves don't check for Wonder Guard until the second turn - have to adjust that here for Sky Drop
+			if (GetBattlerAbility(gBattlerTarget) == ABILITY_WONDER_GUARD
+			    && CalcTypeEffectivenessMultiplier(gCurrentMove, TYPE_FLYING, gActiveBattler, gBattlerTarget, TRUE) <= UQ_4_12(1.0))
+			{
+				gBattlescriptCurrInstr = BattleScript_HitFromCritCalc;
+			}
+            else if (GetBattlerWeight(gBattlerTarget) < 2000
+			    && !(gBattleMons[gBattlerTarget].status2 & STATUS2_SUBSTITUTE)
+				&& !(gStatuses3[gBattlerTarget] & (STATUS3_SEMI_INVULNERABLE)))
+            {
+                gStatuses3[gBattlerTarget] |= STATUS3_ON_AIR;
+				gDisableStructs[gBattlerTarget].skyDrop = 1;
+                gDisableStructs[gBattlerTarget].skyDropTrappingBattler = gActiveBattler;
+                gBattlescriptCurrInstr += 7;
+            }
+            else
+            {
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+            }
+        }
+        else
+        {
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
     case VARIOUS_SET_POWDER:
         gBattleMons[gActiveBattler].status2 |= STATUS2_POWDER;
         break;
@@ -6872,28 +6934,8 @@ static void atk76_various(void)
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         return;
     case VARIOUS_ARGUMENT_STATUS_EFFECT:
-        switch (gBattleMoves[gCurrentMove].argument)
-        {
-        case STATUS1_BURN:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_BURN;
-            break;
-        case STATUS1_FREEZE:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_FREEZE;
-            break;
-        case STATUS1_PARALYSIS:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_PARALYSIS;
-            break;
-        case STATUS1_POISON:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_POISON;
-            break;
-        case STATUS1_TOXIC_POISON:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_TOXIC;
-            break;
-        default:
-            gBattleCommunication[MOVE_EFFECT_BYTE] = 0;
-            break;
-        }
-        if (gBattleCommunication[MOVE_EFFECT_BYTE] != 0)
+        gBattleCommunication[MOVE_EFFECT_BYTE] = gBattleMoves[gCurrentMove].argument;
+		if (gBattleCommunication[MOVE_EFFECT_BYTE] != 0)
         {
             BattleScriptPush(gBattlescriptCurrInstr + 3);
             gBattlescriptCurrInstr = BattleScript_EffectWithChance;
@@ -7055,7 +7097,7 @@ static void atk76_various(void)
 
         if (i == TRUE)
         {
-            gBattleMons[gBattlerTarget].status1 = gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY;
+            gBattleMons[gBattlerTarget].status1 = gBattleMons[gBattlerAttacker].status1;
             gActiveBattler = gBattlerTarget;
             BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gActiveBattler].status1);
             MarkBattlerForControllerExec(gActiveBattler);
@@ -8432,7 +8474,7 @@ static void atk97_tryinfatuating(void)
     speciesTarget = GetMonData(monTarget, MON_DATA_SPECIES);
     personalityTarget = GetMonData(monTarget, MON_DATA_PERSONALITY);
 
-    if (gBattleMons[gBattlerTarget].ability == ABILITY_OBLIVIOUS)
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS)
     {
         gBattlescriptCurrInstr = BattleScript_ObliviousPreventsAttraction;
         gLastUsedAbility = ABILITY_OBLIVIOUS;
@@ -8742,25 +8784,30 @@ static void atkA3_disablelastusedattack(void)
 {
     s32 i;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        if (gBattleMons[gBattlerTarget].moves[i] == gLastMoves[gBattlerTarget])
-            break;
-    }
-    if (gDisableStructs[gBattlerTarget].disabledMove == 0
-        && i != MAX_MON_MOVES && gBattleMons[gBattlerTarget].pp[i] != 0)
-    {
-        PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerTarget].moves[i])
+	if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+		gBattlescriptCurrInstr += 5;
+	else
+	{
+		for (i = 0; i < MAX_MON_MOVES; i++)
+		{
+			if (gBattleMons[gBattlerTarget].moves[i] == gLastMoves[gBattlerTarget])
+				break;
+		}
+		if (gDisableStructs[gBattlerTarget].disabledMove == 0
+			&& i != MAX_MON_MOVES && gBattleMons[gBattlerTarget].pp[i] != 0)
+		{
+			PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerTarget].moves[i])
 
-        gDisableStructs[gBattlerTarget].disabledMove = gBattleMons[gBattlerTarget].moves[i];
-        gDisableStructs[gBattlerTarget].disableTimer = (Random() & 3) + 2;
-        gDisableStructs[gBattlerTarget].disableTimerStartValue = gDisableStructs[gBattlerTarget].disableTimer; // used to save the random amount of turns?
-        gBattlescriptCurrInstr += 5;
-    }
-    else
-    {
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-    }
+			gDisableStructs[gBattlerTarget].disabledMove = gBattleMons[gBattlerTarget].moves[i];
+			gDisableStructs[gBattlerTarget].disableTimer = (Random() & 3) + 2;
+			gDisableStructs[gBattlerTarget].disableTimerStartValue = gDisableStructs[gBattlerTarget].disableTimer; // used to save the random amount of turns?
+			gBattlescriptCurrInstr += 10;
+		}
+		else
+		{
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+		}
+	}
 }
 
 static void atkA4_trysetencore(void)
@@ -8780,14 +8827,18 @@ static void atkA4_trysetencore(void)
         i = 4;
     }
 
-    if (gDisableStructs[gBattlerTarget].encoredMove == 0
-        && i != 4 && gBattleMons[gBattlerTarget].pp[i] != 0)
+	if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+	{
+		gBattlescriptCurrInstr += 5;
+	}
+    else if (gDisableStructs[gBattlerTarget].encoredMove == 0
+        && i != 4 && gBattleMons[gBattlerTarget].pp[i] != 0 && !GetBattlerAbility(gBattlerTarget))
     {
         gDisableStructs[gBattlerTarget].encoredMove = gBattleMons[gBattlerTarget].moves[i];
         gDisableStructs[gBattlerTarget].encoredMovePos = i;
         gDisableStructs[gBattlerTarget].encoreTimer = 3;
         gDisableStructs[gBattlerTarget].encoreTimerStartValue = gDisableStructs[gBattlerTarget].encoreTimer;
-        gBattlescriptCurrInstr += 5;
+        gBattlescriptCurrInstr += 10;
     }
     else
     {
@@ -9722,6 +9773,7 @@ static void atkC5_setsemiinvulnerablebit(void)
     {
     case MOVE_FLY:
     case MOVE_BOUNCE:
+    case MOVE_SKY_DROP:
         gStatuses3[gBattlerAttacker] |= STATUS3_ON_AIR;
         break;
     case MOVE_DIG:
@@ -9828,14 +9880,16 @@ static void atkCD_cureifburnedparalysedorpoisoned(void) // refresh
 
 static void atkCE_settorment(void)
 {
-    if (gBattleMons[gBattlerTarget].status2 & STATUS2_TORMENT)
+	if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+		gBattlescriptCurrInstr += 5;
+    else if (gBattleMons[gBattlerTarget].status2 & STATUS2_TORMENT)
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
     else
     {
         gBattleMons[gBattlerTarget].status2 |= STATUS2_TORMENT;
-        gBattlescriptCurrInstr += 5;
+        gBattlescriptCurrInstr += 10;
     }
 }
 
@@ -9849,11 +9903,15 @@ static void atkCF_jumpifnodamage(void)
 
 static void atkD0_settaunt(void)
 {
-    if (gDisableStructs[gBattlerTarget].tauntTimer == 0)
+	if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS || AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+	{
+		gBattlescriptCurrInstr += 5;
+	}
+    else if (gDisableStructs[gBattlerTarget].tauntTimer == 0)
     {
-        gDisableStructs[gBattlerTarget].tauntTimer = 2;
-        gDisableStructs[gBattlerTarget].tauntTimer2 = 2;
-        gBattlescriptCurrInstr += 5;
+        gDisableStructs[gBattlerTarget].tauntTimer = 4;
+        gDisableStructs[gBattlerTarget].tauntTimer2 = 4;
+        gBattlescriptCurrInstr += 10;
     }
     else
     {

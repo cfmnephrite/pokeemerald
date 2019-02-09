@@ -170,6 +170,8 @@ struct DisableStruct
     u8 laserFocusTimer;
     u8 usedMoves:4;
     u8 wrapTurns;
+	u8 skyDrop;
+    u8 skyDropTrappingBattler;
 };
 
 struct ProtectStruct
@@ -264,6 +266,7 @@ struct FieldTimer
     u8 psychicTerrainTimer;
     u8 echoVoiceCounter;
     u8 gravityTimer;
+	u8 cometPunchCounter;
 };
 
 struct WishFutureKnock
