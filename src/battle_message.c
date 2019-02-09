@@ -574,7 +574,8 @@ static const u8 sText_AquaRingHeal[] = _("Aqua Ring restored\n{B_ATK_NAME_WITH_P
 static const u8 sText_TargetAbilityRaisedStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nraised its {B_BUFF1}!");
 static const u8 sText_TargetAbilityLoweredStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nlowered its {B_BUFF1}!");
 static const u8 sText_AttackerAbilityRaisedStat[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY}\nraised its {B_BUFF1}!");
-static const u8 sText_AuroraVeilEnds[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nwore off!");
+static const u8 sText_AuroraVeilEnds[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\nwore off!");
+static const u8 sText_OppSideWoreOff[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\nwore off!");
 static const u8 sText_ElectricTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_MistyTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_PsychicTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
@@ -582,7 +583,7 @@ static const u8 sText_GrassyTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_AngryPointActivates[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} maxed\nits attack!");
 static const u8 sText_PoisonHealHpUp[] = _("The poisoning healed {B_ATK_NAME_WITH_PREFIX}\na little bit!");
 static const u8 sText_BadDreamsDmg[] = _("The {B_DEF_NAME_WITH_PREFIX} is tormented\nby {B_DEF_ABILITY}!");
-static const u8 sText_MoldBreakerEnters[] = _("The {B_DEF_NAME_WITH_PREFIX} breaks the mold!");
+static const u8 sText_MoldBreakerEnters[] = _("{B_ATK_NAME_WITH_PREFIX} breaks the mold!");
 static const u8 sText_TeravoltEnters[] = _("{B_ATK_NAME_WITH_PREFIX} is radiating a bursting aura!");
 static const u8 sText_TurboblazeEnters[] = _("{B_ATK_NAME_WITH_PREFIX} is radiating a blazing aura!");
 static const u8 sText_SlowStartEnters[] = _("{B_ATK_NAME_WITH_PREFIX} can't get it going!");
@@ -642,6 +643,7 @@ static const u8 sText_PokemonCannotUseMove[] = _("{B_ATK_NAME_WITH_PREFIX} canno
 static const u8 sText_CoveredInPowder[] = _("{B_DEF_NAME_WITH_PREFIX} is covered in powder!");
 static const u8 sText_PowderExplodes[] = _("When the flame touched the powder\non the Pokémon, it exploded!");
 static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
+static const u8 sText_GravityGrounding[] = _("{B_EFF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!\p");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1080,6 +1082,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_GRAVITYENDS - 12] = sText_GravityEnds,
     [STRINGID_AQUARINGHEAL - 12] = sText_AquaRingHeal,
     [STRINGID_AURORAVEILENDS - 12] = sText_AuroraVeilEnds,
+	[STRINGID_OPPSIDEWOREOFF - 12] = sText_OppSideWoreOff,
     [STRINGID_ELECTRICTERRAINENDS - 12] = sText_ElectricTerrainEnds,
     [STRINGID_MISTYTERRAINENDS - 12] = sText_MistyTerrainEnds,
     [STRINGID_PSYCHICTERRAINENDS - 12] = sText_PsychicTerrainEnds,
@@ -1149,6 +1152,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_POKEMONCANNOTUSEMOVE - 12] = sText_PokemonCannotUseMove,
     [STRINGID_COVEREDINPOWDER - 12] = sText_CoveredInPowder,
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
+    [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,	
 };
 
 const u16 gTerrainStringIds[] =
@@ -1276,7 +1280,8 @@ const u16 gStatDownStringIds[] =
 const u16 gFirstTurnOfTwoStringIds[] =
 {
     STRINGID_PKMNWHIPPEDWHIRLWIND, STRINGID_PKMNTOOKSUNLIGHT, STRINGID_PKMNLOWEREDHEAD, STRINGID_PKMNISGLOWING,
-    STRINGID_PKMNFLEWHIGH, STRINGID_PKMNDUGHOLE, STRINGID_PKMNHIDUNDERWATER, STRINGID_PKMNSPRANGUP, STRINGID_VANISHEDINSTANTLY
+    STRINGID_PKMNFLEWHIGH, STRINGID_PKMNDUGHOLE, STRINGID_PKMNHIDUNDERWATER, STRINGID_PKMNSPRANGUP, STRINGID_VANISHEDINSTANTLY,
+    STRINGID_TOOKPJMNINTOTHESKY
 };
 
 const u16 gWrappedStringIds[] =

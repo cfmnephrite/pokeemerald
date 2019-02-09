@@ -5396,6 +5396,17 @@ BattleScript_PrintMonIsRooted::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
+BattleScript_AtkDown3::
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	playstatchangeanimation BS_ATTACKER, BIT_ATK, ATK48_DONT_CHECK_LOWER | ATK48_STAT_NEGATIVE
+	setstatchanger STAT_ATK, 3, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | 0x1, BattleScript_AtkDown3Ret
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_AtkDown3Ret
+	printfromtable gStatDownStringIds
+	waitmessage 0x40	
+BattleScript_AtkDown3Ret:	
+	return
+	
 BattleScript_AtkDefDown::
 	setbyte sSTAT_ANIM_PLAYED, FALSE
 	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_ATK, ATK48_DONT_CHECK_LOWER | ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE

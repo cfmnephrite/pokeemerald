@@ -143,7 +143,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_POISON, AI_CBM_Toxic
 	if_effect EFFECT_PARALYZE, AI_CBM_Paralyze
 	if_effect EFFECT_SUBSTITUTE, AI_CBM_Substitute
-	if_effect EFFECT_RECHARGE, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_LEECH_SEED, AI_CBM_LeechSeed
 	if_effect EFFECT_DISABLE, AI_CBM_Disable
 	if_effect EFFECT_LEVEL_DAMAGE, AI_CBM_HighRiskForDamage
@@ -192,7 +191,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_HELPING_HAND, AI_CBM_HelpingHand
 	if_effect EFFECT_TRICK, AI_CBM_TrickAndKnockOff
 	if_effect EFFECT_INGRAIN, AI_CBM_Ingrain
-	if_effect EFFECT_SUPERPOWER, AI_CBM_HighRiskForDamage
+	if_effect EFFECT_SELF_STAT_DROP_ARG, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_RECYCLE, AI_CBM_Recycle
 	if_effect EFFECT_KNOCK_OFF, AI_CBM_TrickAndKnockOff
 	if_effect EFFECT_ENDEAVOR, AI_CBM_HighRiskForDamage
@@ -939,7 +938,6 @@ AI_CheckViability:
 	if_effect EFFECT_TWO_TURNS_ATTACK, AI_CV_ChargeUpMove
 	if_effect EFFECT_VITAL_THROW, AI_CV_VitalThrow
 	if_effect EFFECT_SUBSTITUTE, AI_CV_Substitute
-	if_effect EFFECT_RECHARGE, AI_CV_Recharge
 	if_effect EFFECT_LEECH_SEED, AI_CV_Toxic
 	if_effect EFFECT_DISABLE, AI_CV_Disable
 	if_effect EFFECT_COUNTER, AI_CV_Counter
@@ -983,7 +981,6 @@ AI_CheckViability:
 	if_effect EFFECT_SMELLINGSALT, AI_CV_SmellingSalt
 	if_effect EFFECT_TRICK, AI_CV_Trick
 	if_effect EFFECT_ROLE_PLAY, AI_CV_ChangeSelfAbility
-	if_effect EFFECT_SUPERPOWER, AI_CV_Superpower
 	if_effect EFFECT_MAGIC_COAT, AI_CV_MagicCoat
 	if_effect EFFECT_RECYCLE, AI_CV_Recycle
 	if_effect EFFECT_REVENGE, AI_CV_Revenge
@@ -1918,13 +1915,6 @@ AI_CV_Substitute8:
 AI_CV_Substitute_End:
 	end
 
-AI_CV_Recharge:
-	if_type_effectiveness AI_EFFECTIVENESS_x0_25, AI_CV_Recharge_ScoreDown1
-	if_type_effectiveness AI_EFFECTIVENESS_x0_5, AI_CV_Recharge_ScoreDown1
-	if_target_faster AI_CV_Recharge2
-	if_hp_more_than AI_USER, 40, AI_CV_Recharge_ScoreDown1
-	goto AI_CV_Recharge_End
-
 AI_CV_Recharge2:
 	if_hp_less_than AI_USER, 60, AI_CV_Recharge_End
 
@@ -2739,14 +2729,6 @@ AI_CV_ChangeSelfAbility_AbilitiesToEncourage:
     .byte ABILITY_CHLOROPHYLL
     .byte ABILITY_SHIELD_DUST
     .byte -1
-
-AI_CV_Superpower:
-	if_type_effectiveness AI_EFFECTIVENESS_x0_25, AI_CV_Superpower_ScoreDown1
-	if_type_effectiveness AI_EFFECTIVENESS_x0_5, AI_CV_Superpower_ScoreDown1
-	if_stat_level_less_than AI_USER, STAT_ATK, 6, AI_CV_Superpower_ScoreDown1
-	if_target_faster AI_CV_Superpower2
-	if_hp_more_than AI_USER, 40, AI_CV_Superpower_ScoreDown1
-	goto AI_CV_Superpower_End
 
 AI_CV_Superpower2:
 	if_hp_less_than AI_USER, 60, AI_CV_Superpower_End
