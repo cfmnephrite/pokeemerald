@@ -408,7 +408,6 @@ BattleScript_EffectPentupleHit::
 	initmultihitstring
 	setbyte sMULTIHIT_EFFECT, 0x0
 	goto BattleScript_MultiHitLoop
-
 	
 BattleScript_EffectPartingShot::
 	attackcanceler
@@ -430,17 +429,18 @@ BattleScript_EffectPartingShotTryAtk:
 BattleScript_EffectPartingShotTrySpAtk:
 	playstatchangeanimation BS_TARGET, BIT_SPATK, ATK48_STAT_NEGATIVE
 	setstatchanger STAT_SPATK, 1, TRUE
-	statbuffchange 0x1, BattleScript_MoveEnd
+	statbuffchange 0x1, BattleScript_EffectPartingShotSwitch
 	printfromtable gStatDownStringIds
 	waitmessage 0x40
-	jumpifcantswitch ATK4F_DONT_CHECK_STATUSES | BS_ATTACKER, BattleScript_MoveEnd
-	openpartyscreen BS_ATTACKER, BattleScript_ButItFailed
-	printstring STRINGID_PKMNWENTBACK
+BattleScript_EffectPartingShotSwitch:	
+	setbyte sMOVEEND_STATE, 0x0
+	moveend 0x0, 0x0
+	jumpifcantswitch ATK4F_DONT_CHECK_STATUSES | BS_ATTACKER, BattleScript_PartingShotEnd
+	openpartyscreen 0x1, BattleScript_PartingShotEnd
 	switchoutabilities BS_ATTACKER
 	waitstate
 	switchhandleorder BS_ATTACKER, 0x2
-	returnatktoball
-	waitstate
+	returntoball BS_ATTACKER
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
@@ -448,7 +448,8 @@ BattleScript_EffectPartingShotTrySpAtk:
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
 	switchineffects BS_ATTACKER
-	goto BattleScript_MoveEnd
+BattleScript_PartingShotEnd:
+	end
 	
 BattleScript_EffectSpAtkUpHit:
 	setmoveeffect MOVE_EFFECT_SP_ATK_PLUS_1 | MOVE_EFFECT_AFFECTS_USER
