@@ -5020,16 +5020,16 @@ void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk)
     }
     else if (gBattleMoves[move].effect == EFFECT_HIDDEN_POWER)
     {
-        u8 typeBits  = ((gBattleMons[battlerAtk].hpIV & 1) << 0)
-                     | ((gBattleMons[battlerAtk].attackIV & 1) << 1)
-                     | ((gBattleMons[battlerAtk].defenseIV & 1) << 2)
-                     | ((gBattleMons[battlerAtk].speedIV & 1) << 3)
-                     | ((gBattleMons[battlerAtk].spAttackIV & 1) << 4)
-                     | ((gBattleMons[battlerAtk].spDefenseIV & 1) << 5);
+        u8 typeBits  = ((gBattleMons[battlerAtk].attackIV & 1) << 0)
+                     | ((gBattleMons[battlerAtk].defenseIV & 1) << 1)
+                     | ((gBattleMons[battlerAtk].spAttackIV & 1) << 2)
+                     | ((gBattleMons[battlerAtk].spDefenseIV & 1) << 3);
 
-        gBattleStruct->dynamicMoveType = (15 * typeBits) / 63 + 1;
+        gBattleStruct->dynamicMoveType = typeBits + 1;
         if (gBattleStruct->dynamicMoveType >= TYPE_MYSTERY)
-            gBattleStruct->dynamicMoveType++;
+            gBattleStruct->dynamicMoveType = TYPE_DARK;
+        if (gBattleStruct->dynamicMoveType >= TYPE_PSYCHIC)
+            gBattleStruct->dynamicMoveType = TYPE_FAIRY;
         gBattleStruct->dynamicMoveType |= 0xC0;
     }
     else if (gBattleMoves[move].effect == EFFECT_TECHNO_BLAST)
@@ -5041,7 +5041,7 @@ void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk)
     {
         // TODO:
     }
-    else if (gBattleMoves[move].effect == EFFECT_REVELATION_DANCE)
+    else if (gBattleMoves[move].flags & FLAG_OMNITYPE)
     {
         if (gBattleMons[battlerAtk].type1 != TYPE_MYSTERY)
             gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type1 | 0x80;

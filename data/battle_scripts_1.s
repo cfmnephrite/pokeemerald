@@ -157,7 +157,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAttackUpHit
 	.4byte BattleScript_EffectAllStatsUpHit
 	.4byte BattleScript_EffectFellStinger
-	.4byte BattleScript_EffectBellyDrum
+	.4byte BattleScript_EffectBellyDrumGeomancy
 	.4byte BattleScript_EffectPsychUp
 	.4byte BattleScript_EffectMirrorCoat
 	.4byte BattleScript_EffectSkullBash
@@ -217,7 +217,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectTeeterDance
 	.4byte BattleScript_EffectHitEscape
 	.4byte BattleScript_EffectMudSport
-	.4byte BattleScript_EffectPoisonFang
+	.4byte BattleScript_EffectSleepHit
 	.4byte BattleScript_EffectWeatherBall
 	.4byte BattleScript_EffectOverheat
 	.4byte BattleScript_EffectTickle
@@ -281,7 +281,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectHealPulse
 	.4byte BattleScript_EffectQuash
 	.4byte BattleScript_EffectIonDeluge
-	.4byte BattleScript_EffectFreezeDry
+	.4byte BattleScript_EffectMudBomb
 	.4byte BattleScript_EffectTopsyTurvy
 	.4byte BattleScript_EffectMistyTerrain
 	.4byte BattleScript_EffectGrassyTerrain
@@ -345,7 +345,37 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectPartingShot
 	.4byte BattleScript_EffectPentupleHit
 	.4byte BattleScript_EffectConstrict
+	.4byte BattleScript_EffectDarkVoid
 	.4byte BattleScript_EffectEggBomb
+	.4byte BattleScript_EffectHealOrder
+
+
+BattleScript_EffectHealOrder::
+	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_EffectHealOrderStart
+	goto BattleScript_EffectRestoreHp
+BattleScript_EffectHealOrderStart:	
+	attackcanceler
+	attackstring
+	ppreduce
+	attackanimation
+	waitanimation
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	tryhealhalfhealth BattleScript_EffectHealOrderFullHP, BS_TARGET
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	printstring STRINGID_PKMNREGAINEDHEALTH
+	waitmessage 0x20
+BattleScript_EffectHealOrderCureStatus:	
+	curestatus BS_TARGET
+	printstring STRINGID_PKMNSTATUSNORMAL
+	waitmessage 0x20
+	updatestatusicon BS_TARGET
+	goto BattleScript_MoveEnd
+
+BattleScript_EffectHealOrderFullHP:	
+	printstring STRINGID_PKMNHPFULL
+	waitmessage 0x20
+	goto BattleScript_EffectHealOrderCureStatus
 	
 BattleScript_EffectEggBomb:
 	jumpiftargetally BattleScript_EffectHealPulse
@@ -371,28 +401,7 @@ BattleScript_EffectDarkVoid:
 	
 BattleScript_EffectConstrict:
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE | MOVE_EFFECT_CERTAIN
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	critcalc
-	damagecalc
-	adjustdamage
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage 0x40
-	resultmessage
-	waitmessage 0x40
-	seteffectwithchance
-	argumentstatuseffect
-	tryfaintmon BS_TARGET, FALSE, NULL
-	goto BattleScript_MoveEnd	
+	goto BattleScript_EffectHitArgEffect
 
 BattleScript_CanNoLongerEscape::
 	printstring STRINGID_TARGETCANTESCAPENOW
@@ -1794,7 +1803,6 @@ BattleScript_EffectFoulPlay:
 BattleScript_EffectPsyshock:
 BattleScript_EffectWeatherBall:
 BattleScript_EffectHiddenPower:
-BattleScript_EffectFreezeDry:
 BattleScript_EffectTwoTypedMove:
 BattleScript_EffectTechnoBlast:
 BattleScript_EffectJudgment:
@@ -1938,6 +1946,10 @@ BattleScript_EffectFreezeHit::
 BattleScript_EffectParalyzeHit::
 	setmoveeffect MOVE_EFFECT_PARALYSIS
 	goto BattleScript_EffectHit
+    
+BattleScript_EffectSleepHit::
+	setmoveeffect MOVE_EFFECT_SLEEP
+	goto BattleScript_EffectHit    
 
 BattleScript_EffectExplosion::
 	attackcanceler
@@ -1954,6 +1966,8 @@ BattleScript_ExplosionDoAnimStartLoop:
 	waitanimation
 BattleScript_ExplosionLoop:
 	movevaluescleanup
+    jumpiftargetally BattleScript_CheckLunarDance
+BattleScript_ExplosionLoopContinue:     
 	critcalc
 	damagecalc
 	adjustdamage
@@ -1977,6 +1991,14 @@ BattleScript_ExplosionMissed:
 	effectivenesssound
 	resultmessage
 	waitmessage 0x40
+	setbyte sMOVEEND_STATE, 0x0
+	moveend 0x2, 0x10
+	jumpifnexttargetvalid BattleScript_ExplosionLoop
+	tryfaintmon BS_ATTACKER, FALSE, NULL
+	end
+    
+BattleScript_CheckLunarDance:
+    jumpifnotmove MOVE_LUNAR_DANCE, BattleScript_ExplosionLoopContinue
 	setbyte sMOVEEND_STATE, 0x0
 	moveend 0x2, 0x10
 	jumpifnexttargetvalid BattleScript_ExplosionLoop
@@ -2666,6 +2688,7 @@ BattleScript_EffectSpecialDefenseDownHit2::
 	setmoveeffect MOVE_EFFECT_SP_DEF_MINUS_2
 	goto BattleScript_EffectHit
 
+BattleScript_EffectMudBomb::
 BattleScript_EffectAccuracyDownHit::
 	setmoveeffect MOVE_EFFECT_ACC_MINUS_1
 	goto BattleScript_EffectHit
@@ -3380,11 +3403,11 @@ BattleScript_EffectAllStatsUpHit::
 	setmoveeffect MOVE_EFFECT_ALL_STATS_UP | MOVE_EFFECT_AFFECTS_USER
 	goto BattleScript_EffectHit
 
-BattleScript_EffectBellyDrum::
+BattleScript_EffectBellyDrumGeomancy::
 	attackcanceler
 	attackstring
 	ppreduce
-	maxattackhalvehp BattleScript_ButItFailed
+	maxargstathalvehp BattleScript_ButItFailed
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	attackanimation
 	waitanimation
@@ -3528,9 +3551,23 @@ BattleScript_EffectThunder:
 	goto BattleScript_EffectHit
 	
 BattleScript_EffectHurricane:
+	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_SUN_ANY, BattleScript_EffectHurricaneSun
+	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_HAIL_ANY, BattleScript_EffectHurricaneHail
+BattleScript_EffectHurricaneNormal:	
 	setmoveeffect MOVE_EFFECT_CONFUSION
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
 	goto BattleScript_EffectHit
+BattleScript_EffectHurricaneSun:
+	jumpifnottype BS_ATTACKER, TYPE_FIRE, BattleScript_EffectHurricaneNormal
+	setmoveeffect MOVE_EFFECT_BURN
+	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
+	goto BattleScript_EffectHit
+BattleScript_EffectHurricaneHail:
+	jumpifnottype BS_ATTACKER, TYPE_ICE, BattleScript_EffectHurricaneNormal
+	setmoveeffect MOVE_EFFECT_FREEZE
+	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
+	goto BattleScript_EffectHit
+	
 
 BattleScript_EffectTeleport:
 	attackcanceler
@@ -4234,10 +4271,6 @@ BattleScript_EffectWaterSport::
 	printfromtable gSportsUsedStringIds
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectPoisonFang::
-	setmoveeffect MOVE_EFFECT_TOXIC
-	goto BattleScript_EffectHit
 
 BattleScript_EffectOverheat::
 	setmoveeffect MOVE_EFFECT_SP_ATK_TWO_DOWN | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN

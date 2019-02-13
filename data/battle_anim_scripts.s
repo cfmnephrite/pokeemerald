@@ -1982,6 +1982,21 @@ Move_DEFEND_ORDER:
 	end
 	
 Move_HEAL_ORDER:
+	loadspritegfx ANIM_TAG_ORBS
+	loadspritegfx ANIM_TAG_BLUE_STAR
+	monbg ANIM_ATK_PARTNER
+	setalpha 12, 8
+	loopsewithpan SE_W025, SOUND_PAN_ATTACKER, 13, 3
+	createvisualtask sub_8115A04, 2, 2, 0, 6, 0, 11, RGB(31, 31, 11)
+	call Recover1
+	call Recover1
+	call Recover1
+	waitforvisualfinish
+	clearmonbg ANIM_ATK_PARTNER
+	blendoff
+	delay 1
+	call HealingEffect
+	waitforvisualfinish
 	end
 	
 Move_HEAD_SMASH:

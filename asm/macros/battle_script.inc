@@ -171,10 +171,11 @@
 	.4byte \ptr
 	.endm
 
-	.macro jumpiftype battler:req, type:req, ptr:req
+	.macro jumpifmonhastype battler:req, type:req, param2:req, ptr:req
 	.byte 0x22
 	.byte \battler
 	.byte \type
+	.byte \param2
 	.4byte \ptr
 	.endm
 
@@ -936,7 +937,7 @@
 	.byte 0xbb
 	.endm
 
-	.macro maxattackhalvehp param0:req
+	.macro maxargstathalvehp param0:req
 	.byte 0xbc
 	.4byte \param0
 	.endm
@@ -1671,6 +1672,14 @@
 	
 	.macro jumpifnostatus3 battler:req, status:req, jumpptr:req
 	jumpifstatus3condition \battler, \status, 0x1, \jumpptr
+	.endm
+
+	.macro jumpiftype battler:req, type:req, jumpptr:req
+	jumpifmonhastype \battler, \type, 0x0, \jumpptr
+	.endm
+	
+	.macro jumpifnottype battler:req, type:req, jumpptr:req
+	jumpifmonhastype \battler, \type, 0x1, \jumpptr
 	.endm
 	
 	.macro jumpifmovehadnoeffect jumpptr:req

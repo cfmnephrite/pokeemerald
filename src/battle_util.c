@@ -2053,7 +2053,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                         gBattleMons[gBattlerAttacker].status1 -= toSub;
                     if (gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP)
                     {
-                        if (gCurrentMove != MOVE_SNORE && gCurrentMove != MOVE_SLEEP_TALK)
+                        if (gCurrentMove != MOVE_SNORE && gCurrentMove != MOVE_SLEEP_TALK && gCurrentMove != MOVE_LUNAR_DANCE)
                         {
                             gBattlescriptCurrInstr = BattleScript_MoveUsedIsAsleep;
                             gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
@@ -4985,6 +4985,15 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
             basePower *= 1.5;
         break;
+    case EFFECT_HIDDEN_POWER:
+        if (gBattleMons[battlerAtk].species == SPECIES_UNOWN)
+            basePower *= 1.5;
+        break;
+	case EFFECT_MUD_BOMB:
+        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
+            basePower *= 1.5;
+        break;
+    
     }
 
     if (basePower == 0)
@@ -5691,7 +5700,7 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
         mod = UQ_4_12(1.0);
     if ((moveType == TYPE_FIGHTING || moveType == TYPE_NORMAL) && defType == TYPE_GHOST && atkAblity == ABILITY_SCRAPPY)
         mod = UQ_4_12(1.0);
-    if (moveType == TYPE_PSYCHIC && defType == TYPE_DARK && gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED)
+    if (moveType == TYPE_PSYCHIC && defType == TYPE_DARK && ((gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED) || move == MOVE_LUNAR_DANCE))
         mod = UQ_4_12(1.0);
     if ((move == MOVE_FREEZE_DRY && defType == TYPE_WATER)
 		|| (move == MOVE_ACID && defType == TYPE_STEEL)
