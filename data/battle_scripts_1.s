@@ -6264,7 +6264,7 @@ BattleScript_AngryPointActivates::
 	setbyte sB_ANIM_ARG2 0x0
 	call BattleScript_AbilityPopUp
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printstring STRINGID_ANGRYPOINTACTIVATES
+	printstring STRINGID_TARGETABILITYSTATRAISE
 	waitmessage 0x40
 	return
 	
@@ -6277,6 +6277,9 @@ BattleScript_TargetAbilityStatRaise::
 	waitmessage 0x40
 	return
 	
+BattleScript_BattleArmorBroke::
+	printstring STRINGID_ARMORBROKE
+	waitmessage 0x40
 BattleScript_WeakArmorActivates::
 	setstatchanger STAT_DEF, 1, TRUE
 	call BattleScript_AbilityPopUp

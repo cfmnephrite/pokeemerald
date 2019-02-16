@@ -2610,12 +2610,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 move;
     u8 side;
     u8 target1;    
-    u8 higherAtk;
+    u8 higherAtk, higherDef;
     
     if(gBattleMons[battler].attack > gBattleMons[battler].spAttack)
         higherAtk = STAT_ATK;
     else
         higherAtk = STAT_SPATK;
+	
+	if(gBattleMons[battler].defense > gBattleMons[battler].spDefense)
+        higherDef = STAT_DEF;
+    else
+        higherDef = STAT_SPDEF;
 
     if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
         return 0;
@@ -3071,6 +3076,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (moveType == TYPE_FIRE)
                     effect = 2, statId = higherAtk;
                 break;
+			case ABILITY_BATTERY:
+				if (moveType == TYPE_ELECTRIC)
+					effect = 2, statId = higherDef;
             }
 
             if (effect == 1) // Drain Hp ability.
@@ -3153,10 +3161,24 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
-             && (gBattleMons[battler].statStages[STAT_SPEED] != 0xC || gBattleMons[battler].statStages[STAT_DEF] != 0))
+             && (gBattleMons[battler].statStages[STAT_SPEED] != 0xC || gBattleMons[battler].statStages[STAT_DEF] != 0)
+			 && IS_MOVE_PHYSICAL(move))
             {
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_WeakArmorActivates;
+                effect++;
+            }
+            break;
+		case ABILITY_BATTLE_ARMOR:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+             && IsBattlerAlive(battler)
+             && (gBattleMons[battler].statStages[STAT_SPEED] != 0xC || gBattleMons[battler].statStages[STAT_DEF] != 0)
+			 && gIsCriticalHit)
+            {
+				gLastUsedAbility = gBattleMons[battler].ability = ABILITY_WEAK_ARMOR;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_BattleArmorBroke;
                 effect++;
             }
             break;
@@ -3204,14 +3226,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
-        case ABILITY_ANGER_POINT: //still needs testing- guaranteed crit moves don't work for some reason
+        case ABILITY_ANGER_POINT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
+			 && gIsCriticalHit
              && IsBattlerAlive(battler)
              && gBattleMons[battler].statStages[higherAtk] != 0xC
              && Random() % 2 == 0)
             {
-                gBattleMons[battler].statStages[STAT_ATK]++;
+                gBattleMons[battler].statStages[higherAtk]++;
+				SET_STATCHANGER(higherAtk, 1, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, higherAtk);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AngryPointActivates;
                 effect++;
@@ -5472,10 +5497,10 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
         if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && usesDefStat)
             MulModifier(&modifier, UQ_4_12(1.5));
         break;
-    case ABILITY_FLOWER_GIFT:
-        if (gBattleMons[battlerDef].species == SPECIES_CHERRIM && WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY && !usesDefStat)
-            MulModifier(&modifier, UQ_4_12(1.5));
-        break;
+	case ABILITY_BATTLE_ARMOR:
+		if (!gIsCriticalHit && usesDefStat)
+			MulModifier(&modifier, UQ_4_12(1.25));
+		break;
     }
 
     // ally's abilities

@@ -171,7 +171,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_SONICBOOM, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_RAIN_DANCE, AI_CBM_RainDance
 	if_effect EFFECT_SUNNY_DAY, AI_CBM_SunnyDay
-	if_effect EFFECT_BELLY_DRUM, AI_CBM_BellyDrum
+	if_effect EFFECT_BELLY_DRUM_GEOMANCY, AI_CBM_BellyDrum
 	if_effect EFFECT_PSYCH_UP, AI_CBM_Haze
 	if_effect EFFECT_MIRROR_COAT, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_SKULL_BASH, AI_CBM_HighRiskForDamage
@@ -969,7 +969,7 @@ AI_CheckViability:
 	if_effect EFFECT_MOONLIGHT, AI_CV_HealWeather
 	if_effect EFFECT_RAIN_DANCE, AI_CV_RainDance
 	if_effect EFFECT_SUNNY_DAY, AI_CV_SunnyDay
-	if_effect EFFECT_BELLY_DRUM, AI_CV_BellyDrum
+	if_effect EFFECT_BELLY_DRUM_GEOMANCY, AI_CV_BellyDrum
 	if_effect EFFECT_PSYCH_UP, AI_CV_PsychUp
 	if_effect EFFECT_MIRROR_COAT, AI_CV_MirrorCoat
 	if_effect EFFECT_SKULL_BASH, AI_CV_ChargeUpMove
@@ -2068,7 +2068,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
     .byte EFFECT_SAFEGUARD
     .byte EFFECT_RAIN_DANCE
     .byte EFFECT_SUNNY_DAY
-    .byte EFFECT_BELLY_DRUM
+    .byte EFFECT_BELLY_DRUM_GEOMANCY
     .byte EFFECT_PSYCH_UP
     .byte EFFECT_FUTURE_SIGHT
     .byte EFFECT_FAKE_OUT
@@ -3125,7 +3125,7 @@ AI_Risky_EffectsToEncourage:
     .byte EFFECT_ATTRACT
     .byte EFFECT_PRESENT
     .byte EFFECT_ALL_STATS_UP_HIT
-    .byte EFFECT_BELLY_DRUM
+    .byte EFFECT_BELLY_DRUM_GEOMANCY
     .byte EFFECT_MIRROR_COAT
     .byte EFFECT_FOCUS_PUNCH
     .byte EFFECT_REVENGE
@@ -3465,7 +3465,7 @@ AI_HPAware_DiscouragedEffectsWhenMediumHP: @ 82DE22D
     .byte EFFECT_EVASION_DOWN_2
     .byte EFFECT_CONVERSION_2
     .byte EFFECT_SAFEGUARD
-    .byte EFFECT_BELLY_DRUM
+    .byte EFFECT_BELLY_DRUM_GEOMANCY
     .byte EFFECT_TICKLE
     .byte EFFECT_COSMIC_POWER
     .byte EFFECT_BULK_UP
@@ -3511,7 +3511,7 @@ AI_HPAware_DiscouragedEffectsWhenLowHP: @ 82DE258
     .byte EFFECT_CONVERSION_2
     .byte EFFECT_LOCK_ON
     .byte EFFECT_SAFEGUARD
-    .byte EFFECT_BELLY_DRUM
+    .byte EFFECT_BELLY_DRUM_GEOMANCY
     .byte EFFECT_PSYCH_UP
     .byte EFFECT_MIRROR_COAT
     .byte EFFECT_SOLARBEAM
