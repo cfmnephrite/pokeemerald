@@ -483,10 +483,24 @@ void PrepareStringBattle(u16 stringId, u8 battler)
     else if (stringId == STRINGID_STATSWONTINCREASE && gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
         stringId = STRINGID_STATSWONTDECREASE;
 
-    if (stringId == STRINGID_STATSWONTDECREASE2 && GetBattlerAbility(battler) == ABILITY_CONTRARY)
+    else if (stringId == STRINGID_STATSWONTDECREASE2 && GetBattlerAbility(battler) == ABILITY_CONTRARY)
         stringId = STRINGID_STATSWONTINCREASE2;
     else if (stringId == STRINGID_STATSWONTINCREASE2 && GetBattlerAbility(battler) == ABILITY_CONTRARY)
         stringId = STRINGID_STATSWONTDECREASE2;
+
+    // Check Defiant and Competitive stat raise whenever a stat is lowered.
+    else if (((GetBattlerAbility(gBattlerTarget) == ABILITY_DEFIANT && gBattleMons[gBattlerTarget].statStages[STAT_ATK] != 12)
+                || (GetBattlerAbility(gBattlerTarget) == ABILITY_COMPETITIVE && gBattleMons[gBattlerTarget].statStages[STAT_SPATK] != 12))
+             && stringId == STRINGID_PKMNSSTATCHANGED4)
+    {
+        gBattlerAbility = gBattlerTarget;
+        BattleScriptPushCursor();
+        gBattlescriptCurrInstr = BattleScript_DefiantActivates;
+        if (GetBattlerAbility(gBattlerTarget) == ABILITY_DEFIANT)
+            SET_STATCHANGER(STAT_ATK, 2, FALSE);
+        else
+            SET_STATCHANGER(STAT_SPATK, 2, FALSE);
+    }
 
     gActiveBattler = battler;
     BtlController_EmitPrintString(0, stringId);
@@ -1606,7 +1620,7 @@ u8 DoBattlerEndTurnEffects(void)
                         gBattleMons[gActiveBattler].status2 &= ~(STATUS2_MULTIPLETURNS);
                         if (!(gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION))
                         {
-                            gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER;
+                            gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER;
                             SetMoveEffect(1, 0);
                             if (gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION)
                                 BattleScriptExecute(BattleScript_ThrashConfuses);
@@ -2340,7 +2354,7 @@ u8 AtkCanceller_UnableToUseMove2(void)
         case CANCELLER_PSYCHIC_TERRAIN:
             if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN
                 && IsBattlerGrounded(gBattlerAttacker)
-                && GetMovePriority(gBattlerAttacker) > 0
+                && GetChosenMovePriority(gBattlerAttacker) > 0
                 && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
             {
                 CancelMultiTurnMoves(gBattlerAttacker);
@@ -3032,7 +3046,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         else if ((gLastUsedAbility == ABILITY_DAZZLING
                    || (IsBattlerAlive(battler ^= BIT_FLANK) && GetBattlerAbility(battler) == ABILITY_DAZZLING)
                    )
-                 && GetMovePriority(battler) > 0
+                 && GetChosenMovePriority(battler) > 0
                  && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(battler))
         {
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
@@ -3283,13 +3297,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 do
                 {
-                    gBattleCommunication[MOVE_EFFECT_BYTE] = Random() & 3;
-                } while (gBattleCommunication[MOVE_EFFECT_BYTE] == 0);
+                    gBattleScripting.moveEffect = Random() & 3;
+                } while (gBattleScripting.moveEffect == 0);
 
-                if (gBattleCommunication[MOVE_EFFECT_BYTE] == MOVE_EFFECT_BURN)
-                    gBattleCommunication[MOVE_EFFECT_BYTE] += 2; // 5 MOVE_EFFECT_PARALYSIS
+                if (gBattleScripting.moveEffect == MOVE_EFFECT_BURN)
+                    gBattleScripting.moveEffect += 2; // 5 MOVE_EFFECT_PARALYSIS
 
-                gBattleCommunication[MOVE_EFFECT_BYTE] += MOVE_EFFECT_AFFECTS_USER;
+                gBattleScripting.moveEffect += MOVE_EFFECT_AFFECTS_USER;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
@@ -3304,7 +3318,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && (Random() % 3) == 0)
             {
-                gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
@@ -3319,7 +3333,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && (Random() % 3) == 0)
             {
-                gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
@@ -3334,7 +3348,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && (Random() % 3) == 0)
             {
-                gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
@@ -3492,7 +3506,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (gBattleStruct->synchronizeMoveEffect == MOVE_EFFECT_TOXIC)
                 gBattleStruct->synchronizeMoveEffect = MOVE_EFFECT_POISON;
 
-            gBattleCommunication[MOVE_EFFECT_BYTE] = gBattleStruct->synchronizeMoveEffect + MOVE_EFFECT_AFFECTS_USER;
+            gBattleScripting.moveEffect = gBattleStruct->synchronizeMoveEffect + MOVE_EFFECT_AFFECTS_USER;
             gBattleScripting.battler = gBattlerTarget;
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_SynchronizeActivates;
@@ -3508,7 +3522,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (gBattleStruct->synchronizeMoveEffect == MOVE_EFFECT_TOXIC)
                 gBattleStruct->synchronizeMoveEffect = MOVE_EFFECT_POISON;
 
-            gBattleCommunication[MOVE_EFFECT_BYTE] = gBattleStruct->synchronizeMoveEffect;
+            gBattleScripting.moveEffect = gBattleStruct->synchronizeMoveEffect;
             gBattleScripting.battler = gBattlerAttacker;
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_SynchronizeActivates;
@@ -4338,7 +4352,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                     && gBattleMoves[gCurrentMove].flags & FLAG_KINGSROCK_AFFECTED
                     && gBattleMons[gBattlerTarget].hp)
                 {
-                    gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_FLINCH;
+                    gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
                     BattleScriptPushCursor();
                     SetMoveEffect(0, 0);
                     BattleScriptPop();

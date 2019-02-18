@@ -348,8 +348,20 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectDarkVoid
 	.4byte BattleScript_EffectEggBomb
 	.4byte BattleScript_EffectHealOrder
-
-
+	.4byte BattleScript_EffectSpectralThief
+	
+BattleScript_SpectralThiefSteal::
+	printstring STRINGID_SPECTRALTHIEFSTEAL
+	waitmessage 0x40
+	setbyte sB_ANIM_ARG2, 0
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	spectralthiefprintstats
+	return
+	
+BattleScript_EffectSpectralThief:
+	setmoveeffect MOVE_EFFECT_SPECTRAL_THIEF
+	goto BattleScript_EffectHit
+	
 BattleScript_EffectHealOrder::
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_EffectHealOrderStart
 	goto BattleScript_EffectRestoreHp
@@ -1946,10 +1958,10 @@ BattleScript_EffectFreezeHit::
 BattleScript_EffectParalyzeHit::
 	setmoveeffect MOVE_EFFECT_PARALYSIS
 	goto BattleScript_EffectHit
-    
+	
 BattleScript_EffectSleepHit::
 	setmoveeffect MOVE_EFFECT_SLEEP
-	goto BattleScript_EffectHit    
+	goto BattleScript_EffectHit	
 
 BattleScript_EffectExplosion::
 	attackcanceler
@@ -1966,8 +1978,8 @@ BattleScript_ExplosionDoAnimStartLoop:
 	waitanimation
 BattleScript_ExplosionLoop:
 	movevaluescleanup
-    jumpiftargetally BattleScript_CheckLunarDance
-BattleScript_ExplosionLoopContinue:     
+	jumpiftargetally BattleScript_CheckLunarDance
+BattleScript_ExplosionLoopContinue:	 
 	critcalc
 	damagecalc
 	adjustdamage
@@ -1996,9 +2008,9 @@ BattleScript_ExplosionMissed:
 	jumpifnexttargetvalid BattleScript_ExplosionLoop
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	end
-    
+	
 BattleScript_CheckLunarDance:
-    jumpifnotmove MOVE_LUNAR_DANCE, BattleScript_ExplosionLoopContinue
+	jumpifnotmove MOVE_LUNAR_DANCE, BattleScript_ExplosionLoopContinue
 	setbyte sMOVEEND_STATE, 0x0
 	moveend 0x2, 0x10
 	jumpifnexttargetvalid BattleScript_ExplosionLoop
@@ -2072,6 +2084,7 @@ BattleScript_StatUpEnd::
 
 BattleScript_StatUp::
 	playanimation BS_EFFECT_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+BattleScript_StatUpMsg::
 	printfromtable gStatUpStringIds
 	waitmessage 0x40
 	return
@@ -2181,7 +2194,7 @@ BattleScript_EffectMultiHit::
 	ppreduce
 	setmultihitcounter 0x0
 	initmultihitstring
-	setbyte sMULTIHIT_EFFECT, 0x0
+	sethword sMULTIHIT_EFFECT, 0x0
 BattleScript_MultiHitLoop::
 	jumpifhasnohp BS_ATTACKER, BattleScript_MultiHitEnd
 	jumpifhasnohp BS_TARGET, BattleScript_MultiHitPrintStrings
@@ -2189,7 +2202,7 @@ BattleScript_MultiHitLoop::
 	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_MultiHitPrintStrings
 BattleScript_DoMultiHit::
 	movevaluescleanup
-	copybyte cEFFECT_CHOOSER, sMULTIHIT_EFFECT
+	copyhword sMOVE_EFFECT, sMULTIHIT_EFFECT
 	critcalc
 	damagecalc
 	jumpifmovehadnoeffect BattleScript_MultiHitNoMoreHits
@@ -2444,7 +2457,7 @@ BattleScript_EffectDoubleHit::
 	ppreduce
 	setmultihitcounter 0x2
 	initmultihitstring
-	setbyte sMULTIHIT_EFFECT, 0x0
+	sethword sMULTIHIT_EFFECT, 0x0
 	goto BattleScript_MultiHitLoop
 
 BattleScript_EffectRecoilIfMiss::
@@ -3471,7 +3484,7 @@ BattleScript_EffectEarthquake:
 	selectfirstvalidtarget
 BattleScript_HitsAllWithUndergroundBonusLoop::
 	movevaluescleanup
-	copybyte cEFFECT_CHOOSER, sSAVED_MOVE_EFFECT
+	copyhword sMOVE_EFFECT, sSAVED_MOVE_EFFECT
 	jumpifnostatus3 BS_TARGET, STATUS3_UNDERGROUND, BattleScript_HitsAllNoUndergroundBonus
 	orword gHitMarker, HITMARKER_IGNORE_UNDERGROUND
 	goto BattleScript_DoHitAllWithUndergroundBonus
@@ -5890,6 +5903,16 @@ BattleScript_DrizzleActivates::
 	playanimation BS_BATTLER_0, B_ANIM_RAIN_CONTINUES, NULL
 	call BattleScript_WeatherFormChanges
 	end3
+	
+BattleScript_DefiantActivates::
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	statbuffchange 0, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ABILITY_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printstring STRINGID_PKMNSSTATCHANGED2
+	waitmessage 0x40
+	return
 	
 BattleScript_AbilityPopUp:
 	showabilitypopup BS_ABILITY_BATTLER

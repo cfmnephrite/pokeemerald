@@ -47,7 +47,6 @@
 #define TASK_ID                 0x1 // task Id and cursor position share the same field
 #define SPRITES_INIT_STATE1     0x1 // shares the Id as well
 #define SPRITES_INIT_STATE2     0x2
-#define MOVE_EFFECT_BYTE        0x3
 #define ACTIONS_CONFIRMED_COUNT 0x4
 #define MULTISTRING_CHOOSER     0x5
 #define MSG_DISPLAY             0x7
@@ -576,6 +575,7 @@ struct BattleStruct
     bool8 trainerSlideLowHpMsgDone;
     u8 introState;
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
+    u8 stolenStats[NUM_BATTLE_STATS]; // hp byte is used for which stats to raise, other inform about by how many stages
 };
 
 #define GET_MOVE_TYPE(move, typeArg)                        \
@@ -600,14 +600,14 @@ struct BattleStruct
     gBattleMons[battlerId].type3 = TYPE_MYSTERY;    \
 }
 
-#define GET_STAT_BUFF_ID(n)((n & 0xF))              // first four bits 0x1, 0x2, 0x4, 0x8
-#define GET_STAT_BUFF_VALUE2(n)((n & 0xF0))
-#define GET_STAT_BUFF_VALUE(n)(((n >> 4) & 7))      // 0x10, 0x20, 0x40
+#define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
+#define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
+#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40
 #define STAT_BUFF_NEGATIVE 0x80                     // 0x80, the sign bit
 
-#define SET_STAT_BUFF_VALUE(n)((((n) << 4) & 0xF0))
+#define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
 
-#define SET_STATCHANGER(statId, stage, goesDown)(gBattleScripting.statChanger = (statId) + (stage << 4) + (goesDown << 7))
+#define SET_STATCHANGER(statId, stage, goesDown)(gBattleScripting.statChanger = (statId) + (stage << 3) + (goesDown << 7))
 
 struct BattleScripting
 {
@@ -621,7 +621,7 @@ struct BattleScripting
     u16 tripleKickPower;
     u8 atk49_state;
     u8 battlerWithAbility;
-    u8 multihitMoveEffect;
+    u8 unused_16;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;
@@ -640,7 +640,9 @@ struct BattleScripting
     u8 specialTrainerBattleType;
     bool8 monCaught;
     s32 savedDmg;
-    u8 savedMoveEffect; // For moves hitting multiple targets.
+    u16 savedMoveEffect; // For moves hitting multiple targets.
+    u16 moveEffect;
+    u16 multihitMoveEffect;
 };
 
 // rom_80A5C6C

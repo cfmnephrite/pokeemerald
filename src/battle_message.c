@@ -645,9 +645,11 @@ static const u8 sText_PowderExplodes[] = _("When the flame touched the powder\no
 static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
 static const u8 sText_GravityGrounding[] = _("{B_EFF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!\p");
 static const u8 sText_ArmorBroke[] = _("{B_DEF_NAME_WITH_PREFIX}'s Battle Armor \nwas shattered!");
+static const u8 sText_SpectralThiefSteal[] = _("{B_ATK_NAME_WITH_PREFIX} stole the target's\nboosted stats!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_SPECTRALTHIEFSTEAL - 12] = sText_SpectralThiefSteal,
     [STRINGID_BELCHCANTSELECT - 12] = sText_BelchCantUse,
     [STRINGID_TRAINER1LOSETEXT - 12] = sText_Trainer1LoseText,
     [STRINGID_PKMNGAINEDEXP - 12] = sText_PkmnGainedEXP,
