@@ -1996,9 +1996,8 @@ u8 GetBattlerTurnOrderNum(u8 battlerId)
 
 void SetMoveEffect(bool32 primary, u32 certain)
 {
-	s32 i;
-	bool32 statusChanged = FALSE;
-	u8 affectsUser = 0; // 0x40 otherwise
+	s32 i, byTwo, affectsUser = 0;
+    bool32 statusChanged = FALSE;
 	bool32 noSunCanFreeze = TRUE;
 
 	if (gBattleScripting.moveEffect & MOVE_EFFECT_AFFECTS_USER)
@@ -2716,16 +2715,16 @@ void SetMoveEffect(bool32 primary, u32 certain)
 					gBattlescriptCurrInstr = BattleScript_MoveEffectSmackDown;
 				}
 				break;
-			case MOVE_EFFECT_RELEASE_SKY_DROP:
-				if (gDisableStructs[gBattlerTarget].skyDrop)
-				{
-					gDisableStructs[gBattlerTarget].skyDrop = 0;
-					gDisableStructs[gBattlerTarget].skyDropTrappingBattler = 0;
-					gStatuses3[gBattlerTarget] &= ~STATUS3_ON_AIR;
-					BattleScriptPush(gBattlescriptCurrInstr + 1);
-					gBattlescriptCurrInstr = BattleScript_MoveEffectSkyDrop;
-				}
-				break;
+			//case MOVE_EFFECT_RELEASE_SKY_DROP:
+			//	if (gDisableStructs[gBattlerTarget].skyDrop)
+			//	{
+			//		gDisableStructs[gBattlerTarget].skyDrop = 0;
+			//		gDisableStructs[gBattlerTarget].skyDropTrappingBattler = 0;
+			//		gStatuses3[gBattlerTarget] &= ~STATUS3_ON_AIR;
+			//		BattleScriptPush(gBattlescriptCurrInstr + 1);
+			//		gBattlescriptCurrInstr = BattleScript_MoveEffectSkyDrop;
+			//	}
+			//	break;
 			case MOVE_EFFECT_FLAME_BURST:
 				if (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) != ABILITY_MAGIC_GUARD)
 				{

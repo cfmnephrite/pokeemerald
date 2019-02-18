@@ -2738,7 +2738,7 @@ BattleScript_EffectDoubleHitEffect::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	setargtoeffectchooser
-	copybyte sMULTIHIT_EFFECT, cEFFECT_CHOOSER
+	copybyte sMULTIHIT_EFFECT, sMOVE_EFFECT
 	attackstring
 	ppreduce
 	setmultihitcounter 0x2
