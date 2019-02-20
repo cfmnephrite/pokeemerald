@@ -5512,7 +5512,7 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
         break;
     case ABILITY_BATTLE_ARMOR:
         if (!gIsCriticalHit && IS_MOVE_PHYSICAL(move))
-            MulModifier(&modifier, UQ_4_12(5));
+            MulModifier(&modifier, UQ_4_12(1.33));
         break;
     }
 
