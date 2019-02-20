@@ -246,7 +246,7 @@ extern const u8 BattleScript_GravityEnds[];
 extern const u8 BattleScript_MoveStatDrain[];
 extern const u8 BattleScript_MoveStatDrain_PPLoss[];
 extern const u8 BattleScript_TargetAbilityStatRaise[];
-extern const u8 BattleScript_AngryPointActivates[];
+extern const u8 BattleScript_AngerPointActivates[];
 extern const u8 BattleScript_AttackerAbilityStatRaise[];
 extern const u8 BattleScript_AttackerAbilityStatRaiseEnd3[];
 extern const u8 BattleScript_PoisonHealActivates[];
