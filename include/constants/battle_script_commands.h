@@ -140,6 +140,7 @@
 #define VARIOUS_ARG_TO_EFFECT_CHOOSER           77
 #define VARIOUS_ARG_TO_EFFECT_SELF              78
 #define VARIOUS_SPECTRAL_THIEF                  79
+#define VARIOUS_TRY_ACTIVATE_BEAST_BOOST		80
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

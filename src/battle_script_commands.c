@@ -6389,11 +6389,13 @@ static bool32 ClearDefogHazards(u8 battlerAtk, bool32 clear)
 static void atk76_various(void)
 {
 	struct Pokemon *mon;
-	u8 side;
+	u8 side, boostStat, boost;
+	u16 highestStat;
 	s32 i, j;
 	u8 data[10];
 	u32 bits;
 	bool8 noFreed = TRUE;
+	u8 hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 1);
 
 	if (gBattleControllerExecFlags)
 		return;
@@ -6711,18 +6713,58 @@ static void atk76_various(void)
 	case VARIOUS_TRY_ACTIVATE_MOXIE:
 		if (GetBattlerAbility(gActiveBattler) == ABILITY_MOXIE
 			&& HasAttackerFaintedTarget()
-			&& !IsBattleLostForPlayer()
-			&& !IsBattleWonForPlayer()
-			&& gBattleMons[gBattlerAttacker].statStages[STAT_ATK] != 12)
+			&& !IsBattleLostForPlayer() 
+			&& !IsBattleWonForPlayer())
 		{
-			gBattleMons[gBattlerAttacker].statStages[STAT_ATK]++;
-			SET_STATCHANGER(STAT_ATK, 1, FALSE);
-			PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_ATK);
-			BattleScriptPush(gBattlescriptCurrInstr + 3);
-			gBattlescriptCurrInstr = BattleScript_AttackerAbilityStatRaise;
-			return;
+			if(gBattleMons[gBattlerAttacker].attack > gBattleMons[gBattlerAttacker].spAttack)
+				boostStat = STAT_ATK;
+			else
+				boostStat = STAT_SPATK;
+			if(hpFraction > 0.75)
+				boost = 2;
+			else if(hpFraction <= 0.75 && hpFraction >= 0.25)
+				boost = 1;
+			if(gBattleMons[gBattlerAttacker].statStages[boostStat] != 12 && boost != 0)
+			{
+				gBattleMons[gBattlerAttacker].statStages[boostStat]++;
+				SET_STATCHANGER(boostStat, boost, FALSE);
+				PREPARE_STAT_BUFFER(gBattleTextBuff1, boostStat);
+				BattleScriptPush(gBattlescriptCurrInstr + 3);
+				gBattlescriptCurrInstr = BattleScript_AttackerAbilityStatRaise;
+				return;
+			}
 		}
 		break;
+	case VARIOUS_TRY_ACTIVATE_BEAST_BOOST:
+        if (GetBattlerAbility(gActiveBattler) == ABILITY_BEAST_BOOST)
+		{
+            u16 gBattleStats[5] = {gBattleMons[gActiveBattler].attack, 
+                                   gBattleMons[gActiveBattler].defense,
+                                   gBattleMons[gActiveBattler].speed,
+                                   gBattleMons[gActiveBattler].spAttack,
+                                   gBattleMons[gActiveBattler].spDefense};
+            for (i = 1; i < 6; i++)
+			{
+                if (gBattleStats[i-1] > highestStat)
+				{
+                    highestStat = gBattleStats[i-1];
+                    boostStat = i;
+                }
+            }
+            if( HasAttackerFaintedTarget()
+                && !IsBattleLostForPlayer()
+                && !IsBattleWonForPlayer()
+                && gBattleMons[gBattlerAttacker].statStages[boostStat] != 12)
+            {
+                gBattleMons[gBattlerAttacker].statStages[boostStat]++;
+                SET_STATCHANGER(boostStat, 1, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, boostStat);
+                BattleScriptPush(gBattlescriptCurrInstr + 3);
+                gBattlescriptCurrInstr = BattleScript_AttackerAbilityStatRaise;
+                return;
+            }
+        }
+        break;
 	case VARIOUS_TRY_ACTIVATE_FELL_STINGER:
 		if (gBattleMoves[gCurrentMove].effect == EFFECT_FELL_STINGER
 			&& HasAttackerFaintedTarget()

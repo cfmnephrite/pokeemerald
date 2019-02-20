@@ -4462,6 +4462,7 @@ BattleScript_FaintTarget::
 	cleareffectsonfaint BS_TARGET
 	printstring STRINGID_TARGETFAINTED
 	tryactivatemoxie BS_ATTACKER
+	tryactivatebeastboost BS_ATTACKER
 	tryactivatefellstinger BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_TARGET
 	return
