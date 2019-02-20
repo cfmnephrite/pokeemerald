@@ -580,7 +580,6 @@ static const u8 sText_ElectricTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_MistyTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_PsychicTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
 static const u8 sText_GrassyTerrainEnds[] = _("{B_ATK_ABILITY} wore off.");
-static const u8 sText_AngryPointActivates[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} maxed\nits attack!");
 static const u8 sText_PoisonHealHpUp[] = _("The poisoning healed {B_ATK_NAME_WITH_PREFIX}\na little bit!");
 static const u8 sText_BadDreamsDmg[] = _("The {B_DEF_NAME_WITH_PREFIX} is tormented\nby {B_DEF_ABILITY}!");
 static const u8 sText_MoldBreakerEnters[] = _("{B_ATK_NAME_WITH_PREFIX} breaks the mold!");
@@ -1091,7 +1090,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PSYCHICTERRAINENDS - 12] = sText_PsychicTerrainEnds,
     [STRINGID_GRASSYTERRAINENDS - 12] = sText_GrassyTerrainEnds,
     [STRINGID_TARGETABILITYSTATRAISE - 12] = sText_TargetAbilityRaisedStat,
-    [STRINGID_ANGRYPOINTACTIVATES - 12] = sText_AngryPointActivates,
     [STRINGID_ATTACKERABILITYSTATRAISE - 12] = sText_AttackerAbilityRaisedStat,
     [STRINGID_POISONHEALHPUP - 12] = sText_PoisonHealHpUp,
     [STRINGID_BADDREAMSDMG - 12] = sText_BadDreamsDmg,
@@ -1155,8 +1153,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_POKEMONCANNOTUSEMOVE - 12] = sText_PokemonCannotUseMove,
     [STRINGID_COVEREDINPOWDER - 12] = sText_CoveredInPowder,
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
-    [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,	
-	[STRINGID_ARMORBROKE - 12] = sText_ArmorBroke,
+    [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,
+    [STRINGID_ARMORBROKE - 12] = sText_ArmorBroke,
 };
 
 const u16 gTerrainStringIds[] =

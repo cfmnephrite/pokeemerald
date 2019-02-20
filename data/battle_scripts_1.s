@@ -6282,7 +6282,7 @@ BattleScript_MummyActivates::
 	waitmessage 0x40
 	return
 	
-BattleScript_AngryPointActivates::
+BattleScript_AngerPointActivates::
 	setbyte sB_ANIM_ARG1 0x38
 	setbyte sB_ANIM_ARG2 0x0
 	call BattleScript_AbilityPopUp
