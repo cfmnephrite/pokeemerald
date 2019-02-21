@@ -6395,7 +6395,7 @@ static void atk76_various(void)
 	u8 data[10];
 	u32 bits;
 	bool8 noFreed = TRUE;
-	u8 hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 1);
+	u32 hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 100);
 
 	if (gBattleControllerExecFlags)
 		return;
@@ -6720,13 +6720,13 @@ static void atk76_various(void)
 				boostStat = STAT_ATK;
 			else
 				boostStat = STAT_SPATK;
-			if(hpFraction > 0.75)
+			if(hpFraction > 75)
 				boost = 2;
-			else if(hpFraction <= 0.75 && hpFraction >= 0.25)
+			else if(hpFraction <= 75 && hpFraction >= 25)
 				boost = 1;
 			if(gBattleMons[gBattlerAttacker].statStages[boostStat] != 12 && boost != 0)
 			{
-				gBattleMons[gBattlerAttacker].statStages[boostStat]++;
+				gBattleMons[gBattlerAttacker].statStages[boostStat] += boost;
 				SET_STATCHANGER(boostStat, boost, FALSE);
 				PREPARE_STAT_BUFFER(gBattleTextBuff1, boostStat);
 				BattleScriptPush(gBattlescriptCurrInstr + 3);
@@ -6751,10 +6751,13 @@ static void atk76_various(void)
                     boostStat = i;
                 }
             }
+			if(hpFraction > 25)
+				boost = 1;
             if( HasAttackerFaintedTarget()
                 && !IsBattleLostForPlayer()
                 && !IsBattleWonForPlayer()
-                && gBattleMons[gBattlerAttacker].statStages[boostStat] != 12)
+                && gBattleMons[gBattlerAttacker].statStages[boostStat] != 12
+				&& boost != 0)
             {
                 gBattleMons[gBattlerAttacker].statStages[boostStat]++;
                 SET_STATCHANGER(boostStat, 1, FALSE);
