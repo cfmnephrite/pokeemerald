@@ -292,7 +292,6 @@ static const u16 sDiscouragedPowerfulMoveEffects[] =
     EFFECT_FOCUS_PUNCH,
     EFFECT_SELF_STAT_DROP_ARG,
     EFFECT_ERUPTION,
-    EFFECT_OVERHEAT,
     0xFFFF
 };
 
@@ -789,7 +788,8 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef)
     SetBattlerData(battlerDef);
 
     gBattleStruct->dynamicMoveType = 0;
-    SetTypeBeforeUsingMove(move, battlerAtk);
+    gBattleStruct->dynamicMoveSplit = 0;
+    SetTypeAndSplitBeforeUsingMove(move, battlerAtk);
     GET_MOVE_TYPE(move, moveType);
     dmg = CalculateMoveDamage(move, battlerAtk, battlerDef, moveType, 0, AI_GetIfCrit(move, battlerAtk, battlerDef), FALSE);
 
@@ -1675,6 +1675,7 @@ static void BattleAICmd_get_highest_type_effectiveness(void)
     u8 *dynamicMoveType;
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     AI_THINKING_STRUCT->funcResult = 0;
 
@@ -1722,6 +1723,7 @@ static void BattleAICmd_if_type_effectiveness(void)
     u32 effectivenessMultiplier;
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
 
@@ -1938,6 +1940,7 @@ static void BattleAICmd_if_can_faint(void)
     }
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     dmg = AI_CalcDamage(AI_THINKING_STRUCT->moveConsidered, sBattler_AI, gBattlerTarget);
     dmg = dmg * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
@@ -1963,6 +1966,7 @@ static void BattleAICmd_if_cant_faint(void)
     }
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     dmg = AI_CalcDamage(AI_THINKING_STRUCT->moveConsidered, sBattler_AI, gBattlerTarget);
     dmg = dmg * AI_THINKING_STRUCT->simulatedRNG[AI_THINKING_STRUCT->movesetIndex] / 100;
@@ -2540,9 +2544,6 @@ static void BattleAICmd_get_hazards_count(void)
     case EFFECT_SPIKES:
         AI_THINKING_STRUCT->funcResult = gSideTimers[side].spikesAmount;
         break;
-    case EFFECT_TOXIC_SPIKES:
-        AI_THINKING_STRUCT->funcResult = gSideTimers[side].toxicSpikesAmount;
-        break;
     }
 
     gAIScriptPtr += 4;
@@ -2641,7 +2642,7 @@ static bool32 MovesWithSplitUnusable(u32 attacker, u32 target, u32 split)
              && gBattleMoves[moves[i]].split == split
              && !(unusable & gBitTable[i]))
         {
-            SetTypeBeforeUsingMove(moves[i], attacker);
+            SetTypeAndSplitBeforeUsingMove(moves[i], attacker);
             GET_MOVE_TYPE(moves[i], moveType);
             if (CalcTypeEffectivenessMultiplier(moves[i], moveType, attacker, target, FALSE) != 0)
                 usable |= gBitTable[i];

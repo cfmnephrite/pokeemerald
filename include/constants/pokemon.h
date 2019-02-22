@@ -98,11 +98,12 @@
 #define FLAG_MEGA_LAUNCHER_BOOST    0x800
 #define FLAG_STAT_STAGES_IGNORED    0x1000
 #define FLAG_DMG_MINIMIZE           0x2000
-#define FLAG_DMG_UNDERGROUND        0x4000
-#define FLAG_DMG_UNDERWATER         0x8000
+#define FLAG_MAGIC                  0x4000
+#define FLAG_MAGICIAN_AFFECTED      0x8000
 #define FLAG_SOUND                  0x10000
 #define FLAG_BALLISTIC              0x20000
 #define FLAG_PROTECTION_MOVE        0x40000
+#define FLAG_Z_MOVE                 0x80000
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0

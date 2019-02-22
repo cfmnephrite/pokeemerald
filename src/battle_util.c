@@ -1130,15 +1130,15 @@ u8 DoFieldEndTurnEffects(void)
                     if (--gWishFutureKnock.weatherDuration == 0)
                     {
                         gBattleWeather &= ~WEATHER_RAIN_TEMPORARY;
-                        gBattleWeather &= ~WEATHER_RAIN_DOWNPOUR;
+                        gBattleWeather &= ~WEATHER_RAIN_PRIMORDIAL;
                         gBattleCommunication[MULTISTRING_CHOOSER] = 2;
                     }
-                    else if (gBattleWeather & WEATHER_RAIN_DOWNPOUR)
+                    else if (gBattleWeather & WEATHER_RAIN_PRIMORDIAL)
                         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                     else
                         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                 }
-                else if (gBattleWeather & WEATHER_RAIN_DOWNPOUR)
+                else if (gBattleWeather & WEATHER_RAIN_PRIMORDIAL)
                 {
                     gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                 }
@@ -1843,7 +1843,7 @@ bool8 HandleWishPerishSongOnTurnEnd(void)
                 gBattlerAttacker = gWishFutureKnock.futureSightAttacker[gActiveBattler];
                 gSpecialStatuses[gBattlerTarget].dmg = 0xFFFF;
                 gCurrentMove = gWishFutureKnock.futureSightMove[gActiveBattler];
-                SetTypeBeforeUsingMove(gCurrentMove, gActiveBattler);
+                SetTypeAndSplitBeforeUsingMove(gCurrentMove, gActiveBattler);
                 BattleScriptExecute(BattleScript_MonTookFutureAttack);
 
                 if (gWishFutureKnock.futureSightCounter[gActiveBattler] == 0
@@ -4739,7 +4739,7 @@ u32 GetBattlerWeight(u8 battlerId)
     if (holdEffect == HOLD_EFFECT_FLOAT_STONE)
         weight /= 2;
 
-    for (i = 0; i < gDisableStructs[battlerId].autonomizeCount; i++)
+    for (i = 0; i < gDisableStructs[battlerId].autotomizeCount; i++)
     {
         if (weight > 1000)
         {
@@ -4880,10 +4880,10 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_MAGNITUDE:
-        basePower = gBattleStruct->magnitudeBasePower;
+        basePower = gBattleStruct->dynamicBasePower;
         break;
     case EFFECT_PRESENT:
-        basePower = gBattleStruct->presentBasePower;
+        basePower = gBattleStruct->dynamicBasePower;
         break;
     case EFFECT_TRIPLE_KICK:
         basePower += gBattleScripting.tripleKickPower;
@@ -5015,20 +5015,24 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gChosenMoveByBattler[BATTLE_PARTNER(battlerAtk)] == MOVE_ROUND && !(gAbsentBattlerFlags & gBitTable[BATTLE_PARTNER(battlerAtk)]))
             basePower *= 2;
         break;
-    case EFFECT_FUSION_COMBO:
-        if (gBattleMoves[gLastUsedMove].effect == EFFECT_FUSION_COMBO && move != gLastUsedMove)
-            basePower *= 2;
-        break;
     case EFFECT_DREAM_EATER:
         if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
             basePower *= 1.5;
         break;
     case EFFECT_HIDDEN_POWER:
         if (gBattleMons[battlerAtk].species == SPECIES_UNOWN)
+            basePower = 100;
+        break;
+    case EFFECT_50_PERCENT_BOOST_IN_RAIN:
+        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
             basePower *= 1.5;
         break;
-    case EFFECT_MUD_BOMB:
-        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
+    case EFFECT_50_PERCENT_BOOST_IN_SUN:
+        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
+            basePower *= 1.5;
+        break;
+    case EFFECT_SPARKLING_ARIA:
+        if (gBattleMons[battlerDef].status1 & STATUS1_BURN)
             basePower *= 1.5;
         break;
     
@@ -5071,7 +5075,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.3));
         break;
     case ABILITY_SHEER_FORCE:
-        if (gBattleMoves[move].secondaryEffectChance > 0)
+        if (gBattleMoves[move].secondaryEffectChance > 0 && gBattleScripting.moveEffect)
            MulModifier(&modifier, UQ_4_12(1.3));
         break;
     case ABILITY_SAND_FORCE:
@@ -5266,7 +5270,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         // todo
         break;
     case EFFECT_SOLARBEAM:
-        if (WEATHER_HAS_EFFECT && !(gBattleWeather & WEATHER_SUN_ANY))
+        if (!(WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY))
             MulModifier(&modifier, UQ_4_12(0.5));
         break;
     case EFFECT_KNOCK_OFF:
@@ -5579,13 +5583,13 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
         if (moveType == TYPE_FIRE)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
         else if (moveType == TYPE_WATER)
-            dmg = ApplyModifier(UQ_4_12(1.5), dmg);
+            dmg = ApplyModifier(UQ_4_12(1.25), dmg);
     }
     else if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
     {
         if (moveType == TYPE_FIRE)
-            dmg = ApplyModifier(UQ_4_12(1.5), dmg);
-        else if (moveType == TYPE_WATER)
+            dmg = ApplyModifier(UQ_4_12(1.25), dmg);
+        else if (moveType == TYPE_WATER && gBattleMoves[move].effect != EFFECT_SCALD)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
     }
 
@@ -5679,9 +5683,9 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
 
     if (gBattleMoves[move].flags & FLAG_DMG_MINIMIZE    && gStatuses3[battlerDef] & STATUS3_MINIMIZED)
         MulModifier(&finalModifier, UQ_4_12(2.0));
-    if (gBattleMoves[move].flags & FLAG_DMG_UNDERGROUND && gStatuses3[battlerDef] & STATUS3_UNDERGROUND)
+    if ((move == MOVE_EARTHQUAKE || move == MOVE_MAGNITUDE) && gStatuses3[battlerDef] & STATUS3_UNDERGROUND)
         MulModifier(&finalModifier, UQ_4_12(2.0));
-    if (gBattleMoves[move].flags & FLAG_DMG_UNDERWATER  && gStatuses3[battlerDef] & STATUS3_UNDERWATER)
+    if ((move == MOVE_SURF || move == MOVE_WHIRLPOOL)  && gStatuses3[battlerDef] & STATUS3_UNDERWATER)
         MulModifier(&finalModifier, UQ_4_12(2.0));
 
     dmg = ApplyModifier(finalModifier, dmg);
@@ -5742,6 +5746,7 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
         mod = UQ_4_12(1.0);
     if ((move == MOVE_FREEZE_DRY && defType == TYPE_WATER)
         || (move == MOVE_ACID && defType == TYPE_STEEL)
+        || (move == MOVE_ROCK_CLIMB && defType == TYPE_ROCK)
         || (move == MOVE_SEED_FLARE && defType == TYPE_POISON)
         || (move == MOVE_LUSTER_PURGE && defType == TYPE_DARK)
         || (move == MOVE_MIST_BALL && defType == TYPE_FAIRY))
