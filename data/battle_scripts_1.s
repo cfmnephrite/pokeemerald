@@ -6336,6 +6336,15 @@ BattleScript_WeakArmorSpeedAnim:
 BattleScript_WeakArmorActivatesEnd:
 	return
 	
+BattleScript_CheekPouchActivates::
+	call BattleScript_AbilityPopUp
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	healthbarupdate BS_ATTACKER
+	datahpupdate BS_ATTACKER
+	printstring STRINGID_PKMNRESTOREDHPUSING
+	waitmessage 0x40
+	end2
+	
 BattleScript_AttackerAbilityStatRaise::
 	setgraphicalstatchangevalues
 	call BattleScript_AbilityPopUp
@@ -6476,7 +6485,7 @@ BattleScript_BerryCureParRet::
 	printstring STRINGID_PKMNSITEMCUREDPARALYSIS
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCurePsnEnd2::
@@ -6488,7 +6497,7 @@ BattleScript_BerryCurePsnRet::
 	printstring STRINGID_PKMNSITEMCUREDPOISON
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCureBrnEnd2::
@@ -6500,7 +6509,7 @@ BattleScript_BerryCureBrnRet::
 	printstring STRINGID_PKMNSITEMHEALEDBURN
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCureFrzEnd2::
@@ -6512,7 +6521,7 @@ BattleScript_BerryCureFrzRet::
 	printstring STRINGID_PKMNSITEMDEFROSTEDIT
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCureSlpEnd2::
@@ -6524,7 +6533,7 @@ BattleScript_BerryCureSlpRet::
 	printstring STRINGID_PKMNSITEMWOKEIT
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCureConfusionEnd2::
@@ -6535,7 +6544,7 @@ BattleScript_BerryCureConfusionRet::
 	playanimation BS_SCRIPTING, B_ANIM_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMSNAPPEDOUT
 	waitmessage 0x40
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_BerryCureChosenStatusEnd2::
@@ -6547,7 +6556,7 @@ BattleScript_BerryCureChosenStatusRet::
 	printfromtable gBerryEffectStringIds
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_WhiteHerbEnd2::
@@ -6558,7 +6567,7 @@ BattleScript_WhiteHerbRet::
 	playanimation BS_SCRIPTING, B_ANIM_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDSTATUS
 	waitmessage 0x40
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
 
 BattleScript_ItemHealHP_RemoveItem::
@@ -6568,14 +6577,14 @@ BattleScript_ItemHealHP_RemoveItem::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	end2
 
 BattleScript_BerryPPHealEnd2::
 	playanimation BS_ATTACKER, B_ANIM_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDPP
 	waitmessage 0x40
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	end2
 
 BattleScript_ItemHealHP_End2::
@@ -6616,7 +6625,7 @@ BattleScript_BerryConfuseHealEnd2::
 	waitmessage 0x40
 	setmoveeffect MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER
 	seteffectprimary
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	end2
 
 BattleScript_BerryStatRaiseEnd2::
@@ -6625,14 +6634,14 @@ BattleScript_BerryStatRaiseEnd2::
 BattleScript_82DB85B::
 	setbyte cMULTISTRING_CHOOSER, 0x4
 	call BattleScript_StatUp
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	end2
 
 BattleScript_BerryFocusEnergyEnd2::
 	playanimation BS_ATTACKER, B_ANIM_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNUSEDXTOGETPUMPED
 	waitmessage 0x40
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	end2
 
 BattleScript_ActionSelectionItemsCantBeUsed::

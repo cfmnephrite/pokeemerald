@@ -183,7 +183,7 @@ static void atk66_chosenstatusanimation(void);
 static void atk67_yesnobox(void);
 static void atk68_cancelallactions(void);
 static void atk69_setgravity(void);
-static void atk6A_removeitem(void);
+static void atk6A_consumeitem(void);
 static void atk6B_atknameinbuff1(void);
 static void atk6C_drawlvlupbox(void);
 static void atk6D_resetsentmonsvalue(void);
@@ -442,7 +442,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
 	atk67_yesnobox,
 	atk68_cancelallactions,
 	atk69_setgravity,
-	atk6A_removeitem,
+	atk6A_consumeitem,
 	atk6B_atknameinbuff1,
 	atk6C_drawlvlupbox,
 	atk6D_resetsentmonsvalue,
@@ -5866,15 +5866,22 @@ static void atk69_setgravity(void)
 	}
 }
 
-static void atk6A_removeitem(void)
+static void atk6A_consumeitem(void)
 {
 	gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
 	gBattleStruct->usedHeldItems[gActiveBattler] = gBattleMons[gActiveBattler].item;
 	gBattleMons[gActiveBattler].item = 0;
-
 	BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
 	MarkBattlerForControllerExec(gActiveBattler);
-
+	if((gLastUsedItem >= FIRST_BERRY_INDEX && gLastUsedItem <= LAST_BERRY_INDEX) && (GetBattlerAbility(gActiveBattler) == ABILITY_CHEEK_POUCH))
+    {
+        gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 3;
+        if (gBattleMoveDamage == 0)
+            gBattleMoveDamage = 1;
+        gBattleMoveDamage *= -1;
+        gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
+    }
+	
 	gBattlescriptCurrInstr += 2;
 }
 

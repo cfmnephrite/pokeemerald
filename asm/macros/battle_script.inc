@@ -565,7 +565,7 @@
 	.4byte \ptr
 	.endm
 
-	.macro removeitem battler:req
+	.macro consumeitem battler:req
 	.byte 0x6a
 	.byte \battler
 	.endm
