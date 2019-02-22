@@ -3245,7 +3245,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
              && gBattleMons[battler].statStages[higherAtk] != 0xC
-             && Random() % 2 == 0)
+             && Random() % 2 == 0
+			 && gIsCriticalHit) //this keeps disappearing for some reason?
             {
                 gBattleMons[battler].statStages[higherAtk]++;
                 SET_STATCHANGER(higherAtk, 1, FALSE);
@@ -3255,6 +3256,22 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_BERSERK:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+             && IsBattlerAlive(battler)
+             && gBattleMons[battler].statStages[higherAtk] != 0xC
+			 && GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 100) <= 50
+			 && ((gHpDealt + gBattleMons[battler].hp) > (gBattleMons[battler].maxHP / 2)))
+			{
+                gBattleMons[battler].statStages[higherAtk] += 2;
+                SET_STATCHANGER(higherAtk, 2, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, higherAtk);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
+                effect++;
+            }
+			break;
         case ABILITY_COLOR_CHANGE:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && move != MOVE_STRUGGLE
@@ -3689,8 +3706,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
         }
         break;
-    }
-
+	}
     if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
         RecordAbilityBattle(battler, gLastUsedAbility);
     if (effect && caseID <= ABILITYEFFECT_MOVE_END)
@@ -5113,6 +5129,9 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (moveType == TYPE_STEEL)
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
+	case ABILITY_BIG_PECKS:
+		if (moveType == TYPE_FLYING)
+			MulModifier(&modifier, UQ_4_12(1.5));
     case ABILITY_PIXILATE:
         if (moveType == TYPE_FAIRY && gBattleStruct->ateBoost[battlerAtk])
             MulModifier(&modifier, UQ_4_12(1.2));
