@@ -160,7 +160,7 @@ struct DisableStruct
     u8 truantSwitchInHack:1;
     u8 mimickedMoves:4;
     u8 rechargeTimer;
-    u8 autonomizeCount;
+    u8 autotomizeCount;
     u8 slowStartTimer;
     u8 embargoTimer;
     u8 magnetRiseTimer;
@@ -563,8 +563,8 @@ struct BattleStruct
     u8 arenaLostOpponentMons;
     u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed pokemon.
     u8 debugBattler;
-    u8 magnitudeBasePower;
-    u8 presentBasePower;
+    u8 dynamicBasePower;
+    u8 dynamicMoveSplit;
     u8 roostTypes[MAX_BATTLERS_COUNT][3];
     u8 savedBattlerTarget;
     bool8 ateBoost[MAX_BATTLERS_COUNT];
@@ -586,8 +586,8 @@ struct BattleStruct
         typeArg = gBattleMoves[move].type;                  \
 }
 
-#define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].split == SPLIT_PHYSICAL)
-#define IS_MOVE_SPECIAL(move)(gBattleMoves[move].split == SPLIT_SPECIAL)
+#define IS_MOVE_PHYSICAL(move)((!(gBattleStruct->dynamicMoveSplit) && gBattleMoves[move].split == SPLIT_PHYSICAL) || (gBattleStruct->dynamicMoveSplit && gBattleMoves[move].split == SPLIT_SPECIAL)) 
+#define IS_MOVE_SPECIAL(move)((!(gBattleStruct->dynamicMoveSplit) && gBattleMoves[move].split == SPLIT_SPECIAL) || (gBattleStruct->dynamicMoveSplit && gBattleMoves[move].split == SPLIT_PHYSICAL)) 
 
 #define BATTLER_MAX_HP(battlerId)(gBattleMons[battlerId].hp == gBattleMons[battlerId].maxHP)
 #define TARGET_TURN_DAMAGED ((gSpecialStatuses[gBattlerTarget].physicalDmg != 0 || gSpecialStatuses[gBattlerTarget].specialDmg != 0))

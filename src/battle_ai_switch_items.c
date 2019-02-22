@@ -671,6 +671,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
     }
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     bestDmg = 0;
     bestMonId = 6;

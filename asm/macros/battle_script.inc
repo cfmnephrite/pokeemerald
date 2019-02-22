@@ -1507,8 +1507,8 @@
 	.4byte \ptr
 	.endm
 	
-	.macro tryautonomize battler:req, ptr:req
-	various \battler, VARIOUS_TRY_AUTONOMIZE
+	.macro tryautotomize battler:req, ptr:req
+	various \battler, VARIOUS_TRY_AUTOTOMIZE
 	.4byte \ptr
 	.endm
 	
@@ -1610,6 +1610,11 @@
     
 	.macro spectralthiefprintstats
 	various BS_ATTACKER, VARIOUS_SPECTRAL_THIEF
+	.endm
+    
+	.macro jumpifhigherorequalspa ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA
+	.4byte \ptr
 	.endm
     
 

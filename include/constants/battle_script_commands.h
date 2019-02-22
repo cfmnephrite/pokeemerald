@@ -115,7 +115,7 @@
 #define VARIOUS_TRY_LAST_RESORT                 52
 #define VARIOUS_ARGUMENT_STATUS_EFFECT          53
 #define VARIOUS_TRY_HIT_SWITCH_TARGET           54
-#define VARIOUS_TRY_AUTONOMIZE                  55
+#define VARIOUS_TRY_AUTOTOMIZE                  55
 #define VARIOUS_TRY_COPYCAT                     56
 #define VARIOUS_ABILITY_POPUP                   57
 #define VARIOUS_DEFOG                           58
@@ -130,17 +130,18 @@
 #define VARIOUS_JUMP_IF_NOT_GROUNDED            67
 #define VARIOUS_HANDLE_TRAINER_SLIDE_MSG        68
 #define VARIOUS_TRY_TRAINER_SLIDE_MSG_FIRST_OFF 69
-#define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON 	70
-#define VARIOUS_SET_AURORA_VEIL 				71
-#define VARIOUS_TRY_THIRD_TYPE 					72
-#define VARIOUS_ACUPRESSURE						73
-#define VARIOUS_SET_POWDER						74
-#define VARIOUS_CHECK_SKY_DROP					75
+#define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON   70
+#define VARIOUS_SET_AURORA_VEIL                 71
+#define VARIOUS_TRY_THIRD_TYPE                  72
+#define VARIOUS_ACUPRESSURE                     73
+#define VARIOUS_SET_POWDER                      74
+#define VARIOUS_CHECK_SKY_DROP                  75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS        76
 #define VARIOUS_ARG_TO_EFFECT_CHOOSER           77
 #define VARIOUS_ARG_TO_EFFECT_SELF              78
 #define VARIOUS_SPECTRAL_THIEF                  79
-#define VARIOUS_TRY_ACTIVATE_BEAST_BOOST		80
+#define VARIOUS_TRY_ACTIVATE_BEAST_BOOST        80
+#define VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA     81
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

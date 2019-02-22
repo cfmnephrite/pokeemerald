@@ -4661,6 +4661,7 @@ static void CheckFocusPunch_ClearVarsBeforeTurnStarts(void)
     gCurrentTurnActionNumber = 0;
     gCurrentActionFuncId = gActionsByTurnOrder[0];
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
         gBattleStruct->ateBoost[i] = FALSE;
     gBattleMainFunc = RunTurnActionsFunctions;
@@ -5001,7 +5002,7 @@ void RunBattleScriptCommands(void)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
 
-void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk)
+void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
 {
     u32 moveType, ateType, attackerAbility;
 
@@ -5086,6 +5087,21 @@ void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk)
         gBattleStruct->dynamicMoveType = 0x80 | TYPE_NORMAL;
         gBattleStruct->ateBoost[battlerAtk] = 1;
     }
+    
+    // CFM Magic Moves
+    if (gBattleMoves[move].flags & FLAG_MAGIC)
+    {
+        if (gBattleMoves[move].split == SPLIT_PHYSICAL)
+        {
+            if (gBattleMons[battlerAtk].spAttack > gBattleMons[battlerAtk].attack)
+                gBattleStruct->dynamicMoveSplit = 1;
+        }
+        else if (gBattleMoves[move].split == SPLIT_SPECIAL)
+        {
+            if (gBattleMons[battlerAtk].attack > gBattleMons[battlerAtk].spAttack)
+                gBattleStruct->dynamicMoveSplit = 1;
+        }
+    }
 }
 
 static void HandleAction_UseMove(void)
@@ -5160,7 +5176,7 @@ static void HandleAction_UseMove(void)
     }
 
     // Set dynamic move type.
-    SetTypeBeforeUsingMove(gChosenMove, gBattlerAttacker);
+    SetTypeAndSplitBeforeUsingMove(gChosenMove, gBattlerAttacker);
     GET_MOVE_TYPE(gChosenMove, moveType);
 
     // choose target
@@ -5708,6 +5724,7 @@ static void HandleAction_ActionFinished(void)
     gLastLandedMoves[gBattlerAttacker] = 0;
     gLastHitByType[gBattlerAttacker] = 0;
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gBattleScripting.atk49_state = 0;
     gBattleCommunication[3] = 0;
     gBattleCommunication[4] = 0;
