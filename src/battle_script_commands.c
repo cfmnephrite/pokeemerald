@@ -9500,11 +9500,10 @@ static void atkB7_presentdamagecalculation(void)
 
 	if (rand < 3)
 	{
-		gBattleStruct->dynamicBasePower = 120;
-	}
-	else if (rand < 1)
-	{
-		gBattleStruct->dynamicBasePower = 150;
+        if (rand < 1)
+            gBattleStruct->dynamicBasePower = 150;
+        else
+            gBattleStruct->dynamicBasePower = 120;
 	}
 	else
 	{
