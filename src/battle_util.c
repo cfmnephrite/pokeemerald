@@ -3245,8 +3245,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
              && gBattleMons[battler].statStages[higherAtk] != 0xC
-             && Random() % 2 == 0
-			 && gIsCriticalHit) //this keeps disappearing for some reason?
+             && Random() % 2 == 0)
             {
                 gBattleMons[battler].statStages[higherAtk]++;
                 SET_STATCHANGER(higherAtk, 1, FALSE);
@@ -3256,14 +3255,14 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-		case ABILITY_BERSERK:
-			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+        case ABILITY_BERSERK:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
              && gBattleMons[battler].statStages[higherAtk] != 0xC
-			 && GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 100) <= 50
-			 && ((gHpDealt + gBattleMons[battler].hp) > (gBattleMons[battler].maxHP / 2)))
-			{
+             && GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 100) <= 50
+             && ((gHpDealt + gBattleMons[battler].hp) > (gBattleMons[battler].maxHP / 2)))
+            {
                 gBattleMons[battler].statStages[higherAtk] += 2;
                 SET_STATCHANGER(higherAtk, 2, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, higherAtk);
@@ -3271,7 +3270,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
                 effect++;
             }
-			break;
+            break;
         case ABILITY_COLOR_CHANGE:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && move != MOVE_STRUGGLE
@@ -3706,7 +3705,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
         }
         break;
-	}
+    }
     if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
         RecordAbilityBattle(battler, gLastUsedAbility);
     if (effect && caseID <= ABILITYEFFECT_MOVE_END)
@@ -4364,7 +4363,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
                     && TARGET_TURN_DAMAGED
                     && (Random() % 100) < atkHoldEffectParam
-                    && gBattleMoves[gCurrentMove].flags & FLAG_KINGSROCK_AFFECTED
+                    && !(gBattleMoves[gCurrentMove].effect == EFFECT_FLINCH_HIT || gBattleMoves[gCurrentMove].effect == EFFECT_FLINCH_STATUS)
                     && gBattleMons[gBattlerTarget].hp)
                 {
                     gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
@@ -4919,7 +4918,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_PURSUIT:
-        if (gCurrentActionFuncId == B_ACTION_SWITCH)
+        if (gBattleScripting.moveEffect == MOVE_EFFECT_FLINCH)
             basePower *= 2;
         break;
     case EFFECT_NATURAL_GIFT:
@@ -5039,6 +5038,10 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerAtk].species == SPECIES_UNOWN)
             basePower = 100;
         break;
+    case EFFECT_AEROBLAST:
+        if (gBattleMons[battlerAtk].species == SPECIES_LUGIA)
+            basePower = 100;
+        break;
     case EFFECT_50_PERCENT_BOOST_IN_RAIN:
         if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
             basePower *= 1.5;
@@ -5083,7 +5086,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
     case ABILITY_RECKLESS:
-        if (gBattleMoves[move].flags & FLAG_RECKLESS_BOOST)
+        if (gBattleMoves[move].flags & FLAG_RECKLESS_BOOST && move != MOVE_STRUGGLE)
            MulModifier(&modifier, UQ_4_12(1.3));
         break;
     case ABILITY_IRON_FIST:
@@ -5122,8 +5125,19 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
     case ABILITY_MEGA_LAUNCHER:
-        if (gBattleMoves[move].flags & FLAG_MEGA_LAUNCHER_BOOST)
-           MulModifier(&modifier, UQ_4_12(1.5));
+        {
+            u16 megaMoves[8] = {MOVE_AURA_SPHERE, MOVE_DARK_PULSE, MOVE_DRAGON_PULSE, MOVE_FLASH_CANNON, MOVE_HYDRO_CANNON,
+                                MOVE_OCTAZOOKA, MOVE_ORIGIN_PULSE, MOVE_TECHNO_BLAST, MOVE_WATER_PULSE};
+            bool8 boosted = FALSE;
+            u32 i;
+            for (i = 0; i < 8; i++)
+            {
+                if (move == megaMoves[i])
+                    boosted = TRUE;
+            }
+            if (boosted)
+                MulModifier(&modifier, UQ_4_12(1.5));
+        }
         break;
     case ABILITY_WATER_BUBBLE:
         if (moveType == TYPE_WATER)
@@ -5133,9 +5147,9 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (moveType == TYPE_STEEL)
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
-	case ABILITY_BIG_PECKS:
-		if (moveType == TYPE_FLYING)
-			MulModifier(&modifier, UQ_4_12(1.5));
+    case ABILITY_BIG_PECKS:
+        if (moveType == TYPE_FLYING)
+            MulModifier(&modifier, UQ_4_12(1.5));
     case ABILITY_PIXILATE:
         if (moveType == TYPE_FAIRY && gBattleStruct->ateBoost[battlerAtk])
             MulModifier(&modifier, UQ_4_12(1.2));
@@ -5700,8 +5714,19 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
         // berries reducing dmg
     }
 
-    if (gBattleMoves[move].flags & FLAG_DMG_MINIMIZE    && gStatuses3[battlerDef] & STATUS3_MINIMIZED)
-        MulModifier(&finalModifier, UQ_4_12(2.0));
+    if (gStatuses3[battlerDef] & STATUS3_MINIMIZED)
+    {
+        u16 miniMoves[7] = {MOVE_BODY_SLAM, MOVE_DRAGON_RUSH, MOVE_FLYING_PRESS, MOVE_HEAT_CRASH, MOVE_PHANTOM_FORCE, MOVE_STEAMROLLER, MOVE_STOMP};
+        bool8 boosted = FALSE;
+        u32 i;
+        for (i = 0; i < 7; i++)
+        {
+            if (move == miniMoves[i])
+                boosted = TRUE;
+        }
+        if (boosted)
+            MulModifier(&finalModifier, UQ_4_12(2.0));
+    }
     if ((move == MOVE_EARTHQUAKE || move == MOVE_MAGNITUDE) && gStatuses3[battlerDef] & STATUS3_UNDERGROUND)
         MulModifier(&finalModifier, UQ_4_12(2.0));
     if ((move == MOVE_SURF || move == MOVE_WHIRLPOOL)  && gStatuses3[battlerDef] & STATUS3_UNDERWATER)

@@ -1595,9 +1595,8 @@
 	.4byte \ptr
 	.endm
 	
-	.macro bringdownairbornebattler battler:req, ptr:req
+	.macro bringdownairbornebattler battler:req
 	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
-	.4byte \ptr
 	.endm
 	
 	.macro setargtoeffectchooser

@@ -642,7 +642,7 @@ static const u8 sText_PokemonCannotUseMove[] = _("{B_ATK_NAME_WITH_PREFIX} canno
 static const u8 sText_CoveredInPowder[] = _("{B_DEF_NAME_WITH_PREFIX} is covered in powder!");
 static const u8 sText_PowderExplodes[] = _("When the flame touched the powder\non the Pokémon, it exploded!");
 static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
-static const u8 sText_GravityGrounding[] = _("{B_EFF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!\p");
+static const u8 sText_GravityGrounding[] = _("{B_DEF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!");
 static const u8 sText_ArmorBroke[] = _("{B_DEF_NAME_WITH_PREFIX}'s Battle Armor \nwas shattered!");
 static const u8 sText_SpectralThiefSteal[] = _("{B_ATK_NAME_WITH_PREFIX} stole the target's\nboosted stats!");
 

@@ -1371,6 +1371,7 @@ s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbi
 					+ (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
 					+ 2 * (holdEffectAtk == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBattlerAttacker].species == SPECIES_CHANSEY)
 					+ 2 * (holdEffectAtk == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD)
+					+ 2 * (gBattleMoves[gCurrentMove].effect == EFFECT_AEROBLAST && gBattleMons[gBattlerAttacker].species == SPECIES_LUGIA) // CFM Lugia's Aeroblast: +2 crit rate
 					+ (abilityAtk == ABILITY_SUPER_LUCK);
 	}
 
@@ -6420,16 +6421,7 @@ static void atk76_various(void)
 			gProtectStructs[gActiveBattler].chargingTurn = 0;
 		}
 		gStatuses3[gActiveBattler] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
-		if (gDisableStructs[gActiveBattler].skyDrop){
-			gDisableStructs[gActiveBattler].skyDrop = 0;
-			gDisableStructs[gActiveBattler].skyDropTrappingBattler = 0;
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		}
-		else
-		{
-			gBattlescriptCurrInstr += 7;
-		}
-		return;
+		break;
 	case VARIOUS_CHECK_SKY_DROP:
 		if (gCurrentMove == MOVE_SKY_DROP){
 			// Two-turn moves don't check for Wonder Guard until the second turn - have to adjust that here for Sky Drop
@@ -6865,7 +6857,7 @@ static void atk76_various(void)
 		}
 		else
 		{
-			if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER && gBattleMoves[gCurrentMove].flags & FLAG_MEGA_LAUNCHER_BOOST)
+			if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER)
 				gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP * 75 / 100);
 			else
 				gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP / 2);
@@ -8482,6 +8474,9 @@ static void atk93_tryKO(void)
 static void atk94_damagetohalftargethp(void) // super fang
 {
 	gBattleMoveDamage = gBattleMons[gBattlerTarget].hp / 2;
+    // CFM Super Fang
+    if (gCurrentMove == MOVE_SUPER_FANG && GetBattlerAbility(gBattlerAttacker) == ABILITY_STRONG_JAW)
+        gBattleMoveDamage *= 1.5;
 	if (gBattleMoveDamage == 0)
 		gBattleMoveDamage = 1;
 
@@ -9613,7 +9608,7 @@ static void atkBA_jumpifnopursuitswitchdmg(void)
 		&& !(gBattleMons[gBattlerTarget].status1 & (STATUS1_SLEEP | STATUS1_FREEZE))
 		&& gBattleMons[gBattlerAttacker].hp
 		&& !gDisableStructs[gBattlerTarget].truantCounter
-		&& gChosenMoveByBattler[gBattlerTarget] == MOVE_PURSUIT)
+		&& gBattleMoves[gChosenMoveByBattler[gBattlerTarget]].effect == EFFECT_PURSUIT)
 	{
 		s32 i;
 
@@ -9623,10 +9618,11 @@ static void atkBA_jumpifnopursuitswitchdmg(void)
 				gActionsByTurnOrder[i] = 11;
 		}
 
-		gCurrentMove = MOVE_PURSUIT;
+		gCurrentMove = gChosenMoveByBattler[gBattlerTarget];
 		gCurrMovePos = gChosenMovePos = *(gBattleStruct->chosenMovePositions + gBattlerTarget);
 		gBattlescriptCurrInstr += 5;
 		gBattleScripting.animTurn = 1;
+		gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
 		gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);
 	}
 	else
@@ -10728,12 +10724,13 @@ static void atkEC_pursuitrelated(void)
 	if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
 		&& !(gAbsentBattlerFlags & gBitTable[gActiveBattler])
 		&& gChosenActionByBattler[gActiveBattler] == 0
-		&& gChosenMoveByBattler[gActiveBattler] == MOVE_PURSUIT)
+		&& gBattleMoves[gChosenMoveByBattler[gActiveBattler]].effect == EFFECT_PURSUIT)
 	{
 		gActionsByTurnOrder[gActiveBattler] = 11;
-		gCurrentMove = MOVE_PURSUIT;
+		gCurrentMove = gChosenMoveByBattler[gActiveBattler];
 		gBattlescriptCurrInstr += 5;
 		gBattleScripting.animTurn = 1;
+		gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
 		gBattleScripting.field_20 = gBattlerAttacker;
 		gBattlerAttacker = gActiveBattler;
 	}

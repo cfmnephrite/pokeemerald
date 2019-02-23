@@ -165,7 +165,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectEarthquake
 	.4byte BattleScript_EffectFutureSight
 	.4byte BattleScript_EffectGust
-	.4byte BattleScript_EffectStomp
+	.4byte BattleScript_EffectHitArgEffect
 	.4byte BattleScript_EffectSolarbeam
 	.4byte BattleScript_EffectThunder
 	.4byte BattleScript_EffectTeleport
@@ -249,7 +249,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectBrine
 	.4byte BattleScript_EffectVenoshock
 	.4byte BattleScript_EffectRetalitate
-	.4byte BattleScript_EffectBulldoze
+	.4byte BattleScript_EffectAeroblast
 	.4byte BattleScript_EffectFoulPlay
 	.4byte BattleScript_EffectPsyshock
 	.4byte BattleScript_EffectRoost
@@ -1704,17 +1704,13 @@ BattleScript_EffectGravity:
 	selectfirstvalidtarget
 BattleScript_GravityLoop:
 	movevaluescleanup
-	jumpifstatus3 BS_TARGET, STATUS3_ON_AIR, BattleScript_GravityLoopDefault
-	jumpifstatus3 BS_TARGET, STATUS3_MAGNET_RISE, BattleScript_GravityLoopDefault
-	jumpifstatus3 BS_TARGET, STATUS3_TELEKINESIS, BattleScript_GravityLoopDefault
+	jumpifstatus3 BS_TARGET, STATUS3_ON_AIR, BattleScript_GravityLoopDrop
+	jumpifstatus3 BS_TARGET, STATUS3_MAGNET_RISE, BattleScript_GravityLoopDrop
+	jumpifstatus3 BS_TARGET, STATUS3_TELEKINESIS, BattleScript_GravityLoopDrop
 	goto BattleScript_GravityLoopEnd
-BattleScript_GravityLoopDefault:
-	bringdownairbornebattler BS_TARGET, BattleScript_GravityLoopSkyDrop
+BattleScript_GravityLoopDrop:
+	bringdownairbornebattler BS_TARGET
 	printstring STRINGID_GRAVITYGROUNDING 
-	waitmessage 0x40
-	goto BattleScript_GravityLoopEnd
-BattleScript_GravityLoopSkyDrop:	
-	printstring STRINGID_FREEDFROMSKYDROP 
 	waitmessage 0x40
 BattleScript_GravityLoopEnd:	
 	setbyte sMOVEEND_STATE, 0x0
@@ -1802,7 +1798,8 @@ BattleScript_EffectPlaceholder:
 	pause 0x5
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
-
+    
+BattleScript_EffectAeroblast:
 BattleScript_EffectUnused17:
 BattleScript_EffectEvasionDownHit:
 BattleScript_EffectVitalThrow:
@@ -3473,12 +3470,9 @@ BattleScript_EffectTwister:
 	jumpifnostatus3 BS_TARGET, STATUS3_ON_AIR, BattleScript_FlinchEffect
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
 BattleScript_FlinchEffect:
-BattleScript_EffectStomp:
 	setmoveeffect MOVE_EFFECT_FLINCH
 	goto BattleScript_EffectHit
 
-BattleScript_EffectBulldoze:
-	setmoveeffect MOVE_EFFECT_SPD_MINUS_1
 BattleScript_EffectEarthquake:
 	attackcanceler
 	attackstring

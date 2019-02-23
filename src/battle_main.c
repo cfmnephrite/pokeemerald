@@ -5091,15 +5091,11 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
     // CFM Magic Moves
     if (gBattleMoves[move].flags & FLAG_MAGIC)
     {
-        if (gBattleMoves[move].split == SPLIT_PHYSICAL)
+        if ((gBattleMoves[move].split == SPLIT_PHYSICAL && gBattleMons[battlerAtk].spAttack > gBattleMons[battlerAtk].attack)
+            || (gBattleMoves[move].split == SPLIT_SPECIAL && gBattleMons[battlerAtk].attack > gBattleMons[battlerAtk].spAttack))
         {
-            if (gBattleMons[battlerAtk].spAttack > gBattleMons[battlerAtk].attack)
-                gBattleStruct->dynamicMoveSplit = 1;
-        }
-        else if (gBattleMoves[move].split == SPLIT_SPECIAL)
-        {
-            if (gBattleMons[battlerAtk].attack > gBattleMons[battlerAtk].spAttack)
-                gBattleStruct->dynamicMoveSplit = 1;
+            // If this bit is set, the split of the move is flipped
+            gBattleStruct->dynamicMoveSplit = 1;
         }
     }
 }
