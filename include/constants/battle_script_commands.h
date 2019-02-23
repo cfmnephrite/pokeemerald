@@ -9,7 +9,7 @@
 #define sTWOTURN_STRINGID gBattleScripting + 0xF
 #define sB_ANIM_ARG1 gBattleScripting + 0x10
 #define sB_ANIM_ARG2 gBattleScripting + 0x11
-#define sTRIPLE_KICK_POWER gBattleScripting + 0x12
+#define sCFM_HWORD gBattleScripting + 0x12
 #define sMOVEEND_STATE gBattleScripting + 0x14
 #define sBATTLER_WITH_ABILITY gBattleScripting + 0x15
 #define sUNUSED_16 gBattleScripting + 0x16
@@ -137,7 +137,7 @@
 #define VARIOUS_SET_POWDER                      74
 #define VARIOUS_CHECK_SKY_DROP                  75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS        76
-#define VARIOUS_ARG_TO_EFFECT_CHOOSER           77
+#define VARIOUS_ARG_TO_CFM_HWORD                77
 #define VARIOUS_ARG_TO_EFFECT_SELF              78
 #define VARIOUS_SPECTRAL_THIEF                  79
 #define VARIOUS_TRY_ACTIVATE_BEAST_BOOST        80

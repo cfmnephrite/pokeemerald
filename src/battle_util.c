@@ -4900,9 +4900,6 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
     case EFFECT_PRESENT:
         basePower = gBattleStruct->dynamicBasePower;
         break;
-    case EFFECT_TRIPLE_KICK:
-        basePower += gBattleScripting.tripleKickPower;
-        break;
     case EFFECT_SPIT_UP:
         basePower = 100 * gDisableStructs[battlerAtk].stockpileCounter;
         break;

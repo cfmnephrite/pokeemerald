@@ -584,7 +584,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .type = TYPE_BUG,
         .accuracy = 95,
         .pp = 20,
-        .secondaryEffectChance = 20,
+        .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
@@ -2349,7 +2349,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_TRIPLE_KICK] =
     {
-        .effect = EFFECT_TRIPLE_KICK,
+        .effect = EFFECT_PLACEHOLDER,
         .power = 10,
         .type = TYPE_FIGHTING,
         .accuracy = 90,

@@ -1798,7 +1798,7 @@ BattleScript_EffectPlaceholder:
 	pause 0x5
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
-    
+	
 BattleScript_EffectAeroblast:
 BattleScript_EffectUnused17:
 BattleScript_EffectEvasionDownHit:
@@ -1810,6 +1810,7 @@ BattleScript_EffectPursuit:
 BattleScript_EffectFellStinger:
 BattleScript_EffectHit::
 BattleScript_EffectLowKick:
+BattleScript_EffectTripleKick:
 BattleScript_EffectFlail:
 BattleScript_EffectFacade:
 BattleScript_EffectRevenge:
@@ -2448,9 +2449,8 @@ BattleScript_EffectFixedArgDamage::
 	ppreduce
 	typecalc
 	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	setargtoeffectchooser
-	copybyte gBattleMoveDamage, sMOVE_EFFECT
-	setbyte sMOVE_EFFECT, 0
+	argumenttocfmhword
+	copyhword gBattleMoveDamage, sCFM_HWORD
 	adjustdamage
 	goto BattleScript_HitFromAtkAnimation
 
@@ -2746,8 +2746,8 @@ BattleScript_EffectConfuseHit::
 BattleScript_EffectDoubleHitEffect::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	setargtoeffectchooser
-	copybyte sMULTIHIT_EFFECT, sMOVE_EFFECT
+	argumenttocfmhword
+	copyhword sMULTIHIT_EFFECT, sCFM_HWORD
 	attackstring
 	ppreduce
 	setmultihitcounter 0x2
@@ -3039,62 +3039,6 @@ BattleScript_PartyHealEnd::
 	updatestatusicon BS_ATTACKER_WITH_PARTNER
 	waitstate
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectTripleKick::
-	attackcanceler
-	attackstring
-	ppreduce
-	sethword sTRIPLE_KICK_POWER, 0x0
-	initmultihitstring
-	setmultihit 0x3
-BattleScript_TripleKickLoop::
-	jumpifhasnohp BS_ATTACKER, BattleScript_TripleKickEnd
-	jumpifhasnohp BS_TARGET, BattleScript_TripleKickNoMoreHits
-	jumpifhalfword CMP_EQUAL, gChosenMove, MOVE_SLEEP_TALK, BattleScript_DoTripleKickAttack
-	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_TripleKickNoMoreHits
-BattleScript_DoTripleKickAttack::
-	accuracycheck BattleScript_TripleKickNoMoreHits, ACC_CURR_MOVE
-	movevaluescleanup
-	addbyte sTRIPLE_KICK_POWER, 10
-	addbyte sMULTIHIT_STRING + 4, 0x1
-	critcalc
-	damagecalc
-	adjustdamage
-	jumpifmovehadnoeffect BattleScript_TripleKickNoMoreHits
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage 0x40
-	printstring STRINGID_EMPTYSTRING3
-	waitmessage 0x1
-	setbyte sMOVEEND_STATE, 0x0
-	moveend 0x2, 0x10
-	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_FOE_ENDURED, BattleScript_TripleKickPrintStrings
-	decrementmultihit BattleScript_TripleKickLoop
-	goto BattleScript_TripleKickPrintStrings
-BattleScript_TripleKickNoMoreHits::
-	pause 0x20
-	jumpifbyte CMP_EQUAL, sMULTIHIT_STRING + 4, 0x0, BattleScript_TripleKickPrintStrings
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
-BattleScript_TripleKickPrintStrings::
-	resultmessage
-	waitmessage 0x40
-	jumpifbyte CMP_EQUAL, sMULTIHIT_STRING + 4, 0x0, BattleScript_TripleKickEnd
-	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE, BattleScript_TripleKickEnd
-	copyarray gBattleTextBuff1, sMULTIHIT_STRING, 0x6
-	printstring STRINGID_HITXTIMES
-	waitmessage 0x40
-BattleScript_TripleKickEnd::
-	seteffectwithchance
-	tryfaintmon BS_TARGET, FALSE, NULL
-	setbyte sMOVEEND_STATE, 0xE
-	moveend 0x0, 0x0
-	end
 
 BattleScript_EffectThief::
 	setmoveeffect MOVE_EFFECT_STEAL_ITEM | MOVE_EFFECT_CERTAIN
