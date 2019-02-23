@@ -5126,11 +5126,11 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         break;
     case ABILITY_MEGA_LAUNCHER:
         {
-            u16 megaMoves[8] = {MOVE_AURA_SPHERE, MOVE_DARK_PULSE, MOVE_DRAGON_PULSE, MOVE_FLASH_CANNON, MOVE_HYDRO_CANNON,
+            u16 megaMoves[9] = {MOVE_AURA_SPHERE, MOVE_DARK_PULSE, MOVE_DRAGON_PULSE, MOVE_FLASH_CANNON, MOVE_HYDRO_CANNON,
                                 MOVE_OCTAZOOKA, MOVE_ORIGIN_PULSE, MOVE_TECHNO_BLAST, MOVE_WATER_PULSE};
             bool8 boosted = FALSE;
             u32 i;
-            for (i = 0; i < 8; i++)
+            for (i = 0; i < 9; i++)
             {
                 if (move == megaMoves[i])
                     boosted = TRUE;

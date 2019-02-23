@@ -5858,8 +5858,8 @@ static void atk6A_consumeitem(void)
         gBattleMoveDamage *= -1;
         gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
     }
-	
-	gBattlescriptCurrInstr += 2;
+	else
+		gBattlescriptCurrInstr += 2;
 }
 
 static void atk6B_atknameinbuff1(void)
