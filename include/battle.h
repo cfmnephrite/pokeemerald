@@ -624,7 +624,7 @@ struct BattleScripting
     u8 twoTurnsMoveStringId;
     u8 animArg1;
     u8 animArg2;
-    u16 tripleKickPower;
+    u16 cfmHalfWord;
     u8 atk49_state;
     u8 battlerWithAbility;
     u8 unused_16;

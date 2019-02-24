@@ -1599,8 +1599,8 @@
 	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
 	.endm
 	
-	.macro setargtoeffectchooser
-	various BS_ATTACKER, VARIOUS_ARG_TO_EFFECT_CHOOSER
+	.macro argumenttocfmhword
+	various BS_ATTACKER, VARIOUS_ARG_TO_CFM_HWORD
 	.endm	
 	
 	.macro setargtoeffectself

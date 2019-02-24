@@ -120,7 +120,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_ROAR, AI_CBM_Roar
 	if_effect EFFECT_TOXIC, AI_CBM_Toxic
 	if_effect EFFECT_LIGHT_SCREEN, AI_CBM_LightScreen
-	if_effect EFFECT_OHKO, AI_CBM_OneHitKO
 	if_effect EFFECT_SUPER_FANG, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_MIST, AI_CBM_Mist
 	if_effect EFFECT_FOCUS_ENERGY, AI_CBM_FocusEnergy
@@ -146,7 +145,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_LEECH_SEED, AI_CBM_LeechSeed
 	if_effect EFFECT_DISABLE, AI_CBM_Disable
 	if_effect EFFECT_LEVEL_DAMAGE, AI_CBM_HighRiskForDamage
-	if_effect EFFECT_PSYWAVE, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_COUNTER, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_ENCORE, AI_CBM_Encore
 	if_effect EFFECT_SNORE, AI_CBM_DamageDuringSleep
@@ -168,7 +166,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_SAFEGUARD, AI_CBM_Safeguard
 	if_effect EFFECT_MAGNITUDE, AI_CBM_Magnitude
 	if_effect EFFECT_BATON_PASS, AI_CBM_BatonPass
-	if_effect EFFECT_SONICBOOM, AI_CBM_HighRiskForDamage
+	if_effect EFFECT_FIXED_ARG_DAMAGE, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_RAIN_DANCE, AI_CBM_RainDance
 	if_effect EFFECT_SUNNY_DAY, AI_CBM_SunnyDay
 	if_effect EFFECT_BELLY_DRUM_GEOMANCY, AI_CBM_BellyDrum
@@ -207,7 +205,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_DRAGON_DANCE, AI_CBM_DragonDance
 	if_effect EFFECT_STICKY_WEB, AI_CBM_StickyWeb
 	if_effect EFFECT_STEALTH_ROCK, AI_CBM_StealthRock
-	if_effect EFFECT_TOXIC_SPIKES, AI_CBM_ToxicSpikes
 	if_effect EFFECT_AQUA_RING, AI_CBM_AquaRing
 	if_effect EFFECT_GRAVITY, AI_CBM_Gravity
 	if_effect EFFECT_EMBARGO, AI_CBM_Embargo
@@ -239,7 +236,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_PSYCHO_SHIFT, AI_CBM_PsychicShift
 	if_effect EFFECT_DEFOG, AI_CBM_Defog
 	if_effect EFFECT_SYNCHRONOISE, AI_CBM_Synchronoise
-	if_effect EFFECT_AUTONOMIZE, AI_CBM_SpeedUp
+	if_effect EFFECT_AUTOTOMIZE, AI_CBM_SpeedUp
 	if_effect EFFECT_TOXIC_THREAD, AI_CBM_ToxicThread
 	if_effect EFFECT_VENOM_DRENCH, AI_CBM_VenomDrench
 	if_effect EFFECT_DEFENSE_UP_3, AI_CBM_DefenseUp
@@ -247,6 +244,11 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_NOBLE_ROAR, AI_CBM_NobleRoar
 	if_effect EFFECT_SHELL_SMASH, AI_CBM_ShellSmash
 	if_effect EFFECT_LAST_RESORT, AI_CBM_LastResort
+	if_effect EFFECT_BELCH, AI_CBM_Belch
+	end
+	
+AI_CBM_Belch:
+	if_cant_use_belch AI_USER, Score_Minus10
 	end
 	
 AI_CBM_LastResort:
@@ -285,7 +287,7 @@ AI_CBM_Synchronoise:
 	goto Score_Minus10
 	
 AI_CBM_Defog:
-	if_side_affecting AI_USER, SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STICKY_WEB, AI_Ret
+	if_side_affecting AI_USER, SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB, AI_Ret
 	goto AI_CBM_EvasionDown
 	
 AI_CBM_PsychicShift:
@@ -421,12 +423,6 @@ AI_CBM_Embargo:
 	
 AI_CBM_Gravity:
 	if_field_status STATUS_FIELD_GRAVITY, Score_Minus10
-	end
-	
-AI_CBM_ToxicSpikes:
-	if_not_side_affecting AI_TARGET, SIDE_STATUS_TOXIC_SPIKES, AI_Ret
-	get_hazards_count AI_TARGET, EFFECT_TOXIC_SPIKES
-	if_equal 2, Score_Minus10
 	end
 	
 AI_CBM_StealthRock:
@@ -932,7 +928,6 @@ AI_CheckViability:
 	if_effect EFFECT_TOXIC, AI_CV_Toxic
 	if_effect EFFECT_LIGHT_SCREEN, AI_CV_LightScreen
 	if_effect EFFECT_REST, AI_CV_Rest
-	if_effect EFFECT_OHKO, AI_CV_OneHitKO
 	if_effect EFFECT_SUPER_FANG, AI_CV_SuperFang
 	if_effect EFFECT_TRAP, AI_CV_Trap
 	if_effect EFFECT_CONFUSE, AI_CV_Confuse
@@ -1013,7 +1008,7 @@ AI_CheckViability:
 	if_effect EFFECT_REFRESH, AI_CV_Refresh
 	if_effect EFFECT_SNATCH, AI_CV_Snatch
 	if_effect EFFECT_MUD_SPORT, AI_CV_MudSport
-	if_effect EFFECT_OVERHEAT, AI_CV_Overheat
+	if_effect EFFECT_SPA_DOWN_2_ARG_EFFECT, AI_CV_Overheat
 	if_effect EFFECT_TICKLE, AI_CV_DefenseDown
 	if_effect EFFECT_COSMIC_POWER, AI_CV_SpDefUp
 	if_effect EFFECT_BULK_UP, AI_CV_DefenseUp
@@ -3082,7 +3077,7 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
     .2byte EFFECT_BULK_UP
     .2byte EFFECT_CALM_MIND
     .2byte EFFECT_ACUPRESSURE
-    .2byte EFFECT_AUTONOMIZE
+    .2byte EFFECT_AUTOTOMIZE
     .2byte EFFECT_SHIFT_GEAR
     .2byte EFFECT_SHELL_SMASH
     .2byte EFFECT_GROWTH
@@ -3094,7 +3089,6 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
     .2byte EFFECT_ELECTRIC_TERRAIN
     .2byte EFFECT_MISTY_TERRAIN
     .2byte EFFECT_STEALTH_ROCK
-    .2byte EFFECT_TOXIC_SPIKES
     .2byte EFFECT_TRICK_ROOM
     .2byte EFFECT_WONDER_ROOM
     .2byte EFFECT_MAGIC_ROOM
@@ -3129,10 +3123,8 @@ AI_Risky_EffectsToEncourage:
     .byte EFFECT_SLEEP
     .byte EFFECT_EXPLOSION
     .byte EFFECT_MIRROR_MOVE
-    .byte EFFECT_OHKO
     .byte EFFECT_CONFUSE
     .byte EFFECT_METRONOME
-    .byte EFFECT_PSYWAVE
     .byte EFFECT_COUNTER
     .byte EFFECT_DESTINY_BOND
     .byte EFFECT_SWAGGER
@@ -3439,7 +3431,7 @@ AI_HPAware_DiscouragedEffectsWhenHighHP: @ 82DE21F
     .byte EFFECT_SOFTBOILED
     .byte EFFECT_MEMENTO
     .byte EFFECT_GRUDGE
-    .byte EFFECT_OVERHEAT
+    .byte EFFECT_SPA_DOWN_2_ARG_EFFECT
     .byte -1
 
 AI_HPAware_DiscouragedEffectsWhenMediumHP: @ 82DE22D
@@ -3603,8 +3595,6 @@ AI_HPAware_DiscouragedEffectsWhenTargetLowHP: @ 82DE2B1
     .byte EFFECT_CONVERSION
     .byte EFFECT_TOXIC
     .byte EFFECT_LIGHT_SCREEN
-    .byte EFFECT_OHKO
-    .byte EFFECT_SUPER_FANG
     .byte EFFECT_SUPER_FANG
     .byte EFFECT_MIST
     .byte EFFECT_FOCUS_ENERGY
