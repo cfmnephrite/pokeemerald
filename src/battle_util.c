@@ -2933,8 +2933,21 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         effect++;
                 }
             }
-            break;            
-        }
+            break;
+		case ABILITY_COLOR_CHANGE:
+            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            {
+                u16 type[2];
+				for(i = 0; i < 2; i++)
+				{
+					u16 amove = gBattleMons[battler].moves[i];
+					type[i] = gBattleMoves[amove].type;
+				}
+				SET_BATTLER_TYPE(battler, type[0]);
+				SET_BATTLER_TYPE2(battler, type[1]);
+            }
+            break;
+		}
         break;
     case ABILITYEFFECT_ENDTURN: // 1
         if (gBattleMons[battler].hp != 0)
@@ -3268,21 +3281,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, higherAtk);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
-                effect++;
-            }
-            break;
-        case ABILITY_COLOR_CHANGE:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && move != MOVE_STRUGGLE
-             && gBattleMoves[move].power != 0
-             && TARGET_TURN_DAMAGED
-             && !IS_BATTLER_OF_TYPE(battler, moveType)
-             && gBattleMons[battler].hp != 0)
-            {
-                SET_BATTLER_TYPE(battler, moveType);
-                PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ColorChangeActivates;
                 effect++;
             }
             break;
