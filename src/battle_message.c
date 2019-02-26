@@ -645,6 +645,10 @@ static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
 static const u8 sText_GravityGrounding[] = _("{B_DEF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!");
 static const u8 sText_ArmorBroke[] = _("{B_DEF_NAME_WITH_PREFIX}'s Battle Armor \nwas shattered!");
 static const u8 sText_SpectralThiefSteal[] = _("{B_ATK_NAME_WITH_PREFIX} stole the target's\nboosted stats!");
+static const u8 sText_MistyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} is surrounded\nby a protective mist!");
+static const u8 sText_GrassyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} cannot be poisoned\ndue to the grassy terrain!");
+static const u8 sText_ElectricTerrainPrevents[] = _("{B_ATK_NAME_WITH_PREFIX} cannot rest\ndue to the electrifying terrain!");
+static const u8 sText_PsychicTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} is surrounded\nby psychic terrain!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1155,11 +1159,20 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
     [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,
     [STRINGID_ARMORBROKE - 12] = sText_ArmorBroke,
+    [STRINGID_MISTYTERRAINPREVENTS - 12] = sText_MistyTerrainPrevents,
+    [STRINGID_GRASSYTERRAINPREVENTS - 12] = sText_GrassyTerrainPrevents,
+    [STRINGID_ELECTRICTERRAINPREVENTS - 12] = sText_ElectricTerrainPrevents,
+    [STRINGID_PSYCHICTERRAINPREVENTS - 12] = sText_PsychicTerrainPrevents,
 };
 
 const u16 gTerrainStringIds[] =
 {
     STRINGID_TERRAINBECOMESMISTY, STRINGID_TERRAINBECOMESGRASSY, STRINGID_TERRAINBECOMESELECTRIC, STRINGID_TERRAINBECOMESPSYCHIC
+};
+
+const u16 gTerrainPreventsStringIds[] =
+{
+    STRINGID_MISTYTERRAINPREVENTS, STRINGID_GRASSYTERRAINPREVENTS, STRINGID_ELECTRICTERRAINPREVENTS, STRINGID_PSYCHICTERRAINPREVENTS
 };
 
 const u16 gMagicCoatBounceStringIds[] =
