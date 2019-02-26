@@ -5199,6 +5199,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     {
     case ABILITY_HEATPROOF:
     case ABILITY_WATER_BUBBLE:
+	case ABILITY_DAMP:
         if (moveType == TYPE_FIRE)
             MulModifier(&modifier, UQ_4_12(0.5));
         break;
