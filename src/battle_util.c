@@ -4913,7 +4913,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_PURSUIT:
-        if (gBattleScripting.moveEffect == MOVE_EFFECT_FLINCH)
+        if (gActionsByTurnOrder[GetBattlerTurnOrderNum(gBattlerTarget)] == B_ACTION_SWITCH)
             basePower *= 2;
         break;
     case EFFECT_NATURAL_GIFT:
