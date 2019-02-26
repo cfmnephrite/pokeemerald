@@ -2110,7 +2110,9 @@ void SetMoveEffect(bool32 primary, u32 certain)
 			statusChanged = TRUE;
 			break;
 		case STATUS1_BURN:
-			if ((GetBattlerAbility(gEffectBattler) == ABILITY_WATER_VEIL || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE)
+			if ((GetBattlerAbility(gEffectBattler) == ABILITY_WATER_VEIL 
+			|| GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE 
+			|| GetBattlerAbility(gEffectBattler) == ABILITY_DAMP)
 				&& (primary == TRUE || certain == MOVE_EFFECT_CERTAIN))
 			{
 				gLastUsedAbility = GetBattlerAbility(gEffectBattler);
@@ -2144,6 +2146,8 @@ void SetMoveEffect(bool32 primary, u32 certain)
 			if (GetBattlerAbility(gEffectBattler) == ABILITY_WATER_VEIL)
 				break;
 			if (GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE)
+				break;
+			if (GetBattlerAbility(gEffectBattler) == ABILITY_DAMP)
 				break;
 			if (gBattleMons[gEffectBattler].status1)
 				break;
@@ -7181,7 +7185,9 @@ static void atk76_various(void)
 		}
 		else if (gBattleMons[gBattlerAttacker].status1 & STATUS1_BURN)
 		{
-			if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_VEIL || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE)
+			if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_VEIL 
+			|| GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE
+			|| GetBattlerAbility(gBattlerTarget) == ABILITY_DAMP)
 			{
 				gBattlerAbility = gBattlerTarget;
 				BattleScriptPush(T1_READ_PTR(gBattlescriptCurrInstr + 3));

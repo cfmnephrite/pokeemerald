@@ -3215,7 +3215,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gDisableStructs[gBattlerAttacker].disabledMove == MOVE_NONE
              && IsBattlerAlive(gBattlerAttacker)
              && ((i = GetBattleMonMoveSlot(&gBattleMons[gBattlerAttacker], gChosenMove)) != 4)
-             && (Random() % 3) == 0
+			 && ((gBattleMons[gBattlerTarget].hp > 0 && (Random() % 3 == 0)) || (gBattleMons[gBattlerTarget].hp == 0 && (Random() % 3 != 0)))
              && !(AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0)))
             {
                 gDisableStructs[gBattlerAttacker].disabledMove = gChosenMove;
@@ -3395,7 +3395,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
-             && gBattleMons[gBattlerTarget].hp == 0)
+             && gBattleMons[gBattlerTarget].hp == 0
+			 && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                 if (gBattleMoveDamage == 0)
