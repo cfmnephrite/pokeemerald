@@ -2083,7 +2083,8 @@ void SetMoveEffect(bool32 primary, u32 certain)
 			}
 			if ((IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
 				&& (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-				&& (primary == TRUE || certain == MOVE_EFFECT_CERTAIN))
+				&& (primary == TRUE || certain == MOVE_EFFECT_CERTAIN)
+				&& (GetBattlerAbility(gBattleScripting.battler) != ABILITY_CORROSION))
 			{
 				BattleScriptPush(gBattlescriptCurrInstr + 1);
 				gBattlescriptCurrInstr = BattleScript_PSNPrevention;
@@ -2091,10 +2092,13 @@ void SetMoveEffect(bool32 primary, u32 certain)
 				gBattleCommunication[MULTISTRING_CHOOSER] = 2;
 				RESET_RETURN
 			}
-			if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON))
-				break;
-			if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
-				break;
+			if(GetBattlerAbility(gBattleScripting.battler) != ABILITY_CORROSION)
+			{
+				if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON))
+					break;
+				if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
+					break;
+			}
 			if (gBattleMons[gEffectBattler].status1)
 				break;
 			if (GetBattlerAbility(gEffectBattler) == ABILITY_IMMUNITY)
@@ -2230,7 +2234,8 @@ void SetMoveEffect(bool32 primary, u32 certain)
 			}
 			if ((IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
 				&& (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-				&& (primary == TRUE || certain == MOVE_EFFECT_CERTAIN))
+				&& (primary == TRUE || certain == MOVE_EFFECT_CERTAIN)
+				&& (GetBattlerAbility(gBattleScripting.battler) != ABILITY_CORROSION))
 			{
 				BattleScriptPush(gBattlescriptCurrInstr + 1);
 				gBattlescriptCurrInstr = BattleScript_PSNPrevention;
@@ -2249,7 +2254,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
 				}
 				break;
             }
-			if (!IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) && !IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
+			if ((!IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) && !IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL)) || GetBattlerAbility(gBattleScripting.battler) == ABILITY_CORROSION)
 			{
 				if (GetBattlerAbility(gEffectBattler) == ABILITY_IMMUNITY)
 					break;
