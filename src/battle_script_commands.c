@@ -6409,6 +6409,38 @@ static void atk76_various(void)
 
 	switch (gBattlescriptCurrInstr[2])
 	{
+	case VARIOUS_JUMP_IF_TERRAIN_PREVENTING:
+		if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
+		{
+			if (gBattleScripting.moveEffect <= 7
+                && IsBattlerGrounded(gActiveBattler)
+                && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_MOLD_BREAKER
+                || GetBattlerAbility(gBattlerAttacker) == ABILITY_TURBOBLAZE
+                || GetBattlerAbility(gBattlerAttacker) == ABILITY_TERAVOLT))
+            {
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+            }   
+            else gBattlescriptCurrInstr += 7;
+		}
+        else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+		{
+			if ((gBattleScripting.moveEffect == MOVE_EFFECT_POISON
+                || gBattleScripting.moveEffect == MOVE_EFFECT_TOXIC)
+                && IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_GRASS)
+                && IsBattlerGrounded(gActiveBattler)
+                && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_MOLD_BREAKER
+                || GetBattlerAbility(gBattlerAttacker) == ABILITY_TURBOBLAZE
+                || GetBattlerAbility(gBattlerAttacker) == ABILITY_TERAVOLT))
+            {
+                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+            }   
+            else gBattlescriptCurrInstr += 7;
+		}
+		else
+			gBattlescriptCurrInstr += 7;
+		return;
 	case VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA:
 		if (gBattleMons[gActiveBattler].spAttack >= gBattleMons[gActiveBattler].attack) gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         else gBattlescriptCurrInstr += 7;
@@ -7772,6 +7804,12 @@ static void atk84_jumpifcantmakeasleep(void)
 		gBattlescriptCurrInstr = jumpPtr;
 		RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
 	}
+    else if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
+    {
+        BattleScriptPush(gBattlescriptCurrInstr + 1);
+        gBattlescriptCurrInstr = BattleScript_ActiveTerrainPreventsMoveEnd;
+        gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+	}	
 	else
 	{
 		gBattlescriptCurrInstr += 5;

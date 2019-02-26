@@ -1615,6 +1615,11 @@
 	various BS_ATTACKER, VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA
 	.4byte \ptr
 	.endm
+
+	.macro jumpifterrainpreventing battler:req, ptr:req
+	various \battler, VARIOUS_JUMP_IF_TERRAIN_PREVENTING
+	.4byte \ptr
+	.endm    
     
 
 @ helpful macros

@@ -2353,12 +2353,16 @@ u8 AtkCanceller_UnableToUseMove2(void)
             gBattleStruct->atkCancellerTracker++;
         case CANCELLER_PSYCHIC_TERRAIN:
             if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN
-                && IsBattlerGrounded(gBattlerAttacker)
+                && IsBattlerGrounded(gBattlerTarget)
                 && GetChosenMovePriority(gBattlerAttacker) > 0
+                && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_MOLD_BREAKER
+                    || GetBattlerAbility(gBattlerAttacker) == ABILITY_TURBOBLAZE
+                    || GetBattlerAbility(gBattlerAttacker) == ABILITY_TERAVOLT)
                 && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
             {
                 CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedPsychicTerrainPrevents;
+                gBattlescriptCurrInstr = BattleScript_ActiveTerrainPreventsAtkString;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 3;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
             }

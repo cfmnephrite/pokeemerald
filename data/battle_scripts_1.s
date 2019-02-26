@@ -1890,6 +1890,7 @@ BattleScript_MoveMissed::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectSleep::
+	setmoveeffect MOVE_EFFECT_SLEEP
 	attackcanceler
 	attackstring
 	ppreduce
@@ -1899,9 +1900,9 @@ BattleScript_EffectSleep::
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+	jumpifterrainpreventing BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
 	attackanimation
 	waitanimation
-	setmoveeffect MOVE_EFFECT_SLEEP
 	seteffectprimary
 	goto BattleScript_MoveEnd
 
@@ -2325,6 +2326,7 @@ BattleScript_EffectRestoreHp::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectToxic::
+	setmoveeffect MOVE_EFFECT_TOXIC
 	attackcanceler
 	attackstring
 	ppreduce
@@ -2341,9 +2343,9 @@ BattleScript_EffectToxicFromTypeCheck:
 BattleScript_DoToxic:
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+    jumpifterrainpreventing BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
 	attackanimation
 	waitanimation
-	setmoveeffect MOVE_EFFECT_TOXIC
 	seteffectprimary
 	resultmessage
 	waitmessage 0x40
@@ -2632,6 +2634,7 @@ BattleScript_PrintReflectLightScreenSafeguardString::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectPoison::
+	setmoveeffect MOVE_EFFECT_POISON
 	attackcanceler
 	attackstring
 	ppreduce
@@ -2648,9 +2651,9 @@ BattleScript_DoPoison:
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+	jumpifterrainpreventing BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
 	attackanimation
 	waitanimation
-	setmoveeffect MOVE_EFFECT_POISON
 	seteffectprimary
 	resultmessage
 	waitmessage 0x40
@@ -2661,6 +2664,7 @@ BattleScript_EffectPoisonPowderCheck:
 	goto BattleScript_EffectToxicFromTypeCheck
 
 BattleScript_EffectParalyze:
+	setmoveeffect MOVE_EFFECT_PARALYSIS
 	attackcanceler
 	attackstring
 	ppreduce
@@ -2674,10 +2678,10 @@ BattleScript_EffectParalyze:
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+    jumpifterrainpreventing BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
 	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
 	attackanimation
 	waitanimation
-	setmoveeffect MOVE_EFFECT_PARALYSIS
 	seteffectprimary
 	resultmessage
 	waitmessage 0x40
@@ -3792,6 +3796,7 @@ BattleScript_FlatterTryConfuse::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectWillOWisp::
+	setmoveeffect MOVE_EFFECT_BURN
 	attackcanceler
 	attackstring
 	ppreduce
@@ -3804,9 +3809,9 @@ BattleScript_EffectWillOWisp::
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+    jumpifterrainpreventing BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
 	attackanimation
 	waitanimation
-	setmoveeffect MOVE_EFFECT_BURN
 	seteffectprimary
 	goto BattleScript_MoveEnd
 
@@ -6171,10 +6176,18 @@ BattleScript_DazzlingProtected::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 	
-BattleScript_MoveUsedPsychicTerrainPrevents::
-	printstring STRINGID_POKEMONCANNOTUSEMOVE
+BattleScript_ActiveTerrainPrevents::
+	printfromtable gTerrainPreventsStringIds
 	waitmessage 0x40
-	goto BattleScript_MoveEnd
+	return
+
+BattleScript_ActiveTerrainPreventsAtkString::
+	attackstring
+	ppreduce
+BattleScript_ActiveTerrainPreventsMoveEnd::
+	printfromtable gTerrainPreventsStringIds
+	waitmessage 0x40
+	goto BattleScript_MoveEnd    
 
 BattleScript_AbilityNoSpecificStatLoss::
 	pause 0x20

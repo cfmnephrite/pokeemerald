@@ -100,7 +100,6 @@ CheckIfLevitateCancelsGroundMove: @ 82DBFEF
 AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_SLEEP, AI_CBM_Sleep
 	if_effect EFFECT_EXPLOSION, AI_CBM_Explosion
-	if_effect EFFECT_DREAM_EATER, AI_CBM_DreamEater
 	if_effect EFFECT_ATTACK_UP, AI_CBM_AttackUp
 	if_effect EFFECT_DEFENSE_UP, AI_CBM_DefenseUp
 	if_effect EFFECT_SPEED_UP, AI_CBM_SpeedUp
@@ -151,7 +150,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_SLEEP_TALK, AI_CBM_DamageDuringSleep
 	if_effect EFFECT_FLAIL, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_MEAN_LOOK, AI_CBM_CantEscape
-	if_effect EFFECT_NIGHTMARE, AI_CBM_Nightmare
 	if_effect EFFECT_MINIMIZE, AI_CBM_EvasionUp
 	if_effect EFFECT_CURSE, AI_CBM_Curse
 	if_effect EFFECT_SPIKES, AI_CBM_Spikes
@@ -452,16 +450,6 @@ AI_CBM_Explosion: @ 82DC2F7
 	goto Score_Minus1
 
 AI_CBM_Explosion_End: @ 82DC31A
-	end
-
-AI_CBM_Nightmare: @ 82DC31B
-	if_status2 AI_TARGET, STATUS2_NIGHTMARE, Score_Minus10
-	if_not_status AI_TARGET, STATUS1_SLEEP, Score_Minus8
-	end
-
-AI_CBM_DreamEater: @ 82DC330
-	if_not_status AI_TARGET, STATUS1_SLEEP, Score_Minus8
-	if_type_effectiveness AI_EFFECTIVENESS_x0, Score_Minus10
 	end
 
 AI_CBM_BellyDrum: @ 82DC341
@@ -905,6 +893,7 @@ AI_CheckViability:
 	if_effect EFFECT_ABSORB, AI_CV_Absorb
 	if_effect EFFECT_EXPLOSION, AI_CV_SelfKO
 	if_effect EFFECT_DREAM_EATER, AI_CV_DreamEater
+	if_effect EFFECT_NIGHTMARE, AI_CV_Nightmare
 	if_effect EFFECT_MIRROR_MOVE, AI_CV_MirrorMove
 	if_effect EFFECT_ATTACK_UP, AI_CV_AttackUp
 	if_effect EFFECT_DEFENSE_UP, AI_CV_DefenseUp
@@ -1076,16 +1065,13 @@ AI_CV_SelfKO_End: @ 82DCB25
 	end
 
 AI_CV_DreamEater: @ 82DCB26
-	if_type_effectiveness AI_EFFECTIVENESS_x0_25, AI_CV_DreamEater_ScoreDown1
-	if_type_effectiveness AI_EFFECTIVENESS_x0_5, AI_CV_DreamEater_ScoreDown1
-	goto AI_CV_DreamEater_End
-
-AI_CV_DreamEater_ScoreDown1: @ 82DCB37
-	score -1
-
-AI_CV_DreamEater_End: @ 82DCB39
+    if_status AI_TARGET, STATUS1_SLEEP, Score_Plus5
 	end
 
+AI_CV_Nightmare: 
+	if_status AI_TARGET, STATUS1_SLEEP, Score_Plus5
+	end
+    
 AI_CV_MirrorMove: @ 82DCB3A
 	if_target_faster AI_CV_MirrorMove2
 	get_last_used_bank_move AI_TARGET
@@ -2041,7 +2027,6 @@ AI_CV_Encore_End:
 	end
 
 AI_CV_Encore_EncouragedMovesToEncore:
-    .byte EFFECT_DREAM_EATER
     .byte EFFECT_ATTACK_UP
     .byte EFFECT_DEFENSE_UP
     .byte EFFECT_SPEED_UP
@@ -3431,7 +3416,7 @@ AI_HPAware_DiscouragedEffectsWhenHighHP: @ 82DE21F
     .byte EFFECT_SOFTBOILED
     .byte EFFECT_MEMENTO
     .byte EFFECT_GRUDGE
-    .byte EFFECT_SPA_DOWN_2_ARG_EFFECT
+    .2byte EFFECT_SPA_DOWN_2_ARG_EFFECT
     .byte -1
 
 AI_HPAware_DiscouragedEffectsWhenMediumHP: @ 82DE22D
