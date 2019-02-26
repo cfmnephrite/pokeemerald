@@ -1619,8 +1619,7 @@
 	.macro jumpifterrainpreventing battler:req, ptr:req
 	various \battler, VARIOUS_JUMP_IF_TERRAIN_PREVENTING
 	.4byte \ptr
-	.endm    
-    
+	.endm
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
