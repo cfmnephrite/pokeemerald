@@ -1704,9 +1704,7 @@ BattleScript_EffectGravity:
 	selectfirstvalidtarget
 BattleScript_GravityLoop:
 	movevaluescleanup
-	jumpifstatus3 BS_TARGET, STATUS3_ON_AIR, BattleScript_GravityLoopDrop
-	jumpifstatus3 BS_TARGET, STATUS3_MAGNET_RISE, BattleScript_GravityLoopDrop
-	jumpifstatus3 BS_TARGET, STATUS3_TELEKINESIS, BattleScript_GravityLoopDrop
+	jumpifstatus3 BS_TARGET, STATUS3_ON_AIR | STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS, BattleScript_GravityLoopDrop
 	goto BattleScript_GravityLoopEnd
 BattleScript_GravityLoopDrop:
 	bringdownairbornebattler BS_TARGET

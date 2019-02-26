@@ -2866,7 +2866,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_INTIMIDATE:
             if (!(gSpecialStatuses[battler].intimidatedMon))
             {
-                gStatuses3[battler] |= STATUS3_INTIMIDATE_POKES;
+                gBattleResources->flags->flags[battler] |= RESOURCE_FLAG_INTIMIDATED;
                 gSpecialStatuses[battler].intimidatedMon = 1;
             }
             break;
@@ -2882,7 +2882,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_TRACE:
             if (!(gSpecialStatuses[battler].traced))
             {
-                gStatuses3[battler] |= STATUS3_TRACE;
+                gBattleResources->flags->flags[battler] |= RESOURCE_FLAG_TRACED;
                 gSpecialStatuses[battler].traced = 1;
             }
             break;
@@ -3551,10 +3551,10 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     case ABILITYEFFECT_INTIMIDATE1: // 9
         for (i = 0; i < gBattlersCount; i++)
         {
-            if (gBattleMons[i].ability == ABILITY_INTIMIDATE && gStatuses3[i] & STATUS3_INTIMIDATE_POKES)
+            if (gBattleMons[i].ability == ABILITY_INTIMIDATE && gBattleResources->flags->flags[i] & RESOURCE_FLAG_INTIMIDATED)
             {
                 gLastUsedAbility = ABILITY_INTIMIDATE;
-                gStatuses3[i] &= ~(STATUS3_INTIMIDATE_POKES);
+                gBattleResources->flags->flags[i] &= ~(RESOURCE_FLAG_INTIMIDATED);
                 BattleScriptPushCursorAndCallback(BattleScript_IntimidateActivatesEnd3);
                 gBattlerAbility = gBattleStruct->intimidateBattler = i;
                 effect++;
@@ -3565,7 +3565,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     case ABILITYEFFECT_TRACE: // 11
         for (i = 0; i < gBattlersCount; i++)
         {
-            if (gBattleMons[i].ability == ABILITY_TRACE && (gStatuses3[i] & STATUS3_TRACE))
+            if (gBattleMons[i].ability == ABILITY_TRACE && (gBattleResources->flags->flags[i] & RESOURCE_FLAG_TRACED))
             {
                 u8 target2;
                 side = (GetBattlerPosition(i) ^ BIT_SIDE) & BIT_SIDE; // side of the opposing pokemon
@@ -3609,7 +3609,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (effect)
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_TraceActivates);
-                    gStatuses3[i] &= ~(STATUS3_TRACE);
+                    gBattleResources->flags->flags[i] &= ~(RESOURCE_FLAG_TRACED);
                     gBattlerAbility = gBattleScripting.battler = i;
 
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gActiveBattler, gBattlerPartyIndexes[gActiveBattler])
@@ -3622,10 +3622,10 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     case ABILITYEFFECT_INTIMIDATE2: // 10
         for (i = 0; i < gBattlersCount; i++)
         {
-            if (gBattleMons[i].ability == ABILITY_INTIMIDATE && (gStatuses3[i] & STATUS3_INTIMIDATE_POKES))
+            if (gBattleMons[i].ability == ABILITY_INTIMIDATE && (gBattleResources->flags->flags[i] & RESOURCE_FLAG_INTIMIDATED))
             {
                 gLastUsedAbility = ABILITY_INTIMIDATE;
-                gStatuses3[i] &= ~(STATUS3_INTIMIDATE_POKES);
+                gBattleResources->flags->flags[i] &= ~(RESOURCE_FLAG_INTIMIDATED);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_IntimidateActivates;
                 gBattleStruct->intimidateBattler = i;
