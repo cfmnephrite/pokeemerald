@@ -1621,6 +1621,10 @@
 	.4byte \ptr
 	.endm    
     
+	
+	.macro bringdownairbornebattler battler:req
+	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
+	.endm
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
