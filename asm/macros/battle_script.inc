@@ -1616,10 +1616,15 @@
 	.4byte \ptr
 	.endm
 
-	.macro jumpifterrainpreventing battler:req, ptr:req
-	various \battler, VARIOUS_JUMP_IF_TERRAIN_PREVENTING
+	.macro jumpifterrainaffecting battler:req, ptr:req
+	various \battler, VARIOUS_JUMP_IF_TERRAIN_AFFECTING
 	.4byte \ptr
 	.endm
+
+	.macro checkgrassyterrainheal battler:req, ptr:req
+	various \battler, VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS
+	.4byte \ptr
+	.endm    
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req

@@ -15,7 +15,7 @@ OldaleTown_Mart_EventScript_1FC240:: @ 81FC240
 OldaleTown_Mart_Pokemart_1FC260: @ 81FC260
 	.2byte ITEM_POTION
 	.2byte ITEM_ANTIDOTE
-	.2byte ITEM_PARALYZE_HEAL
+	.2byte ITEM_PARALYSE_HEAL
 	.2byte ITEM_AWAKENING
 	.2byte ITEM_NONE
 	release
@@ -32,7 +32,7 @@ OldaleTown_Mart_Pokemart_1FC27C: @ 81FC27C
 	.2byte ITEM_POKE_BALL
 	.2byte ITEM_POTION
 	.2byte ITEM_ANTIDOTE
-	.2byte ITEM_PARALYZE_HEAL
+	.2byte ITEM_PARALYSE_HEAL
 	.2byte ITEM_AWAKENING
 	.2byte ITEM_NONE
 	release

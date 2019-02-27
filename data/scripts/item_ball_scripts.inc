@@ -339,7 +339,7 @@ PetalburgWoods_EventScript_29111C:: @ 829111C
 	end
 
 PetalburgWoods_EventScript_291129:: @ 8291129
-	giveitem_std ITEM_PARALYZE_HEAL, 1, 1
+	giveitem_std ITEM_PARALYSE_HEAL, 1, 1
 	end
 
 RusturfTunnel_EventScript_291136:: @ 8291136
@@ -415,7 +415,7 @@ NewMauville_Inside_EventScript_291213:: @ 8291213
 	end
 
 NewMauville_Inside_EventScript_291220:: @ 8291220
-	giveitem_std ITEM_PARALYZE_HEAL, 1, 1
+	giveitem_std ITEM_PARALYSE_HEAL, 1, 1
 	end
 
 AbandonedShip_Rooms_1F_EventScript_29122D:: @ 829122D

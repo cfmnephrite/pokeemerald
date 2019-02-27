@@ -142,7 +142,8 @@
 #define VARIOUS_SPECTRAL_THIEF                  79
 #define VARIOUS_TRY_ACTIVATE_BEAST_BOOST        80
 #define VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA     81
-#define VARIOUS_JUMP_IF_TERRAIN_PREVENTING      82
+#define VARIOUS_JUMP_IF_TERRAIN_AFFECTING       82
+#define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS   83
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
