@@ -95,7 +95,7 @@
 #define FLAG_IRON_FIST_BOOST        0x100
 #define FLAG_STRONG_JAW_BOOST       0x200
 #define FLAG_UNUSED_IN_CFM          0x400
-#define FLAG_SELF_Z                 0x800
+#define FLAG_THAWS_USER             0x800
 #define FLAG_STAT_STAGES_IGNORED    0x1000
 #define FLAG_ANTI_AIR               0x2000
 #define FLAG_MAGIC                  0x4000
@@ -103,7 +103,9 @@
 #define FLAG_SOUND                  0x10000
 #define FLAG_BALLISTIC              0x20000
 #define FLAG_PROTECTION_MOVE        0x40000
-#define FLAG_Z_MOVE                 0x80000
+
+#define FLAG_SELF_Z                 0x100000
+#define FLAG_Z_MOVE                 0x200000
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0

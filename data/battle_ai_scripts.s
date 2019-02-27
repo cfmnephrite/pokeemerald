@@ -139,7 +139,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_EVASION_DOWN_2, AI_CBM_EvasionDown
 	if_effect EFFECT_REFLECT, AI_CBM_Reflect
 	if_effect EFFECT_POISON, AI_CBM_Toxic
-	if_effect EFFECT_PARALYZE, AI_CBM_Paralyze
+	if_effect EFFECT_PARALYSE, AI_CBM_Paralyse
 	if_effect EFFECT_SUBSTITUTE, AI_CBM_Substitute
 	if_effect EFFECT_LEECH_SEED, AI_CBM_LeechSeed
 	if_effect EFFECT_DISABLE, AI_CBM_Disable
@@ -181,7 +181,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_HAIL, AI_CBM_Hail
 	if_effect EFFECT_TORMENT, AI_CBM_Torment
 	if_effect EFFECT_FLATTER, AI_CBM_Confuse
-	if_effect EFFECT_WILL_O_WISP, AI_CBM_WillOWisp
+	if_effect EFFECT_BURN, AI_CBM_WillOWisp
 	if_effect EFFECT_MEMENTO, AI_CBM_Memento
 	if_effect EFFECT_FOCUS_PUNCH, AI_CBM_HighRiskForDamage
 	if_effect EFFECT_HELPING_HAND, AI_CBM_HelpingHand
@@ -291,7 +291,7 @@ AI_CBM_Defog:
 AI_CBM_PsychicShift:
 	if_not_status AI_USER, STATUS1_ANY, Score_Minus10
 	if_status AI_TARGET, STATUS1_ANY, Score_Minus10
-	if_status AI_USER, STATUS1_PARALYSIS, AI_CBM_Paralyze
+	if_status AI_USER, STATUS1_PARALYSIS, AI_CBM_Paralyse
 	if_status AI_USER, STATUS1_PSN_ANY, AI_CBM_Toxic
 	if_status AI_USER, STATUS1_BURN, AI_CBM_WillOWisp
 	if_status AI_USER, STATUS1_SLEEP, AI_CBM_Sleep
@@ -611,7 +611,7 @@ AI_CBM_Reflect: @ 82DC53A
 	if_side_affecting AI_USER, SIDE_STATUS_REFLECT, Score_Minus8
 	end
 
-AI_CBM_Paralyze: @ 82DC545
+AI_CBM_Paralyse: @ 82DC545
 	if_type_effectiveness AI_EFFECTIVENESS_x0, Score_Minus10
 	get_ability AI_TARGET
 	if_equal ABILITY_LIMBER, Score_Minus10
@@ -936,7 +936,7 @@ AI_CheckViability:
 	if_effect EFFECT_EVASION_DOWN_2, AI_CV_EvasionDown
 	if_effect EFFECT_REFLECT, AI_CV_Reflect
 	if_effect EFFECT_POISON, AI_CV_Poison
-	if_effect EFFECT_PARALYZE, AI_CV_Paralyze
+	if_effect EFFECT_PARALYSE, AI_CV_Paralyse
 	if_effect EFFECT_SWAGGER, AI_CV_Swagger
 	if_effect EFFECT_SPEED_DOWN_HIT, AI_CV_SpeedDownFromChance
 	if_effect EFFECT_TWO_TURNS_ATTACK, AI_CV_ChargeUpMove
@@ -1845,17 +1845,17 @@ AI_CV_Poison_ScoreDown1:
 AI_CV_Poison_End:
 	end
 
-AI_CV_Paralyze:
-	if_target_faster AI_CV_Paralyze2
-	if_hp_more_than AI_USER, 70, AI_CV_Paralyze_End
+AI_CV_Paralyse:
+	if_target_faster AI_CV_Paralyse2
+	if_hp_more_than AI_USER, 70, AI_CV_Paralyse_End
 	score -1
-	goto AI_CV_Paralyze_End
+	goto AI_CV_Paralyse_End
 
-AI_CV_Paralyze2:
-	if_random_less_than 20, AI_CV_Paralyze_End
+AI_CV_Paralyse2:
+	if_random_less_than 20, AI_CV_Paralyse_End
 	score +3
 
-AI_CV_Paralyze_End:
+AI_CV_Paralyse_End:
 	end
 
 AI_CV_VitalThrow:
@@ -1893,8 +1893,8 @@ AI_CV_Substitute4:
 	if_equal EFFECT_SLEEP, AI_CV_Substitute5
 	if_equal EFFECT_TOXIC, AI_CV_Substitute5
 	if_equal EFFECT_POISON, AI_CV_Substitute5
-	if_equal EFFECT_PARALYZE, AI_CV_Substitute5
-	if_equal EFFECT_WILL_O_WISP, AI_CV_Substitute5
+	if_equal EFFECT_PARALYSE, AI_CV_Substitute5
+	if_equal EFFECT_BURN, AI_CV_Substitute5
 	if_equal EFFECT_CONFUSE, AI_CV_Substitute6
 	if_equal EFFECT_LEECH_SEED, AI_CV_Substitute7
 	goto AI_CV_Substitute_End
@@ -2041,7 +2041,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
     .byte EFFECT_SPECIAL_DEFENSE_UP_2
     .byte EFFECT_CONFUSE
     .byte EFFECT_POISON
-    .byte EFFECT_PARALYZE
+    .byte EFFECT_PARALYSE
     .byte EFFECT_LEECH_SEED
     .byte EFFECT_SPLASH
     .byte EFFECT_ATTACK_UP_2
@@ -2071,7 +2071,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
     .byte EFFECT_SWALLOW
     .byte EFFECT_HAIL
     .byte EFFECT_TORMENT
-    .byte EFFECT_WILL_O_WISP
+    .byte EFFECT_BURN
     .byte EFFECT_FOLLOW_ME
     .byte EFFECT_CHARGE
     .byte EFFECT_TRICK
@@ -3042,7 +3042,7 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
     .2byte EFFECT_EVASION_DOWN_2
     .2byte EFFECT_REFLECT
     .2byte EFFECT_POISON
-    .2byte EFFECT_PARALYZE
+    .2byte EFFECT_PARALYSE
     .2byte EFFECT_SUBSTITUTE
     .2byte EFFECT_LEECH_SEED
     .2byte EFFECT_MINIMIZE
@@ -3053,7 +3053,7 @@ AI_SetupFirstTurn_SetupEffectsToEncourage:
     .2byte EFFECT_DEFENSE_CURL
     .2byte EFFECT_TORMENT
     .2byte EFFECT_FLATTER
-    .2byte EFFECT_WILL_O_WISP
+    .2byte EFFECT_BURN
     .2byte EFFECT_INGRAIN
     .2byte EFFECT_IMPRISON
     .2byte EFFECT_TEETER_DANCE
@@ -3599,7 +3599,7 @@ AI_HPAware_DiscouragedEffectsWhenTargetLowHP: @ 82DE2B1
     .byte EFFECT_ACCURACY_DOWN_2
     .byte EFFECT_EVASION_DOWN_2
     .byte EFFECT_POISON
-    .byte EFFECT_PARALYZE
+    .byte EFFECT_PARALYSE
     .byte EFFECT_PAIN_SPLIT
     .byte EFFECT_CONVERSION_2
     .byte EFFECT_LOCK_ON
@@ -3611,7 +3611,7 @@ AI_HPAware_DiscouragedEffectsWhenTargetLowHP: @ 82DE2B1
     .byte EFFECT_SAFEGUARD
     .byte EFFECT_PSYCH_UP
     .byte EFFECT_MIRROR_COAT
-    .byte EFFECT_WILL_O_WISP
+    .byte EFFECT_BURN
     .byte EFFECT_TICKLE
     .byte EFFECT_COSMIC_POWER
     .byte EFFECT_BULK_UP

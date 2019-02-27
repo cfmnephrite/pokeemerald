@@ -52,7 +52,7 @@ const u32 gItemIconPalette_BurnHeal[] = INCBIN_U32("graphics/items/icon_palettes
 const u32 gItemIconPalette_IceHeal[] = INCBIN_U32("graphics/items/icon_palettes/ice_heal.gbapal.lz");
 const u32 gItemIcon_StatusHeal[] = INCBIN_U32("graphics/items/icons/status_heal.4bpp.lz");
 const u32 gItemIconPalette_Awakening[] = INCBIN_U32("graphics/items/icon_palettes/awakening.gbapal.lz");
-const u32 gItemIconPalette_ParalyzeHeal[] = INCBIN_U32("graphics/items/icon_palettes/paralyze_heal.gbapal.lz");
+const u32 gItemIconPalette_ParalyseHeal[] = INCBIN_U32("graphics/items/icon_palettes/paralyse_heal.gbapal.lz");
 
 const u32 gItemIcon_LargePotion[] = INCBIN_U32("graphics/items/icons/large_potion.4bpp.lz");
 const u32 gItemIconPalette_FullRestore[] = INCBIN_U32("graphics/items/icon_palettes/full_restore.gbapal.lz");

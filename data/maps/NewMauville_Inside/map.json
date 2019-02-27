@@ -77,7 +77,7 @@
       "trainer_type": "0",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NewMauville_Inside_EventScript_291220",
-      "flag": "FLAG_ITEM_NEW_MAUVILLE_PARALYZE_HEAL"
+      "flag": "FLAG_ITEM_NEW_MAUVILLE_PARALYSE_HEAL"
     },
     {
       "graphics_id": "EVENT_OBJ_GFX_ITEM_BALL",
