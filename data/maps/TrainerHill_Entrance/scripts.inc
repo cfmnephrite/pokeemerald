@@ -273,7 +273,7 @@ TrainerHill_Entrance_EventScript_2683C7:: @ 82683C7
 TrainerHill_Entrance_Pokemart_2683E8: @ 82683E8
 	.2byte ITEM_SUPER_POTION
 	.2byte ITEM_ANTIDOTE
-	.2byte ITEM_PARALYZE_HEAL
+	.2byte ITEM_PARALYSE_HEAL
 	.2byte ITEM_AWAKENING
 	.2byte ITEM_X_SPEED
 	.2byte ITEM_X_SPECIAL

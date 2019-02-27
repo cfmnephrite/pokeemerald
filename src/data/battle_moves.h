@@ -44,7 +44,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DOUBLE_SLAP] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 40,
         .type = TYPE_FAIRY,
         .accuracy = 0,
@@ -54,6 +54,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_COMET_PUNCH] =
@@ -100,7 +101,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FIRE_PUNCH] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -110,11 +111,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_IRON_FIST_BOOST,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_ICE_PUNCH] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -124,11 +126,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_IRON_FIST_BOOST,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_THUNDER_PUNCH] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -138,6 +141,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_IRON_FIST_BOOST,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_SCRATCH] =
@@ -340,7 +344,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DOUBLE_KICK] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 40,
         .type = TYPE_FIGHTING,
         .accuracy = 0,
@@ -350,6 +354,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_MEGA_KICK] =
@@ -481,7 +486,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BODY_SLAM] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 85,
         .type = TYPE_NORMAL,
         .accuracy = 100,
@@ -491,6 +496,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_WRAP] =
@@ -565,7 +571,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_POISON_STING] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 30,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -575,6 +581,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_TWINEEDLE] =
@@ -721,7 +728,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_ACID] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 70,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -731,11 +738,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_EMBER] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 40,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -745,11 +753,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_FLAMETHROWER] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 90,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -759,6 +768,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_MIST] =
@@ -819,7 +829,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_ICE_BEAM] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 90,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -829,11 +839,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_BLIZZARD] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_ICE,
         .accuracy = 70,
@@ -843,6 +854,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_PSYBEAM] =
@@ -1085,7 +1097,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_POISON_POWDER] =
     {
-        .effect = EFFECT_POISON,
+        .effect = EFFECT_POISON_POWDER,
         .power = 0,
         .type = TYPE_POISON,
         .accuracy = 90,
@@ -1099,7 +1111,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_STUN_SPORE] =
     {
-        .effect = EFFECT_PARALYZE,
+        .effect = EFFECT_PARALYSE,
         .power = 0,
         .type = TYPE_GRASS,
         .accuracy = 90,
@@ -1184,7 +1196,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_THUNDER_SHOCK] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 40,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -1194,11 +1206,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_THUNDERBOLT] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 90,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -1212,7 +1225,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_THUNDER_WAVE] =
     {
-        .effect = EFFECT_PARALYZE,
+        .effect = EFFECT_PARALYSE,
         .power = 0,
         .type = TYPE_ELECTRIC,
         .accuracy = 90,
@@ -1717,7 +1730,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_LICK] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 30,
         .type = TYPE_GHOST,
         .accuracy = 100,
@@ -1727,11 +1740,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_SMOG] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 20,
         .type = TYPE_POISON,
         .accuracy = 70,
@@ -1741,11 +1755,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_SLUDGE] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 65,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -1755,6 +1770,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_BONE_CLUB] =
@@ -1773,7 +1789,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FIRE_BLAST] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_FIRE,
         .accuracy = 85,
@@ -1783,6 +1799,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_WATERFALL] =
@@ -1928,7 +1945,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GLARE] =
     {
-        .effect = EFFECT_PARALYZE,
+        .effect = EFFECT_PARALYSE,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 100,
@@ -1970,7 +1987,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BARRAGE] =
     {
-        .effect = EFFECT_PENTUPLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 25,
         .type = TYPE_GRASS,
         .accuracy = 90,
@@ -1980,6 +1997,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC,
         .split = SPLIT_PHYSICAL,
+        .argument = 5,
     },
 
     [MOVE_LEECH_LIFE] =
@@ -2181,7 +2199,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BONEMERANG] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 50,
         .type = TYPE_GROUND,
         .accuracy = 90,
@@ -2191,6 +2209,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_REST] =
@@ -2349,7 +2368,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_TRIPLE_KICK] =
     {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 10,
         .type = TYPE_FIGHTING,
         .accuracy = 90,
@@ -2359,6 +2378,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 3,
     },
 
     [MOVE_THIEF] =
@@ -2419,7 +2439,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FLAME_WHEEL] =
     {
-        .effect = EFFECT_THAW_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 60,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -2427,8 +2447,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_SNORE] =
@@ -2545,7 +2566,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_POWDER_SNOW] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 40,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -2555,6 +2576,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_PROTECT] =
@@ -2644,7 +2666,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SLUDGE_BOMB] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 90,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -2654,6 +2676,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_MUD_SLAP] =
@@ -2700,7 +2723,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_ZAP_CANNON] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_ELECTRIC,
         .accuracy = 50,
@@ -2710,6 +2733,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_FORESIGHT] =
@@ -2938,7 +2962,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SPARK] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 65,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -2948,6 +2972,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_FURY_CUTTER] =
@@ -3106,7 +3131,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SACRED_FIRE] =
     {
-        .effect = EFFECT_THAW_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 100,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -3114,8 +3139,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 50,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_MAGNITUDE] =
@@ -3162,7 +3188,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DRAGON_BREATH] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 60,
         .type = TYPE_DRAGON,
         .accuracy = 100,
@@ -3172,6 +3198,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_BATON_PASS] =
@@ -3610,7 +3637,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_HEAT_WAVE] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 95,
         .type = TYPE_FIRE,
         .accuracy = 90,
@@ -3620,6 +3647,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_HAIL] =
@@ -3666,7 +3694,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_WILL_O_WISP] =
     {
-        .effect = EFFECT_WILL_O_WISP,
+        .effect = EFFECT_BURN,
         .power = 0,
         .type = TYPE_FIRE,
         .accuracy = 85,
@@ -4200,7 +4228,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BLAZE_KICK] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 95,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -4210,6 +4238,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_MUD_SPORT] =
@@ -4498,7 +4527,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GRASS_WHISTLE] =
     {
-        .effect = EFFECT_SLEEP_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 90,
         .type = TYPE_GRASS,
         .accuracy = 100,
@@ -4508,6 +4537,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_SLEEP,
     },
 
     [MOVE_TICKLE] =
@@ -4639,7 +4669,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_MUDDY_WATER] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_WATER,
         .accuracy = 100,
@@ -4649,6 +4679,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_BULLET_SEED] =
@@ -4808,16 +4839,17 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_POISON_TAIL] =
     {
-        .effect = EFFECT_POISON_HIT,
-        .power = 50,
+        .effect = EFFECT_HIT_ARG_EFFECT,
+        .power = 100,
         .type = TYPE_POISON,
-        .accuracy = 100,
-        .pp = 25,
-        .secondaryEffectChance = 10,
+        .accuracy = 95,
+        .pp = 10,
+        .secondaryEffectChance = 30,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_HIGH_CRIT,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_TOXIC,
     },
 
     [MOVE_COVET] =
@@ -5547,14 +5579,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST | FLAG_THAWS_USER,
         .split = SPLIT_PHYSICAL,
         .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_FORCE_PALM] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 60,
         .type = TYPE_FIGHTING,
         .accuracy = 100,
@@ -5564,6 +5596,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_AURA_SPHERE] =
@@ -5596,7 +5629,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_POISON_JAB] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -5606,6 +5639,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_DARK_PULSE] =
@@ -6119,7 +6153,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DISCHARGE] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -6129,11 +6163,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_LAVA_PLUME] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 80,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -6143,6 +6178,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_LEAF_STORM] =
@@ -6191,7 +6227,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_CROSS_POISON] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 100,
         .type = TYPE_POISON,
         .accuracy = 95,
@@ -6201,11 +6237,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_HIGH_CRIT,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_GUNK_SHOT] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_POISON,
         .accuracy = 80,
@@ -6215,6 +6252,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_IRON_HEAD] =
@@ -6443,16 +6481,17 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DOUBLE_HIT] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
-        .power = 35,
+        .effect = EFFECT_HIT_ARG_TIMES,
+        .power = 40,
         .type = TYPE_NORMAL,
-        .accuracy = 90,
+        .accuracy = 0,
         .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_ROAR_OF_TIME] =
@@ -6486,7 +6525,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_LUNAR_DANCE] =
     {
         .effect = EFFECT_EXPLOSION, //Hitting Dark-types and being usable while asleep applied in battle_util.c
-        .power = 200,				
+        .power = 200,
         .type = TYPE_PSYCHIC,
         .accuracy = 100,
         .pp = 5,
@@ -6781,7 +6820,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SLUDGE_WAVE] =
     {
-        .effect = EFFECT_POISON_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 95,
         .type = TYPE_POISON,
         .accuracy = 100,
@@ -6791,6 +6830,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_POISON,
     },
 
     [MOVE_QUIVER_DANCE] =
@@ -7084,8 +7124,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 30,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_SHELL_SMASH] =
@@ -7272,7 +7313,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_INFERNO] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_FIRE,
         .accuracy = 80,
@@ -7282,6 +7323,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_WATER_PLEDGE] =
@@ -7455,7 +7497,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_DUAL_CHOP] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 40,
         .type = TYPE_DRAGON,
         .accuracy = 0,
@@ -7465,6 +7507,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_HEART_STAMP] =
@@ -7651,7 +7694,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GEAR_GRIND] =
     {
-        .effect = EFFECT_DOUBLE_HIT,
+        .effect = EFFECT_HIT_ARG_TIMES,
         .power = 40,
         .type = TYPE_STEEL,
         .accuracy = 100,
@@ -7661,11 +7704,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = 2,
     },
 
     [MOVE_SEARING_SHOT] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 100,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -7675,6 +7719,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_TECHNO_BLAST] =
@@ -7693,7 +7738,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_RELIC_SONG] =
     {
-        .effect = EFFECT_SLEEP_HIT,
+        .effect = EFFECT_RELIC_SONG,
         .power = 75,
         .type = TYPE_NORMAL,
         .accuracy = 100,
@@ -7703,6 +7748,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_SLEEP,
     },
 
     [MOVE_SECRET_SWORD] =
@@ -7721,7 +7767,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_GLACIATE] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 95,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -7731,11 +7777,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGIC,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_BOLT_STRIKE] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_PLACEHOLDER,
         .power = 130,
         .type = TYPE_ELECTRIC,
         .accuracy = 85,
@@ -7749,7 +7796,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_BLUE_FLARE] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_PLACEHOLDER,
         .power = 130,
         .type = TYPE_FIRE,
         .accuracy = 85,
@@ -7777,7 +7824,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FREEZE_SHOCK] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 100,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -7787,11 +7834,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_ICE_BURN] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 100,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -7801,6 +7849,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_SNARL] =
@@ -7847,7 +7896,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FUSION_FLARE] =
     {
-        .effect = EFFECT_BURN_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_FIRE,
         .accuracy = 90,
@@ -7855,13 +7904,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 20,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_FUSION_BOLT] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 120,
         .type = TYPE_ELECTRIC,
         .accuracy = 90,
@@ -7871,6 +7921,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_FLYING_PRESS] =
@@ -8061,7 +8112,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_FREEZE_DRY] =
     {
-        .effect = EFFECT_FREEZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 70,
         .type = TYPE_ICE,
         .accuracy = 100,
@@ -8071,6 +8122,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_FREEZE,
     },
 
     [MOVE_DISARMING_VOICE] =
@@ -8205,7 +8257,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .effect = EFFECT_ATTACK_DOWN_HIT,
         .power = 90,
         .type = TYPE_FAIRY,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
@@ -8336,8 +8388,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 30,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_SPECIAL,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_HYPERSPACE_HOLE] =
@@ -8567,7 +8620,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_NUZZLE] =
     {
-        .effect = EFFECT_PARALYZE_HIT,
+        .effect = EFFECT_HIT_ARG_EFFECT,
         .power = 20,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -8577,6 +8630,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_PARALYSIS,
     },
 
     [MOVE_HOLD_BACK] =
@@ -9082,7 +9136,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
         .split = SPLIT_SPECIAL,
     },
 

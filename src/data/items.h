@@ -328,14 +328,14 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
 
-    [ITEM_PARALYZE_HEAL] =
+    [ITEM_PARALYSE_HEAL] =
     {
         .name = _("Paralyz Heal"),
-        .itemId = ITEM_PARALYZE_HEAL,
+        .itemId = ITEM_PARALYSE_HEAL,
         .price = 200,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
-        .description = gParalyzeHealItemDescription,
+        .description = gParalyseHealItemDescription,
         .importance = 0,
         .unk19 = 0,
         .pocket = POCKET_ITEMS,

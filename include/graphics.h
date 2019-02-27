@@ -3391,7 +3391,7 @@ extern const u32 gItemIcon_StatusHeal[];
 extern const u32 gItemIconPalette_BurnHeal[];
 extern const u32 gItemIconPalette_IceHeal[];
 extern const u32 gItemIconPalette_Awakening[];
-extern const u32 gItemIconPalette_ParalyzeHeal[];
+extern const u32 gItemIconPalette_ParalyseHeal[];
 extern const u32 gItemIcon_LargePotion[];
 extern const u32 gItemIconPalette_FullRestore[];
 extern const u32 gItemIconPalette_MaxPotion[];

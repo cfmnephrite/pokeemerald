@@ -1256,6 +1256,11 @@ u8 DoFieldEndTurnEffects(void)
             gBattleStruct->turnCountersTracker++;
             break;
         case ENDTURN_GRASSY_TERRAIN:
+            if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+            {
+                BattleScriptExecute(BattleScript_GrassyTerrainLoop);
+                effect++;
+            }
             if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && --gFieldTimers.grassyTerrainTimer == 0)
             {
                 gFieldStatuses &= ~(STATUS_FIELD_GRASSY_TERRAIN);
@@ -2089,9 +2094,9 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_FROZEN: // check being frozen
             if (gBattleMons[gBattlerAttacker].status1 & STATUS1_FREEZE)
             {
-                if (Random() % 5)
+                if (Random() % 3)
                 {
-                    if (gBattleMoves[gCurrentMove].effect != EFFECT_THAW_HIT) // unfreezing via a move effect happens in case 13
+                    if (!(gBattleMoves[gCurrentMove].flags & FLAG_THAWS_USER)) // unfreezing via a move effect happens in case 13
                     {
                         gBattlescriptCurrInstr = BattleScript_MoveUsedIsFrozen;
                         gHitMarker |= HITMARKER_NO_ATTACKSTRING;
@@ -2232,7 +2237,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                 gProtectStructs[gBattlerAttacker].prlzImmobility = 1;
                 // This is removed in Emerald for some reason
                 //CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalysed;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
             }
@@ -2248,7 +2253,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                 }
                 else
                 {
-                    BattleScriptPush(BattleScript_MoveUsedIsParalyzedCantAttack);
+                    BattleScriptPush(BattleScript_MoveUsedIsParalysedCantAttack);
                     gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                     gProtectStructs[gBattlerAttacker].loveImmobility = 1;
                     CancelMultiTurnMoves(gBattlerAttacker);
@@ -2291,7 +2296,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_THAW: // move thawing
             if (gBattleMons[gBattlerAttacker].status1 & STATUS1_FREEZE)
             {
-                if (gBattleMoves[gCurrentMove].effect == EFFECT_THAW_HIT)
+                if (gBattleMoves[gCurrentMove].flags & FLAG_THAWS_USER)
                 {
                     gBattleMons[gBattlerAttacker].status1 &= ~(STATUS1_FREEZE);
                     BattleScriptPushCursor();

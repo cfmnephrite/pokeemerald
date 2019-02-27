@@ -35,7 +35,7 @@ static const u8 sIcePunchDescription[] = _(
 
 static const u8 sThunderPunchDescription[] = _(
     "An electrified punch that\n"
-    "may paralyze the foe.");
+    "may paralyse the foe.");
 
 static const u8 sScratchDescription[] = _(
     "Scratches the foe with\n"
@@ -311,7 +311,7 @@ static const u8 sPoisonPowderDescription[] = _(
 
 static const u8 sStunSporeDescription[] = _(
     "Scatters a powder that may\n"
-    "paralyze the foe.");
+    "paralyse the foe.");
 
 static const u8 sSleepPowderDescription[] = _(
     "Scatters a powder that may\n"
@@ -335,15 +335,15 @@ static const u8 sFireSpinDescription[] = _(
 
 static const u8 sThunderShockDescription[] = _(
     "An electrical attack that\n"
-    "may paralyze the foe.");
+    "may paralyse the foe.");
 
 static const u8 sThunderboltDescription[] = _(
     "A strong electrical attack\n"
-    "that may paralyze the foe.");
+    "that may paralyse the foe.");
 
 static const u8 sThunderWaveDescription[] = _(
     "A weak jolt of electricity\n"
-    "that paralyzes the foe.");
+    "that paralyses the foe.");
 
 static const u8 sThunderDescription[] = _(
     "A lightning attack that may\n"
@@ -487,7 +487,7 @@ static const u8 sEggBombDescription[] = _(
 
 static const u8 sLickDescription[] = _(
     "Licks with a long tongue to\n"
-    "injure. May also paralyze.");
+    "injure. May also paralyse.");
 
 static const u8 sSmogDescription[] = _(
     "An exhaust-gas attack\n"
@@ -835,7 +835,7 @@ static const u8 sMilkDrinkDescription[] = _(
 
 static const u8 sSparkDescription[] = _(
     "An electrified tackle that\n"
-    "may paralyze the foe.");
+    "may paralyse the foe.");
 
 static const u8 sFuryCutterDescription[] = _(
     "An attack that intensifies\n"
@@ -1051,14 +1051,14 @@ static const u8 sMementoDescription[] = _(
 
 static const u8 sFacadeDescription[] = _(
     "Boosts ATTACK when burned,\n"
-    "paralyzed, or poisoned.");
+    "paralysed, or poisoned.");
 
 static const u8 sFocusPunchDescription[] = _(
     "A powerful loyalty attack.\n"
     "The user flinches if hit.");
 
 static const u8 sSmellingSaltDescription[] = _(
-    "Powerful against paralyzed\n"
+    "Powerful against paralysed\n"
     "foes, but also heals them.");
 
 static const u8 sFollowMeDescription[] = _(
@@ -1359,7 +1359,7 @@ static const u8 sBulkUpDescription[] = _(
 
 static const u8 sBounceDescription[] = _(
     "Bounces up, then down the\n"
-    "next turn. May paralyze.");
+    "next turn. May paralyse.");
 
 static const u8 sMudShotDescription[] = _(
     "Hurls mud at the foe and\n"
@@ -1567,7 +1567,7 @@ static const u8 sFLARE_BLITZDescription[] = _(
 
 static const u8 sFORCE_PALMDescription[] = _(
 	"A shock wave attack that\n"
-	"may paralyze the foe.");
+	"may paralyse the foe.");
 
 static const u8 sAURA_SPHEREDescription[] = _(
 	"Attacks with an aura blast\n"
@@ -1651,7 +1651,7 @@ static const u8 sICE_SHARDDescription[] = _(
 
 static const u8 sTHUNDER_FANGDescription[] = _(
 	"May cause flinching or\n"
-	"leave the foe paralyzed.");
+	"leave the foe paralysed.");
 
 static const u8 sICE_FANGDescription[] = _(
 	"May cause flinching or\n"
@@ -2067,7 +2067,7 @@ static const u8 sSECRET_SWORDDescription[] = _(
 
 static const u8 sBOLT_STRIKEDescription[] = _(
 	"Strikes with a great amount\n"
-	"of lightning. May paralyze.");
+	"of lightning. May paralyse.");
 
 static const u8 sBLUE_FLAREDescription[] = _(
 	"Engulfs the foe in a blue\n"
@@ -2079,7 +2079,7 @@ static const u8 sFIERY_DANCEDescription[] = _(
 
 static const u8 sFREEZE_SHOCKDescription[] = _(
 	"A powerful 2-turn move that\n"
-	"may paralyze the foe.");
+	"may paralyse the foe.");
 
 static const u8 sICE_BURNDescription[] = _(
 	"A powerful 2-turn move that\n"

@@ -168,7 +168,7 @@
       "trainer_type": "0",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "PetalburgWoods_EventScript_291129",
-      "flag": "FLAG_ITEM_PETALBURD_WOODS_PARALYZE_HEAL"
+      "flag": "FLAG_ITEM_PETALBURD_WOODS_PARALYSE_HEAL"
     },
     {
       "graphics_id": "EVENT_OBJ_GFX_GIRL_2",
