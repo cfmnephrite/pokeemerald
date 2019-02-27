@@ -5199,7 +5199,6 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     {
     case ABILITY_HEATPROOF:
     case ABILITY_WATER_BUBBLE:
-	case ABILITY_DAMP:
         if (moveType == TYPE_FIRE)
             MulModifier(&modifier, UQ_4_12(0.5));
         break;
@@ -5866,6 +5865,8 @@ static u16 CalcTypeEffectivenessMultiplierInternal(u16 move, u8 moveType, u8 bat
         gDisableStructs[battlerDef].skyDropTrappingBattler = 0;
         gStatuses3[battlerDef] &= ~STATUS3_ON_AIR;            
     }
+	if (GetBattlerAbility(battlerDef) == ABILITY_DAMP && moveType == TYPE_FIRE && modifier >= UQ_4_12(1.0))
+		modifier = UQ_4_12(0.5);
 
     return modifier;
 }
