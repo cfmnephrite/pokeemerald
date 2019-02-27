@@ -1619,11 +1619,6 @@
 	.macro jumpifterrainpreventing battler:req, ptr:req
 	various \battler, VARIOUS_JUMP_IF_TERRAIN_PREVENTING
 	.4byte \ptr
-	.endm    
-    
-	
-	.macro bringdownairbornebattler battler:req
-	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
 	.endm
 
 @ helpful macros
