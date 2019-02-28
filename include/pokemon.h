@@ -321,7 +321,6 @@ struct BaseStats
  /* 0x0A */ u16 evYield_Speed:2;
  /* 0x0B */ u16 evYield_SpAttack:2;
  /* 0x0B */ u16 evYield_SpDefense:2;
- /* 0x0B */ u16 bodyColor:4;
  /* 0x0C */ u16 item1;
  /* 0x0E */ u16 item2;
  /* 0x10 */ u8 genderRatio;
@@ -333,14 +332,8 @@ struct BaseStats
  /* 0x16 */ u8 ability1;
  /* 0x17 */ u8 ability2;
  /* 0x18 */ u8 hiddenAbility;
- /* 0x19 */ u8 noFlip:1;
-            u8 airborne:1;
-            u8 canDive:1;
-            u8 canSurf:1;
-            u8 canFly:1;
-            u8 noTelekinesis:1;
-            u8 legendary:1;
-            u8 noShiny:1;
+ /* 0x19 */ u8 bodyColor : 7;
+            u8 noFlip : 1;
 };
 
 // Argument and effect field are temporarily switched till functions referencing gBattleMoves are decompiled.
