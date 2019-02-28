@@ -6168,11 +6168,6 @@ BattleScript_DazzlingProtected::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 	
-BattleScript_ActiveTerrainPrevents::
-	printfromtable gTerrainPreventsStringIds
-	waitmessage 0x40
-	return
-
 BattleScript_ActiveTerrainPreventsAtkString::
 	attackstring
 	ppreduce

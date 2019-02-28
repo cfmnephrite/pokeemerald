@@ -642,12 +642,12 @@ static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
 static const u8 sText_GravityGrounding[] = _("{B_DEF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!");
 static const u8 sText_ArmorBroke[] = _("{B_DEF_NAME_WITH_PREFIX}'s Battle Armor \nwas shattered!");
 static const u8 sText_SpectralThiefSteal[] = _("{B_ATK_NAME_WITH_PREFIX} stole the target's\nboosted stats!");
-static const u8 sText_MistyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} is surrounded\nby a protective mist!");
+static const u8 sText_MistyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} surrounds itself\nwith a protective mist!");
 static const u8 sText_MistyTerrainPreventsRest[] = _("{B_ATK_NAME_WITH_PREFIX} cannot rest\ndue to the protective mist!");
 static const u8 sText_GrassyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} cannot be poisoned\ndue to the grassy terrain!");
 static const u8 sText_GrassyTerrainHeals[] = _("{B_ATK_NAME_WITH_PREFIX} is healed\nby the grassy terrain!");
-static const u8 sText_ElectricTerrainPrevents[] = _("{B_ATK_NAME_WITH_PREFIX} cannot rest\ndue to the electrifying terrain!");
-static const u8 sText_PsychicTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} is surrounded\nby psychic terrain!");
+static const u8 sText_ElectricTerrainPrevents[] = _("{B_ATK_NAME_WITH_PREFIX} cannot rest\ndue to the electrified terrain!");
+static const u8 sText_PsychicTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} surrounds itself\nwith psychic terrain!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
