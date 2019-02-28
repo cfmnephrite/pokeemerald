@@ -6305,7 +6305,7 @@ static void atk76_various(void)
     case VARIOUS_JUMP_IF_TERRAIN_AFFECTING:
         if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
         {
-            if (IsBattlerGrounded(gActiveBattler) || GetBattlerAbility(gActiveBattler) == ABILITY_MISTY_SURGE)
+            if ((IsBattlerGrounded(gActiveBattler) || GetBattlerAbility(gActiveBattler) == ABILITY_MISTY_SURGE)
                 && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_MOLD_BREAKER
                 || GetBattlerAbility(gBattlerAttacker) == ABILITY_TURBOBLAZE
                 || GetBattlerAbility(gBattlerAttacker) == ABILITY_TERAVOLT))
