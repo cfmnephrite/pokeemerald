@@ -2027,8 +2027,8 @@ enum
     CANCELLER_IN_LOVE,
     CANCELLER_BIDE,
     CANCELLER_THAW,
-	CANCELLER_POWDER_MOVE,
-	CANCELLER_POWDER_STATUS,
+    CANCELLER_POWDER_MOVE,
+    CANCELLER_POWDER_STATUS,
     CANCELLER_SKY_DROP,
     CANCELLER_END,
     CANCELLER_PSYCHIC_TERRAIN,
@@ -2965,20 +2965,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
-		case ABILITY_COLOR_CHANGE:
+        case ABILITY_COLOR_CHANGE:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
                 u16 type[2];
-				for(i = 0; i < 2; i++)
-				{
-					u16 amove = gBattleMons[battler].moves[i];
-					type[i] = gBattleMoves[amove].type;
-				}
-				SET_BATTLER_TYPE(battler, type[0]);
-				SET_BATTLER_TYPE2(battler, type[1]);
+                for(i = 0; i < 2; i++)
+                {
+                    u16 amove = gBattleMons[battler].moves[i];
+                    type[i] = gBattleMoves[amove].type;
+                }
+                SET_BATTLER_TYPE(battler, type[0]);
+                SET_BATTLER_TYPE2(battler, type[1]);
             }
             break;
-		}
+        }
         break;
     case ABILITYEFFECT_ENDTURN: // 1
         if (gBattleMons[battler].hp != 0)
@@ -3246,7 +3246,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gDisableStructs[gBattlerAttacker].disabledMove == MOVE_NONE
              && IsBattlerAlive(gBattlerAttacker)
              && ((i = GetBattleMonMoveSlot(&gBattleMons[gBattlerAttacker], gChosenMove)) != 4)
-			 && ((gBattleMons[gBattlerTarget].hp > 0 && (Random() % 3 == 0)) || (gBattleMons[gBattlerTarget].hp == 0 && (Random() % 3 != 0)))
+             && ((gBattleMons[gBattlerTarget].hp > 0 && (Random() % 3 == 0)) || (gBattleMons[gBattlerTarget].hp == 0 && (Random() % 3 != 0)))
              && !(AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0)))
             {
                 gDisableStructs[gBattlerAttacker].disabledMove = gChosenMove;
@@ -3427,7 +3427,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && gBattleMons[gBattlerTarget].hp == 0
-			 && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP)
+             && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                 if (gBattleMoveDamage == 0)
@@ -5892,8 +5892,8 @@ static u16 CalcTypeEffectivenessMultiplierInternal(u16 move, u8 moveType, u8 bat
         gDisableStructs[battlerDef].skyDropTrappingBattler = 0;
         gStatuses3[battlerDef] &= ~STATUS3_ON_AIR;            
     }
-	if (GetBattlerAbility(battlerDef) == ABILITY_DAMP && moveType == TYPE_FIRE && modifier >= UQ_4_12(1.0))
-		modifier = UQ_4_12(0.5);
+    if (GetBattlerAbility(battlerDef) == ABILITY_DAMP && moveType == TYPE_FIRE && modifier >= UQ_4_12(1.0))
+        modifier = UQ_4_12(0.5);
 
     return modifier;
 }
