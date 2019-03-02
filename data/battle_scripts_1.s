@@ -5494,6 +5494,9 @@ BattleScript_EnduredMsg::
 	return
 	
 BattleScript_SturdiedMsg::
+	copybyte gBattlerAbility, gBattlerTarget
+	pause 0x10
+	call BattleScript_AbilityPopUp
 	printstring STRINGID_ENDUREDSTURDY
 	waitmessage 0x40
 	return
@@ -5608,6 +5611,19 @@ BattleScript_MoveUsedIsParalysed::
 	waitmessage 0x40
 	statusanimation BS_ATTACKER
 	cancelmultiturnmoves BS_ATTACKER
+	goto BattleScript_MoveEnd
+	
+BattleScript_PowderMoveNoEffect::
+	attackstring
+	ppreduce
+	pause 0x20
+	jumpiftype BS_TARGET, TYPE_GRASS, BattleScript_PowderMoveNoEffectPrint
+	call BattleScript_AbilityPopUp
+BattleScript_PowderMoveNoEffectPrint:
+	printstring STRINGID_ITDOESNTAFFECT
+	waitmessage 0x40
+	cancelmultiturnmoves BS_ATTACKER
+	sethword gMoveResultFlags, MOVE_RESULT_FAILED
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveUsedFlinched::
@@ -6331,8 +6347,9 @@ BattleScript_CuteCharmActivates::
 	waitmessage 0x40
 	return
 
-BattleScript_ApplySecondaryEffect::
+BattleScript_AbilityStatusEffect::
 	waitstate
+	call BattleScript_AbilityPopUp
 	seteffectsecondary
 	return
 

@@ -2027,7 +2027,8 @@ enum
     CANCELLER_IN_LOVE,
     CANCELLER_BIDE,
     CANCELLER_THAW,
-    CANCELLER_POWDER,
+	CANCELLER_POWDER_MOVE,
+	CANCELLER_POWDER_STATUS,
     CANCELLER_SKY_DROP,
     CANCELLER_END,
     CANCELLER_PSYCHIC_TERRAIN,
@@ -2307,7 +2308,27 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_POWDER:
+        case CANCELLER_POWDER_MOVE:
+            if (gBattleMoves[gCurrentMove].flags & FLAG_POWDER)
+            {
+                if (IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)
+                    || GetBattlerAbility(gBattlerTarget) == ABILITY_OVERCOAT)
+                {
+                    gBattlerAbility = gBattlerTarget;
+                    effect = 1;
+                }
+                else if (GetBattlerHoldEffect(gBattlerTarget, TRUE) == HOLD_EFFECT_SAFETY_GOOGLES)
+                {
+                    RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_SAFETY_GOOGLES);
+                    effect = 1;
+                }
+
+                if (effect)
+                    gBattlescriptCurrInstr = BattleScript_PowderMoveNoEffect;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_POWDER_STATUS:
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_POWDER)
             {
                 u32 moveType;
@@ -3328,7 +3349,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 
                 gBattleScripting.moveEffect += MOVE_EFFECT_AFFECTS_USER;
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
+                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
@@ -3343,7 +3364,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
+                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
@@ -3358,7 +3379,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
+                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
@@ -3373,7 +3394,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ApplySecondaryEffect;
+                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
