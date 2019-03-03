@@ -91,7 +91,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAccuracyDownHit
 	.4byte BattleScript_EffectEvasionDownHit
 	.4byte BattleScript_EffectTwoTurnsAttack
-	.4byte BattleScript_EffectConfuseHit
+	.4byte BattleScript_EffectUnused76
 	.4byte BattleScript_EffectDoubleHitEffect
 	.4byte BattleScript_EffectVitalThrow
 	.4byte BattleScript_EffectSubstitute
@@ -931,32 +931,8 @@ BattleScript_EffectClearSmog:
 	goto BattleScript_EffectHit
 	
 BattleScript_EffectToxicThread:
-	setstatchanger STAT_SPEED, 2, TRUE
-	attackcanceler
-	jumpifsubstituteblocks BattleScript_ButItFailedAtkStringPpReduce
-	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_SPEED, 0x0, BattleScript_ToxicThreadWorks
-	jumpifstatus BS_TARGET, STATUS1_PSN_ANY, BattleScript_ButItFailedAtkStringPpReduce
-BattleScript_ToxicThreadWorks:
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	statbuffchange 0x1, BattleScript_ToxicThreadTryPsn
-	jumpifbyte CMP_LESS_THAN, cMULTISTRING_CHOOSER, 0x2, BattleScript_ToxicThreadDoAnim
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x3, BattleScript_ToxicThreadTryPsn
-	pause 0x20
-	goto BattleScript_ToxicThreadPrintString
-BattleScript_ToxicThreadDoAnim::
-	attackanimation
-	waitanimation
-	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-BattleScript_ToxicThreadPrintString::
-	printfromtable gStatDownStringIds
-	waitmessage 0x40
-BattleScript_ToxicThreadTryPsn::
-	setmoveeffect MOVE_EFFECT_POISON
-	seteffectprimary
-	goto BattleScript_MoveEnd
+	setmoveeffect MOVE_EFFECT_SPD_MINUS_1 | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHitArgEffect
 	
 BattleScript_EffectVenomDrench:
 	attackcanceler
@@ -1801,6 +1777,7 @@ BattleScript_EffectPlaceholder:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
 BattleScript_EffectUnused66:
+BattleScript_EffectUnused76:
 BattleScript_EffectUnused96:
 BattleScript_EffectUnused125:
 BattleScript_EffectFreeze:	
@@ -2752,10 +2729,6 @@ BattleScript_EffectTwoTurnsAttackFreezeShock:
 	setbyte sTWOTURN_STRINGID, 0x0
 	goto BattleScript_EffectTwoTurnsAttackContinue
 
-BattleScript_EffectConfuseHit::
-	setmoveeffect MOVE_EFFECT_CONFUSION
-	goto BattleScript_EffectHit
-
 BattleScript_EffectDoubleHitEffect::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -3508,9 +3481,8 @@ BattleScript_SolarbeamOnFirstTurn::
 	goto BattleScript_TwoTurnMovesSecondTurn
 
 BattleScript_EffectThunder:
-	setmoveeffect MOVE_EFFECT_PARALYSIS
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
-	goto BattleScript_EffectHit
+	goto BattleScript_EffectHitArgOnlyEffect
 	
 BattleScript_EffectHurricane:
 	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_SUN_ANY, BattleScript_EffectHurricaneSun
