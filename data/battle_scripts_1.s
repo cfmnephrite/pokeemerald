@@ -6349,6 +6349,12 @@ BattleScript_AbilityCuredStatus::
 	waitmessage 0x40
 	updatestatusicon BS_SCRIPTING
 	return
+	
+BattleScript_DancerActivates::
+	call BattleScript_AbilityPopUp
+	waitmessage 0x20
+	printstring STRINGID_FREEDFROMSKYDROP
+	return
 
 BattleScript_IgnoresWhileAsleep::
 	printstring STRINGID_PKMNIGNORESASLEEP

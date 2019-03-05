@@ -310,5 +310,6 @@ extern const u8 BattleScript_DefiantActivates[];
 extern const u8 BattleScript_CheekPouchActivates[];
 extern const u8 BattleScript_GrassyTerrainLoop[];
 extern const u8 BattleScript_PowderMoveNoEffect[];
+extern const u8 BattleScript_DancerActivates[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

@@ -5069,10 +5069,11 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
              && gBattleMoves[move].effect != EFFECT_HIDDEN_POWER
              && gBattleMoves[move].effect != EFFECT_WEATHER_BALL
              && gBattleMoves[move].effect != EFFECT_JUDGMENT
-             && ((attackerAbility == ABILITY_PIXILATE && (ateType = TYPE_FAIRY))
+             && (((attackerAbility == ABILITY_PIXILATE || attackerAbility == ABILITY_FAIRY_AURA) && (ateType = TYPE_FAIRY))
                  || (attackerAbility == ABILITY_REFRIGERATE && (ateType = TYPE_ICE))
                  || (attackerAbility == ABILITY_AERILATE && (ateType = TYPE_FLYING))
                  || ((attackerAbility == ABILITY_GALVANIZE) && (ateType = TYPE_ELECTRIC))
+				 || ((attackerAbility == ABILITY_DARK_AURA) && (ateType = TYPE_DARK))
                 )
              )
     {

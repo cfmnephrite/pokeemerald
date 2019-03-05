@@ -3075,6 +3075,24 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     effect++;
                 }
                 break;
+			case ABILITY_DRY_SKIN:
+				if (WEATHER_HAS_EFFECT && !IS_BATTLER_OF_TYPE(battler, TYPE_FIRE))
+				{
+					gBattleMoveDamage = gBattleMons[battler].maxHP / 8;
+					if (gBattleMoveDamage == 0)
+						gBattleMoveDamage = 1;
+					if (gBattleWeather & WEATHER_SUN_ANY)
+						BattleScriptPushCursorAndCallback(BattleScript_SolarPowerActivates);
+					else if ((gBattleWeather & WEATHER_RAIN_ANY)
+					 && !BATTLER_MAX_HP(battler)
+					 && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+					{
+						BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
+						gBattleMoveDamage *= -1;
+					}
+					effect++;
+				}
+				break;
             }
         }
         break;
@@ -3087,8 +3105,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             gBattlescriptCurrInstr = BattleScript_SoundproofProtected;
             effect = 1;
         }
-        else if ((gLastUsedAbility == ABILITY_DAZZLING
-                   || (IsBattlerAlive(battler ^= BIT_FLANK) && GetBattlerAbility(battler) == ABILITY_DAZZLING)
+        else if (((gLastUsedAbility == ABILITY_DAZZLING || gLastUsedAbility == ABILITY_QUEENLY_MAJESTY)
+                   || (IsBattlerAlive(battler ^= BIT_FLANK) && (GetBattlerAbility(battler) == ABILITY_DAZZLING || GetBattlerAbility(battler) == ABILITY_QUEENLY_MAJESTY))
                    )
                  && GetChosenMovePriority(battler) > 0
                  && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(battler))
@@ -3440,6 +3458,30 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		/*case ABILITY_DANCER: //todo
+			if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && gBattleMons[gBattlerTarget].hp != 0
+			 && (gBattleMoves[gLastUsedMove].flags & FLAG_DANCE) gLastUsedMove == MOVE_SPLASH)
+			{
+				u16 danceMoves[9] = {MOVE_FEATHER_DANCE, MOVE_FIERY_DANCE, MOVE_DRAGON_DANCE, MOVE_LUNAR_DANCE, 
+				MOVE_PETAL_DANCE, MOVE_REVELATION_DANCE, MOVE_QUIVER_DANCE, MOVE_SWORDS_DANCE, MOVE_TEETER_DANCE};
+				bool8 dance = FALSE;
+				for(i = 0; i < 9; i++)
+				{
+					if(gLastUsedMove == danceMoves[i])
+						dance = TRUE;
+				}
+				if(dance == TRUE)
+				{
+					gCalledMove = gLastUsedMove;
+					gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);				
+					gBattlerTarget = GetMoveTarget(gCalledMove, 0);
+					BattleScriptPushCursor();
+					gBattlescriptCurrInstr = BattleScript_DancerActivates;
+					effect++;
+				//}
+			}
+			break;*/
         }
         break;
     case ABILITYEFFECT_IMMUNITY: // 5
@@ -5614,7 +5656,12 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
             MulModifier(&modifier, UQ_4_12(1.5));
         break;
     }
-
+	
+	//weather effects
+	
+	if (IS_BATTLER_OF_TYPE(battlerDef, TYPE_ROCK) && !usesDefStat && gBattleWeather & WEATHER_SANDSTORM_ANY)
+		MulModifier(&modifier, UQ_4_12(1.5));
+	
     return ApplyModifier(modifier, defStat);
 }
 
@@ -5655,6 +5702,13 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
         else if (moveType == TYPE_WATER && gBattleMoves[move].effect != EFFECT_SCALD)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
     }
+	else if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_HAIL_ANY)
+	{
+		if (moveType == TYPE_ICE)
+			dmg = ApplyModifier(UQ_4_12(1.25), dmg);
+		else if (moveType == TYPE_WATER || moveType == TYPE_FIRE)
+			dmg = ApplyModifier(UQ_4_12(0.5), dmg);
+	}
 
     // check stab
     if (IS_BATTLER_OF_TYPE(battlerAtk, moveType) && move != MOVE_STRUGGLE)
