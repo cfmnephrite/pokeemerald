@@ -1750,6 +1750,8 @@ BattleScript_EffectHitEscape:
 	jumpifbattleend BattleScript_HitEscapeEnd
 	jumpifbyte CMP_NOT_EQUAL gBattleOutcome 0, BattleScript_HitEscapeEnd
 	jumpifcantswitch ATK4F_DONT_CHECK_STATUSES | BS_ATTACKER, BattleScript_HitEscapeEnd
+	printstring STRINGID_PKMNWENTBACK
+	waitmessage 0x20
 	openpartyscreen 0x1, BattleScript_HitEscapeEnd
 	switchoutabilities BS_ATTACKER
 	waitstate
@@ -4683,6 +4685,26 @@ BattleScript_DoSwitchOut::
 	moveend 0x1, 0x0
 	setbyte sMOVEEND_STATE, 0xF
 	moveend 0x1, 0x0
+	end2
+	
+BattleScript_EmergencyExit::
+	jumpifbattleend BattleScript_HitEscapeEnd
+	jumpifbyte CMP_NOT_EQUAL gBattleOutcome 0, BattleScript_HitEscapeEnd
+	jumpifcantswitch ATK4F_DONT_CHECK_STATUSES | BS_TARGET, BattleScript_HitEscapeEnd
+	call BattleScript_AbilityPopUp
+	waitmessage 0x20
+	openpartyscreen BS_TARGET, BattleScript_HitEscapeEnd
+	switchoutabilities BS_TARGET
+	waitstate
+	switchhandleorder BS_TARGET, 0x2
+	returntoball BS_TARGET
+	getswitchedmondata BS_TARGET
+	switchindataupdate BS_TARGET
+	hpthresholds BS_TARGET
+	printstring STRINGID_SWITCHINMON
+	switchinanim BS_TARGET, TRUE
+	waitstate
+	switchineffects BS_TARGET
 	end2
 
 BattleScript_PursuitDmgOnSwitchOut::
