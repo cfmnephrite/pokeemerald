@@ -1491,7 +1491,8 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_BURN:  // burn
                 if ((gBattleMons[gActiveBattler].status1 & STATUS1_BURN)
                     && gBattleMons[gActiveBattler].hp != 0
-                    && ability != ABILITY_MAGIC_GUARD)
+                    && ability != ABILITY_MAGIC_GUARD
+					&& ability != ABILITY_FLARE_BOOST)
                 {
                     gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
                     if (gBattleMoveDamage == 0)
@@ -2605,7 +2606,7 @@ static const u16 sWeatherFlagsInfo[][3] =
 
 bool32 TryChangeBattleWeather(u8 battler, u32 weatherEnumId, bool32 viaAbility)
 {
-    if (viaAbility && B_ABILITY_WEATHER <= GEN_5
+    if (viaAbility && (B_ABILITY_WEATHER <= GEN_5 || GetBattlerAbility(battler) == ABILITY_FORECAST)
         && !(gBattleWeather & sWeatherFlagsInfo[weatherEnumId][1]))
     {
         gBattleWeather = (sWeatherFlagsInfo[weatherEnumId][0] | sWeatherFlagsInfo[weatherEnumId][1]);
@@ -2898,6 +2899,33 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
             break;
         case ABILITY_FORECAST:
+			switch(gBattleMons[battler].moves[0])
+			{
+			case MOVE_RAIN_DANCE:
+				if (TryChangeBattleWeather(battler, ENUM_WEATHER_RAIN, TRUE))
+				{
+					BattleScriptPushCursorAndCallback(BattleScript_DrizzleActivates);
+					gBattleScripting.battler = battler;
+					effect++;
+				}
+				break;
+			case MOVE_SUNNY_DAY:
+				if (TryChangeBattleWeather(battler, ENUM_WEATHER_SUN, TRUE))
+				{
+					BattleScriptPushCursorAndCallback(BattleScript_DroughtActivates);
+					gBattleScripting.battler = battler;
+					effect++;
+				}
+				break;
+			case MOVE_HAIL:
+				if (TryChangeBattleWeather(battler, ENUM_WEATHER_HAIL, TRUE))
+				{
+					BattleScriptPushCursorAndCallback(BattleScript_SnowWarningActivates);
+					gBattleScripting.battler = battler;
+					effect++;
+				}
+				break;
+			}
             effect = CastformDataTypeChange(battler);
             if (effect != 0)
             {
@@ -3265,7 +3293,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && IsBattlerAlive(gBattlerAttacker)
              && ((i = GetBattleMonMoveSlot(&gBattleMons[gBattlerAttacker], gChosenMove)) != 4)
              && ((gBattleMons[gBattlerTarget].hp > 0 && (Random() % 3 == 0)) || (gBattleMons[gBattlerTarget].hp == 0 && (Random() % 3 != 0)))
-             && !(AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0)))
+             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerAttacker)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerAttacker)))))
             {
                 gDisableStructs[gBattlerAttacker].disabledMove = gChosenMove;
                 gDisableStructs[gBattlerAttacker].disableTimer = 4;
@@ -3445,7 +3473,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_INFATUATION)
              && GetGenderFromSpeciesAndPersonality(speciesAtk, pidAtk) != MON_GENDERLESS
              && GetGenderFromSpeciesAndPersonality(speciesDef, pidDef) != MON_GENDERLESS
-             && !(AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0)))
+             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerAttacker)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerAttacker)))))
             {
                 gBattleMons[gBattlerAttacker].status2 |= STATUS2_INFATUATED_WITH(gBattlerTarget);
                 BattleScriptPushCursor();
@@ -3502,6 +3530,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             switch (GetBattlerAbility(battler))
             {
             case ABILITY_IMMUNITY:
+			case ABILITY_WATER_VEIL:
                 if (gBattleMons[battler].status1 & (STATUS1_POISON | STATUS1_TOXIC_POISON | STATUS1_TOXIC_COUNTER))
                 {
                     StringCopy(gBattleTextBuff1, gStatusConditionString_PoisonJpn);
@@ -3531,7 +3560,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     effect = 1;
                 }
                 break;
-            case ABILITY_WATER_VEIL:
+			case ABILITY_WATER_BUBBLE:
                 if (gBattleMons[battler].status1 & STATUS1_BURN)
                 {
                     StringCopy(gBattleTextBuff1, gStatusConditionString_BurnJpn);

@@ -2090,6 +2090,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_WATER)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || GetBattlerAbility(gEffectBattler) == ABILITY_DAMP
+				|| GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
                 || gBattleMons[gEffectBattler].status1)
                 break;
 
@@ -4395,18 +4396,24 @@ static void atk49_moveend(void)
 
 static void atk4A_sethealblock(void)
 {
-    if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_AROMA_VEIL))
     {
         gBattlescriptCurrInstr += 5;
     }
-    if (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)
+    else if (((gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK) && (gStatuses3[BATTLE_PARTNER(gBattlerTarget)] & STATUS3_HEAL_BLOCK))
+		|| (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)))
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
     else
     {
         gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
-        gDisableStructs[gBattlerTarget].healBlockTimer = 5;
+		gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
+		if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
+		{
+			gDisableStructs[gBattlerTarget].healBlockTimer = 5;
+			gDisableStructs[BATTLE_PARTNER(gBattlerTarget)].healBlockTimer = 5;
+		}
         gBattlescriptCurrInstr += 10;
     }
 }
@@ -7061,6 +7068,22 @@ static void atk76_various(void)
         else
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         return;
+	case VARIOUS_CHECK_FLOWER_VEIL:
+		if ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
+		 && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+		 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
+		{
+			u8 t;
+			if (GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL)
+				t = gBattlerTarget;
+			else
+				t = BATTLE_PARTNER(gBattlerTarget);
+			PREPARE_ABILITY_BUFFER(gBattleTextBuff1, GetBattlerAbility(t));
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+		}
+		else
+			gBattlescriptCurrInstr += 7;
+		return;
     case VARIOUS_TRY_SYNCHRONOISE:
         if (!DoBattlersShareType(gBattlerAttacker, gBattlerTarget))
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
@@ -7099,7 +7122,7 @@ static void atk76_various(void)
         }
         else if (gBattleMons[gBattlerAttacker].status1 & STATUS1_BURN)
         {
-            if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_VEIL 
+            if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_BUBBLE
             || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE
             || GetBattlerAbility(gBattlerTarget) == ABILITY_DAMP)
             {
@@ -7864,7 +7887,10 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             return STAT_CHANGE_DIDNT_WORK;
         }
         else if ((gBattleMons[gActiveBattler].ability == ABILITY_CLEAR_BODY
-                  || gBattleMons[gActiveBattler].ability == ABILITY_WHITE_SMOKE)
+                  || gBattleMons[gActiveBattler].ability == ABILITY_WHITE_SMOKE 
+				  || ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
+				 && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+				 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)))
                  && !certain && gCurrentMove != MOVE_CURSE)
         {
             if (flags == STAT_CHANGE_BS_PTR)
@@ -8388,6 +8414,7 @@ static void atk93_tryKO(void)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gLastUsedAbility = ABILITY_STURDY;
+		PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
         gBattlescriptCurrInstr = BattleScript_SturdyPreventsOHKO;
         RecordAbilityBattle(gBattlerTarget, ABILITY_STURDY);
     }
@@ -8872,7 +8899,7 @@ static void atkA3_disablelastusedattack(void)
 {
     s32 i;
 
-    if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
         gBattlescriptCurrInstr += 5;
     else
     {
@@ -8915,7 +8942,7 @@ static void atkA4_trysetencore(void)
         i = 4;
     }
 
-    if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
     {
         gBattlescriptCurrInstr += 5;
     }
@@ -9942,7 +9969,7 @@ static void atkCD_cureifburnedparalysedorpoisoned(void) // refresh
 
 static void atkCE_settorment(void)
 {
-    if (AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
         gBattlescriptCurrInstr += 5;
     else if (gBattleMons[gBattlerTarget].status2 & STATUS2_TORMENT)
     {
@@ -9965,7 +9992,8 @@ static void atkCF_jumpifnodamage(void)
 
 static void atkD0_settaunt(void)
 {
-    if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS || AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gBattlerTarget, ABILITY_AROMA_VEIL, 0, 0))
+    if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS 
+	|| (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)))))
     {
         gBattlescriptCurrInstr += 5;
     }

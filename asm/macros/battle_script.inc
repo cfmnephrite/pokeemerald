@@ -1625,6 +1625,11 @@
 	various \battler, VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS
 	.4byte \ptr
 	.endm 
+	
+	.macro checkflowerveil ptr:req
+	various BS_ATTACKER, VARIOUS_CHECK_FLOWER_VEIL
+	.4byte \ptr
+	.endm
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req

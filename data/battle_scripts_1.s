@@ -1878,6 +1878,7 @@ BattleScript_EffectSleep::
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_InsomniaPrevents
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_InsomniaPrevents
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
@@ -2304,6 +2305,7 @@ BattleScript_EffectToxic::
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
 	jumpifsubstituteblocks BattleScript_ButItFailed
@@ -2603,6 +2605,7 @@ BattleScript_EffectPoison::
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_WATER_VEIL, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
@@ -2629,6 +2632,7 @@ BattleScript_EffectPoisonPowder:
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_WATER_VEIL, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
@@ -2647,6 +2651,7 @@ BattleScript_EffectParalyse:
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_LimberProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_LimberProtected
 	jumpifsubstituteblocks BattleScript_ButItFailed
@@ -3773,8 +3778,10 @@ BattleScript_EffectBurn::
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_BURN, BattleScript_AlreadyBurned
 	jumpiftype BS_TARGET, TYPE_FIRE, BattleScript_NotAffected
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_DampPrevents
 	jumpifability BS_TARGET, ABILITY_DAMP, BattleScript_DampPrevents
+	jumpifability BS_TARGET, ABILITY_WATER_BUBBLE, BattleScript_DampPrevents
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
 	jumpifterrainaffecting BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
@@ -4027,6 +4034,7 @@ BattleScript_EffectYawn::
 	attackcanceler
 	attackstring
 	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
