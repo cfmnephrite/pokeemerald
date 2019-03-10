@@ -1083,7 +1083,7 @@
 	.4byte \param0
 	.endm
 
-	.macro tryimprision param0:req
+	.macro tryimprison param0:req
 	.byte 0xdb
 	.4byte \param0
 	.endm
@@ -1628,6 +1628,9 @@
 	
 	.macro checkflowerveil ptr:req
 	various BS_ATTACKER, VARIOUS_CHECK_FLOWER_VEIL
+	
+	.macro jumpifroarfails ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_ROAR_FAILS
 	.4byte \ptr
 	.endm
 

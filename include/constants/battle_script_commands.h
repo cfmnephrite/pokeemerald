@@ -145,6 +145,7 @@
 #define VARIOUS_JUMP_IF_TERRAIN_AFFECTING       82
 #define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS   83
 #define VARIOUS_CHECK_FLOWER_VEIL				84
+#define VARIOUS_JUMP_IF_ROAR_FAILS              85
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
