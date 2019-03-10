@@ -2652,7 +2652,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 speciesAtk, speciesDef;
     u32 pidAtk, pidDef;
     u32 moveType;
-    u32 i;
+    u32 i, j;
     u32 move;
     u8 side;
     u8 target1;    
@@ -2989,6 +2989,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         SET_STATCHANGER(STAT_SPEED, 1, FALSE);
                         PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
                         BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
+						gSpecialStatuses[battler].switchInAbilityDone = 1;
                         effect++;
                 }
             }
@@ -3004,8 +3005,49 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
                 SET_BATTLER_TYPE(battler, type[0]);
                 SET_BATTLER_TYPE2(battler, type[1]);
+				gSpecialStatuses[battler].switchInAbilityDone = 1;
             }
             break;
+		case ABILITY_FOREWARN:
+			if (!gSpecialStatuses[battler].switchInAbilityDone)
+			{
+				u8 warnedBp = 1;
+				u16 warnedMove, onMon;
+				u32 opposingBattler = BATTLE_OPPOSITE(battler);
+				for (i = 0; i < 2; opposingBattler ^= BIT_SIDE, i++)
+				{
+					if (IsBattlerAlive(opposingBattler))
+					{
+						for (j = 0; j < MAX_MON_MOVES; j++)
+						{
+							u16 amove = gBattleMons[opposingBattler].moves[j];
+							u8 tempBp = warnedBp;
+							if (gBattleMoves[amove].power == 0 && gBattleMoves[amove].split != SPLIT_STATUS)
+								tempBp = 80;
+							else if (amove == MOVE_COUNTER || amove == MOVE_MIRROR_COAT || amove == MOVE_METAL_BURST)
+								tempBp = 120;
+							/*else if (gBattleMoves[amove].effect == EFFECT_OHKO) //no longer exists, oops 
+								tempBp = 150;/*/
+							if ((gBattleMoves[amove].power == tempBp && Random() % 2 == 0) || gBattleMoves[amove].power > tempBp)
+							{
+								warnedBp = gBattleMoves[amove].power;
+								warnedMove = amove;
+								onMon = opposingBattler;
+							}
+						}
+					}
+				}
+				if (warnedMove && onMon)
+				{
+					gBattleCommunication[MULTISTRING_CHOOSER] = 5;
+					gSpecialStatuses[battler].switchInAbilityDone = 1;
+					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, onMon, gBattlerPartyIndexes[onMon]);
+					PREPARE_MOVE_BUFFER(gBattleTextBuff2, warnedMove);
+					BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
+					effect++;
+				}
+			}
+			break;
         }
         break;
     case ABILITYEFFECT_ENDTURN: // 1
