@@ -314,5 +314,6 @@ extern const u8 BattleScript_GrassyTerrainLoop[];
 extern const u8 BattleScript_PowderMoveNoEffect[];
 extern const u8 BattleScript_DancerActivates[];
 extern const u8 BattleScript_EmergencyExit[];
+extern const u8 BattleScript_CannotUseExclusiveMove[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

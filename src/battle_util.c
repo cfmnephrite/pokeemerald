@@ -2020,6 +2020,7 @@ enum
     CANCELLER_SKY_DROP,
     CANCELLER_END,
     CANCELLER_PSYCHIC_TERRAIN,
+    CANCELLER_MON_EXLUSIVE_MOVE,
     CANCELLER_END2,
 };
 
@@ -2380,6 +2381,28 @@ u8 AtkCanceller_UnableToUseMove2(void)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_MON_EXLUSIVE_MOVE:
+            if (gBattleMoves[gCurrentMove].flags & FLAG_MON_EXCLUSIVE)
+            {
+                bool32 canUse = TRUE;
+                switch (gCurrentMove)
+                {
+                    case MOVE_CATASTROPIKA:
+                    case MOVE_10_000_000_VOLT_THUNDERBOLT:
+                        if (gBattleMons[gBattlerAttacker].species != SPECIES_PIKACHU)
+                            canUse = FALSE;
+                            PREPARE_SPECIES_BUFFER(gBattleTextBuff1, SPECIES_PIKACHU)
+                        break;
+                }
+                if (!canUse)
+                {
+                    gBattlescriptCurrInstr = BattleScript_CannotUseExclusiveMove;
+                    gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                    effect = 1;
+                }
             }
             gBattleStruct->atkCancellerTracker++;
             break;

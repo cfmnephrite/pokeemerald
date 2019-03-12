@@ -6431,7 +6431,7 @@ static void atk76_various(void)
         break;
     case VARIOUS_ACUPRESSURE:
         bits = 0;
-        for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+        for (i = STAT_ATK; i < 7; i++)
         {
             if (gBattleMons[gActiveBattler].statStages[i] != 12)
                 bits |= gBitTable[i];
@@ -6441,7 +6441,7 @@ static void atk76_various(void)
             u32 statId;
             do
             {
-                statId = (Random() % NUM_BATTLE_STATS) + 1;
+                statId = (Random() % 7) + 1;
             } while (!(bits & gBitTable[statId]));
 
             if (gBattleMons[gActiveBattler].statStages[statId] >= 11)

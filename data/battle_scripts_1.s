@@ -32,7 +32,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSpecialDefenseUp
 	.4byte BattleScript_EffectAccuracyUp
 	.4byte BattleScript_EffectEvasionUp
-	.4byte BattleScript_EffectUnused17
+	.4byte BattleScript_EffectHitArgOnlyEffect
 	.4byte BattleScript_EffectAttackDown
 	.4byte BattleScript_EffectDefenseDown
 	.4byte BattleScript_EffectSpeedDown
@@ -377,6 +377,13 @@ BattleScript_RevelationDanceTrySpeed::
 	printfromtable gStatUpStringIds
 	waitmessage 0x40
 BattleScript_RevelationDanceEnd::
+	goto BattleScript_MoveEnd	
+
+BattleScript_CannotUseExclusiveMove::
+	attackstring
+	ppreduce	
+	printstring STRINGID_CANTUSEEXCLUSIVEMOVE
+	waitmessage 0x40
 	goto BattleScript_MoveEnd	
 
 BattleScript_EffectHitArgOnlyEffect:	
@@ -1816,7 +1823,6 @@ BattleScript_EffectUnused96:
 BattleScript_EffectUnused125:
 BattleScript_EffectFreeze:	
 BattleScript_EffectAeroblast:
-BattleScript_EffectUnused17:
 BattleScript_EffectEvasionDownHit:
 BattleScript_EffectVitalThrow:
 BattleScript_EffectUnused60:
@@ -4862,12 +4868,12 @@ BattleScript_OverworldWeatherStarts::
 	waitmessage 0x40
 	playanimation2 BS_ATTACKER, sB_ANIM_ARG1, NULL
 	end3
-    
+
 BattleScript_ForecastWeatherEnded::
 	waitmessage 0x40
 	printfromtable gWeatherEndedStringIds
 	waitmessage 0x40
-	return    
+	return
 
 BattleScript_SideStatusWoreOff::
 	printstring STRINGID_PKMNSXWOREOFF
