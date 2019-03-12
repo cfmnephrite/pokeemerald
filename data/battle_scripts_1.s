@@ -1825,6 +1825,7 @@ BattleScript_EffectAlwaysCrit:
 BattleScript_EffectPursuit:
 BattleScript_EffectFellStinger:
 BattleScript_EffectHit::
+BattleScript_EffectSolarbeam:
 BattleScript_EffectLowKick:
 BattleScript_EffectUnused104:
 BattleScript_EffectFlail:
@@ -3503,23 +3504,6 @@ BattleScript_EffectGust::
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
 	goto BattleScript_EffectHit
 
-BattleScript_EffectSolarbeam::
-	jumpifabilitypresent ABILITY_CLOUD_NINE, BattleScript_SolarbeamDecideTurn
-	jumpifabilitypresent ABILITY_AIR_LOCK, BattleScript_SolarbeamDecideTurn
-	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_SUN_TEMPORARY | WEATHER_SUN_PERMANENT, BattleScript_SolarbeamOnFirstTurn
-BattleScript_SolarbeamDecideTurn::
-	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_TwoTurnMovesSecondTurn
-	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
-	setbyte sTWOTURN_STRINGID, 0x1
-	call BattleScriptFirstChargingTurn
-	goto BattleScript_MoveEnd
-BattleScript_SolarbeamOnFirstTurn::
-	orword gHitMarker, HITMARKER_CHARGING
-	setmoveeffect MOVE_EFFECT_CHARGING | MOVE_EFFECT_AFFECTS_USER
-	seteffectprimary
-	ppreduce
-	goto BattleScript_TwoTurnMovesSecondTurn
-
 BattleScript_EffectThunder:
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
 	goto BattleScript_EffectHitArgOnlyEffect
@@ -4878,6 +4862,12 @@ BattleScript_OverworldWeatherStarts::
 	waitmessage 0x40
 	playanimation2 BS_ATTACKER, sB_ANIM_ARG1, NULL
 	end3
+    
+BattleScript_ForecastWeatherEnded::
+	waitmessage 0x40
+	printfromtable gWeatherEndedStringIds
+	waitmessage 0x40
+	return    
 
 BattleScript_SideStatusWoreOff::
 	printstring STRINGID_PKMNSXWOREOFF
@@ -4941,23 +4931,6 @@ BattleScript_GrassyTerrainEnds::
 	waitmessage 0x40
 	end2
 
-BattleScript_GrassyTerrainLoop::
-	copyarraywithindex gBattlerAttacker, gBattlerByTurnOrder, gBattleCommunication, 0x1
-	checkgrassyterrainheal BS_ATTACKER, BattleScript_GrassyTerrainLoopIncrement
-	printstring STRINGID_GRASSYTERRAINHEALS
-	waitmessage 0x40
-BattleScript_GrassyTerrainHpChange:
-	orword gHitMarker, HITMARKER_x20 | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000 | HITMARKER_GRUDGE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-BattleScript_GrassyTerrainLoopIncrement::
-	jumpifbyte CMP_NOT_EQUAL, gBattleOutcome, 0, BattleScript_GrassyTerrainLoopEnd
-	addbyte gBattleCommunication, 0x1
-	jumpifbytenotequal gBattleCommunication, gBattlersCount, BattleScript_GrassyTerrainLoop
-BattleScript_GrassyTerrainLoopEnd::
-	bicword gHitMarker, HITMARKER_x20 | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000 | HITMARKER_GRUDGE
-	end2    
-	
 BattleScript_PsychicTerrainEnds::
 	printstring STRINGID_PSYCHICTERRAINENDS
 	waitmessage 0x40

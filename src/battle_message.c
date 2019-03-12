@@ -1160,10 +1160,11 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_COVEREDINPOWDER - 12] = sText_CoveredInPowder,
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
     [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,
-    [STRINGID_MISTYTERRAINPREVENTS - 12] = sText_MistyTerrainPreventsStatus,
-    [STRINGID_GRASSYTERRAINHEALS - 12] = sText_GrassyTerrainHeals,
-    [STRINGID_ELECTRICTERRAINPREVENTS - 12] = sText_ElectricTerrainPreventsSleep,
-    [STRINGID_PSYCHICTERRAINPREVENTS - 12] = sText_PsychicTerrainPreventsPriority,
+};
+
+const u16 gWeatherEndedStringIds[] =
+{
+    STRINGID_RAINSTOPPED, STRINGID_SUNLIGHTFADED, STRINGID_HAILSTOPPED
 };
 
 const u16 gTerrainStringIds[] =

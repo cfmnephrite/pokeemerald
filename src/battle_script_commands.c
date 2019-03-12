@@ -2090,7 +2090,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_WATER)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || GetBattlerAbility(gEffectBattler) == ABILITY_DAMP
-				|| GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
+                || GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
                 || gBattleMons[gEffectBattler].status1)
                 break;
 
@@ -2700,10 +2700,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_SpectralThiefSteal;
                 }
-                break;
-            case MOVE_EFFECT_V_CREATE:
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_VCreateStatLoss;
                 break;
             }
         }
@@ -4413,19 +4409,19 @@ static void atk4A_sethealblock(void)
         gBattlescriptCurrInstr += 5;
     }
     else if (((gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK) && (gStatuses3[BATTLE_PARTNER(gBattlerTarget)] & STATUS3_HEAL_BLOCK))
-		|| (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)))
+        || (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)))
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
     else
     {
         gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
-		gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
-		if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
-		{
-			gDisableStructs[gBattlerTarget].healBlockTimer = 5;
-			gDisableStructs[BATTLE_PARTNER(gBattlerTarget)].healBlockTimer = 5;
-		}
+        gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
+        if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
+        {
+            gDisableStructs[gBattlerTarget].healBlockTimer = 5;
+            gDisableStructs[BATTLE_PARTNER(gBattlerTarget)].healBlockTimer = 5;
+        }
         gBattlescriptCurrInstr += 10;
     }
 }
@@ -6315,6 +6311,7 @@ static void atk76_various(void)
             gBattleMoveDamage *= -2;
         else
             gBattleMoveDamage *= -1;
+        return;
     // Roar will fail in a double wild battle when used by the player against one of the two alive wild mons.
     // Also when an opposing wild mon uses it againt its partner.
     case VARIOUS_JUMP_IF_ROAR_FAILS:
@@ -6401,14 +6398,6 @@ static void atk76_various(void)
         break;
     case VARIOUS_ARG_TO_CFM_HWORD:
         gBattleScripting.cfmHalfWord = gBattleMoves[gCurrentMove].argument;
-        break;
-    case VARIOUS_GRAVITY_ON_AIRBORNE_MONS:
-        if (gStatuses3[gActiveBattler] & STATUS3_ON_AIR){
-            gBattleMons[gActiveBattler].status2 &= ~STATUS2_MULTIPLETURNS;
-            gLockedMoves[gActiveBattler] = 0;
-            gProtectStructs[gActiveBattler].chargingTurn = 0;
-        }
-        gStatuses3[gActiveBattler] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
         break;
     case VARIOUS_CHECK_SKY_DROP:
         if (gCurrentMove == MOVE_SKY_DROP){
@@ -7098,22 +7087,22 @@ static void atk76_various(void)
         else
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         return;
-	case VARIOUS_CHECK_FLOWER_VEIL:
-		if ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
-		 && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
-		 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
-		{
-			u8 t;
-			if (GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL)
-				t = gBattlerTarget;
-			else
-				t = BATTLE_PARTNER(gBattlerTarget);
-			PREPARE_ABILITY_BUFFER(gBattleTextBuff1, GetBattlerAbility(t));
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		}
-		else
-			gBattlescriptCurrInstr += 7;
-		return;
+    case VARIOUS_CHECK_FLOWER_VEIL:
+        if ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
+         && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+         && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
+        {
+            u8 t;
+            if (GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL)
+                t = gBattlerTarget;
+            else
+                t = BATTLE_PARTNER(gBattlerTarget);
+            PREPARE_ABILITY_BUFFER(gBattleTextBuff1, GetBattlerAbility(t));
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        }
+        else
+            gBattlescriptCurrInstr += 7;
+        return;
     case VARIOUS_TRY_SYNCHRONOISE:
         if (!DoBattlersShareType(gBattlerAttacker, gBattlerTarget))
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
@@ -7918,9 +7907,9 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else if ((gBattleMons[gActiveBattler].ability == ABILITY_CLEAR_BODY
                   || gBattleMons[gActiveBattler].ability == ABILITY_WHITE_SMOKE 
-				  || ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
-				 && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
-				 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)))
+                  || ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
+                 && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+                 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)))
                  && !certain && gCurrentMove != MOVE_CURSE)
         {
             if (flags == STAT_CHANGE_BS_PTR)
@@ -8445,7 +8434,7 @@ static void atk93_tryKO(void)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gLastUsedAbility = ABILITY_STURDY;
-		PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+        PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
         gBattlescriptCurrInstr = BattleScript_SturdyPreventsOHKO;
         RecordAbilityBattle(gBattlerTarget, ABILITY_STURDY);
     }
@@ -10026,7 +10015,7 @@ static void atkCF_jumpifnodamage(void)
 static void atkD0_settaunt(void)
 {
     if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS 
-	|| (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)))))
+    || (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)))))
     {
         gBattlescriptCurrInstr += 5;
     }
@@ -10509,6 +10498,55 @@ static void atkE2_switchoutabilities(void)
             gBattleMons[gActiveBattler].maxHP = gBattleMons[gActiveBattler].maxHP;
         BtlController_EmitSetMonData(0, REQUEST_HP_BATTLE, gBitTable[*(gBattleStruct->field_58 + gActiveBattler)], 2, &gBattleMoveDamage);
         MarkBattlerForControllerExec(gActiveBattler);
+        break;
+    case ABILITY_FORECAST:
+        //if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_FORECAST_ANY && gBattleMons[gActiveBattler].species == SPECIES_CASTFORM) have to figure out Castform's forms first...
+        if (gBattleWeather & WEATHER_FORECAST_ANY)
+        {
+            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            switch (gBattleMons[gActiveBattler].moves[0])
+            {
+                case MOVE_RAIN_DANCE:
+                    if (!(gBattleWeather & WEATHER_RAIN_FORECAST))
+                        break;
+                    gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                    break;
+                case MOVE_SUNNY_DAY:
+                    if (!(gBattleWeather & WEATHER_SUN_FORECAST))
+                        break;
+                    gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+                    break;
+                case MOVE_HAIL:
+                    if (!(gBattleWeather & WEATHER_HAIL_FORECAST))
+                        break;
+                    gBattleCommunication[MULTISTRING_CHOOSER] = 3;
+                    break;
+                default:
+                    break;
+            }
+            if (gBattleCommunication[MULTISTRING_CHOOSER])
+            {
+                s32 i;
+                bool32 continueWeather = FALSE;
+                gBattleCommunication[MULTISTRING_CHOOSER]--;
+                
+                for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+                {
+                    if (gBattleMons[i].hp && i != gActiveBattler && ((GetBattlerAbility(i) == ABILITY_FORECAST && gBattleMons[i].moves[0] == gBattleMons[gActiveBattler].moves[0])
+                                                                 || (gBattleWeather & WEATHER_SUN_FORECAST && GetBattlerAbility(i) == ABILITY_FLOWER_GIFT && gBattleMons[i].moves[0] == MOVE_SUNNY_DAY)))
+                    {    
+                        continueWeather = TRUE;
+                        break;
+                    }
+                }
+                if (!continueWeather){
+                    gBattleWeather &= ~WEATHER_FORECAST_ANY;
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_ForecastWeatherEnded;
+                }
+            }
+            
+        }
         break;
     }
 

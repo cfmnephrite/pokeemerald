@@ -1628,6 +1628,8 @@
 	
 	.macro checkflowerveil ptr:req
 	various BS_ATTACKER, VARIOUS_CHECK_FLOWER_VEIL
+	.4byte \ptr
+	.endm 
 	
 	.macro jumpifroarfails ptr:req
 	various BS_ATTACKER, VARIOUS_JUMP_IF_ROAR_FAILS

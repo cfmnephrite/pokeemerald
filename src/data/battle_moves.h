@@ -7890,7 +7890,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_V_CREATE] =
     {
-        .effect = EFFECT_V_CREATE,
+        .effect = EFFECT_PLACEHOLDER, //EFFECT_V_CREATE,
         .power = 180,
         .type = TYPE_FIRE,
         .accuracy = 95,
