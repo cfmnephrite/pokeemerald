@@ -3104,6 +3104,9 @@ void FaintClearSetData(void)
     gProtectStructs[gActiveBattler].spikyShielded = 0;
     gProtectStructs[gActiveBattler].kingsShielded = 0;
     gProtectStructs[gActiveBattler].banefulBunkered = 0;
+    gProtectStructs[gActiveBattler].craftyShielded = 0;
+    gProtectStructs[gActiveBattler].flowerShielded = 0;
+    gProtectStructs[gActiveBattler].shellTrapProtected = 0;
     gProtectStructs[gActiveBattler].endured = 0;
     gProtectStructs[gActiveBattler].noValidMoves = 0;
     gProtectStructs[gActiveBattler].helpingHand = 0;
@@ -3149,6 +3152,54 @@ void FaintClearSetData(void)
             gBattleStruct->lastTakenMove[i] = 0;
 
         gBattleStruct->lastTakenMoveFrom[i][gActiveBattler] = 0;
+    }
+    
+
+    //if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_FORECAST_ANY && gBattleMons[gActiveBattler].species == SPECIES_CASTFORM) have to figure out Castform's forms first...
+    if (gBattleWeather & WEATHER_FORECAST_ANY && gBattleMons[gActiveBattler].ability == ABILITY_FORECAST)
+    {
+        gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+        switch (gBattleMons[gActiveBattler].moves[0])
+        {
+            case MOVE_RAIN_DANCE:
+                if (!(gBattleWeather & WEATHER_RAIN_FORECAST))
+                    break;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                break;
+            case MOVE_SUNNY_DAY:
+                if (!(gBattleWeather & WEATHER_SUN_FORECAST))
+                    break;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+                break;
+            case MOVE_HAIL:
+                if (!(gBattleWeather & WEATHER_HAIL_FORECAST))
+                    break;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 3;
+                break;
+            default:
+                break;
+        }
+        if (gBattleCommunication[MULTISTRING_CHOOSER])
+        {
+            s32 i;
+            bool32 continueWeather = FALSE;
+            gBattleCommunication[MULTISTRING_CHOOSER]--;
+            
+            for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+            {
+                if (gBattleMons[i].hp && i != gActiveBattler && ((GetBattlerAbility(i) == ABILITY_FORECAST && gBattleMons[i].moves[0] == gBattleMons[gActiveBattler].moves[0])
+                                                             || (gBattleWeather & WEATHER_SUN_FORECAST && GetBattlerAbility(i) == ABILITY_FLOWER_GIFT && gBattleMons[i].moves[0] == MOVE_SUNNY_DAY)))
+                {    
+                    continueWeather = TRUE;
+                    break;
+                }
+            }
+            if (!continueWeather){
+                gBattleWeather &= ~WEATHER_FORECAST_ANY;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ForecastWeatherEnded;
+            }
+        }
     }
 
     gBattleResources->flags->flags[gActiveBattler] = 0;
@@ -4582,6 +4633,9 @@ static void TurnValuesCleanUp(bool8 var0)
             gProtectStructs[gActiveBattler].spikyShielded = 0;
             gProtectStructs[gActiveBattler].kingsShielded = 0;
             gProtectStructs[gActiveBattler].banefulBunkered = 0;
+            gProtectStructs[gActiveBattler].craftyShielded = 0;
+            gProtectStructs[gActiveBattler].flowerShielded = 0;
+            gProtectStructs[gActiveBattler].shellTrapProtected = 0;
         }
         else
         {
@@ -4602,8 +4656,8 @@ static void TurnValuesCleanUp(bool8 var0)
             gBattleMons[gActiveBattler].status2 &= ~(STATUS2_SUBSTITUTE);
     }
 
-    gSideStatuses[0] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD);
-    gSideStatuses[1] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD);
+    gSideStatuses[0] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD);
+    gSideStatuses[1] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD);
     gSideTimers[0].followmeTimer = 0;
     gSideTimers[1].followmeTimer = 0;
 }

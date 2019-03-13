@@ -8193,7 +8193,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_CRAFTY_SHIELD] =
     {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_PROTECT,
         .power = 0,
         .type = TYPE_FAIRY,
         .accuracy = 0,
@@ -8201,21 +8201,21 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_USER,
         .priority = 3,
-        .flags = 0,
+        .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
     },
 
     [MOVE_FLOWER_SHIELD] =
     {
-        .effect = EFFECT_FLOWER_SHIELD,
+        .effect = EFFECT_PROTECT,
         .power = 0,
-        .type = TYPE_FAIRY,
+        .type = TYPE_GRASS,
         .accuracy = 0,
         .pp = 10,
         .secondaryEffectChance = 0,
-        .target = MOVE_TARGET_USER | MOVE_TARGET_FOES_AND_ALLY,
-        .priority = 0,
-        .flags = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 3,
+        .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
     },
 
@@ -8340,7 +8340,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_USER,
-        .priority = 4,
+        .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
     },
@@ -9965,16 +9965,16 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_SHELL_TRAP] =
     {
-        .effect = EFFECT_PLACEHOLDER,
-        .power = 150,
+        .effect = EFFECT_PROTECT,
+        .power = 0,
         .type = TYPE_FIRE,
-        .accuracy = 100,
-        .pp = 5,
+        .accuracy = 0,
+        .pp = 10,
         .secondaryEffectChance = 0,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = -3,
-        .flags = FLAG_PROTECT_AFFECTED,
-        .split = SPLIT_SPECIAL,
+        .target = MOVE_TARGET_USER,
+        .priority = 3,
+        .flags = FLAG_PROTECTION_MOVE,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_FLEUR_CANNON] =

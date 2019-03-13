@@ -902,7 +902,7 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
         return TRUE;
     else if (gProtectStructs[battlerId].banefulBunkered)
     {
-        if (type == TYPE_PSYCHIC)
+        if (type == TYPE_PSYCHIC && gBattleMoves[move].split != SPLIT_STATUS)
         {
             gProtectStructs[battlerId].banefulBunkered = 0;
             brokenByType = TRUE;
@@ -912,9 +912,39 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
     }
     else if (gProtectStructs[battlerId].spikyShielded)
     {
-        if (type == TYPE_FIRE)
+        if (type == TYPE_FIRE && gBattleMoves[move].split != SPLIT_STATUS)
         {
             gProtectStructs[battlerId].spikyShielded = 0;
+            brokenByType = TRUE;
+        }
+        else
+            return TRUE;
+    }
+    else if (gProtectStructs[battlerId].craftyShielded)
+    {
+        if (type == TYPE_STEEL && gBattleMoves[move].split != SPLIT_STATUS)
+        {
+            gProtectStructs[battlerId].craftyShielded = 0;
+            brokenByType = TRUE;
+        }
+        else
+            return TRUE;
+    }
+    else if (gProtectStructs[battlerId].flowerShielded)
+    {
+        if (type == TYPE_POISON && gBattleMoves[move].split != SPLIT_STATUS)
+        {
+            gProtectStructs[battlerId].flowerShielded = 0;
+            brokenByType = TRUE;
+        }
+        else
+            return TRUE;
+    }
+    else if (gProtectStructs[battlerId].shellTrapProtected)
+    {
+        if (type == TYPE_WATER && gBattleMoves[move].split != SPLIT_STATUS)
+        {
+            gProtectStructs[battlerId].shellTrapProtected = 0;
             brokenByType = TRUE;
         }
         else
@@ -924,9 +954,6 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD
              && GetChosenMovePriority(gBattlerAttacker) > 0)
-        return TRUE;
-    else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD
-             && gBattleMoves[move].power == 0)
         return TRUE;
     else
         return FALSE;
@@ -2635,18 +2662,22 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 if (gProtectStructs[gBattlerTarget].protected
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_WIDE_GUARD
                     || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_QUICK_GUARD
-                    || gSideStatuses[GetBattlerSide(gBattlerTarget)] & SIDE_STATUS_CRAFTY_SHIELD
                     || gProtectStructs[gBattlerTarget].spikyShielded
                     || gProtectStructs[gBattlerTarget].kingsShielded
-                    || gProtectStructs[gBattlerTarget].banefulBunkered)
+                    || gProtectStructs[gBattlerTarget].banefulBunkered
+                    || gProtectStructs[gBattlerTarget].craftyShielded
+                    || gProtectStructs[gBattlerTarget].flowerShielded
+                    || gProtectStructs[gBattlerTarget].shellTrapProtected)
                 {
                     gProtectStructs[gBattlerTarget].protected = 0;
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_WIDE_GUARD);
                     gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_QUICK_GUARD);
-                    gSideStatuses[GetBattlerSide(gBattlerTarget)] &= ~(SIDE_STATUS_CRAFTY_SHIELD);
                     gProtectStructs[gBattlerTarget].spikyShielded = 0;
                     gProtectStructs[gBattlerTarget].kingsShielded = 0;
                     gProtectStructs[gBattlerTarget].banefulBunkered = 0;
+                    gProtectStructs[gBattlerTarget].craftyShielded = 0;
+                    gProtectStructs[gBattlerTarget].flowerShielded = 0;
+                    gProtectStructs[gBattlerTarget].shellTrapProtected = 0;
                     if (gCurrentMove == MOVE_FEINT)
                     {
                         BattleScriptPush(gBattlescriptCurrInstr + 1);
@@ -7395,6 +7426,21 @@ static void atk77_setprotectlike(void)
                 gProtectStructs[gBattlerAttacker].banefulBunkered = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
             }
+            else if (gCurrentMove == MOVE_CRAFTY_SHIELD)
+            {
+                gProtectStructs[gBattlerAttacker].craftyShielded = 1;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            }
+            else if (gCurrentMove == MOVE_FLOWER_SHIELD)
+            {
+                gProtectStructs[gBattlerAttacker].flowerShielded = 1;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            }
+            else if (gCurrentMove == MOVE_SHELL_TRAP)
+            {
+                gProtectStructs[gBattlerAttacker].shellTrapProtected = 1;
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            }
 
             gDisableStructs[gBattlerAttacker].protectUses++;
             fail = FALSE;
@@ -7412,13 +7458,6 @@ static void atk77_setprotectlike(void)
             else if (gCurrentMove == MOVE_QUICK_GUARD && !(gSideStatuses[side] & SIDE_STATUS_QUICK_GUARD))
             {
                 gSideStatuses[side] |= SIDE_STATUS_QUICK_GUARD;
-                gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-                gDisableStructs[gBattlerAttacker].protectUses++;
-                fail = FALSE;
-            }
-            else if (gCurrentMove == MOVE_CRAFTY_SHIELD && !(gSideStatuses[side] & SIDE_STATUS_CRAFTY_SHIELD))
-            {
-                gSideStatuses[side] |= SIDE_STATUS_CRAFTY_SHIELD;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
                 gDisableStructs[gBattlerAttacker].protectUses++;
                 fail = FALSE;

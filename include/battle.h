@@ -178,10 +178,14 @@ struct DisableStruct
 struct ProtectStruct
 {
     u32 protected:1;
+    u32 detected:1;
+    u32 endured:1;
     u32 spikyShielded:1;
     u32 kingsShielded:1;
     u32 banefulBunkered:1;
-    u32 endured:1;
+    u32 craftyShielded:1;
+    u32 flowerShielded:1;
+    u32 shellTrapProtected:1;
     u32 noValidMoves:1;
     u32 helpingHand:1;
     u32 bounceMove:1;

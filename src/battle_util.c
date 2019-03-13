@@ -2393,8 +2393,10 @@ u8 AtkCanceller_UnableToUseMove2(void)
                     case MOVE_CATASTROPIKA:
                     case MOVE_10_000_000_VOLT_THUNDERBOLT:
                         if (gBattleMons[gBattlerAttacker].species != SPECIES_PIKACHU)
+                        {
                             canUse = FALSE;
-                            PREPARE_SPECIES_BUFFER(gBattleTextBuff1, SPECIES_PIKACHU)
+                            PREPARE_SPECIES_BUFFER(gBattleTextBuff1, SPECIES_PIKACHU);
+                        }
                         break;
                 }
                 if (!canUse)

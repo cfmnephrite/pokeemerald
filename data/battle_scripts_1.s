@@ -4406,8 +4406,8 @@ BattleScript_FaintAttacker::
 	playfaintcry BS_ATTACKER
 	pause 0x40
 	dofaintanimation BS_ATTACKER
-	cleareffectsonfaint BS_ATTACKER
 	printstring STRINGID_ATTACKERFAINTED
+	cleareffectsonfaint BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_ATTACKER
 	return
 
@@ -4415,8 +4415,8 @@ BattleScript_FaintTarget::
 	playfaintcry BS_TARGET
 	pause 0x40
 	dofaintanimation BS_TARGET
-	cleareffectsonfaint BS_TARGET
 	printstring STRINGID_TARGETFAINTED
+	cleareffectsonfaint BS_TARGET
 	tryactivatemoxie BS_ATTACKER
 	tryactivatebeastboost BS_ATTACKER
 	tryactivatefellstinger BS_ATTACKER
