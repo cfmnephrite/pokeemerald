@@ -315,5 +315,6 @@ extern const u8 BattleScript_PowderMoveNoEffect[];
 extern const u8 BattleScript_DancerActivates[];
 extern const u8 BattleScript_EmergencyExit[];
 extern const u8 BattleScript_CannotUseExclusiveMove[];
+extern const u8 BattleScript_BrokeThroughProtectLike[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

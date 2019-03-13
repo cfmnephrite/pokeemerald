@@ -650,6 +650,7 @@ static const u8 sText_GrassyTerrainHeals[] = _("{B_ATK_NAME_WITH_PREFIX} is heal
 static const u8 sText_ElectricTerrainPrevents[] = _("{B_ATK_NAME_WITH_PREFIX} cannot rest\ndue to the electrified terrain!");
 static const u8 sText_PsychicTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} surrounds itself\nwith psychic terrain!");
 static const u8 sText_SafetyGooglesProtected[] = _("{B_DEF_NAME_WITH_PREFIX} is not affected\nthanks to its {B_LAST_ITEM}!");
+static const u8 sText_BrokeThroughProtectLike[] = _("The {B_BUFF1}-type move broke\n{B_DEF_NAME_WITH_PREFIX}'s protection!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1162,6 +1163,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
     [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,
     [STRINGID_CANTUSEEXCLUSIVEMOVE - 12] = sText_CantUseExclusiveMove,
+    [STRINGID_BROKETHROUGHPROTECTLIKE - 12] = sText_BrokeThroughProtectLike,
 };
 
 const u16 gWeatherEndedStringIds[] =

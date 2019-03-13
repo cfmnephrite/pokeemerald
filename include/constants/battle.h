@@ -231,7 +231,7 @@
 #define MOVE_RESULT_SUPER_EFFECTIVE    (1 << 1)
 #define MOVE_RESULT_NOT_VERY_EFFECTIVE (1 << 2)
 #define MOVE_RESULT_DOESNT_AFFECT_FOE  (1 << 3)
-#define MOVE_RESULT_ONE_HIT_KO         (1 << 4)
+#define MOVE_RESULT_TYPE_BROKE_PROTECT (1 << 4)
 #define MOVE_RESULT_FAILED             (1 << 5)
 #define MOVE_RESULT_FOE_ENDURED        (1 << 6)
 #define MOVE_RESULT_FOE_HUNG_ON        (1 << 7)

@@ -4875,6 +4875,11 @@ BattleScript_ForecastWeatherEnded::
 	waitmessage 0x40
 	return
 
+BattleScript_BrokeThroughProtectLike::
+	printstring STRINGID_BROKETHROUGHPROTECTLIKE
+	waitmessage 0x40
+	return    
+    
 BattleScript_SideStatusWoreOff::
 	printstring STRINGID_PKMNSXWOREOFF
 	waitmessage 0x40
@@ -5516,11 +5521,6 @@ BattleScript_SturdiedMsg::
 	pause 0x10
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_ENDUREDSTURDY
-	waitmessage 0x40
-	return
-
-BattleScript_OneHitKOMsg::
-	printstring STRINGID_ONEHITKO
 	waitmessage 0x40
 	return
 

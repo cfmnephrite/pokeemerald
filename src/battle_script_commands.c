@@ -887,6 +887,10 @@ static const u8 sUnknown_0831C4F8[] =
 
 bool32 IsBattlerProtected(u8 battlerId, u16 move)
 {
+    u8 type;
+    bool32 brokenByType = FALSE;
+    GET_MOVE_TYPE(move, type);
+    
     if (!(gBattleMoves[move].flags & FLAG_PROTECT_AFFECTED))
         return FALSE;
     else if (gBattleMoves[move].effect == MOVE_EFFECT_FEINT)
@@ -897,9 +901,25 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
              && gBattleMoves[move].target & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
         return TRUE;
     else if (gProtectStructs[battlerId].banefulBunkered)
-        return TRUE;
+    {
+        if (type == TYPE_PSYCHIC)
+        {
+            gProtectStructs[battlerId].banefulBunkered = 0;
+            brokenByType = TRUE;
+        }
+        else
+            return TRUE;
+    }
     else if (gProtectStructs[battlerId].spikyShielded)
-        return TRUE;
+    {
+        if (type == TYPE_FIRE)
+        {
+            gProtectStructs[battlerId].spikyShielded = 0;
+            brokenByType = TRUE;
+        }
+        else
+            return TRUE;
+    }
     else if (gProtectStructs[battlerId].kingsShielded && gBattleMoves[move].power != 0)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD
@@ -910,6 +930,14 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
         return TRUE;
     else
         return FALSE;
+    
+    // CFM - certain protect moves are broken by moves of certain types
+    if (brokenByType)
+    {
+        PREPARE_TYPE_BUFFER(gBattleTextBuff1, type);
+        gMoveResultFlags |= MOVE_RESULT_TYPE_BROKE_PROTECT;
+        return FALSE;
+    }
 }
 
 static void atk00_attackcanceler(void)
@@ -1777,7 +1805,6 @@ static void atk0E_effectivenesssound(void)
             // no sound
             break;
         case MOVE_RESULT_FOE_ENDURED:
-        case MOVE_RESULT_ONE_HIT_KO:
         case MOVE_RESULT_FOE_HUNG_ON:
         case MOVE_RESULT_STURDIED:
         default:
@@ -1825,71 +1852,37 @@ static void atk0F_resultmessage(void)
         case MOVE_RESULT_NOT_VERY_EFFECTIVE:
             stringId = STRINGID_NOTVERYEFFECTIVE;
             break;
-        case MOVE_RESULT_ONE_HIT_KO:
-            stringId = STRINGID_ONEHITKO;
-            break;
-        case MOVE_RESULT_FOE_ENDURED:
-            stringId = STRINGID_PKMNENDUREDHIT;
-            break;
         case MOVE_RESULT_FAILED:
             stringId = STRINGID_BUTITFAILED;
             break;
         case MOVE_RESULT_DOESNT_AFFECT_FOE:
             stringId = STRINGID_ITDOESNTAFFECT;
             break;
+        case MOVE_RESULT_TYPE_BROKE_PROTECT:
+            gMoveResultFlags &= ~MOVE_RESULT_TYPE_BROKE_PROTECT;
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_BrokeThroughProtectLike;
+            return;
+        case MOVE_RESULT_STURDIED: 
+            gMoveResultFlags &= ~(MOVE_RESULT_STURDIED | MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
+            gSpecialStatuses[gBattlerTarget].sturdied = 0;
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_SturdiedMsg;
+            return;
+        case MOVE_RESULT_FOE_ENDURED:
+            gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_EnduredMsg;
+            return;
         case MOVE_RESULT_FOE_HUNG_ON:
             gLastUsedItem = gBattleMons[gBattlerTarget].item;
             gPotentialItemEffectBattler = gBattlerTarget;
-            gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
+            gMoveResultFlags &= ~MOVE_RESULT_FOE_HUNG_ON;
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_HangedOnMsg;
             return;
         default:
-            if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
-            {
-                stringId = STRINGID_ITDOESNTAFFECT;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_ONE_HIT_KO)
-            {
-                gMoveResultFlags &= ~(MOVE_RESULT_ONE_HIT_KO);
-                gMoveResultFlags &= ~(MOVE_RESULT_SUPER_EFFECTIVE);
-                gMoveResultFlags &= ~(MOVE_RESULT_NOT_VERY_EFFECTIVE);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_OneHitKOMsg;
-                return;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_STURDIED)
-            {
-                gMoveResultFlags &= ~(MOVE_RESULT_STURDIED | MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
-                gSpecialStatuses[gBattlerTarget].sturdied = 0;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_SturdiedMsg;
-                return;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_FOE_ENDURED)
-            {
-                gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_EnduredMsg;
-                return;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_FOE_HUNG_ON)
-            {
-                gLastUsedItem = gBattleMons[gBattlerTarget].item;
-                gPotentialItemEffectBattler = gBattlerTarget;
-                gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_HangedOnMsg;
-                return;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_FAILED)
-            {
-                stringId = STRINGID_BUTITFAILED;
-            }
-            else
-            {
-                gBattleCommunication[MSG_DISPLAY] = 0;
-            }
+            gBattleCommunication[MSG_DISPLAY] = 0;
         }
     }
 
@@ -8478,7 +8471,6 @@ static void atk93_tryKO(void)
             else
             {
                 gBattleMoveDamage = gBattleMons[gBattlerTarget].hp;
-                gMoveResultFlags |= MOVE_RESULT_ONE_HIT_KO;
             }
             gBattlescriptCurrInstr += 5;
         }
