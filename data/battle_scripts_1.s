@@ -4875,11 +4875,35 @@ BattleScript_ForecastWeatherEnded::
 	waitmessage 0x40
 	return
 
+BattleScript_SpikyShieldEffect::
+	printstring STRINGID_PKMNPROTECTEDITSELF
+	waitmessage 0x40
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
+	healthbarupdate BS_ATTACKER
+	datahpupdate BS_ATTACKER
+	printstring STRINGID_PKMNHURTSWITH
+	waitmessage 0x40
+	tryfaintmon BS_ATTACKER, FALSE, NULL
+	return
+
+BattleScript_KingsShieldEffect::
+	printstring STRINGID_PKMNPROTECTEDITSELF
+	waitmessage 0x40
+    copybyte gBattlerTarget sBATTLER
+	statbuffchange 0x1, BattleScript_KingsShieldReturn
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printstring STRINGID_PKMNSSTATCHANGED
+	waitmessage 0x40
+BattleScript_KingsShieldReturn: 
+	return
+
 BattleScript_BrokeThroughProtectLike::
 	printstring STRINGID_BROKETHROUGHPROTECTLIKE
 	waitmessage 0x40
-	return    
-    
+	return
+
 BattleScript_SideStatusWoreOff::
 	printstring STRINGID_PKMNSXWOREOFF
 	waitmessage 0x40

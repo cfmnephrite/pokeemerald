@@ -3435,6 +3435,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
                 effect++;
@@ -3544,6 +3545,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
                 effect++;
@@ -5967,6 +5969,9 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
     if (moveType == TYPE_GROUND && defType == TYPE_FLYING && IsBattlerGrounded(battlerDef))
         mod = UQ_4_12(1.0);
 
+    if (gProtectStructs[battlerDef].kingsShielded)
+        mod = UQ_4_12(1.0);
+    
     MulModifier(modifier, mod);
 }
 

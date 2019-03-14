@@ -338,7 +338,7 @@ struct BaseStats
             u8 canDive:1;
             u8 canSurf:1;
             u8 canFly:1;
-            u8 noTelekinesis:1;
+            u8 unused:1;
             u8 legendary:1;
             u8 noShiny:1;
 };
