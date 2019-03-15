@@ -4881,15 +4881,16 @@ BattleScript_SpikyShieldEffect::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	printstring STRINGID_PKMNHURTSWITH
+	printstring STRINGID_PKMNXHURTBYY
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	return
+	
 
 BattleScript_KingsShieldEffect::
 	printstring STRINGID_PKMNPROTECTEDITSELF
 	waitmessage 0x40
-    copybyte gBattlerTarget sBATTLER
+	copybyte gBattlerTarget sBATTLER
 	statbuffchange 0x1, BattleScript_KingsShieldReturn
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
 	setgraphicalstatchangevalues
@@ -4898,6 +4899,21 @@ BattleScript_KingsShieldEffect::
 	waitmessage 0x40
 BattleScript_KingsShieldReturn: 
 	return
+
+BattleScript_CraftyShieldEffect::
+	printstring STRINGID_PKMNPROTECTEDITSELF
+	waitmessage 0x40
+	printstring STRINGID_CRAFTYSHIELDTAUNT
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+	
+BattleScript_ProtectLikeStatusEffect::
+	printstring STRINGID_PKMNPROTECTEDITSELF
+	waitmessage 0x40
+	setbyte cMULTISTRING_CHOOSER, 0x1
+	seteffectsecondary
+	setbyte cMULTISTRING_CHOOSER, 0x0
+	return	
 
 BattleScript_BrokeThroughProtectLike::
 	printstring STRINGID_BROKETHROUGHPROTECTLIKE
@@ -5846,7 +5862,7 @@ BattleScript_MoveEffectBurn::
 
 BattleScript_MoveEffectFreeze::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotFrozenStringIds
+	printstring STRINGID_PKMNWASFROZEN
 	waitmessage 0x40
 	goto BattleScript_UpdateEffectStatusIconRet
 
@@ -6399,7 +6415,7 @@ BattleScript_RoughSkinActivates::
 	call BattleScript_AbilityPopUp
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	printstring STRINGID_PKMNHURTSWITH
+	printstring STRINGID_PKMNHURT
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	return

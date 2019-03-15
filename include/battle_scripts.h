@@ -318,5 +318,7 @@ extern const u8 BattleScript_CannotUseExclusiveMove[];
 extern const u8 BattleScript_BrokeThroughProtectLike[];
 extern const u8 BattleScript_SpikyShieldEffect[];
 extern const u8 BattleScript_KingsShieldEffect[];
+extern const u8 BattleScript_CraftyShieldEffect[];
+extern const u8 BattleScript_ProtectLikeStatusEffect[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

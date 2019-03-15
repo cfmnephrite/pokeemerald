@@ -1888,7 +1888,7 @@ static void atk0F_resultmessage(void)
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_KingsShieldEffect; 
                 return;
-            }        
+            }
             else
             {
                 stringId = gMissStringIds[gBattleCommunication[6]];
@@ -1897,19 +1897,56 @@ static void atk0F_resultmessage(void)
         }
         else if (gProtectStructs[gBattlerTarget].banefulBunkered && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
         {
-            
+            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+            return;
         }
         else if (gProtectStructs[gBattlerTarget].craftyShielded && gBattleMoves[gCurrentMove].split == SPLIT_STATUS)
         {
-            
+            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer) // Aroma Veil addition soon!
+            {
+                stringId = gMissStringIds[gBattleCommunication[6]];
+                gBattleCommunication[MSG_DISPLAY] = 1; 
+            }
+            else
+            {
+                gDisableStructs[gBattlerAttacker].tauntTimer = 4;
+                gDisableStructs[gBattlerAttacker].tauntTimer2 = 4;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_CRAFTY_SHIELD);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_CraftyShieldEffect;
+                return;
+            }
         }
         else if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
         {
-            
+            if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || (Random() % 10 >= 3)))
+            {
+                u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | moveEffects[(Random() % 3)];
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_FLOWER_SHIELD);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                return;
+            }
+            else
+            {
+                stringId = gMissStringIds[gBattleCommunication[6]];
+                gBattleCommunication[MSG_DISPLAY] = 1; 
+            }
         }
         else if (gProtectStructs[gBattlerTarget].shellTrapProtected && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
         {
-            
+            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SHELL_TRAP);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+            return;
         }
         else
         {
@@ -2241,7 +2278,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             BattleScriptPush(gBattlescriptCurrInstr + 1);
 
             if (sStatusFlagsForMoveEffects[gBattleScripting.moveEffect] == STATUS1_SLEEP)
-                gBattleMons[gEffectBattler].status1 |= ((Random() & 3) + 2);
+                gBattleMons[gEffectBattler].status1 |= ((Random() & 2) + 1);
             else
                 gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
 
@@ -2252,14 +2289,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             MarkBattlerForControllerExec(gActiveBattler);
 
             if (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-            {
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                 gHitMarker &= ~(HITMARKER_IGNORE_SAFEGUARD);
-            }
-            else
-            {
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-            }
 
             // for synchronize
 
