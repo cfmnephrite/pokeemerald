@@ -10046,7 +10046,7 @@ static void atkCF_jumpifnodamage(void)
 static void atkD0_settaunt(void)
 {
     if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS 
-    || (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)))))
+    || (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_AROMA_VEIL)))
     {
         gBattlescriptCurrInstr += 5;
     }
