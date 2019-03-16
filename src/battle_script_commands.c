@@ -887,8 +887,8 @@ static const u8 sUnknown_0831C4F8[] =
 
 bool32 IsBattlerProtected(u8 battlerId, u16 move)
 {
-    u8 type;
     bool32 brokenByType = FALSE;
+    u8 type;
     GET_MOVE_TYPE(move, type);
     
     if (!(gBattleMoves[move].flags & FLAG_PROTECT_AFFECTED))
@@ -1865,8 +1865,94 @@ static void atk0F_resultmessage(void)
 
     if (gMoveResultFlags & MOVE_RESULT_MISSED && (!(gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE) || gBattleCommunication[6] > 2))
     {
-        stringId = gMissStringIds[gBattleCommunication[6]];
-        gBattleCommunication[MSG_DISPLAY] = 1;
+        gMoveResultFlags &= ~MOVE_RESULT_MISSED;
+        if (gProtectStructs[gBattlerTarget].spikyShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+        {
+            gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
+            if (gBattleMoveDamage == 0)
+                gBattleMoveDamage = 1;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SPIKY_SHIELD);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;      
+            return;
+        }
+        else if (gProtectStructs[gBattlerTarget].kingsShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+        {
+            if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 0)
+            {
+                gBattleScripting.battler = gBattlerAttacker;
+                if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 1)
+                    SET_STATCHANGER(STAT_ATK, 2, TRUE);
+                else
+                    SET_STATCHANGER(STAT_ATK, 1, TRUE);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_KingsShieldEffect; 
+                return;
+            }
+            else
+            {
+                stringId = gMissStringIds[gBattleCommunication[6]];
+                gBattleCommunication[MSG_DISPLAY] = 1; 
+            }
+        }
+        else if (gProtectStructs[gBattlerTarget].banefulBunkered && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+        {
+            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+            return;
+        }
+        else if (gProtectStructs[gBattlerTarget].craftyShielded && gBattleMoves[gCurrentMove].split == SPLIT_STATUS)
+        {
+            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer) // Aroma Veil addition soon!
+            {
+                stringId = gMissStringIds[gBattleCommunication[6]];
+                gBattleCommunication[MSG_DISPLAY] = 1; 
+            }
+            else
+            {
+                gDisableStructs[gBattlerAttacker].tauntTimer = 4;
+                gDisableStructs[gBattlerAttacker].tauntTimer2 = 4;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_CRAFTY_SHIELD);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_CraftyShieldEffect;
+                return;
+            }
+        }
+        else if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+        {
+            if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || (Random() % 10 >= 3)))
+            {
+                u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | moveEffects[(Random() % 3)];
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_FLOWER_SHIELD);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                return;
+            }
+            else
+            {
+                stringId = gMissStringIds[gBattleCommunication[6]];
+                gBattleCommunication[MSG_DISPLAY] = 1; 
+            }
+        }
+        else if (gProtectStructs[gBattlerTarget].shellTrapProtected && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+        {
+            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SHELL_TRAP);
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+            return;
+        }
+        else
+        {
+            stringId = gMissStringIds[gBattleCommunication[6]];
+            gBattleCommunication[MSG_DISPLAY] = 1;            
+        }
     }
     else
     {
@@ -1885,31 +1971,50 @@ static void atk0F_resultmessage(void)
         case MOVE_RESULT_DOESNT_AFFECT_FOE:
             stringId = STRINGID_ITDOESNTAFFECT;
             break;
-        case MOVE_RESULT_TYPE_BROKE_PROTECT:
-            gMoveResultFlags &= ~MOVE_RESULT_TYPE_BROKE_PROTECT;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_BrokeThroughProtectLike;
-            return;
-        case MOVE_RESULT_STURDIED: 
-            gMoveResultFlags &= ~(MOVE_RESULT_STURDIED | MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
-            gSpecialStatuses[gBattlerTarget].sturdied = 0;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_SturdiedMsg;
-            return;
-        case MOVE_RESULT_FOE_ENDURED:
-            gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_EnduredMsg;
-            return;
-        case MOVE_RESULT_FOE_HUNG_ON:
-            gLastUsedItem = gBattleMons[gBattlerTarget].item;
-            gPotentialItemEffectBattler = gBattlerTarget;
-            gMoveResultFlags &= ~MOVE_RESULT_FOE_HUNG_ON;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_HangedOnMsg;
-            return;
         default:
-            gBattleCommunication[MSG_DISPLAY] = 0;
+            if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
+            {
+                stringId = STRINGID_ITDOESNTAFFECT;
+            }
+            else if (gMoveResultFlags & MOVE_RESULT_TYPE_BROKE_PROTECT)
+            {
+                gMoveResultFlags &= ~MOVE_RESULT_TYPE_BROKE_PROTECT;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_BrokeThroughProtectLike;
+                return;
+            }
+            else if (gMoveResultFlags & MOVE_RESULT_STURDIED)
+            {
+                gMoveResultFlags &= ~(MOVE_RESULT_STURDIED | MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
+                gSpecialStatuses[gBattlerTarget].sturdied = 0;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_SturdiedMsg;
+                return;
+            }
+            else if (gMoveResultFlags & MOVE_RESULT_FOE_ENDURED)
+            {
+                gMoveResultFlags &= ~(MOVE_RESULT_FOE_ENDURED | MOVE_RESULT_FOE_HUNG_ON);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_EnduredMsg;
+                return;
+            }
+            else if (gMoveResultFlags & MOVE_RESULT_FOE_HUNG_ON)
+            {
+                gLastUsedItem = gBattleMons[gBattlerTarget].item;
+                gPotentialItemEffectBattler = gBattlerTarget;
+                gMoveResultFlags &= ~ MOVE_RESULT_FOE_HUNG_ON;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_HangedOnMsg;
+                return;
+            }
+            else if (gMoveResultFlags & MOVE_RESULT_FAILED)
+            {
+                stringId = STRINGID_BUTITFAILED;
+            }
+            else
+            {
+                gBattleCommunication[MSG_DISPLAY] = 0;
+            }
         }
     }
 
@@ -2173,7 +2278,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             BattleScriptPush(gBattlescriptCurrInstr + 1);
 
             if (sStatusFlagsForMoveEffects[gBattleScripting.moveEffect] == STATUS1_SLEEP)
-                gBattleMons[gEffectBattler].status1 |= ((Random() & 3) + 2);
+                gBattleMons[gEffectBattler].status1 |= ((Random() & 2) + 1);
             else
                 gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
 
@@ -2184,14 +2289,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             MarkBattlerForControllerExec(gActiveBattler);
 
             if (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-            {
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                 gHitMarker &= ~(HITMARKER_IGNORE_SAFEGUARD);
-            }
-            else
-            {
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-            }
 
             // for synchronize
 

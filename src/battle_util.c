@@ -5967,6 +5967,9 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
     if (moveType == TYPE_GROUND && defType == TYPE_FLYING && IsBattlerGrounded(battlerDef))
         mod = UQ_4_12(1.0);
 
+    if (gProtectStructs[battlerDef].kingsShielded)
+        mod = UQ_4_12(1.0);
+    
     MulModifier(modifier, mod);
 }
 
