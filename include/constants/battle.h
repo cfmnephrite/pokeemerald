@@ -98,13 +98,15 @@
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out
 #define STATUS1_NONE             0x0
-#define STATUS1_SLEEP            0x7
-#define STATUS1_POISON           0x8
+#define STATUS1_SLP_FRZ_TIMER    0x3
+#define STATUS1_SLEEP            0x4
+#define STATUS1_FREEZE           0x8
 #define STATUS1_BURN             0x10
-#define STATUS1_FREEZE           0x20
-#define STATUS1_PARALYSIS        0x40
+#define STATUS1_PARALYSIS        0x20
+#define STATUS1_POISON           0x40
 #define STATUS1_TOXIC_POISON     0x80
 #define STATUS1_TOXIC_COUNTER    0xF00
+#define STATUS1_THAW             0x1000
 #define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
 #define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_FREEZE | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
 

@@ -346,13 +346,13 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSpectralThief
 
 BattleScript_EffectNeedleArm:
-    setmoveeffect MOVE_EFFECT_NEEDLE_ARM | MOVE_EFFECT_CERTAIN
-    goto BattleScript_EffectHit
+	setmoveeffect MOVE_EFFECT_NEEDLE_ARM | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHit
 
 BattleScript_NeedleArmEffect::
 	printstring STRINGID_NEEDLEARMEFFECT
 	waitmessage 0x40
-    return
+	return
 
 BattleScript_NeedleArmDmg::
 	printstring STRINGID_NEEDLEARMDAMAGE
@@ -399,6 +399,7 @@ BattleScript_CannotUseExclusiveMove::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd	
 
+BattleScript_EffectNightmare:
 BattleScript_EffectHitArgOnlyEffect:	
 BattleScript_EffectPsyshock:
 	argumenttomoveeffect
@@ -3031,23 +3032,6 @@ BattleScript_EffectMeanLook::
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE
 	seteffectprimary
 	printstring STRINGID_TARGETCANTESCAPENOW
-	waitmessage 0x40
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectNightmare::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus2 BS_TARGET, STATUS2_NIGHTMARE, BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_NightmareWorked
-	goto BattleScript_ButItFailed
-BattleScript_NightmareWorked::
-	attackanimation
-	waitanimation
-	setmoveeffect MOVE_EFFECT_NIGHTMARE
-	seteffectprimary
-	printstring STRINGID_PKMNFELLINTONIGHTMARE
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
@@ -5755,7 +5739,13 @@ BattleScript_MoveEffectSleep::
 BattleScript_UpdateEffectStatusIconRet::
 	updatestatusicon BS_EFFECT_BATTLER
 	waitstate
+	jumpifstatus2 BS_EFFECT_BATTLER, STATUS2_NIGHTMARE, BattleScript_MoveEffectNightmare
 	return
+	
+BattleScript_MoveEffectNightmare:	
+	printstring STRINGID_PKMNFELLINTONIGHTMARE
+	waitmessage 0x40	
+	return 
 
 BattleScript_YawnMakesAsleep::
 	statusanimation BS_EFFECT_BATTLER

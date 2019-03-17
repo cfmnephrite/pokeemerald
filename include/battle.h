@@ -162,7 +162,7 @@ struct DisableStruct
     u8 truantSwitchInHack:1;
     u8 mimickedMoves:4;
     u8 unnerveTimer: 2;
-    u8 freezeTimer;
+    u8 unusedTimer;
     u8 autotomizeCount;
     u8 slowStartTimer;
     u8 embargoTimer;
