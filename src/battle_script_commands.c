@@ -633,6 +633,7 @@ static const u32 sStatusFlagsForMoveEffects[] =
     0x00000000,
     STATUS2_MULTIPLETURNS,
     STATUS2_WRAPPED,
+    STATUS2_NEEDLE_ARM,
     0x00000000,
     0x00000000,
     0x00000000,
@@ -648,7 +649,6 @@ static const u32 sStatusFlagsForMoveEffects[] =
     0x00000000,
     0x00000000,
     0x00000000,
-    STATUS2_RECHARGE,
     0x00000000,
     0x00000000,
     STATUS2_ESCAPE_PREVENTION,
@@ -2229,6 +2229,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE)
                 break;
 
+            gDisableStructs[gEffectBattler].freezeTimer = 4;
             CancelMultiTurnMoves(gEffectBattler);
             statusChanged = TRUE;
             break;
@@ -2655,14 +2656,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                 break;
-            //case MOVE_EFFECT_RECOIL_33_STATUS: // Flare Blitz - can burn, Volt Tackle - can paralyse
-            //    gBattleScripting.savedDmg = gHpDealt / 3;
-            //    if (gBattleScripting.savedDmg == 0)
-            //        gBattleScripting.savedDmg = 1;
-            //
-            //    BattleScriptPush(gBattlescriptCurrInstr + 1);
-            //    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
-            //    break;
             case MOVE_EFFECT_THRASH:
                 if (gBattleMons[gEffectBattler].status2 & STATUS2_LOCK_CONFUSE)
                 {
@@ -2708,10 +2701,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
                     gBattlescriptCurrInstr++;
                 }
                 break;
-            //case MOVE_EFFECT_SP_ATK_TWO_DOWN: // Overheat
-            //    BattleScriptPush(gBattlescriptCurrInstr + 1);
-            //    gBattlescriptCurrInstr = BattleScript_SAtkDown2;
-            //    break;
             case MOVE_EFFECT_CLEAR_SMOG:
                 for (i = 0; i < NUM_BATTLE_STATS; i++)
                 {
@@ -2821,6 +2810,18 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 {
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_SpectralThiefSteal;
+                }
+                break;
+            case MOVE_EFFECT_NEEDLE_ARM:
+                if (gBattleMons[gEffectBattler].ability == ABILITY_MAGIC_GUARD)
+                {
+                    gBattlescriptCurrInstr++;
+                }
+                else
+                {
+                    gBattleMons[gEffectBattler].status2 |= STATUS2_NEEDLE_ARM;
+                    BattleScriptPush(gBattlescriptCurrInstr + 1);
+                    gBattlescriptCurrInstr = BattleScript_NeedleArmEffect;
                 }
                 break;
             }

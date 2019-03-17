@@ -652,9 +652,13 @@ static const u8 sText_PsychicTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} sur
 static const u8 sText_SafetyGooglesProtected[] = _("{B_DEF_NAME_WITH_PREFIX} is not affected\nthanks to its {B_LAST_ITEM}!");
 static const u8 sText_BrokeThroughProtectLike[] = _("The {B_BUFF1}-type move broke\n{B_DEF_NAME_WITH_PREFIX}'s protection!");
 static const u8 sText_CraftyShieldTaunt[] = _("{B_ATK_NAME_WITH_PREFIX} was Taunted by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
+static const u8 sText_NeedleArmEffect[] = _("{B_ATK_NAME_WITH_PREFIX} left thorny spikes\n stuck to {B_DEF_NAME_WITH_PREFIX}!");
+static const u8 sText_NeedleArmDmg[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by\nthorny spikes!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_NEEDLEARMEFFECT - 12] = sText_NeedleArmEffect,
+    [STRINGID_NEEDLEARMDAMAGE - 12] = sText_NeedleArmDmg,
     [STRINGID_SAFETYGOOGLESPROTECTED - 12] = sText_SafetyGooglesProtected,
     [STRINGID_SPECTRALTHIEFSTEAL - 12] = sText_SpectralThiefSteal,
     [STRINGID_BELCHCANTSELECT - 12] = sText_BelchCantUse,

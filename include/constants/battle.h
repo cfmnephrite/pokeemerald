@@ -122,7 +122,7 @@
 #define STATUS2_INFATUATED_WITH(battler) (gBitTable[battler] << 16)
 #define STATUS2_FOCUS_ENERGY          0x00100000
 #define STATUS2_TRANSFORMED           0x00200000
-#define STATUS2_RECHARGE              0x00400000
+#define STATUS2_NEEDLE_ARM            0x00400000
 #define STATUS2_RAGE                  0x00800000
 #define STATUS2_SUBSTITUTE            0x01000000
 #define STATUS2_DESTINY_BOND          0x02000000
@@ -284,7 +284,7 @@
 #define MOVE_EFFECT_PAYDAY              0xB
 #define MOVE_EFFECT_CHARGING            0xC
 #define MOVE_EFFECT_WRAP                0xD
-#define MOVE_EFFECT_UNUSED_IN_CFM1      0xE
+#define MOVE_EFFECT_NEEDLE_ARM          0xE
 #define MOVE_EFFECT_ATK_PLUS_1          0xF
 #define MOVE_EFFECT_DEF_PLUS_1          0x10
 #define MOVE_EFFECT_SPD_PLUS_1          0x11
@@ -334,7 +334,7 @@
 #define MOVE_EFFECT_FLAME_BURST         0x3D
 #define MOVE_EFFECT_FEINT               0x3E
 #define MOVE_EFFECT_SPECTRAL_THIEF      0x3F
-#define MOVE_EFFECT_V_CREATE            0x40
+#define MOVE_EFFECT_UNUSED_IN_CFM3      0x40
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000
 

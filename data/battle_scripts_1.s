@@ -91,7 +91,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAccuracyDownHit
 	.4byte BattleScript_EffectEvasionDownHit
 	.4byte BattleScript_EffectTwoTurnsAttack
-	.4byte BattleScript_EffectUnused76
+	.4byte BattleScript_EffectNeedleArm
 	.4byte BattleScript_EffectDoubleHitEffect
 	.4byte BattleScript_EffectVitalThrow
 	.4byte BattleScript_EffectSubstitute
@@ -344,7 +344,20 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectBelch
 	.4byte BattleScript_EffectPartingShot
 	.4byte BattleScript_EffectSpectralThief
-	.4byte BattleScript_EffectVCreate
+
+BattleScript_EffectNeedleArm:
+    setmoveeffect MOVE_EFFECT_NEEDLE_ARM | MOVE_EFFECT_CERTAIN
+    goto BattleScript_EffectHit
+
+BattleScript_NeedleArmEffect::
+	printstring STRINGID_NEEDLEARMEFFECT
+	waitmessage 0x40
+    return
+
+BattleScript_NeedleArmDmg::
+	printstring STRINGID_NEEDLEARMDAMAGE
+	waitmessage 0x40
+	goto BattleScript_DoStatusTurnDmg
 
 BattleScript_EffectRevelationDance:
 	jumpifhigherorequalspa BattleScript_EffectQuiverDance 
@@ -395,37 +408,6 @@ BattleScript_EffectPowerWhip:
 	jumpifnottype BS_ATTACKER, TYPE_POISON, BattleScript_EffectHit
 	setmoveeffect MOVE_EFFECT_POISON
 	goto BattleScript_EffectHit
-	
-BattleScript_EffectVCreate:
-	setmoveeffect MOVE_EFFECT_V_CREATE | MOVE_EFFECT_AFFECTS_USER
-	goto BattleScript_EffectHit
-	
-BattleScript_VCreateStatLoss::
-	jumpifstat BS_ATTACKER, CMP_GREATER_THAN, STAT_DEF, 0x0, BattleScript_VCreateStatAnim
-	jumpifstat BS_ATTACKER, CMP_GREATER_THAN, STAT_SPDEF, 0x0, BattleScript_VCreateStatAnim
-	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPEED, 0x0, BattleScript_VCreateStatLossRet
-BattleScript_VCreateStatAnim:
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF | BIT_SPEED, ATK48_STAT_NEGATIVE | ATK48_DONT_CHECK_LOWER
-	setstatchanger STAT_DEF, 1, TRUE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, BattleScript_VCreateTrySpDef
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_VCreateTrySpDef
-	printfromtable gStatUpStringIds
-	waitmessage 0x40
-BattleScript_VCreateTrySpDef:
-	setstatchanger STAT_SPDEF, 1, TRUE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, BattleScript_VCreateTrySpeed
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_VCreateTrySpeed
-	printfromtable gStatUpStringIds
-	waitmessage 0x40
-BattleScript_VCreateTrySpeed:
-	setstatchanger STAT_SPEED, 1, TRUE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, BattleScript_VCreateStatLossRet
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_VCreateStatLossRet
-	printfromtable gStatUpStringIds
-	waitmessage 0x40
-BattleScript_VCreateStatLossRet:
-	return
 	
 BattleScript_SpectralThiefSteal::
 	printstring STRINGID_SPECTRALTHIEFSTEAL
@@ -781,48 +763,6 @@ BattleScript_EffectPsychoShiftCanWork:
 	waitmessage 0x40
 	updatestatusicon BS_ATTACKER
 	goto BattleScript_MoveEnd
-	
-BattleScript_EffectSynchronoise:
-	attackcanceler
-	attackstring
-	ppreduce
-	selectfirstvalidtarget
-BattleScript_SynchronoiseLoop:
-	movevaluescleanup
-	jumpifcantusesynchronoise BattleScript_SynchronoiseNoEffect
-	accuracycheck BattleScript_SynchronoiseMissed, ACC_CURR_MOVE
-	critcalc
-	damagecalc
-	adjustdamage
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage 0x40
-	resultmessage
-	waitmessage 0x40
-	printstring STRINGID_EMPTYSTRING3
-	waitmessage 0x1
-	tryfaintmon BS_TARGET, FALSE, NULL
-BattleScript_SynchronoiseMoveTargetEnd:
-	setbyte sMOVEEND_STATE, 0x0
-	moveend 0x2, 0x10
-	jumpifnexttargetvalid BattleScript_SynchronoiseLoop
-	end
-BattleScript_SynchronoiseMissed:
-	pause 0x20
-	resultmessage
-	waitmessage 0x40
-	goto BattleScript_SynchronoiseMoveTargetEnd
-BattleScript_SynchronoiseNoEffect:
-	pause 0x20
-	printstring STRINGID_NOEFFECTONTARGET
-	waitmessage 0x40
-	goto BattleScript_SynchronoiseMoveTargetEnd
 	
 BattleScript_EffectSmackDown:
 	setmoveeffect MOVE_EFFECT_SMACK_DOWN | MOVE_EFFECT_CERTAIN
@@ -1814,11 +1754,9 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
-
+BattleScript_EffectSynchronoise:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
-BattleScript_EffectUnused66:
-BattleScript_EffectUnused76:
 BattleScript_EffectUnused96:
 BattleScript_EffectUnused125:
 BattleScript_EffectFreeze:	
@@ -2382,7 +2320,7 @@ BattleScript_ImmunityProtected::
 
 BattleScript_EffectPayDay::
 	setmoveeffect MOVE_EFFECT_PAYDAY | MOVE_EFFECT_CERTAIN
-	goto BattleScript_EffectHit
+	goto BattleScript_EffectHitArgEffect
 	
 BattleScript_EffectAuroraVeil:
 	attackcanceler

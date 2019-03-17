@@ -1335,6 +1335,8 @@ enum
     ENDTURN_ROOST,
     ENDTURN_ELECTRIFY,
     ENDTURN_POWDER,
+    ENDTURN_FREEZE,
+    ENDTURN_NEEDLE_ARM,
     ENDTURN_BATTLER_COUNT
 };
 
@@ -1791,6 +1793,22 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_POWDER:
                 gBattleMons[gActiveBattler].status2 &= ~(STATUS2_POWDER);
                 gBattleStruct->turnEffectsTracker++;
+            case ENDTURN_FREEZE:
+                gDisableStructs[gActiveBattler].freezeTimer--;
+                gBattleStruct->turnEffectsTracker++;
+            case ENDTURN_NEEDLE_ARM:  
+                if ((gBattleMons[gActiveBattler].status2 & STATUS2_NEEDLE_ARM)
+                    && gBattleMons[gActiveBattler].hp != 0
+                    && ability != ABILITY_MAGIC_GUARD)
+                {
+                    gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
+                    if (gBattleMoveDamage == 0)
+                        gBattleMoveDamage = 1;
+                    BattleScriptExecute(BattleScript_NeedleArmDmg);
+                    effect++;
+                }
+                gBattleStruct->turnEffectsTracker++;
+                break;
             case ENDTURN_BATTLER_COUNT:  // done
                 gBattleStruct->turnEffectsTracker = 0;
                 gBattleStruct->turnEffectsBattlerId++;
@@ -2084,7 +2102,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_FROZEN: // check being frozen
             if (gBattleMons[gBattlerAttacker].status1 & STATUS1_FREEZE)
             {
-                if (Random() % 3)
+                if (gDisableStructs[gBattlerAttacker].freezeTimer && (Random() % 3))
                 {
                     if (!(gBattleMoves[gCurrentMove].flags & FLAG_THAWS_USER)) // unfreezing via a move effect happens in case 13
                     {
@@ -5957,12 +5975,14 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
         mod = UQ_4_12(1.0);
     if (moveType == TYPE_PSYCHIC && defType == TYPE_DARK && ((gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED) || move == MOVE_LUNAR_DANCE))
         mod = UQ_4_12(1.0);
-    if ((move == MOVE_FREEZE_DRY && defType == TYPE_WATER)
-        || (move == MOVE_ACID && defType == TYPE_STEEL)
-        || (move == MOVE_ROCK_CLIMB && defType == TYPE_ROCK)
-        || (move == MOVE_SEED_FLARE && defType == TYPE_POISON)
+    if ((move == MOVE_ACID && defType == TYPE_STEEL)
+        || (move == MOVE_FREEZE_DRY && defType == TYPE_WATER)
         || (move == MOVE_LUSTER_PURGE && defType == TYPE_DARK)
-        || (move == MOVE_MIST_BALL && defType == TYPE_FAIRY))
+        || (move == MOVE_MIST_BALL && defType == TYPE_FAIRY)
+        || (move == MOVE_ROCK_CLIMB && defType == TYPE_ROCK)
+        || (move == MOVE_SEED_FLARE && defType == TYPE_POISON))
+            mod = UQ_4_12(2.0);
+    if (gBattleMoves[move].effect == EFFECT_SYNCHRONOISE && defType == gBattleMons[gBattlerAttacker].type1)
         mod = UQ_4_12(2.0);
     if (moveType == TYPE_GROUND && defType == TYPE_FLYING && IsBattlerGrounded(battlerDef))
         mod = UQ_4_12(1.0);
