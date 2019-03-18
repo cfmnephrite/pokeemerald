@@ -2968,30 +2968,26 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_ANTICIPATION:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
-                u32 opposingBattler = BATTLE_OPPOSITE(battler);
                 bool8 anticipated = FALSE;
-                for(i = 0; i < MAX_MON_MOVES; i++)
-                {
-                    u16 amove = gBattleMons[opposingBattler].moves[i];
-                    if(gBattleMoves[amove].power > 0)
-                    {
-                        if(GetTypeModifier(gBattleMoves[amove].type, gBattleMons[battler].type1) * GetTypeModifier(gBattleMoves[amove].type, gBattleMons[battler].type2) >= 2.0)
-                            anticipated = TRUE;
-                    }
-                }
-                opposingBattler = BATTLE_PARTNER(opposingBattler);
-                if(IsBattlerAlive(opposingBattler) && anticipated == FALSE)
-                {
-                    for(i = 0; i < MAX_MON_MOVES; i++)
-                    {
-                        u16 amove = gBattleMons[opposingBattler].moves[i];
-                        if(gBattleMoves[amove].power > 0)
-                        {
-                            if(GetTypeModifier(gBattleMoves[amove].type, gBattleMons[battler].type1) * GetTypeModifier(gBattleMoves[amove].type, gBattleMons[battler].type2) >= 2.0)
-                                anticipated = TRUE;
-                        }
-                    }
-                }
+				u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+				u8 mon1 = GetBattlerAtPosition(side);
+				u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
+				u8 oppBattlers[2] = {mon1, mon2};
+				for(i = 0; i < 2; i++)
+				{
+					if(IsBattlerAlive(oppBattlers[i]))
+					{
+						for(j = 0; j < MAX_MON_MOVES; j++)
+						{
+							u8 oppBattler = oppBattlers[i];
+							u16 amove = gBattleMons[oppBattler].moves[i];
+							u8 mType = gBattleMoves[amove].type;
+							u16 mod = CalcTypeEffectivenessMultiplier(amove, mType, oppBattler, battler, FALSE);
+							if(mod == UQ_4_12(2.0) || mod == UQ_4_12(4.0))
+								anticipated = TRUE;
+						}
+					}
+				}
                 if (anticipated == TRUE && gBattleMons[battler].statStages[STAT_SPEED] != 0xC)
                 {
                         gBattleMons[battler].statStages[STAT_SPEED]++;
@@ -3050,6 +3046,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				{
 					gBattleCommunication[MULTISTRING_CHOOSER] = 5;
 					gSpecialStatuses[battler].switchInAbilityDone = 1;
+					gBattlerAbility = gEffectBattler = battler;
 					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, onMon, gBattlerPartyIndexes[onMon]);
 					PREPARE_MOVE_BUFFER(gBattleTextBuff2, warnedMove);
 					BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
@@ -6243,4 +6240,17 @@ bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId)
         return FALSE;
     else
         return TRUE;
+}
+
+bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability)
+{
+	if(GetBattlerAbility(battler) == ability || (IsBattlerAlive(BATTLE_PARTNER(battler)) && GetBattlerAbility(BATTLE_PARTNER(battler)) == ability))
+	{
+		if(GetBattlerAbility(battler) == ability)
+			gBattlerAbility = gEffectBattler = battler;
+		else
+			gBattlerAbility = gEffectBattler = BATTLE_PARTNER(battler);
+		return TRUE;
+	}
+	return FALSE;
 }

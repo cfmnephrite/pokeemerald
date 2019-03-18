@@ -1906,7 +1906,7 @@ static void atk0F_resultmessage(void)
         }
         else if (gProtectStructs[gBattlerTarget].craftyShielded && gBattleMoves[gCurrentMove].split == SPLIT_STATUS)
         {
-            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer) // Aroma Veil addition soon!
+            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer || IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL)) // Aroma Veil addition now!
             {
                 stringId = gMissStringIds[gBattleCommunication[6]];
                 gBattleCommunication[MSG_DISPLAY] = 1; 
@@ -4526,7 +4526,7 @@ static void atk49_moveend(void)
 
 static void atk4A_sethealblock(void)
 {
-    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_AROMA_VEIL))
+    if (IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL))
     {
         gBattlescriptCurrInstr += 5;
     }
@@ -9050,7 +9050,7 @@ static void atkA3_disablelastusedattack(void)
 {
     s32 i;
 
-    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
+    if (IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL))
         gBattlescriptCurrInstr += 5;
     else
     {
@@ -9093,7 +9093,7 @@ static void atkA4_trysetencore(void)
         i = 4;
     }
 
-    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
+    if (IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL))
     {
         gBattlescriptCurrInstr += 5;
     }
@@ -10120,7 +10120,7 @@ static void atkCD_cureifburnedparalysedorpoisoned(void) // refresh
 
 static void atkCE_settorment(void)
 {
-    if (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget))))
+    if (IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL))
         gBattlescriptCurrInstr += 5;
     else if (gBattleMons[gBattlerTarget].status2 & STATUS2_TORMENT)
     {
@@ -10144,7 +10144,7 @@ static void atkCF_jumpifnodamage(void)
 static void atkD0_settaunt(void)
 {
     if (GetBattlerAbility(gBattlerTarget) == ABILITY_OBLIVIOUS 
-    || (GetBattlerAbility(gBattlerTarget) == ABILITY_AROMA_VEIL || (IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_AROMA_VEIL)))
+    || IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL))
     {
         gBattlescriptCurrInstr += 5;
     }
