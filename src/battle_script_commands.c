@@ -633,6 +633,7 @@ static const u32 sStatusFlagsForMoveEffects[] =
     0x00000000,
     STATUS2_MULTIPLETURNS,
     STATUS2_WRAPPED,
+    STATUS2_NEEDLE_ARM,
     0x00000000,
     0x00000000,
     0x00000000,
@@ -648,7 +649,6 @@ static const u32 sStatusFlagsForMoveEffects[] =
     0x00000000,
     0x00000000,
     0x00000000,
-    STATUS2_RECHARGE,
     0x00000000,
     0x00000000,
     STATUS2_ESCAPE_PREVENTION,
@@ -2185,6 +2185,13 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_INSOMNIA
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE)
                 break;
+            
+            // CFM Nightmare
+            for (i = 0; i < MAX_MON_MOVES; i++)
+            {
+                if (gBattleMoves[gBattleMons[gBattlerAttacker].moves[i]].effect == EFFECT_NIGHTMARE)
+                   gBattleMons[gEffectBattler].status2 |= STATUS2_NIGHTMARE;
+            }
 
             CancelMultiTurnMoves(gEffectBattler);
             statusChanged = TRUE;
@@ -2277,10 +2284,11 @@ void SetMoveEffect(bool32 primary, u32 certain)
         {
             BattleScriptPush(gBattlescriptCurrInstr + 1);
 
+            gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
             if (sStatusFlagsForMoveEffects[gBattleScripting.moveEffect] == STATUS1_SLEEP)
-                gBattleMons[gEffectBattler].status1 |= ((Random() & 2) + 1);
-            else
-                gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
+                gBattleMons[gEffectBattler].status1 |= ((Random() % 3) + 1);
+            else if (sStatusFlagsForMoveEffects[gBattleScripting.moveEffect] == STATUS1_FREEZE)
+                gBattleMons[gEffectBattler].status1 |= 3;
 
             gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleScripting.moveEffect];
 
@@ -2655,14 +2663,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                 break;
-            //case MOVE_EFFECT_RECOIL_33_STATUS: // Flare Blitz - can burn, Volt Tackle - can paralyse
-            //    gBattleScripting.savedDmg = gHpDealt / 3;
-            //    if (gBattleScripting.savedDmg == 0)
-            //        gBattleScripting.savedDmg = 1;
-            //
-            //    BattleScriptPush(gBattlescriptCurrInstr + 1);
-            //    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
-            //    break;
             case MOVE_EFFECT_THRASH:
                 if (gBattleMons[gEffectBattler].status2 & STATUS2_LOCK_CONFUSE)
                 {
@@ -2708,10 +2708,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
                     gBattlescriptCurrInstr++;
                 }
                 break;
-            //case MOVE_EFFECT_SP_ATK_TWO_DOWN: // Overheat
-            //    BattleScriptPush(gBattlescriptCurrInstr + 1);
-            //    gBattlescriptCurrInstr = BattleScript_SAtkDown2;
-            //    break;
             case MOVE_EFFECT_CLEAR_SMOG:
                 for (i = 0; i < NUM_BATTLE_STATS; i++)
                 {
@@ -2821,6 +2817,18 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 {
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_SpectralThiefSteal;
+                }
+                break;
+            case MOVE_EFFECT_NEEDLE_ARM:
+                if (gBattleMons[gEffectBattler].ability == ABILITY_MAGIC_GUARD)
+                {
+                    gBattlescriptCurrInstr++;
+                }
+                else
+                {
+                    gBattleMons[gEffectBattler].status2 |= STATUS2_NEEDLE_ARM;
+                    BattleScriptPush(gBattlescriptCurrInstr + 1);
+                    gBattlescriptCurrInstr = BattleScript_NeedleArmEffect;
                 }
                 break;
             }
@@ -4271,7 +4279,7 @@ static void atk49_moveend(void)
                 && gSpecialStatuses[gBattlerTarget].specialDmg
                 && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && (moveType == TYPE_FIRE || gBattleMoves[gCurrentMove].effect == EFFECT_SCALD))
             {
-                gBattleMons[gBattlerTarget].status1 &= ~(STATUS1_FREEZE);
+                gBattleMons[gBattlerTarget].status1 &= ~(STATUS1_FREEZE | STATUS1_THAW | STATUS1_SLP_FRZ_TIMER);
                 gActiveBattler = gBattlerTarget;
                 BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerTarget].status1);
                 MarkBattlerForControllerExec(gActiveBattler);
@@ -7809,7 +7817,7 @@ static void atk81_trysetrest(void)
     }
     else
     {
-        if (gBattleMons[gBattlerTarget].status1 & ((u8)(~STATUS1_SLEEP)))
+        if (gBattleMons[gBattlerTarget].status1 & ((u8)(~STATUS1_SLEEP | STATUS1_SLP_FRZ_TIMER)))
             gBattleCommunication[MULTISTRING_CHOOSER] = 1;
         else
             gBattleCommunication[MULTISTRING_CHOOSER] = 0;
