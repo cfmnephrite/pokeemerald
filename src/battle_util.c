@@ -2995,7 +2995,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 						for(j = 0; j < MAX_MON_MOVES; j++)
 						{
 							u8 oppBattler = oppBattlers[i];
-							u16 amove = gBattleMons[oppBattler].moves[i];
+							u16 amove = gBattleMons[oppBattler].moves[j];
 							u8 mType = gBattleMoves[amove].type;
 							u16 mod = CalcTypeEffectivenessMultiplier(amove, mType, oppBattler, battler, FALSE);
 							if(mod == UQ_4_12(2.0) || mod == UQ_4_12(4.0))
@@ -3005,12 +3005,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				}
                 if (anticipated == TRUE && gBattleMons[battler].statStages[STAT_SPEED] != 0xC)
                 {
-                        gBattleMons[battler].statStages[STAT_SPEED]++;
-                        SET_STATCHANGER(STAT_SPEED, 1, FALSE);
-                        PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
-                        BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
-                        gSpecialStatuses[battler].switchInAbilityDone = 1;
-                        effect++;
+					gBattlerAttacker = battler;
+                    gBattleMons[battler].statStages[STAT_SPEED]++;
+                    SET_STATCHANGER(STAT_SPEED, 1, FALSE);
+                    PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
+                    BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
+                    gSpecialStatuses[battler].switchInAbilityDone = 1;
+                    effect++;
                 }
             }
             break;
