@@ -1254,6 +1254,7 @@ static void SpriteCb_MegaTrigger(struct Sprite *sprite)
         sprite->pos2.y = gSprites[gHealthboxSpriteIds[sprite->tBattler]].pos2.y - yDiff;
         if (sprite->pos1.x == gSprites[gHealthboxSpriteIds[sprite->tBattler]].pos1.x - xSlide)
             DestroyMegaTriggerSprite();
+            DestroyZMoveTriggerSprite();
     }
     else
     {

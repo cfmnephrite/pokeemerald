@@ -687,8 +687,6 @@ static void HandleInputChooseMove(void)
         {
             gBattleStruct->zMove.playerSelect ^= 1;
             ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, gBattleStruct->zMove.playerSelect);
-            gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]] = MOVE_BREAKNECK_BLITZ;
-            gBattleMons[gActiveBattler].pp[gMoveSelectionCursor[gActiveBattler]] = 1;
             PlaySE(SE_SELECT);
         }        
     }

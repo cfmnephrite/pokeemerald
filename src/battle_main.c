@@ -4687,9 +4687,10 @@ static void CheckMegaEvoOrZBeforeTurn(void)
             if (gBattleStruct->zMove.toUseZ & gBitTable[gActiveBattler]
                 && !(gProtectStructs[gActiveBattler].noValidMoves))
             {
+                gBattleStruct->zMove.toUseZ & ~(gBitTable[gActiveBattler]);
                 gLastUsedItem = gBattleMons[gActiveBattler].item;
                 gCalledMove = MOVE_BREAKNECK_BLITZ;
-                gBattlerTarget = GetMoveTarget(gCurrentMove, 0);
+                gBattlerTarget = gBattleStruct->moveTarget[gActiveBattler];
                 BattleScriptExecute(BattleScript_Z_Move);
                 return;
             }
@@ -5388,7 +5389,7 @@ static void HandleAction_UseMove(void)
             }
         }
     }
-
+ 
     // Choose battlescript.
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE
         && gProtectStructs[gBattlerAttacker].palaceUnableToUseMove)
