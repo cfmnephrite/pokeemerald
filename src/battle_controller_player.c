@@ -603,8 +603,12 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
             if (!(CanUseZMove(gActiveBattler)))
+            {
+                gBattleStruct->zMove.playerSelect = 0;
                 HideZMoveTriggerSprite();
+            }
             else
                 CreateZMoveTriggerSprite(gActiveBattler, 0);
         }
@@ -620,8 +624,12 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
             if (!(CanUseZMove(gActiveBattler)))
+            {
+                gBattleStruct->zMove.playerSelect = 0;
                 HideZMoveTriggerSprite();
+            }
             else
                 CreateZMoveTriggerSprite(gActiveBattler, 0);
         }
@@ -636,8 +644,12 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
             if (!(CanUseZMove(gActiveBattler)))
+            {
+                gBattleStruct->zMove.playerSelect = 0;
                 HideZMoveTriggerSprite();
+            }
             else
                 CreateZMoveTriggerSprite(gActiveBattler, 0);
         }
@@ -653,8 +665,12 @@ static void HandleInputChooseMove(void)
             MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
             MoveSelectionDisplayPpNumber();
             MoveSelectionDisplayMoveType();
+            ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
             if (!(CanUseZMove(gActiveBattler)))
+            {
+                gBattleStruct->zMove.playerSelect = 0;
                 HideZMoveTriggerSprite();
+            }
             else
                 CreateZMoveTriggerSprite(gActiveBattler, 0);
         }
