@@ -4107,12 +4107,12 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
 
-    [ITEM_0E3] =
+    [ITEM_Z_CRYSTAL_TESTING] =
     {
-        .name = _("????????"),
+        .name = _("Z Crystal"),
         .itemId = ITEM_NONE,
         .price = 0,
-        .holdEffect = HOLD_EFFECT_NONE,
+        .holdEffect = HOLD_EFFECT_Z_CRYSTAL,
         .holdEffectParam = 0,
         .description = gDummyItemDescription,
         .importance = 0,

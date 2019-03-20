@@ -8815,15 +8815,15 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
     [MOVE_BREAKNECK_BLITZ] =
     {
-        .effect = EFFECT_PLACEHOLDER,
-        .power = 0,
+        .effect = EFFECT_HIT,
+        .power = 200,
         .type = TYPE_NORMAL,
         .accuracy = 0,
         .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = 0,
+        .flags = FLAG_Z_MOVE,
         .split = SPLIT_PHYSICAL,
     },
     

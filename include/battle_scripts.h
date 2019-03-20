@@ -321,5 +321,6 @@ extern const u8 BattleScript_CraftyShieldEffect[];
 extern const u8 BattleScript_ProtectLikeStatusEffect[];
 extern const u8 BattleScript_NeedleArmEffect[];
 extern const u8 BattleScript_NeedleArmDmg[];
+extern const u8 BattleScript_Z_Move[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

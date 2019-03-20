@@ -5520,6 +5520,11 @@ BattleScript_MegaEvolution::
 	waitmessage 0x40
 	end2
 
+BattleScript_Z_Move::
+	printstring STRINGID_SURROUNDEDBYZPOWER
+	waitmessage 0x40
+	jumptocalledmove FALSE
+    
 BattleScript_MoveUsedIsAsleep::
 	printstring STRINGID_PKMNFASTASLEEP
 	waitmessage 0x40

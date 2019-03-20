@@ -109,7 +109,7 @@ static void SetActionsAndBattlersTurnOrder(void);
 static void sub_803CDF8(void);
 static bool8 AllAtActionConfirmed(void);
 static void CheckFocusPunch_ClearVarsBeforeTurnStarts(void);
-static void CheckMegaEvolutionBeforeTurn(void);
+static void CheckMegaEvoOrZBeforeTurn(void);
 static void FreeResetData_ReturnToOvOrDoEvolutions(void);
 static void ReturnFromBattleToOverworld(void);
 static void TryEvolvePokemon(void);
@@ -4116,11 +4116,13 @@ static void HandleTurnActionSelectionState(void)
                                 RecordedBattle_SetBattlerAction(gActiveBattler, gBattleResources->bufferB[gActiveBattler][2]);
                                 RecordedBattle_SetBattlerAction(gActiveBattler, gBattleResources->bufferB[gActiveBattler][3]);
                             }
-                            *(gBattleStruct->chosenMovePositions + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
+                            *(gBattleStruct->chosenMovePositions + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION | RET_Z_MOVE);
                             gChosenMoveByBattler[gActiveBattler] = gBattleMons[gActiveBattler].moves[*(gBattleStruct->chosenMovePositions + gActiveBattler)];
                             *(gBattleStruct->moveTarget + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][3];
                             if (gBattleResources->bufferB[gActiveBattler][2] & RET_MEGA_EVOLUTION)
                                 gBattleStruct->mega.toEvolve |= gBitTable[gActiveBattler];
+                            else if (gBattleResources->bufferB[gActiveBattler][2] & RET_Z_MOVE)
+                                gBattleStruct->zMove.toUseZ |= gBitTable[gActiveBattler];
                             gBattleCommunication[gActiveBattler]++;
                         }
                         break;
@@ -4573,8 +4575,9 @@ static void SetActionsAndBattlersTurnOrder(void)
                     turnOrderId++;
                 }
             }
-            gBattleMainFunc = CheckMegaEvolutionBeforeTurn;
+            gBattleMainFunc = CheckMegaEvoOrZBeforeTurn;
             gBattleStruct->mega.battlerId = 0;
+            gBattleStruct->zMove.battlerId = 0;
             return;
         }
         else
@@ -4615,8 +4618,9 @@ static void SetActionsAndBattlersTurnOrder(void)
             }
         }
     }
-    gBattleMainFunc = CheckMegaEvolutionBeforeTurn;
+    gBattleMainFunc = CheckMegaEvoOrZBeforeTurn;
     gBattleStruct->mega.battlerId = 0;
+    gBattleStruct->zMove.battlerId = 0;
 }
 
 static void TurnValuesCleanUp(bool8 var0)
@@ -4659,7 +4663,7 @@ static void SpecialStatusesClear(void)
     memset(&gSpecialStatuses, 0, sizeof(gSpecialStatuses));
 }
 
-static void CheckMegaEvolutionBeforeTurn(void)
+static void CheckMegaEvoOrZBeforeTurn(void)
 {
     if (!(gHitMarker & HITMARKER_RUN))
     {
@@ -4676,6 +4680,20 @@ static void CheckMegaEvolutionBeforeTurn(void)
                 return;
             }
         }
+        while (gBattleStruct->zMove.battlerId < gBattlersCount)
+        {
+            gActiveBattler = gBattlerAttacker = gBattleStruct->zMove.battlerId;
+            gBattleStruct->zMove.battlerId++;
+            if (gBattleStruct->zMove.toUseZ & gBitTable[gActiveBattler]
+                && !(gProtectStructs[gActiveBattler].noValidMoves))
+            {
+                gLastUsedItem = gBattleMons[gActiveBattler].item;
+                gCalledMove = MOVE_BREAKNECK_BLITZ;
+                gBattlerTarget = GetMoveTarget(gCurrentMove, 0);
+                BattleScriptExecute(BattleScript_Z_Move);
+                return;
+            }
+        }        
     }
 
     gBattleMainFunc = CheckFocusPunch_ClearVarsBeforeTurnStarts;

@@ -626,7 +626,7 @@ static bool32 IsBelchPreventingMove(u32 battler, u32 move)
 u8 TrySetCantSelectMoveBattleScript(void)
 {
     u32 limitations = 0;
-    u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
+    u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION | RET_Z_MOVE);
     u32 move = gBattleMons[gActiveBattler].moves[moveId];
     u32 holdEffect = GetBattlerHoldEffect(gActiveBattler, TRUE);
     u16 *choicedMove = &gBattleStruct->choicedMove[gActiveBattler];
@@ -6208,6 +6208,49 @@ bool32 CanMegaEvolve(u8 battlerId)
         return FALSE;
 
     // All checks passed, the mon CAN mega evolve.
+    return TRUE;
+}
+
+bool32 CanUseZMove(u8 battlerId)
+{
+    u32 itemId, holdEffect;
+    u8 type;
+    struct Pokemon *mon;
+    u8 battlerPosition = GetBattlerPosition(battlerId);
+    u8 partnerPosition = GetBattlerPosition(BATTLE_PARTNER(battlerId));
+    struct zMoveData *zMove = &gBattleStruct->zMove;
+
+    // Check if trainer already used a Z move
+    if (zMove->alreadyUsedZ[battlerPosition])
+        return FALSE;
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+    {
+        if (IsPartnerMonFromSameTrainer(battlerId)
+            && (zMove->alreadyUsedZ[partnerPosition] || (zMove->toUseZ & gBitTable[BATTLE_PARTNER(battlerId)])))
+            return FALSE;
+    }
+
+    // Check if the pokemon holds an appropriate item.
+    if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
+        mon = &gEnemyParty[gBattlerPartyIndexes[battlerId]];
+    else
+        mon = &gPlayerParty[gBattlerPartyIndexes[battlerId]];
+
+    itemId = GetMonData(mon, MON_DATA_HELD_ITEM);
+    if (itemId == ITEM_ENIGMA_BERRY || ItemId_GetHoldEffect(itemId) != HOLD_EFFECT_Z_CRYSTAL)
+        return FALSE;
+    
+    if (gBattleMoves[gBattleMons[battlerId].moves[gMoveSelectionCursor[battlerId]]].flags & FLAG_Z_MOVE)
+        return FALSE;
+    
+    GET_MOVE_TYPE(gBattleMons[battlerId].moves[gMoveSelectionCursor[battlerId]], type);
+    if (type != ItemId_GetHoldEffectParam(itemId))
+        return FALSE;
+    
+    // Check if valid move for Z:
+    //gBattleMoves[moveInfo->moves[gMoveSelectionCursor[battlerId]]]
+
+    // All checks passed, the mon CAN use a Z Move
     return TRUE;
 }
 

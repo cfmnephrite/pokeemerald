@@ -1157,6 +1157,12 @@ void ChangeMegaTriggerSprite(u8 spriteId, u8 animId)
     StartSpriteAnim(&gSprites[spriteId], animId);
 }
 
+// Z Move gfx functions.
+void ChangeZMoveTriggerSprite(u8 spriteId, u8 animId)
+{
+    StartSpriteAnim(&gSprites[spriteId], animId);
+}
+
 #define SINGLES_MEGA_TRIGGER_POS_X_OPTIMAL (30)
 #define SINGLES_MEGA_TRIGGER_POS_X_PRIORITY (31)
 #define SINGLES_MEGA_TRIGGER_POS_X_SLIDE (15)
@@ -1190,6 +1196,28 @@ void CreateMegaTriggerSprite(u8 battlerId, u8 palId)
     gSprites[gBattleStruct->mega.triggerSpriteId].tHide = FALSE;
 
     ChangeMegaTriggerSprite(gBattleStruct->mega.triggerSpriteId, palId);
+}
+
+void CreateZMoveTriggerSprite(u8 battlerId, u8 palId)
+{
+    LoadSpritePalette(&sSpritePalette_MegaTrigger);
+    if (GetSpriteTileStartByTag(TAG_MEGA_TRIGGER_TILE) == 0xFFFF)
+        LoadSpriteSheet(&sSpriteSheet_MegaTrigger);
+    if (gBattleStruct->zMove.triggerSpriteId == 0xFF)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+            gBattleStruct->zMove.triggerSpriteId = CreateSprite(&sSpriteTemplate_MegaTrigger,
+                                                             gSprites[gHealthboxSpriteIds[battlerId]].pos1.x - DOUBLES_MEGA_TRIGGER_POS_X_SLIDE,
+                                                             gSprites[gHealthboxSpriteIds[battlerId]].pos1.y - DOUBLES_MEGA_TRIGGER_POS_Y_DIFF, 0);
+        else
+            gBattleStruct->zMove.triggerSpriteId = CreateSprite(&sSpriteTemplate_MegaTrigger,
+                                                             gSprites[gHealthboxSpriteIds[battlerId]].pos1.x - SINGLES_MEGA_TRIGGER_POS_X_SLIDE,
+                                                             gSprites[gHealthboxSpriteIds[battlerId]].pos1.y - SINGLES_MEGA_TRIGGER_POS_Y_DIFF, 0);
+    }
+    gSprites[gBattleStruct->zMove.triggerSpriteId].tBattler = battlerId;
+    gSprites[gBattleStruct->zMove.triggerSpriteId].tHide = FALSE;
+
+    ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, palId);
 }
 
 static void SpriteCb_MegaTrigger(struct Sprite *sprite)
@@ -1265,6 +1293,31 @@ void DestroyMegaTriggerSprite(void)
     if (gBattleStruct->mega.triggerSpriteId != 0xFF)
         DestroySprite(&gSprites[gBattleStruct->mega.triggerSpriteId]);
     gBattleStruct->mega.triggerSpriteId = 0xFF;
+}
+
+bool32 IsZMoveTriggerSpriteActive(void)
+{
+    if (GetSpriteTileStartByTag(TAG_MEGA_TRIGGER_TILE) == 0xFFFF)
+        return FALSE;
+    else if (IndexOfSpritePaletteTag(TAG_MEGA_TRIGGER_PAL) != 0xFF)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void HideZMoveTriggerSprite(void)
+{
+    ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
+    gSprites[gBattleStruct->zMove.triggerSpriteId].tHide = TRUE;
+}
+
+void DestroyZMoveTriggerSprite(void)
+{
+    FreeSpritePaletteByTag(TAG_MEGA_TRIGGER_PAL);
+    FreeSpriteTilesByTag(TAG_MEGA_TRIGGER_TILE);
+    if (gBattleStruct->zMove.triggerSpriteId != 0xFF)
+        DestroySprite(&gSprites[gBattleStruct->zMove.triggerSpriteId]);
+    gBattleStruct->zMove.triggerSpriteId = 0xFF;
 }
 
 #undef tBattler

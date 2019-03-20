@@ -654,9 +654,11 @@ static const u8 sText_BrokeThroughProtectLike[] = _("The {B_BUFF1}-type move bro
 static const u8 sText_CraftyShieldTaunt[] = _("{B_ATK_NAME_WITH_PREFIX} was Taunted by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_NeedleArmEffect[] = _("{B_ATK_NAME_WITH_PREFIX} left thorny spikes\n stuck to {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_NeedleArmDmg[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by\nthorny spikes!");
+static const u8 sText_SurroundedbyZPower[] = _("{B_ATK_NAME_WITH_PREFIX} surrounded\nitself with its Z-Power!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_SURROUNDEDBYZPOWER - 12] = sText_SurroundedbyZPower,
     [STRINGID_NEEDLEARMEFFECT - 12] = sText_NeedleArmEffect,
     [STRINGID_NEEDLEARMDAMAGE - 12] = sText_NeedleArmDmg,
     [STRINGID_SAFETYGOOGLESPROTECTED - 12] = sText_SafetyGooglesProtected,
