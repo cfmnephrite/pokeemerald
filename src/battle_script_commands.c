@@ -4546,10 +4546,10 @@ static void atk4A_sethealblock(void)
     else
     {
         gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
-        gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
+		gDisableStructs[gBattlerTarget].healBlockTimer = 5;
         if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
         {
-            gDisableStructs[gBattlerTarget].healBlockTimer = 5;
+			gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
             gDisableStructs[BATTLE_PARTNER(gBattlerTarget)].healBlockTimer = 5;
         }
         gBattlescriptCurrInstr += 10;

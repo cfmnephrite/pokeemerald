@@ -2824,9 +2824,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 u32 statId, opposingBattler;
                 u32 opposingDef = 0, opposingSpDef = 0;
 
-                opposingBattler = BATTLE_OPPOSITE(battler);
-                for (i = 0; i < 2; opposingBattler ^= BIT_SIDE, i++)
+                u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+				u8 mon1 = GetBattlerAtPosition(side);
+				u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
+				u8 oppBattlers[2] = {mon1, mon2};
+                for (i = 0; i < 2; i++)
                 {
+					opposingBattler = oppBattlers[i];
                     if (IsBattlerAlive(opposingBattler))
                     {
                         opposingDef += gBattleMons[opposingBattler].defense
@@ -2847,6 +2851,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 
                 if (gBattleMons[battler].statStages[statId] != 0xC)
                 {
+					gBattlerAttacker = battler;
                     gBattleMons[battler].statStages[statId]++;
                     SET_STATCHANGER(statId, 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
@@ -2998,7 +3003,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 							u16 amove = gBattleMons[oppBattler].moves[j];
 							u8 mType = gBattleMoves[amove].type;
 							u16 mod = CalcTypeEffectivenessMultiplier(amove, mType, oppBattler, battler, FALSE);
-							if(mod == UQ_4_12(2.0) || mod == UQ_4_12(4.0))
+							if((mod == UQ_4_12(2.0) || mod == UQ_4_12(4.0)) && gBattleMoves[amove].split != SPLIT_STATUS)
 								anticipated = TRUE;
 						}
 					}
@@ -3034,14 +3039,18 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             {
                 u8 warnedBp = 1;
                 u16 warnedMove, onMon;
-                u32 opposingBattler = BATTLE_OPPOSITE(battler);
-                for (i = 0; i < 2; opposingBattler ^= BIT_SIDE, i++)
+				u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+				u8 mon1 = GetBattlerAtPosition(side);
+				u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
+				u8 oppBattlers[2] = {mon1, mon2};
+                for (i = 0; i < 2; i++)
                 {
-                    if (IsBattlerAlive(opposingBattler))
+					u8 oppBattler = oppBattlers[i];
+                    if (IsBattlerAlive(oppBattler))
                     {
                         for (j = 0; j < MAX_MON_MOVES; j++)
                         {
-                            u16 amove = gBattleMons[opposingBattler].moves[j];
+                            u16 amove = gBattleMons[oppBattler].moves[j];
                             u8 tempBp = warnedBp;
                             if (gBattleMoves[amove].power == 0 && gBattleMoves[amove].split != SPLIT_STATUS)
                                 tempBp = 80;
@@ -3053,13 +3062,14 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                             {
                                 warnedBp = gBattleMoves[amove].power;
                                 warnedMove = amove;
-                                onMon = opposingBattler;
+                                onMon = oppBattler;
                             }
                         }
                     }
                 }
-                if (warnedMove && onMon)
+                if (warnedMove)
                 {
+					gBattlerAbility = gEffectBattler = battler;
                     gBattleCommunication[MULTISTRING_CHOOSER] = 5;
                     gSpecialStatuses[battler].switchInAbilityDone = 1;
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, onMon, gBattlerPartyIndexes[onMon]);

@@ -5956,7 +5956,7 @@ BattleScript_82DB4AF::
 	return
 
 BattleScript_IntimidateActivatesEnd3::
-	call BattleScript_PauseIntimidateActivates
+	call BattleScript_IntimidateActivates
 	end3
 
 BattleScript_PauseIntimidateActivates:
@@ -5976,16 +5976,16 @@ BattleScript_IntimidateActivatesLoop:
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printstring STRINGID_PKMNCUTSATTACKWITH
-	waitmessage 0x40
+	waitmessage 0x10
 BattleScript_IntimidateActivatesLoopIncrement:
 	addbyte gBattlerTarget, 0x1
 	goto BattleScript_IntimidateActivatesLoop
 BattleScript_IntimidateActivatesReturn:
 	return
 BattleScript_IntimidatePrevented:
-	pause 0x20
+	pause 0x10
 	printstring STRINGID_PREVENTEDFROMWORKING
-	waitmessage 0x40
+	waitmessage 0x20
 	goto BattleScript_IntimidateActivatesLoopIncrement
 	
 BattleScript_DroughtActivates::
@@ -6325,6 +6325,8 @@ BattleScript_AttackerAbilityStatRaiseEnd3::
 	end3
 	
 BattleScript_SwitchInAbilityMsg::
+	call BattleScript_AbilityPopUp
+	waitmessage 0x20
 	printfromtable gSwitchInAbilityStringIds
 	waitmessage 0x40
 	end3
