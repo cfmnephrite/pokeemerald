@@ -1836,6 +1836,7 @@ BattleScript_HitFromAtkAnimation::
 BattleScript_MoveEnd::
 	setbyte sMOVEEND_STATE, 0x0
 	moveend 0x0, 0x0
+	setbyte cMULTISTRING_CHOOSER, 0x0
 	end
 
 BattleScript_MakeMoveMissed::

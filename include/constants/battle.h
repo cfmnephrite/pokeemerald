@@ -340,6 +340,27 @@
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000
 
+// Z-Move effects
+#define Z_MOVE_EFFECT_ATK_PLUS_1        0x1
+#define Z_MOVE_EFFECT_DEF_PLUS_1        0x2
+#define Z_MOVE_EFFECT_SP_ATK_PLUS_1     0x3
+#define Z_MOVE_EFFECT_SP_DEF_PLUS_1     0x4
+#define Z_MOVE_EFFECT_SPD_PLUS_1        0x5
+#define Z_MOVE_EFFECT_ACC_PLUS_1        0x6
+#define Z_MOVE_EFFECT_EVS_PLUS_1        0x7
+#define Z_MOVE_EFFECT_ATK_PLUS_2        0x8
+#define Z_MOVE_EFFECT_DEF_PLUS_2        0x9
+#define Z_MOVE_EFFECT_SP_ATK_PLUS_2     0xA
+#define Z_MOVE_EFFECT_SP_DEF_PLUS_2     0xB
+#define Z_MOVE_EFFECT_SPD_PLUS_2        0xC
+#define Z_MOVE_EFFECT_ATK_PLUS_3        0xD
+#define Z_MOVE_EFFECT_ALL_STATS_UP      0xE
+#define Z_MOVE_EFFECT_RESET_STATS       0xF
+#define Z_MOVE_EFFECT_FOCUS_ENERGY      0x10
+#define Z_MOVE_EFFECT_RESTORE_HP        0x11
+#define Z_MOVE_EFFECT_SWITCH_RESTORE_HP 0x12
+#define Z_MOVE_EFFECT_FOLLOW_ME         0x13
+
 // Battle terrain defines for gBattleTerrain.
 #define BATTLE_TERRAIN_GRASS        0
 #define BATTLE_TERRAIN_LONG_GRASS   1
