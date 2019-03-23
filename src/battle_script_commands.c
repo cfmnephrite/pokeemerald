@@ -1299,8 +1299,8 @@ static void atk01_accuracycheck(void)
             calc = (calc * 80) / 100; // 1.2 snow cloak loss
         else if (defAbility == ABILITY_TANGLED_FEET && gBattleMons[gBattlerTarget].status2 & STATUS2_CONFUSION)
             calc = (calc * 50) / 100; // 1.5 tangled feet loss
-		else if (defAbility == ABILITY_ILLUMINATE && CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, FALSE) >= UQ_4_12(2.0))
-			calc = (calc * 70) / 100; // 1.3 illuminate loss
+        else if (defAbility == ABILITY_ILLUMINATE && CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, FALSE) >= UQ_4_12(2.0))
+            calc = (calc * 70) / 100; // 1.3 illuminate loss
 
         if (atkAbility == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
             calc = (calc * 80) / 100; // 1.2 hustle loss
@@ -1500,7 +1500,7 @@ static void atk07_adjustdamage(void)
 
     gPotentialItemEffectBattler = gBattlerTarget;
 
-    if (holdEffect == HOLD_EFFECT_FOCUS_BAND && (Random() % 100) < param)
+    if (holdEffect == HOLD_EFFECT_FOCUS_BAND && RandomChance(param, 100))
     {
         RecordItemEffectBattle(gBattlerTarget, holdEffect);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
@@ -1925,7 +1925,7 @@ static void atk0F_resultmessage(void)
         }
         else if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
         {
-            if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || (Random() % 10 >= 3)))
+            if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || RandomChance(3, 5)))
             {
                 u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | moveEffects[(Random() % 3)];
@@ -2123,7 +2123,7 @@ u8 GetBattlerTurnOrderNum(u8 battlerId)
     return;                                     \
 }
 
-void SetMoveEffect(bool32 primary, u32 certain)
+void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
 {
     s32 i, byTwo, affectsUser = 0;
     bool32 statusChanged = FALSE;
@@ -2225,7 +2225,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || GetBattlerAbility(gEffectBattler) == ABILITY_DAMP
                 || GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
-				|| GetBattlerAbility(gEffectBattler) == ABILITY_HEATPROOF
+                || GetBattlerAbility(gEffectBattler) == ABILITY_HEATPROOF
                 || gBattleMons[gEffectBattler].status1)
                 break;
 
@@ -2285,6 +2285,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
         }
         if (statusChanged == TRUE)
         {
+            gBattleCommunication[MULTISTRING_CHOOSER] = multistring;
             BattleScriptPush(gBattlescriptCurrInstr + 1);
 
             gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
@@ -2404,7 +2405,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 else
                 {
                     gBattleScripting.moveEffect = Random() % 3 + 3;
-                    SetMoveEffect(FALSE, 0);
+                    SetMoveEffect(FALSE, 0, 0);
                 }
                 break;
             case MOVE_EFFECT_CHARGING:
@@ -2854,17 +2855,17 @@ static void atk15_seteffectwithchance(void)
         && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
     {
         gBattleScripting.moveEffect &= ~(MOVE_EFFECT_CERTAIN);
-        SetMoveEffect(0, MOVE_EFFECT_CERTAIN);
+        SetMoveEffect(0, MOVE_EFFECT_CERTAIN, 0);
     }
-    else if (Random() % 100 < percentChance
+    else if (RandomChance(percentChance, 100)
              && gBattleScripting.moveEffect
              && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_SHEER_FORCE)
     {
         if (percentChance >= 100)
-            SetMoveEffect(0, MOVE_EFFECT_CERTAIN);
+            SetMoveEffect(0, MOVE_EFFECT_CERTAIN, 0);
         else
-            SetMoveEffect(0, 0);
+            SetMoveEffect(0, 0, 0);
     }
     else
     {
@@ -2877,12 +2878,12 @@ static void atk15_seteffectwithchance(void)
 
 static void atk16_seteffectprimary(void)
 {
-    SetMoveEffect(TRUE, 0);
+    SetMoveEffect(TRUE, 0, 0);
 }
 
 static void atk17_seteffectsecondary(void)
 {
-    SetMoveEffect(FALSE, 0);
+    SetMoveEffect(FALSE, 0, 1);
 }
 
 static void atk18_clearstatusfromeffect(void)
@@ -4144,10 +4145,10 @@ static void atk48_playstatchangeanimation(void)
                 else if (!gSideTimers[GET_BATTLER_SIDE(gActiveBattler)].mistTimer
                         && ability != ABILITY_CLEAR_BODY
                         && ability != ABILITY_WHITE_SMOKE
-						&& ability != ABILITY_FULL_METAL_BODY
-						&& !((IsPartnerAbilityAffecting(gActiveBattler, ABILITY_FLOWER_VEIL))
-						&& (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
-						&& IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
+                        && ability != ABILITY_FULL_METAL_BODY
+                        && !((IsPartnerAbilityAffecting(gActiveBattler, ABILITY_FLOWER_VEIL))
+                        && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+                        && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
                         && !(ability == ABILITY_KEEN_EYE && currStat == STAT_ACC)
                         && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK))
                 {
@@ -4303,7 +4304,7 @@ static void atk49_moveend(void)
             break;
         case ATK49_MOVE_END_ABILITIES: // Such as abilities activating on contact(Poison Spore, Rough Skin, etc.).
             if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerTarget, 0, 0, 0) 
-				|| (GetBattlerAbility(gBattlerAttacker) == ABILITY_HYPER_CUTTER && AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerAttacker, 0, 0, 0)))
+                || (GetBattlerAbility(gBattlerAttacker) == ABILITY_HYPER_CUTTER && AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerAttacker, 0, 0, 0)))
                 effect = TRUE;
             gBattleScripting.atk49_state++;
             break;
@@ -4554,10 +4555,10 @@ static void atk4A_sethealblock(void)
     else
     {
         gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
-		gDisableStructs[gBattlerTarget].healBlockTimer = 5;
+        gDisableStructs[gBattlerTarget].healBlockTimer = 5;
         if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
         {
-			gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
+            gStatuses3[BATTLE_PARTNER(gBattlerTarget)] |= STATUS3_HEAL_BLOCK;
             gDisableStructs[BATTLE_PARTNER(gBattlerTarget)].healBlockTimer = 5;
         }
         gBattlescriptCurrInstr += 10;
@@ -5773,7 +5774,7 @@ static void atk64_statusanimation(void)
             && gDisableStructs[gActiveBattler].substituteHP == 0
             && !(gHitMarker & HITMARKER_NO_ANIMATIONS))
         {
-            BtlController_EmitStatusAnimation(0, FALSE, gBattleMons[gActiveBattler].status1);
+            BtlController_EmitStatusAnimation(0, FALSE, (gBattleMons[gActiveBattler].status1 & 0xFC));
             MarkBattlerForControllerExec(gActiveBattler);
         }
         gBattlescriptCurrInstr += 2;
@@ -7280,7 +7281,7 @@ static void atk76_various(void)
         else if (gBattleMons[gBattlerAttacker].status1 & STATUS1_BURN)
         {
             if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_BUBBLE
-			|| GetBattlerAbility(gBattlerTarget) == ABILITY_HEATPROOF
+            || GetBattlerAbility(gBattlerTarget) == ABILITY_HEATPROOF
             || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE
             || GetBattlerAbility(gBattlerTarget) == ABILITY_DAMP)
             {
@@ -8054,7 +8055,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else if ((gBattleMons[gActiveBattler].ability == ABILITY_CLEAR_BODY
                   || gBattleMons[gActiveBattler].ability == ABILITY_WHITE_SMOKE 
-				  || gBattleMons[gActiveBattler].ability == ABILITY_FULL_METAL_BODY
+                  || gBattleMons[gActiveBattler].ability == ABILITY_FULL_METAL_BODY
                   || ((IsPartnerAbilityAffecting(gActiveBattler, ABILITY_FLOWER_VEIL))
                  && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
                  && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)))
@@ -8592,7 +8593,7 @@ static void atk93_tryKO(void)
         if (!(gStatuses3[gBattlerTarget] & STATUS3_ALWAYS_HITS))
         {
             chance = gBattleMoves[gCurrentMove].accuracy + (gBattleMons[gBattlerAttacker].level - gBattleMons[gBattlerTarget].level);
-            if (Random() % 100 + 1 < chance && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
+            if (RandomChance(chance, 100) && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
                 chance = TRUE;
             else
                 chance = FALSE;
@@ -8605,7 +8606,7 @@ static void atk93_tryKO(void)
         else
         {
             chance = gBattleMoves[gCurrentMove].accuracy + (gBattleMons[gBattlerAttacker].level - gBattleMons[gBattlerTarget].level);
-            if (Random() % 100 + 1 < chance && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
+            if (RandomChance(chance, 100) && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
                 chance = TRUE;
             else
                 chance = FALSE;
@@ -10771,7 +10772,7 @@ static void atkE5_pickup(void)
                 && species != 0
                 && species != SPECIES_EGG
                 && heldItem == ITEM_NONE
-                && (Random() % 10) == 0)
+                && RandomChance(1, 10))
             {
                 heldItem = GetBattlePyramidPickupItemId();
                 SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
@@ -10794,7 +10795,7 @@ static void atkE5_pickup(void)
                 && species != 0
                 && species != SPECIES_EGG
                 && heldItem == ITEM_NONE
-                && (Random() % 10) == 0)
+                && RandomChance(1, 10))
             {
                 s32 j;
                 s32 rand = Random() % 100;

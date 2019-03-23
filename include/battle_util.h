@@ -93,6 +93,7 @@ u16 CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u8 ability
 u16 GetTypeModifier(u8 atkType, u8 defType);
 s32 GetStealthHazardDamage(u8 hazardType, u8 battlerId);
 u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
+bool32 RandomChance(u8 num, u8 denom);
 bool32 CanMegaEvolve(u8 battlerId);
 void UndoMegaEvolution(u8 monId);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);

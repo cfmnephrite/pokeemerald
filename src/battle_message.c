@@ -654,7 +654,7 @@ static const u8 sText_BrokeThroughProtectLike[] = _("The {B_BUFF1}-type move bro
 static const u8 sText_CraftyShieldTaunt[] = _("{B_ATK_NAME_WITH_PREFIX} was Taunted by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_NeedleArmEffect[] = _("{B_ATK_NAME_WITH_PREFIX} left thorny spikes\n stuck to {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_NeedleArmDmg[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by\nthorny spikes!");
-static const u8 sText_FriskDouble[] = _("{B_EFF_NAME_WITH_PREFIX} frisked its foes, \nidentifying {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\land {B_BUFF1}'s {B_BUFF2}!");
+static const u8 sText_FriskDouble[] = _("{B_EFF_NAME_WITH_PREFIX} frisked its foes\nand found {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\land {B_BUFF1}'s {B_BUFF2}!");
 static const u8 sText_TargetAbilityLoweredFoeStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nlowered {B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_HealerActivates[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_EFF_ABILITY} cured\n{B_BUFF1}'s status problem!");
 

@@ -874,7 +874,7 @@ Score_Plus10:
 @ Basically a scenario where the players mon is faster, able to hit and able to OHKO
 @ In which, it would be best to use a priority move to deal any damage
 AI_CheckIfAlreadyDead:
-	if_status2 AI_TARGET, STATUS2_RECHARGE | STATUS2_BIDE, AI_Ret
+	if_status2 AI_TARGET, STATUS2_BIDE, AI_Ret
 	if_ai_can_go_down AI_CheckIfAlreadyDeadPriorities
 	end
 AI_CheckIfAlreadyDeadPriorities:

@@ -4833,9 +4833,7 @@ BattleScript_CraftyShieldEffect::
 BattleScript_ProtectLikeStatusEffect::
 	printstring STRINGID_PKMNPROTECTEDITSELF
 	waitmessage 0x40
-	setbyte cMULTISTRING_CHOOSER, 0x1
 	seteffectsecondary
-	setbyte cMULTISTRING_CHOOSER, 0x0
 	return	
 
 BattleScript_BrokeThroughProtectLike::
