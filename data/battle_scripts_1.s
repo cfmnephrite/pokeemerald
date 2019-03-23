@@ -6389,10 +6389,26 @@ BattleScript_AbilityCuredStatus::
 	updatestatusicon BS_SCRIPTING
 	return
 	
+BattleScript_HealerActivates::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_HEALERACTIVATES
+	waitmessage 0x40
+	updatestatusicon BS_ATTACKER
+	end3
+	
 BattleScript_DancerActivates::
 	call BattleScript_AbilityPopUp
 	waitmessage 0x20
 	printstring STRINGID_FREEDFROMSKYDROP
+	return
+	
+BattleScript_GooeyActivates::
+	setgraphicalstatchangevalues
+	call BattleScript_AbilityPopUp
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	waitanimation
+	printstring STRINGID_TARGETABILITYSTATLOWERFOE
+	waitmessage 0x30
 	return
 
 BattleScript_IgnoresWhileAsleep::

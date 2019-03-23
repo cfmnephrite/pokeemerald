@@ -2706,6 +2706,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 
     if (special)
         gLastUsedAbility = special;
+	else if (IsBattlerAlive(BATTLE_PARTNER(battler)) && GetBattlerAbility(BATTLE_PARTNER(battler)) == ABILITY_HEALER)
+		gLastUsedAbility = GetBattlerAbility(BATTLE_PARTNER(battler));
     else
         gLastUsedAbility = GetBattlerAbility(battler);
 
@@ -3108,17 +3110,18 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				{
 					
 					gBattlerAbility = gEffectBattler = battler;
-					gBattleCommunication[MULTISTRING_CHOOSER] = 6;
 					gSpecialStatuses[battler].switchInAbilityDone = 1;
-					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff2, toFrisk, gBattlerPartyIndexes[toFrisk]);
-					PREPARE_ITEM_BUFFER(gBattleTextBuff3, gBattleMons[toFrisk].item);
+					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, toFrisk, gBattlerPartyIndexes[toFrisk]);
+					PREPARE_ITEM_BUFFER(gBattleTextBuff2, gBattleMons[toFrisk].item);
+					gLastUsedItem = gBattleMons[oppBattlers[0]].item;
+					gBattlerTarget = oppBattlers[0];
 					if(friskCount > 1)
 					{
-						PREPARE_STRING_BUFFER(gBattleTextBuff1, STRINGID_FRISKDOUBLE);
+						gBattleCommunication[MULTISTRING_CHOOSER] = 7;
 					}
 					else
 					{
-						PREPARE_STRING_BUFFER(gBattleTextBuff1, STRINGID_FRISKSINGLE);
+						gBattleCommunication[MULTISTRING_CHOOSER] = 6;
 					}
 					BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
 					effect++;
@@ -3167,6 +3170,21 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     goto ABILITY_HEAL_MON_STATUS;
                 }
                 break;
+			case ABILITY_HEALER:
+				if ((gBattleMons[battler].status1 & STATUS1_ANY)
+				 /*&& (Random() % 3 == 0)*/)
+				{
+					gBattleMons[battler].status1 = 0;
+                    gBattleMons[battler].status2 &= ~(STATUS2_NIGHTMARE);
+					gBattlerAbility = gEffectBattler = BATTLE_PARTNER(battler);
+					RecordAbilityBattle(gEffectBattler, gLastUsedAbility);
+					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, battler, gBattlerPartyIndexes[battler]);
+					BattleScriptPushCursorAndCallback(BattleScript_HealerActivates);
+					BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                    MarkBattlerForControllerExec(battler);
+                    effect++;
+				}
+				break;
             case ABILITY_SHED_SKIN:
                 if ((gBattleMons[battler].status1 & STATUS1_ANY) && (Random() % 3) == 0)
                 {
@@ -3617,6 +3635,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_GOOEY:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && gBattleMons[gBattlerAttacker].hp != 0
+             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && TARGET_TURN_DAMAGED
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+			 {
+				gBattleMons[gBattlerAttacker].statStages[STAT_SPEED]--;
+                SET_STATCHANGER(STAT_SPEED, 1, TRUE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_GooeyActivates;
+                effect++;
+			 }
         /*case ABILITY_DANCER: //todo
             if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp != 0
@@ -3934,9 +3966,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         }
         break;
     }
-    if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
+    if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF && gLastUsedAbility != ABILITY_HEALER)
         RecordAbilityBattle(battler, gLastUsedAbility);
-    if (effect && caseID <= ABILITYEFFECT_MOVE_END)
+    if (effect && caseID <= ABILITYEFFECT_MOVE_END && gLastUsedAbility != ABILITY_HEALER)
         gBattlerAbility = battler;
 
     return effect;

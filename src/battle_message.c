@@ -593,7 +593,7 @@ static const u8 sText_AnticipationActivates[] = _("The {B_ATK_NAME_WITH_PREFIX} 
 static const u8 sText_ForewarnActivates[] = _("It was alerted to \n{B_BUFF1}'s {B_BUFF2}!");
 static const u8 sText_IceBodyHpGain[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY}\nhealed it a little bit!");
 static const u8 sText_SnowWarningHail[] = _("It started to hail!");
-static const u8 sText_FriskActivates[] = _("{B_EFF_NAME_WITH_PREFIX} frisked {B_BUFF1}!");
+static const u8 sText_FriskActivates[] = _("{B_EFF_NAME_WITH_PREFIX} frisked {B_BUFF1} \nand found its {B_BUFF2}!");
 static const u8 sText_UnnerveEnters[] = _("{B_ATK_NAME_WITH_PREFIX} is too nervous to eat Berries!");
 static const u8 sText_HarvestBerry[] = _("{B_ATK_NAME_WITH_PREFIX} harvested\none {B_LAST_ITEM}!");
 static const u8 sText_MoxieAtkRise[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} raised its Attack!");
@@ -654,8 +654,9 @@ static const u8 sText_BrokeThroughProtectLike[] = _("The {B_BUFF1}-type move bro
 static const u8 sText_CraftyShieldTaunt[] = _("{B_ATK_NAME_WITH_PREFIX} was Taunted by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_NeedleArmEffect[] = _("{B_ATK_NAME_WITH_PREFIX} left thorny spikes\n stuck to {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_NeedleArmDmg[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by\nthorny spikes!");
-static const u8 sText_FriskSingle[] = _("{B_BUFF2} \nand found its {B_BUFF3}");
-static const u8 sText_FriskDouble[] = _("its foes, \nidentifying {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM} \land {B_BUFF2}'s {B_BUFF3}");
+static const u8 sText_FriskDouble[] = _("{B_EFF_NAME_WITH_PREFIX} frisked its foes, \nidentifying {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\land {B_BUFF1}'s {B_BUFF2}!");
+static const u8 sText_TargetAbilityLoweredFoeStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nlowered {B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}!");
+static const u8 sText_HealerActivates[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_EFF_ABILITY} cured\n{B_BUFF1}'s status problem!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1172,8 +1173,9 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_CANTUSEEXCLUSIVEMOVE - 12] = sText_CantUseExclusiveMove,
     [STRINGID_BROKETHROUGHPROTECTLIKE - 12] = sText_BrokeThroughProtectLike,
     [STRINGID_CRAFTYSHIELDTAUNT - 12] = sText_CraftyShieldTaunt,
-	[STRINGID_FRISKSINGLE - 12] = sText_FriskSingle,
 	[STRINGID_FRISKDOUBLE - 12] = sText_FriskDouble,
+	[STRINGID_TARGETABILITYSTATLOWERFOE - 12] = sText_TargetAbilityLoweredFoeStat,
+	[STRINGID_HEALERACTIVATES - 12] = sText_HealerActivates,
 };
 
 const u16 gWeatherEndedStringIds[] =
@@ -1210,7 +1212,7 @@ const u16 gSwitchInAbilityStringIds[] =
 {
     STRINGID_MOLDBREAKERENTERS, STRINGID_TERAVOLTENTERS, STRINGID_TURBOBLAZEENTERS, 
 	STRINGID_SLOWSTARTENTERS, STRINGID_UNNERVEENTERS, STRINGID_FOREWARNACTIVATES,
-	STRINGID_FRISKACTIVATES
+	STRINGID_FRISKACTIVATES, STRINGID_FRISKDOUBLE
 };
 
 const u16 gMissStringIds[] =
