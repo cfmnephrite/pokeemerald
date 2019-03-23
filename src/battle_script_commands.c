@@ -4141,6 +4141,7 @@ static void atk48_playstatchangeanimation(void)
                 else if (!gSideTimers[GET_BATTLER_SIDE(gActiveBattler)].mistTimer
                         && ability != ABILITY_CLEAR_BODY
                         && ability != ABILITY_WHITE_SMOKE
+						&& ability != ABILITY_FULL_METAL_BODY
                         && !(ability == ABILITY_KEEN_EYE && currStat == STAT_ACC)
                         && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK))
                 {
@@ -8045,7 +8046,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else if ((gBattleMons[gActiveBattler].ability == ABILITY_CLEAR_BODY
                   || gBattleMons[gActiveBattler].ability == ABILITY_WHITE_SMOKE 
-                  || ((GetBattlerAbility(gBattlerTarget) == ABILITY_FLOWER_VEIL || GetBattlerAbility(BATTLE_PARTNER(gBattlerTarget)) == ABILITY_FLOWER_VEIL)
+				  || gBattleMons[gActiveBattler].ability == ABILITY_FULL_METAL_BODY
+                  || ((IsPartnerAbilityAffecting(gActiveBattler, ABILITY_FLOWER_VEIL))
                  && (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
                  && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS)))
                  && !certain && gCurrentMove != MOVE_CURSE)

@@ -3034,6 +3034,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 gSpecialStatuses[battler].switchInAbilityDone = 1;
             }
             break;
+		case ABILITY_FULL_METAL_BODY:
+            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            {
+                SET_BATTLER_TYPE3(battler, TYPE_STEEL);
+                gSpecialStatuses[battler].switchInAbilityDone = 1;
+            }
+            break;
         case ABILITY_FOREWARN:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -3079,6 +3086,45 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+		case ABILITY_FRISK:
+			if (!gSpecialStatuses[battler].switchInAbilityDone)
+			{
+				u8 toFrisk, fItem, friskCount;
+				u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+				u8 mon1 = GetBattlerAtPosition(side);
+				u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
+				u8 oppBattlers[2] = {mon1, mon2};
+				for (i = 0; i < 2; i++)
+				{
+					u8 oppBattler = oppBattlers[i];
+					if (IsBattlerAlive(oppBattler) && gBattleMons[oppBattler].item != ITEM_NONE)
+					{
+						toFrisk = oppBattler;
+						fItem = gBattleMons[oppBattler].item;
+						friskCount++;
+					}
+				}
+				if (friskCount > 0)
+				{
+					
+					gBattlerAbility = gEffectBattler = battler;
+					gBattleCommunication[MULTISTRING_CHOOSER] = 6;
+					gSpecialStatuses[battler].switchInAbilityDone = 1;
+					PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff2, toFrisk, gBattlerPartyIndexes[toFrisk]);
+					PREPARE_ITEM_BUFFER(gBattleTextBuff3, gBattleMons[toFrisk].item);
+					if(friskCount > 1)
+					{
+						PREPARE_STRING_BUFFER(gBattleTextBuff1, STRINGID_FRISKDOUBLE);
+					}
+					else
+					{
+						PREPARE_STRING_BUFFER(gBattleTextBuff1, STRINGID_FRISKSINGLE);
+					}
+					BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
+					effect++;
+				}
+			}
+			break;
         }
         break;
     case ABILITYEFFECT_ENDTURN: // 1
