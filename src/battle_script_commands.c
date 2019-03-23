@@ -1299,6 +1299,8 @@ static void atk01_accuracycheck(void)
             calc = (calc * 80) / 100; // 1.2 snow cloak loss
         else if (defAbility == ABILITY_TANGLED_FEET && gBattleMons[gBattlerTarget].status2 & STATUS2_CONFUSION)
             calc = (calc * 50) / 100; // 1.5 tangled feet loss
+		else if (defAbility == ABILITY_ILLUMINATE && CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, FALSE) >= UQ_4_12(2.0))
+			calc = (calc * 70) / 100; // 1.3 illuminate loss
 
         if (atkAbility == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
             calc = (calc * 80) / 100; // 1.2 hustle loss
@@ -2223,6 +2225,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || GetBattlerAbility(gEffectBattler) == ABILITY_DAMP
                 || GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
+				|| GetBattlerAbility(gEffectBattler) == ABILITY_HEATPROOF
                 || gBattleMons[gEffectBattler].status1)
                 break;
 
@@ -4142,6 +4145,9 @@ static void atk48_playstatchangeanimation(void)
                         && ability != ABILITY_CLEAR_BODY
                         && ability != ABILITY_WHITE_SMOKE
 						&& ability != ABILITY_FULL_METAL_BODY
+						&& !((IsPartnerAbilityAffecting(gActiveBattler, ABILITY_FLOWER_VEIL))
+						&& (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+						&& IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS))
                         && !(ability == ABILITY_KEEN_EYE && currStat == STAT_ACC)
                         && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK))
                 {
@@ -4296,7 +4302,8 @@ static void atk49_moveend(void)
             gBattleScripting.atk49_state++;
             break;
         case ATK49_MOVE_END_ABILITIES: // Such as abilities activating on contact(Poison Spore, Rough Skin, etc.).
-            if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerTarget, 0, 0, 0))
+            if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerTarget, 0, 0, 0) 
+				|| (GetBattlerAbility(gBattlerAttacker) == ABILITY_HYPER_CUTTER && AbilityBattleEffects(ABILITYEFFECT_MOVE_END, gBattlerAttacker, 0, 0, 0)))
                 effect = TRUE;
             gBattleScripting.atk49_state++;
             break;
@@ -7273,6 +7280,7 @@ static void atk76_various(void)
         else if (gBattleMons[gBattlerAttacker].status1 & STATUS1_BURN)
         {
             if (GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_BUBBLE
+			|| GetBattlerAbility(gBattlerTarget) == ABILITY_HEATPROOF
             || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE
             || GetBattlerAbility(gBattlerTarget) == ABILITY_DAMP)
             {

@@ -3727,6 +3727,7 @@ BattleScript_EffectBurn::
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_DampPrevents
 	jumpifability BS_TARGET, ABILITY_DAMP, BattleScript_DampPrevents
 	jumpifability BS_TARGET, ABILITY_WATER_BUBBLE, BattleScript_DampPrevents
+	jumpifability BS_TARGET, ABILITY_HEATPROOF, BattleScript_DampPrevents
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
 	jumpifterrainaffecting BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
