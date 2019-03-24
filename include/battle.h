@@ -233,6 +233,7 @@ struct SpecialStatus
     s32 specialDmg;
     u8 physicalBattlerId;
     u8 specialBattlerId;
+    u8 changedStatsBattlerId; // Battler that was responsible for the latest stat change. Can be self.
 };
 
 struct SideTimer
@@ -624,7 +625,7 @@ struct BattleStruct
 
 #define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
 
-#define SET_STATCHANGER(statId, stage, goesDown)(gBattleScripting.statChanger = (statId) + (stage << 3) + (goesDown << 7))
+#define SET_STATCHANGER(statId, stage, goesDown)(gBattleScripting.statChanger = (statId) + ((stage) << 3) + (goesDown << 7))
 
 struct BattleScripting
 {

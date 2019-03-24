@@ -859,15 +859,22 @@ extern const u8 gText_Winona[];
 extern const u8 gText_Phoebe[];
 extern const u8 gText_Glacia[];
 
-extern const u8 gText_PkmnLearnedMove4[];
-extern const u8 gText_PkmnTryingToLearnMove[];
-extern const u8 gText_WhichMoveToForget2[];
-extern const u8 gText_StopTryingToTeachMove[];
-extern const u8 gText_12AndPoof[];
-extern const u8 gText_PkmnForgotMoveAndLearnedNew[];
+extern const u8 gText_MoveRelearnerPkmnLearnedMove[];
+extern const u8 gText_MoveRelearnerPkmnTryingToLearnMove[];
+extern const u8 gText_MoveRelearnerWhichMoveToForget[];
+extern const u8 gText_MoveRelearnerStopTryingToTeachMove[];
+extern const u8 gText_MoveRelearnerAndPoof[];
+extern const u8 gText_MoveRelearnerPkmnForgotMoveAndLearnedNew[];
 extern const u8 gText_TeachWhichMoveToPkmn[];
-extern const u8 gText_GiveUpTeachingNewMove[];
-extern const u8 gText_TeachX[];
+extern const u8 gText_MoveRelearnerGiveUp[];
+extern const u8 gText_MoveRelearnerTeachMoveConfirm[];
+extern const u8 gText_MoveRelearnerBattleMoves[];
+extern const u8 gText_MoveRelearnerPP[];
+extern const u8 gText_MoveRelearnerPower[];
+extern const u8 gText_MoveRelearnerAccuracy[];
+extern const u8 gText_MoveRelearnerContestMovesTitle[];
+extern const u8 gText_MoveRelearnerAppeal[];
+extern const u8 gText_MoveRelearnerJam[];
 
 extern const u8 gText_Kira[];
 extern const u8 gText_Amy[];
@@ -2555,5 +2562,25 @@ extern const u8 gUnknown_0862BAB9[];
 extern const u8 gUnknown_0862BAC4[];
 extern const u8 gUnknown_0862BACF[];
 extern const u8 gUnknown_0862BADA[];
+
+// E-Reader
+extern const u8 gUnknown_085EDFD6[];
+extern const u8 gUnknown_085EDFF5[];
+extern const u8 gUnknown_085EE014[];
+extern const u8 gUnknown_085EE035[];
+extern const u8 gUnknown_085EE05C[];
+extern const u8 gUnknown_085EE06B[];
+extern const u8 gUnknown_085EE080[];
+extern const u8 gUnknown_085EE097[];
+extern const u8 gUnknown_085EE0A3[];
+extern const u8 gUnknown_085EE0BF[];
+extern const u8 gUnknown_085EE0DC[];
+extern const u8 gUnknown_085EE0FA[];
+extern const u8 gUnknown_085EE107[];
+extern const u8 gUnknown_085EE120[];
+extern const u8 gUnknown_085EE12D[];
+extern const u8 gUnknown_085EE14B[];
+extern const u8 gUnknown_085EE14F[];
+extern const u8 gUnknown_085EE154[];
 
 #endif // GUARD_STRINGS_H

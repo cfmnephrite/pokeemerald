@@ -3,6 +3,7 @@
 #include "bike.h"
 #include "coord_event_weather.h"
 #include "daycare.h"
+#include "faraway_island.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -18,7 +19,6 @@
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "pokemon.h"
-#include "pokenav.h"
 #include "safari_zone.h"
 #include "script.h"
 #include "secret_base.h"
@@ -32,8 +32,7 @@
 #include "constants/map_types.h"
 #include "constants/maps.h"
 #include "constants/songs.h"
-
-extern bool32 TryStartMatchCall(void);
+#include "match_call.h"
 
 static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPreviousPlayerMetatileBehavior = 0;
@@ -542,7 +541,7 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
 
     IncrementRematchStepCounter();
     UpdateHappinessStepCounter();
-    sub_81D4998();
+    UpdateFarawayIslandStepCounter();
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_6) && !MetatileBehavior_IsForcedMovementTile(metatileBehavior))
     {
