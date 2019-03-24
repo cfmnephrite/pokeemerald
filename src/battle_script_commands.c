@@ -1867,94 +1867,8 @@ static void atk0F_resultmessage(void)
 
     if (gMoveResultFlags & MOVE_RESULT_MISSED && (!(gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE) || gBattleCommunication[6] > 2))
     {
-        gMoveResultFlags &= ~MOVE_RESULT_MISSED;
-        if (gProtectStructs[gBattlerTarget].spikyShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
-        {
-            gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
-            if (gBattleMoveDamage == 0)
-                gBattleMoveDamage = 1;
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SPIKY_SHIELD);
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;      
-            return;
-        }
-        else if (gProtectStructs[gBattlerTarget].kingsShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
-        {
-            if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 0)
-            {
-                gBattleScripting.battler = gBattlerAttacker;
-                if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 1)
-                    SET_STATCHANGER(STAT_ATK, 2, TRUE);
-                else
-                    SET_STATCHANGER(STAT_ATK, 1, TRUE);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_KingsShieldEffect; 
-                return;
-            }
-            else
-            {
-                stringId = gMissStringIds[gBattleCommunication[6]];
-                gBattleCommunication[MSG_DISPLAY] = 1; 
-            }
-        }
-        else if (gProtectStructs[gBattlerTarget].banefulBunkered && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
-        {
-            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
-            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
-            return;
-        }
-        else if (gProtectStructs[gBattlerTarget].craftyShielded && gBattleMoves[gCurrentMove].split == SPLIT_STATUS)
-        {
-            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer || IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL)) // Aroma Veil addition now!
-            {
-                stringId = gMissStringIds[gBattleCommunication[6]];
-                gBattleCommunication[MSG_DISPLAY] = 1; 
-            }
-            else
-            {
-                gDisableStructs[gBattlerAttacker].tauntTimer = 4;
-                gDisableStructs[gBattlerAttacker].tauntTimer2 = 4;
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_CRAFTY_SHIELD);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_CraftyShieldEffect;
-                return;
-            }
-        }
-        else if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
-        {
-            if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || RandomChance(3, 5)))
-            {
-                u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
-                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | moveEffects[(Random() % 3)];
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_FLOWER_SHIELD);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
-                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
-                return;
-            }
-            else
-            {
-                stringId = gMissStringIds[gBattleCommunication[6]];
-                gBattleCommunication[MSG_DISPLAY] = 1; 
-            }
-        }
-        else if (gProtectStructs[gBattlerTarget].shellTrapProtected && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
-        {
-            gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SHELL_TRAP);
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
-            gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
-            return;
-        }
-        else
-        {
-            stringId = gMissStringIds[gBattleCommunication[6]];
-            gBattleCommunication[MSG_DISPLAY] = 1;            
-        }
+        stringId = gMissStringIds[gBattleCommunication[6]];
+        gBattleCommunication[MSG_DISPLAY] = 1;   
     }
     else
     {
@@ -4233,6 +4147,12 @@ enum
     ATK49_UPDATE_LAST_MOVES,
     ATK49_MIRROR_MOVE,
     ATK49_NEXT_TARGET,
+    ATK49_SPIKY_SHIELD,
+    ATK49_KING_S_SHIELD,
+    ATK49_BANEFUL_BUNKER,
+    ATK49_CRAFTY_SHIELD,
+    ATK49_FLOWER_SHIELD,
+    ATK49_SHELL_TRAP,
     ATK49_CLEAR_BITS,
     ATK49_COUNT,
 };
@@ -4517,6 +4437,98 @@ static void atk49_moveend(void)
                 {
                     gHitMarker |= HITMARKER_NO_ATTACKSTRING;
                 }
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_SPIKY_SHIELD:
+            if (gProtectStructs[gBattlerTarget].spikyShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+            {
+                gMoveResultFlags &= ~(MOVE_RESULT_NO_EFFECT);
+                gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SPIKY_SHIELD);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;
+                gBattleScripting.atk49_state++;    
+                return;
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_KING_S_SHIELD:
+            if (gProtectStructs[gBattlerTarget].kingsShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+            {
+                if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 0)
+                {
+                    gBattleScripting.battler = gBattlerAttacker;
+                    if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 1)
+                        SET_STATCHANGER(STAT_ATK, 2, TRUE);
+                    else
+                        SET_STATCHANGER(STAT_ATK, 1, TRUE);
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_KingsShieldEffect;
+                    gBattleScripting.atk49_state++;    
+                    return;
+                }
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_BANEFUL_BUNKER:
+            if (gProtectStructs[gBattlerTarget].banefulBunkered && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+            {
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                gBattleScripting.atk49_state++;
+                return;
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_CRAFTY_SHIELD:
+            if (gProtectStructs[gBattlerTarget].craftyShielded && gBattleMoves[gCurrentMove].split == SPLIT_STATUS && gBattlerAttacker != gBattlerTarget)
+            {
+                if (!(GetBattlerAbility(gBattlerAttacker) == ABILITY_OBLIVIOUS || gDisableStructs[gBattlerAttacker].tauntTimer || IsPartnerAbilityAffecting(gBattlerTarget, ABILITY_AROMA_VEIL)))
+                {
+                    gDisableStructs[gBattlerAttacker].tauntTimer = 4;
+                    gDisableStructs[gBattlerAttacker].tauntTimer2 = 4;
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_CRAFTY_SHIELD);
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_CraftyShieldEffect;
+                    gBattleScripting.atk49_state++;
+                    return;
+                }
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_FLOWER_SHIELD:
+            if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+            {
+                if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || RandomChance(3, 5)))
+                {
+                    u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
+                    gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | moveEffects[(Random() % 3)];
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_FLOWER_SHIELD);
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+                    gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                    gBattleScripting.atk49_state++;
+                    return;
+                }
+            }
+            gBattleScripting.atk49_state++;
+            break;
+        case ATK49_SHELL_TRAP:
+            if (gProtectStructs[gBattlerTarget].shellTrapProtected && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
+            {
+                gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SHELL_TRAP);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
+                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                gBattleScripting.atk49_state++;
+                return;
             }
             gBattleScripting.atk49_state++;
             break;

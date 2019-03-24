@@ -4799,8 +4799,6 @@ BattleScript_ForecastWeatherEnded::
 	return
 
 BattleScript_SpikyShieldEffect::
-	printstring STRINGID_PKMNPROTECTEDITSELF
-	waitmessage 0x40
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
@@ -4808,11 +4806,8 @@ BattleScript_SpikyShieldEffect::
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	return
-	
 
 BattleScript_KingsShieldEffect::
-	printstring STRINGID_PKMNPROTECTEDITSELF
-	waitmessage 0x40
 	copybyte gBattlerTarget sBATTLER
 	statbuffchange 0x1, BattleScript_KingsShieldReturn
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
@@ -4824,17 +4819,13 @@ BattleScript_KingsShieldReturn:
 	return
 
 BattleScript_CraftyShieldEffect::
-	printstring STRINGID_PKMNPROTECTEDITSELF
-	waitmessage 0x40
 	printstring STRINGID_CRAFTYSHIELDTAUNT
 	waitmessage 0x40
-	goto BattleScript_MoveEnd
+	return
 	
 BattleScript_ProtectLikeStatusEffect::
-	printstring STRINGID_PKMNPROTECTEDITSELF
-	waitmessage 0x40
 	seteffectsecondary
-	return	
+	return
 
 BattleScript_BrokeThroughProtectLike::
 	printstring STRINGID_BROKETHROUGHPROTECTLIKE
