@@ -28,6 +28,7 @@
 #define ABILITYEFFECT_COUNT_ON_FIELD             0x12
 #define ABILITYEFFECT_CHECK_ON_FIELD             0x13
 #define ABILITYEFFECT_SWITCH_IN_WEATHER          0xFF
+#define ABILITYEFFECT_MOVE_END_ACTIVE            0x14
 
 #define ABILITY_ON_OPPOSING_FIELD(battlerId, abilityId)(AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, battlerId, abilityId, 0, 0))
 #define ABILITY_ON_FIELD(abilityId)(AbilityBattleEffects(ABILITYEFFECT_CHECK_ON_FIELD, 0, abilityId, 0, 0))
@@ -94,6 +95,8 @@ u16 GetTypeModifier(u8 atkType, u8 defType);
 s32 GetStealthHazardDamage(u8 hazardType, u8 battlerId);
 u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
 bool32 RandomChance(u8 num, u8 denom);
+u8 GetHigherOffStat(u8 battlerId);
+u8 GetHigherDefStat(u8 battlerId);
 bool32 CanMegaEvolve(u8 battlerId);
 void UndoMegaEvolution(u8 monId);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);

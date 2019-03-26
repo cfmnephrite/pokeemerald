@@ -1857,8 +1857,8 @@ BattleScript_EffectSleep::
 	attackstring
 	ppreduce
 	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_InsomniaPrevents
-	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_InsomniaPrevents
+	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_AbilityPreventsSleep
+	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_AbilityPreventsSleep
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_AlreadyAsleep
@@ -1870,6 +1870,12 @@ BattleScript_EffectSleep::
 	attackanimation
 	waitanimation
 	seteffectprimary
+	goto BattleScript_MoveEnd
+
+BattleScript_AbilityPreventsSleep::
+	copybyte gEffectBattler, gBattlerTarget
+	setbyte cMULTISTRING_CHOOSER, 0x3
+	call BattleScript_StatusPrevention
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyAsleep::
@@ -1889,12 +1895,6 @@ BattleScript_CantMakeAsleep::
 	pause 0x20
 	printfromtable gUproarAwakeStringIds
 	waitmessage 0x40
-	goto BattleScript_MoveEnd
-
-BattleScript_InsomniaPrevents::
-	copybyte gEffectBattler, gBattlerTarget
-	setbyte cMULTISTRING_CHOOSER, 0x3
-	call BattleScript_StatusPrevention
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectDreamEater::	
@@ -2279,46 +2279,6 @@ BattleScript_EffectRestoreHp::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectToxic::
-	setmoveeffect MOVE_EFFECT_TOXIC
-	attackcanceler
-	attackstring
-	ppreduce
-	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
-	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
-BattleScript_EffectToxicFromTypeCheck:
-	jumpifability BS_ATTACKER, ABILITY_CORROSION, BattleScript_EffectToxicSkipTypeCheck
-	jumpiftype BS_TARGET, TYPE_POISON, BattleScript_NotAffected
-	jumpiftype BS_TARGET, TYPE_STEEL, BattleScript_NotAffected
-BattleScript_EffectToxicSkipTypeCheck:
-	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
-	jumpifterrainaffecting BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
-	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
-	attackanimation
-	waitanimation
-	seteffectprimary
-	resultmessage
-	waitmessage 0x40
-	goto BattleScript_MoveEnd
-
-BattleScript_AlreadyPoisoned::
-	setalreadystatusedmoveattempt BS_ATTACKER
-	pause 0x40
-	printstring STRINGID_PKMNALREADYPOISONED
-	waitmessage 0x40
-	goto BattleScript_MoveEnd
-
-BattleScript_ImmunityProtected::
-	copybyte gEffectBattler, gBattlerTarget
-	setbyte cMULTISTRING_CHOOSER, 0x0
-	call BattleScript_StatusPrevention
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectPayDay::
 	setmoveeffect MOVE_EFFECT_PAYDAY | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHitArgEffect
@@ -2585,9 +2545,7 @@ BattleScript_EffectPoison::
 	attackstring
 	ppreduce
 	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
-	jumpifability BS_TARGET, ABILITY_WATER_VEIL, BattleScript_ImmunityProtected
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
+	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
 	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
@@ -2612,9 +2570,7 @@ BattleScript_EffectPoisonPowder:
 	attackstring
 	ppreduce
 	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
-	jumpifability BS_TARGET, ABILITY_WATER_VEIL, BattleScript_ImmunityProtected
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_ImmunityProtected
+	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_EffectPoisonPowderToxic
 	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
@@ -2625,17 +2581,67 @@ BattleScript_EffectPoisonPowderToxic:
 	setmoveeffect MOVE_EFFECT_TOXIC
 	goto BattleScript_EffectToxicFromTypeCheck
 
+BattleScript_EffectToxic::
+	setmoveeffect MOVE_EFFECT_TOXIC
+	attackcanceler
+	attackstring
+	ppreduce
+	checkflowerveil BattleScript_SturdyPreventsOHKO
+	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
+	jumpifsubstituteblocks BattleScript_ButItFailed
+	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
+	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
+	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+BattleScript_EffectToxicFromTypeCheck:
+	jumpifability BS_ATTACKER, ABILITY_CORROSION, BattleScript_EffectToxicSkipTypeCheck
+	jumpiftype BS_TARGET, TYPE_POISON, BattleScript_NotAffected
+	jumpiftype BS_TARGET, TYPE_STEEL, BattleScript_NotAffected
+BattleScript_EffectToxicSkipTypeCheck:
+	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
+	jumpifterrainaffecting BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
+	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
+	attackanimation
+	waitanimation
+	seteffectprimary
+	resultmessage
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+
+BattleScript_AbilityPreventsPoison::
+	copybyte gEffectBattler, gBattlerTarget
+	setbyte cMULTISTRING_CHOOSER, 0x0
+	call BattleScript_StatusPrevention
+	goto BattleScript_MoveEnd
+    
+BattleScript_ImmunityOrWaterVeilActivates::
+	statbuffchange 0x1, BattleScript_ImmunityOrWaterVeilReturn
+	setgraphicalstatchangevalues
+	call BattleScript_AbilityPopUp
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	waitanimation
+	printstring STRINGID_TARGETABILITYSTATRAISE
+	waitmessage 0x30
+BattleScript_ImmunityOrWaterVeilReturn:    
+	return    
+
+BattleScript_AlreadyPoisoned::
+	setalreadystatusedmoveattempt BS_ATTACKER
+	pause 0x40
+	printstring STRINGID_PKMNALREADYPOISONED
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+
 BattleScript_EffectParalyse:
 	setmoveeffect MOVE_EFFECT_PARALYSIS
 	attackcanceler
 	attackstring
 	ppreduce
-	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_LimberProtected
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_LimberProtected
-	jumpifsubstituteblocks BattleScript_ButItFailed
 	typecalc
 	jumpifmovehadnoeffect BattleScript_ButItFailed
+	jumpifsubstituteblocks BattleScript_ButItFailed
+	checkflowerveil BattleScript_SturdyPreventsOHKO
+	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_AbilityPreventsParalysis
+	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifstatus BS_TARGET, STATUS1_PARALYSIS, BattleScript_AlreadyParalysed
 	jumpiftype BS_TARGET, TYPE_ELECTRIC, BattleScript_NotAffected
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
@@ -2650,17 +2656,17 @@ BattleScript_EffectParalyse:
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
+BattleScript_AbilityPreventsParalysis::
+	copybyte gEffectBattler, gBattlerTarget
+	setbyte cMULTISTRING_CHOOSER, 0x2
+	call BattleScript_StatusPrevention
+	goto BattleScript_MoveEnd
+
 BattleScript_AlreadyParalysed:
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause 0x20
 	printstring STRINGID_PKMNISALREADYPARALYSED
 	waitmessage 0x40
-	goto BattleScript_MoveEnd
-
-BattleScript_LimberProtected::
-	copybyte gEffectBattler, gBattlerTarget
-	setbyte cMULTISTRING_CHOOSER, 0x2
-	call BattleScript_StatusPrevention
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectAttackDownHit::
@@ -3723,11 +3729,12 @@ BattleScript_EffectBurn::
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_BURN, BattleScript_AlreadyBurned
 	jumpiftype BS_TARGET, TYPE_FIRE, BattleScript_NotAffected
+	jumpiftype BS_TARGET, TYPE_WATER, BattleScript_NotAffected
 	checkflowerveil BattleScript_SturdyPreventsOHKO
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_DampPrevents
-	jumpifability BS_TARGET, ABILITY_DAMP, BattleScript_DampPrevents
-	jumpifability BS_TARGET, ABILITY_WATER_BUBBLE, BattleScript_DampPrevents
-	jumpifability BS_TARGET, ABILITY_HEATPROOF, BattleScript_DampPrevents
+	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
+	jumpifability BS_TARGET, ABILITY_DAMP, BattleScript_AbilityPreventsBurns
+	jumpifability BS_TARGET, ABILITY_WATER_BUBBLE, BattleScript_AbilityPreventsBurns
+	jumpifability BS_TARGET, ABILITY_HEATPROOF, BattleScript_AbilityPreventsBurns
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
 	jumpifterrainaffecting BS_TARGET, BattleScript_ActiveTerrainPreventsMoveEnd
@@ -3737,7 +3744,7 @@ BattleScript_EffectBurn::
 	seteffectprimary
 	goto BattleScript_MoveEnd
 
-BattleScript_DampPrevents::
+BattleScript_AbilityPreventsBurns::
 	copybyte gEffectBattler, gBattlerTarget
 	setbyte cMULTISTRING_CHOOSER, 0x1
 	call BattleScript_StatusPrevention
@@ -4824,7 +4831,9 @@ BattleScript_CraftyShieldEffect::
 	return
 	
 BattleScript_ProtectLikeStatusEffect::
+	copybyte gBattlerTarget sBATTLER
 	seteffectsecondary
+	setmoveeffect 0
 	return
 
 BattleScript_BrokeThroughProtectLike::
@@ -5862,7 +5871,7 @@ BattleScript_DefiantActivates::
 	waitmessage 0x40
 	return
 	
-BattleScript_AbilityPopUp:
+BattleScript_AbilityPopUp::
 	showabilitypopup BS_ABILITY_BATTLER
 	recordability BS_ABILITY_BATTLER
 	pause 0x10
@@ -6353,12 +6362,20 @@ BattleScript_AbilityStatusEffect::
 	waitstate
 	call BattleScript_AbilityPopUp
 	seteffectsecondary
+	setmoveeffect 0
 	return
+
+BattleScript_AbilityActiveEffect::
+	waitstate
+	seteffectwithchance
+	setmoveeffect 0
+	return    
 
 BattleScript_SynchronizeActivates::
 	waitstate
 	call BattleScript_AbilityPopUp
 	seteffectprimary
+	setmoveeffect 0
 	return
 	
 BattleScript_AromaVeilActivates::

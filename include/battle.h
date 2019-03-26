@@ -639,7 +639,8 @@ struct BattleScripting
     u16 cfmHalfWord;
     u8 atk49_state;
     u8 battlerWithAbility;
-    u8 unused_16;
+    u8 moveChance:7;
+    u8 abilityEffect:1;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;
