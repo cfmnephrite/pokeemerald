@@ -3,10 +3,10 @@
 
 #define EFFECT_HIT 0
 #define EFFECT_SLEEP 1
-#define EFFECT_POISON 2
-#define EFFECT_BURN 3
-#define EFFECT_FREEZE 4 //unused, thankfully
-#define EFFECT_PARALYSE 5
+#define EFFECT_FREEZE 2 //unused, thankfully
+#define EFFECT_PARALYSE 3
+#define EFFECT_BURN 4
+#define EFFECT_POISON 5
 #define EFFECT_TOXIC 6
 #define EFFECT_EXPLOSION 7
 #define EFFECT_DREAM_EATER 8

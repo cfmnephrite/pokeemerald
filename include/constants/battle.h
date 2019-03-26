@@ -101,8 +101,8 @@
 #define STATUS1_SLP_FRZ_TIMER    0x3
 #define STATUS1_SLEEP            0x4
 #define STATUS1_FREEZE           0x8
-#define STATUS1_BURN             0x10
-#define STATUS1_PARALYSIS        0x20
+#define STATUS1_PARALYSIS        0x10
+#define STATUS1_BURN             0x20
 #define STATUS1_POISON           0x40
 #define STATUS1_TOXIC_POISON     0x80
 #define STATUS1_TOXIC_COUNTER    0xF00
@@ -274,10 +274,10 @@
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               0x1
-#define MOVE_EFFECT_POISON              0x2
-#define MOVE_EFFECT_BURN                0x3
-#define MOVE_EFFECT_FREEZE              0x4
-#define MOVE_EFFECT_PARALYSIS           0x5
+#define MOVE_EFFECT_FREEZE              0x2
+#define MOVE_EFFECT_PARALYSIS           0x3
+#define MOVE_EFFECT_BURN                0x4
+#define MOVE_EFFECT_POISON              0x5
 #define MOVE_EFFECT_TOXIC               0x6
 #define MOVE_EFFECT_CONFUSION           0x7
 #define MOVE_EFFECT_FLINCH              0x8

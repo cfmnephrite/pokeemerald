@@ -3455,7 +3455,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gDisableStructs[gBattlerAttacker].disabledMove == MOVE_NONE
              && IsBattlerAlive(gBattlerAttacker)
              && ((i = GetBattleMonMoveSlot(&gBattleMons[gBattlerAttacker], gChosenMove)) != 4)
-             && ((IsBattlerAlive(battler) && RandomChance(1, 3)) || !(IsBattlerAlive(battler) && RandomChance(1, 3)))
+             && ((IsBattlerAlive(battler) && RandomChance(1, 3)) || !(IsBattlerAlive(battler) || RandomChance(1, 3)))
              && !(IsPartnerAbilityAffecting(gBattlerAttacker, ABILITY_AROMA_VEIL)))
             {
                 gDisableStructs[gBattlerAttacker].disabledMove = gChosenMove;
@@ -3542,7 +3542,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && IsBattlerAlive(gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_MAGIC_GUARD)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
                 if (gBattleMoveDamage == 0)
@@ -3558,21 +3559,37 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
              && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS)
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_OVERCOAT
              && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_SAFETY_GOOGLES
              && RandomChance(3, 10))
             {
-                gBattleScripting.moveEffect = (Random() % 3) + 1;
-
-                if (gBattleScripting.moveEffect == MOVE_EFFECT_BURN)
-                    gBattleScripting.moveEffect += 2; // 5 MOVE_EFFECT_PARALYSIS
-
-                gBattleScripting.moveEffect += MOVE_EFFECT_AFFECTS_USER;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
-                effect++;
+                gBattleScripting.moveEffect = (2 * (Random() % 3)) + 1;
+                switch(gBattleScripting.moveEffect)
+                {
+                    case MOVE_EFFECT_SLEEP:
+                        if (GetBattlerAbility(gBattlerAttacker) == ABILITY_INSOMNIA || GetBattlerAbility(gBattlerAttacker) == ABILITY_VITAL_SPIRIT)
+                            gBattleScripting.moveEffect = 0;
+                        break;
+                    case MOVE_EFFECT_PARALYSIS:
+                        if (GetBattlerAbility(gBattlerAttacker) == ABILITY_LIMBER || IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_ELECTRIC))
+                            gBattleScripting.moveEffect = 0;
+                        break;
+                    case MOVE_EFFECT_POISON:
+                        if (IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_POISON) || IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_STEEL))
+                            gBattleScripting.moveEffect = 0;
+                        break;
+                }
+                if (gBattleScripting.moveEffect)
+                {
+                    gBattleScripting.moveEffect += MOVE_EFFECT_AFFECTS_USER;
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
+                    gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
+                    effect++;
+                }
             }
             break;
         case ABILITY_POISON_POINT:
@@ -3581,6 +3598,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
+             && !(IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_POISON) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_STEEL))
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
@@ -3596,6 +3616,10 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
+             && !IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_ELECTRIC)
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_LIMBER
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
@@ -3609,8 +3633,12 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && TARGET_TURN_DAMAGED
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
+             && !(IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_FIRE) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_WATER))
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE
+             && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
@@ -3624,8 +3652,11 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && TARGET_TURN_DAMAGED
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
+             && !(IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_ICE) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_FIRE))
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE
              && RandomChance(1, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_FREEZE;
@@ -3663,6 +3694,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && !(IsBattlerAlive(battler))
+             && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
@@ -3706,10 +3738,11 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerTarget)
              && TARGET_TURN_DAMAGED
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_LIMBER
+             && gBattleMons[gBattlerTarget].statStages[STAT_SPEED] != 0)
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_SPD_MINUS_1;
-                gBattleScripting.moveChance = 50;
+                gBattleScripting.effectChance = 50;
                 gBattleScripting.abilityEffect = 1;
                 effect++;
             }
@@ -3718,10 +3751,11 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(battler)
              && TARGET_TURN_DAMAGED
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && gBattleMons[battler].statStages[STAT_ATK] != 0xC)
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_ATK_PLUS_1 | MOVE_EFFECT_AFFECTS_USER;
-                gBattleScripting.moveChance = 20;
+                gBattleScripting.effectChance = 20;
                 gBattleScripting.abilityEffect = 1;
                 effect++;
             }
@@ -3730,10 +3764,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerTarget)
              && TARGET_TURN_DAMAGED
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
+             && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
+             && !(IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_POISON) || IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_STEEL))
+             && GetBattlerAbility(gBattlerTarget) != ABILITY_COMATOSE)
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
-                gBattleScripting.moveChance = 30;
+                gBattleScripting.effectChance = 30;
                 gBattleScripting.abilityEffect = 1;
                 effect++;
             }
@@ -3747,7 +3784,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_FLINCH)
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
-                gBattleScripting.moveChance = 10;
+                gBattleScripting.effectChance = 10;
                 effect++;
             }
             break;

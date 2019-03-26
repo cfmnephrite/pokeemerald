@@ -2228,9 +2228,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
         }
         if (statusChanged == TRUE)
         {
-            gBattleCommunication[MULTISTRING_CHOOSER] = multistring;
+            gBattleCommunication[MULTISTRING_CHOOSER] = multistring;  
             BattleScriptPush(gBattlescriptCurrInstr + 1);
-
             gBattleMons[gEffectBattler].status1 |= sStatusFlagsForMoveEffects[gBattleScripting.moveEffect];
             if (sStatusFlagsForMoveEffects[gBattleScripting.moveEffect] == STATUS1_SLEEP)
                 gBattleMons[gEffectBattler].status1 |= ((Random() % 3) + 1);
@@ -2768,9 +2767,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 break;
             case MOVE_EFFECT_NEEDLE_ARM:
                 if (gBattleMons[gEffectBattler].ability == ABILITY_MAGIC_GUARD)
-                {
                     gBattlescriptCurrInstr++;
-                }
                 else
                 {
                     gBattleMons[gEffectBattler].status2 |= STATUS2_NEEDLE_ARM;
@@ -2789,11 +2786,12 @@ static void atk15_seteffectwithchance(void)
 {
     u32 percentChance;
     
-    if (gBattleScripting.moveChance)
-        percentChance = gBattleScripting.moveChance;
+    if (gBattleScripting.effectChance)
+        percentChance = gBattleScripting.effectChance;
     else
         percentChance = gBattleMoves[gCurrentMove].secondaryEffectChance;
-    gBattleScripting.moveChance = 0;
+    gBattleScripting.effectChance = 0;
+
     // Need to program in the Rainbow effect of the Pledge Moves...
     if (GetBattlerAbility(gBattlerAttacker) == ABILITY_SERENE_GRACE)
         percentChance *= 2;
@@ -4241,39 +4239,35 @@ static void atk49_moveend(void)
         case ATK49_SPIKY_SHIELD:
             if (gProtectStructs[gBattlerTarget].spikyShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                gMoveResultFlags &= ~(MOVE_RESULT_NO_EFFECT);
-                gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SPIKY_SHIELD);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;
-                effect = 1;
+                if (!(GetBattlerAbility(gBattlerAttacker) == ABILITY_MAGIC_GUARD))
+                {
+                    gMoveResultFlags &= ~(MOVE_RESULT_NO_EFFECT);
+                    gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
+                    if (gBattleMoveDamage == 0)
+                        gBattleMoveDamage = 1;
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SPIKY_SHIELD);
+                    BattleScriptPushCursor();
+                    gBattlescriptCurrInstr = BattleScript_SpikyShieldEffect;
+                    effect = 1;
+                }
             }
             gBattleScripting.atk49_state++;
             break;
         case ATK49_KING_S_SHIELD:
             if (gProtectStructs[gBattlerTarget].kingsShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 0)
-                {
-                    gBattleScripting.battler = gBattlerAttacker;
-                    if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] > 1)
-                        SET_STATCHANGER(STAT_ATK, 2, TRUE);
-                    else
-                        SET_STATCHANGER(STAT_ATK, 1, TRUE);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_KingsShieldEffect;
-                    effect = 1;
-                }
+                gBattleScripting.battler = gBattlerAttacker;
+                gBattleScripting.moveEffect = MOVE_EFFECT_ATK_MINUS_2;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_KingsShieldEffect;
+                effect = 1;
             }
             gBattleScripting.atk49_state++;
             break;
         case ATK49_BANEFUL_BUNKER:
             if (gProtectStructs[gBattlerTarget].banefulBunkered && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                gBattleScripting.battler = gBattlerAttacker;
-                gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+                gBattleScripting.moveEffect = MOVE_EFFECT_POISON | MOVE_EFFECT_AFFECTS_USER;
                 PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_BANEFUL_BUNKER);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
@@ -4300,11 +4294,9 @@ static void atk49_moveend(void)
         case ATK49_FLOWER_SHIELD:
             if (gProtectStructs[gBattlerTarget].flowerShielded && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || RandomChance(3, 5)))
+                if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || RandomChance(7, 10)))
                 {
-                    u8 moveEffects[3] = {MOVE_EFFECT_POISON, MOVE_EFFECT_PARALYSIS, MOVE_EFFECT_SLEEP};
-                    gBattleScripting.battler = gBattlerAttacker;
-                    gBattleScripting.moveEffect = moveEffects[(Random() % 3)];
+                    gBattleScripting.moveEffect = ((2 * (Random() % 3)) + 1) | MOVE_EFFECT_AFFECTS_USER;
                     PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_FLOWER_SHIELD);
                     BattleScriptPushCursor();
                     gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;
@@ -4317,8 +4309,7 @@ static void atk49_moveend(void)
         case ATK49_SHELL_TRAP:
             if (gProtectStructs[gBattlerTarget].shellTrapProtected && gBattleMoves[gCurrentMove].flags & FLAG_MAKES_CONTACT)
             {
-                gBattleScripting.battler = gBattlerAttacker;
-                gBattleScripting.moveEffect = MOVE_EFFECT_BURN;
+                gBattleScripting.moveEffect = MOVE_EFFECT_BURN | MOVE_EFFECT_AFFECTS_USER;
                 PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SHELL_TRAP);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ProtectLikeStatusEffect;

@@ -17,10 +17,10 @@
 gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectHit
 	.4byte BattleScript_EffectSleep
-	.4byte BattleScript_EffectPoison
-	.4byte BattleScript_EffectBurn
 	.4byte BattleScript_EffectFreeze @unused
 	.4byte BattleScript_EffectParalyse
+	.4byte BattleScript_EffectBurn
+	.4byte BattleScript_EffectPoison
 	.4byte BattleScript_EffectToxic
 	.4byte BattleScript_EffectExplosion
 	.4byte BattleScript_EffectDreamEater
@@ -2612,7 +2612,7 @@ BattleScript_AbilityPreventsPoison::
 	setbyte cMULTISTRING_CHOOSER, 0x0
 	call BattleScript_StatusPrevention
 	goto BattleScript_MoveEnd
-    
+
 BattleScript_ImmunityOrWaterVeilActivates::
 	statbuffchange 0x1, BattleScript_ImmunityOrWaterVeilReturn
 	setgraphicalstatchangevalues
@@ -2621,8 +2621,8 @@ BattleScript_ImmunityOrWaterVeilActivates::
 	waitanimation
 	printstring STRINGID_TARGETABILITYSTATRAISE
 	waitmessage 0x30
-BattleScript_ImmunityOrWaterVeilReturn:    
-	return    
+BattleScript_ImmunityOrWaterVeilReturn:
+	return
 
 BattleScript_AlreadyPoisoned::
 	setalreadystatusedmoveattempt BS_ATTACKER
@@ -4814,24 +4814,17 @@ BattleScript_SpikyShieldEffect::
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	return
 
-BattleScript_KingsShieldEffect::
-	copybyte gBattlerTarget sBATTLER
-	statbuffchange 0x1, BattleScript_KingsShieldReturn
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
-	setgraphicalstatchangevalues
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printstring STRINGID_PKMNSSTATCHANGED
-	waitmessage 0x40
-BattleScript_KingsShieldReturn: 
-	return
-
 BattleScript_CraftyShieldEffect::
 	printstring STRINGID_CRAFTYSHIELDTAUNT
 	waitmessage 0x40
 	return
 	
+BattleScript_KingsShieldEffect::
+	copybyte gBattlerAttacker, gBattlerTarget
+	copybyte gBattlerTarget, sBATTLER
+	setbyte cMULTISTRING_CHOOSER, 1
 BattleScript_ProtectLikeStatusEffect::
-	copybyte gBattlerTarget sBATTLER
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
 	seteffectsecondary
 	setmoveeffect 0
 	return
@@ -5118,7 +5111,7 @@ BattleScript_PrintHurtByDmgHazards::
 	
 BattleScript_StickyWebOnSwitchIn::
 	savetarget
-	copybyte gBattlerTarget sBATTLER
+	copybyte gBattlerTarget, sBATTLER
 	printstring STRINGID_STICKYWEBSWITCHIN
 	waitmessage 0x40
 	statbuffchange 0x1, BattleScript_StickyWebOnSwitchInEnd
@@ -6369,7 +6362,7 @@ BattleScript_AbilityActiveEffect::
 	waitstate
 	seteffectwithchance
 	setmoveeffect 0
-	return    
+	return	
 
 BattleScript_SynchronizeActivates::
 	waitstate
