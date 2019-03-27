@@ -361,9 +361,10 @@
 	.byte 0x42
 	.endm
 
-	.macro jumpifabilitypresent ability:req, ptr:req
+	.macro jumpifspecies battler:req, species:req, ptr:req
 	.byte 0x43
-	.byte \ability
+	.byte \battler
+	.2byte \species
 	.4byte \ptr
 	.endm
 
@@ -1606,11 +1607,11 @@
 	.macro setargtoeffectself
 	various BS_ATTACKER, VARIOUS_ARG_TO_EFFECT_SELF
 	.endm	
-    
+
 	.macro spectralthiefprintstats
 	various BS_ATTACKER, VARIOUS_SPECTRAL_THIEF
 	.endm
-    
+
 	.macro jumpifhigherorequalspa ptr:req
 	various BS_ATTACKER, VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA
 	.4byte \ptr

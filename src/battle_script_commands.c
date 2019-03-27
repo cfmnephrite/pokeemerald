@@ -140,7 +140,7 @@ static void atk3F_end3(void);
 static void atk40_jumpifaffectedbyprotect(void);
 static void atk41_call(void);
 static void atk42_setroost(void);
-static void atk43_jumpifabilitypresent(void);
+static void atk43_jumpifspecies(void);
 static void atk44_endselectionscript(void);
 static void atk45_playanimation(void);
 static void atk46_playanimation2(void);
@@ -399,7 +399,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     atk40_jumpifaffectedbyprotect,
     atk41_call,
     atk42_setroost,
-    atk43_jumpifabilitypresent,
+    atk43_jumpifspecies,
     atk44_endselectionscript,
     atk45_playanimation,
     atk46_playanimation2,
@@ -617,10 +617,10 @@ static const u32 sStatusFlagsForMoveEffects[] =
 {
     0x00000000,
     STATUS1_SLEEP,
-    STATUS1_POISON,
-    STATUS1_BURN,
     STATUS1_FREEZE,
     STATUS1_PARALYSIS,
+    STATUS1_BURN,
+    STATUS1_POISON,
     STATUS1_TOXIC_POISON,
     STATUS2_CONFUSION,
     STATUS2_FLINCHED,
@@ -2341,14 +2341,26 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 break;
             case MOVE_EFFECT_TRI_ATTACK:
                 if (gBattleMons[gEffectBattler].status1)
-                {
                     gBattlescriptCurrInstr++;
-                }
                 else
                 {
-                    gBattleScripting.moveEffect = Random() % 3 + 3;
+                    gBattleScripting.moveEffect = Random() % 3 + 2;
                     SetMoveEffect(FALSE, 0, 0);
                 }
+                break;
+            case MOVE_EFFECT_LICK:
+                if (!(gBattleMons[gEffectBattler].status1) && RandomChance(1, 2))
+                {
+                    gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
+                    SetMoveEffect(FALSE, 0, 0);
+                }
+                else if (!(gBattleMons[gEffectBattler].status2 & STATUS2_CONFUSION))
+                {
+                    gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
+                    SetMoveEffect(FALSE, 0, 0);
+                }
+                else
+                    gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_CHARGING:
                 gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
@@ -3933,12 +3945,12 @@ static void atk42_setroost(void)
     gBattlescriptCurrInstr++;
 }
 
-static void atk43_jumpifabilitypresent(void)
+static void atk43_jumpifspecies(void)
 {
-    if (AbilityBattleEffects(ABILITYEFFECT_CHECK_ON_FIELD, 0, gBattlescriptCurrInstr[1], 0, 0))
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 2);
+    if (gBattleMons[GetBattlerForBattleScript(gBattlescriptCurrInstr[1])].species == gBattlescriptCurrInstr[2])
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 4);
     else
-        gBattlescriptCurrInstr += 6;
+        gBattlescriptCurrInstr += 8;
 }
 
 static void atk44_endselectionscript(void)

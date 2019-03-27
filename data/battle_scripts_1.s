@@ -1,12 +1,13 @@
-#include "constants/battle.h"
-#include "constants/pokemon.h"
-#include "constants/battle_script_commands.h"
-#include "constants/battle_anim.h"
-#include "constants/battle_string_ids.h"
 #include "constants/abilities.h"
-#include "constants/moves.h"
-#include "constants/songs.h"
+#include "constants/battle.h"
+#include "constants/battle_anim.h"
+#include "constants/battle_script_commands.h"
+#include "constants/battle_string_ids.h"
 #include "constants/game_stat.h"
+#include "constants/moves.h"
+#include "constants/pokemon.h"
+#include "constants/songs.h"
+#include "constants/species.h"
 	.include "asm/macros.inc"
 	.include "asm/macros/battle_script.inc"
 	.include "constants/constants.inc"
@@ -111,7 +112,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectConversion2
 	.4byte BattleScript_EffectLockOn
 	.4byte BattleScript_EffectSketch
-	.4byte BattleScript_EffectUnused96
+	.4byte BattleScript_EffectLick
 	.4byte BattleScript_EffectSleepTalk
 	.4byte BattleScript_EffectDestinyBond
 	.4byte BattleScript_EffectFlail
@@ -398,6 +399,14 @@ BattleScript_CannotUseExclusiveMove::
 	printstring STRINGID_CANTUSEEXCLUSIVEMOVE
 	waitmessage 0x40
 	goto BattleScript_MoveEnd	
+
+BattleScript_EffectLick:
+    jumpifspecies BS_ATTACKER, SPECIES_LICKITUNG, BattleScript_EffectLickitungExclusive
+    @jumpifspecies BS_ATTACKER, SPECIES_LICKILICKY, BattleScript_EffectLickitungExclusive
+    goto BattleScript_EffectHitArgOnlyEffect
+BattleScript_EffectLickitungExclusive:
+    setbyte sEFFECT_CHANCE, 0x64
+    goto BattleScript_EffectHitArgOnlyEffect
 
 BattleScript_EffectNightmare:
 BattleScript_EffectHitArgOnlyEffect:	
@@ -1758,7 +1767,6 @@ BattleScript_EffectPlaceholder:
 BattleScript_EffectSynchronoise:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
-BattleScript_EffectUnused96:
 BattleScript_EffectUnused125:
 BattleScript_EffectFreeze:	
 BattleScript_EffectAeroblast:

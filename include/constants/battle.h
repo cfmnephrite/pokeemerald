@@ -331,7 +331,7 @@
 #define MOVE_EFFECT_RECOIL_33           0x38
 #define MOVE_EFFECT_RECOIL_50           0x39
 #define MOVE_EFFECT_CLEAR_SMOG          0x3A
-#define MOVE_EFFECT_UNUSED_IN_CFM2      0x3B
+#define MOVE_EFFECT_LICK                0x3B
 #define MOVE_EFFECT_SMACK_DOWN          0x3C
 #define MOVE_EFFECT_FLAME_BURST         0x3D
 #define MOVE_EFFECT_FEINT               0x3E
