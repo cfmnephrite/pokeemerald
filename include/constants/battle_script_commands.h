@@ -137,7 +137,7 @@
 #define VARIOUS_SET_POWDER                      74
 #define VARIOUS_CHECK_SKY_DROP                  75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS        76
-#define VARIOUS_ARG_TO_CFM_HWORD                77
+#define VARIOUS_ARG_TO_SAVED_EFFECT             77
 #define VARIOUS_ARG_TO_EFFECT_SELF              78
 #define VARIOUS_SPECTRAL_THIEF                  79
 #define VARIOUS_TRY_ACTIVATE_BEAST_BOOST        80

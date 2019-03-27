@@ -6602,8 +6602,8 @@ static void atk76_various(void)
     case VARIOUS_ARG_TO_EFFECT_SELF:
         gBattleScripting.moveEffect |= (gBattleMoves[gCurrentMove].argument | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN);
         break;
-    case VARIOUS_ARG_TO_CFM_HWORD:
-        gBattleScripting.cfmHalfWord = gBattleMoves[gCurrentMove].argument;
+    case VARIOUS_ARG_TO_SAVED_EFFECT:
+        gBattleScripting.savedMoveEffect = gBattleMoves[gCurrentMove].argument;
         break;
     case VARIOUS_CHECK_SKY_DROP:
         if (gCurrentMove == MOVE_SKY_DROP){

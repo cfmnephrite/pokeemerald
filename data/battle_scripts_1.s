@@ -54,7 +54,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectLightScreen
 	.4byte BattleScript_EffectTriAttack
 	.4byte BattleScript_EffectRest
-	.4byte BattleScript_EffectPentupleHit
+	.4byte BattleScript_EffectLick
 	.4byte BattleScript_EffectDarkVoid
 	.4byte BattleScript_EffectSuperFang
 	.4byte BattleScript_EffectFixedArgDamage
@@ -112,7 +112,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectConversion2
 	.4byte BattleScript_EffectLockOn
 	.4byte BattleScript_EffectSketch
-	.4byte BattleScript_EffectLick
+	.4byte BattleScript_EffectUnused96
 	.4byte BattleScript_EffectSleepTalk
 	.4byte BattleScript_EffectDestinyBond
 	.4byte BattleScript_EffectFlail
@@ -329,7 +329,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAfterYou
 	.4byte BattleScript_EffectBestow
 	.4byte BattleScript_EffectRototiller
-	.4byte BattleScript_EffectFlowerShield
+	.4byte BattleScript_EffectUnused313
 	.4byte BattleScript_EffectHitPreventEscape
 	.4byte BattleScript_EffectSpeedSwap
 	.4byte BattleScript_EffectDefenseUp2Hit
@@ -489,16 +489,6 @@ BattleScript_CanNoLongerEscape::
 	waitmessage 0x40
 	return	
 	
-BattleScript_EffectPentupleHit::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	setmultihitcounter 0x5
-	initmultihitstring
-	setbyte sMULTIHIT_EFFECT, 0x0
-	goto BattleScript_MultiHitLoop
-	
 BattleScript_EffectPartingShot::
 	attackcanceler
 	attackstring
@@ -622,42 +612,6 @@ BattleScript_EffectThirdType:
 BattleScript_EffectDefenseUp2Hit:
 	setmoveeffect MOVE_EFFECT_DEF_PLUS_2 | MOVE_EFFECT_AFFECTS_USER
 	goto BattleScript_EffectHit
-	
-BattleScript_EffectFlowerShield:
-	attackcanceler
-	attackstring
-	ppreduce
-	selectfirstvalidtarget
-BattleScript_FlowerShieldIsAnyGrass:
-	jumpiftype BS_TARGET, TYPE_GRASS, BattleScript_FlowerShieldLoopStart
-	jumpifnexttargetvalid BattleScript_FlowerShieldIsAnyGrass
-	goto BattleScript_ButItFailed
-BattleScript_FlowerShieldLoopStart:
-	selectfirstvalidtarget
-BattleScript_FlowerShieldLoop:
-	movevaluescleanup
-	jumpiftype BS_TARGET, TYPE_GRASS, BattleScript_FlowerShieldLoop2
-	goto BattleScript_FlowerShieldMoveTargetEnd
-BattleScript_FlowerShieldLoop2:
-	setstatchanger STAT_DEF, 1, FALSE
-	statbuffchange 0x1, BattleScript_FlowerShieldMoveTargetEnd
-	jumpifbyte CMP_LESS_THAN, cMULTISTRING_CHOOSER, 0x2, BattleScript_FlowerShieldDoAnim
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x3, BattleScript_FlowerShieldMoveTargetEnd
-	pause 0x15
-	goto BattleScript_FlowerShieldString
-BattleScript_FlowerShieldDoAnim:
-	attackanimation
-	waitanimation
-	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-BattleScript_FlowerShieldString:
-	printfromtable gStatUpStringIds
-	waitmessage 0x40
-BattleScript_FlowerShieldMoveTargetEnd:
-	setbyte sMOVEEND_STATE, 0x0
-	moveend 0x2, 0x10
-	jumpifnexttargetvalid BattleScript_FlowerShieldLoop
-	end
 	
 BattleScript_EffectRototiller:
 	attackcanceler
@@ -1764,15 +1718,18 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectSynchronoise:
+BattleScript_EffectUnused60:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
+BattleScript_EffectUnused96:
+BattleScript_EffectUnused104:
 BattleScript_EffectUnused125:
+BattleScript_EffectUnused313:
+BattleScript_EffectSynchronoise:
 BattleScript_EffectFreeze:	
 BattleScript_EffectAeroblast:
 BattleScript_EffectEvasionDownHit:
 BattleScript_EffectVitalThrow:
-BattleScript_EffectUnused60:
 BattleScript_EffectFalseSwipe:
 BattleScript_EffectAlwaysCrit:
 BattleScript_EffectPursuit:
@@ -1780,7 +1737,6 @@ BattleScript_EffectFellStinger:
 BattleScript_EffectHit::
 BattleScript_EffectSolarbeam:
 BattleScript_EffectLowKick:
-BattleScript_EffectUnused104:
 BattleScript_EffectFlail:
 BattleScript_EffectFacade:
 BattleScript_EffectRevenge:
@@ -2379,8 +2335,8 @@ BattleScript_EffectFixedArgDamage::
 	ppreduce
 	typecalc
 	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	argumenttocfmhword
-	copyhword gBattleMoveDamage, sCFM_HWORD
+	argumenttosavedeffect
+	copyhword gBattleMoveDamage, sSAVED_MOVE_EFFECT
 	adjustdamage
 	goto BattleScript_HitFromAtkAnimation
 
@@ -2732,8 +2688,8 @@ BattleScript_EffectTwoTurnsAttackFreezeShock:
 BattleScript_EffectDoubleHitEffect::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	argumenttocfmhword
-	copyhword sMULTIHIT_EFFECT, sCFM_HWORD
+	argumenttosavedeffect
+	copyhword sMULTIHIT_EFFECT, sSAVED_MOVE_EFFECT
 	attackstring
 	ppreduce
 	setmultihitcounter 0x2
@@ -6370,7 +6326,7 @@ BattleScript_AbilityActiveEffect::
 	waitstate
 	seteffectwithchance
 	setmoveeffect 0
-	return	
+	return
 
 BattleScript_SynchronizeActivates::
 	waitstate
