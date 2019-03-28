@@ -489,6 +489,7 @@ struct zMoveData
     u8 usedZPartyIds[2]; // As flags using gBitTable;
     bool8 alreadyUsedZ[4]; // Array id is used for mon position.
     u8 battlerId;
+    u16 dynamicZBP;
     bool8 playerSelect;
     u8 triggerSpriteId;
     u8 indicatorSpriteIds[MAX_BATTLERS_COUNT];

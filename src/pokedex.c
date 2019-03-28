@@ -1134,7 +1134,7 @@ static const struct PokedexOption gDexSearchTypeOptions[] =
 static const u8 gUnknown_0856EFAC[] = {0x00, 0x01};
 static const u8 gUnknown_0856EFAE[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05};
 static const u8 gDexSearchTypeIds[] = {
-    TYPE_NONE,
+    TYPE_MYSTERY,
     TYPE_NORMAL,
     TYPE_FIGHTING,
     TYPE_FLYING,
@@ -4707,15 +4707,15 @@ int sub_80C0F30(u8 dexMode, u8 sortMode, u8 abcGroup, u8 bodyColor, u8 type1, u8
     }
 
     // Search by type
-    if (type1 != TYPE_NONE || type2 != TYPE_NONE)
+    if (type1 != TYPE_MYSTERY || type2 != TYPE_MYSTERY)
     {
-        if (type1 == TYPE_NONE)
+        if (type1 == TYPE_MYSTERY)
         {
             type1 = type2;
-            type2 = TYPE_NONE;
+            type2 = TYPE_MYSTERY;
         }
 
-        if (type2 == TYPE_NONE)
+        if (type2 == TYPE_MYSTERY)
         {
             for (i = 0, resultsCount = 0; i < sPokedexView->pokemonListCount; i++)
             {

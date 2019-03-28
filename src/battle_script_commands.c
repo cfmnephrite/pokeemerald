@@ -1691,10 +1691,10 @@ static void atk0C_datahpupdate(void)
 
     if (gBattleStruct->dynamicMoveType == 0)
         moveType = gBattleMoves[gCurrentMove].type;
-    else if (!(gBattleStruct->dynamicMoveType & 0x40))
-        moveType = gBattleStruct->dynamicMoveType & 0x3F;
+    else if (gBattleStruct->dynamicMoveType == TYPE_MYSTERY)
+        moveType = TYPE_NORMAL;
     else
-        moveType = gBattleMoves[gCurrentMove].type;
+        moveType = gBattleStruct->dynamicMoveType;
 
     if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
     {

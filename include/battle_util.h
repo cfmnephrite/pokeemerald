@@ -93,6 +93,10 @@ u16 CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u8 ability
 u16 GetTypeModifier(u8 atkType, u8 defType);
 s32 GetStealthHazardDamage(u8 hazardType, u8 battlerId);
 u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
+u8 GetMoveType(u8 battlerId, u16 move, bool32 omnitype);
+u8 GetMoveSplit(u8 battlerId, u16 move, bool32 magic);
+u16 GetZMove(u8 battlerId, u16 move);
+u16 PrepareZMove(u8 battlerId, u16 move);
 bool32 CanMegaEvolve(u8 battlerId);
 bool32 CanUseZMove(u8 battlerId);
 void UndoMegaEvolution(u8 monId);
