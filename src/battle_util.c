@@ -253,6 +253,28 @@ static const u16 sTypeEffectivenessTable[NUMBER_OF_MON_TYPES][NUMBER_OF_MON_TYPE
     {X(1.0), X(2.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(2.0), X(1.0)}, // fairy
 };
 
+static const u16 sZMovesTable[] =
+{
+    MOVE_BREAKNECK_BLITZ,
+    MOVE_ALL_OUT_PUMELLING,
+    MOVE_SUPERSONIC_SKYSTRIKE,
+    MOVE_ACID_DOWNPOUR,
+    MOVE_TECTONIC_RAGE,
+    MOVE_CONTINENTAL_CRUSH,
+    MOVE_SAVAGE_SPIN_OUT,
+    MOVE_NEVER_ENDING_NIGHTMARE,
+    MOVE_CORKSCREW_CRASH,
+    MOVE_NONE,
+    MOVE_INFERNO_OVERDRIVE,
+    MOVE_HYDRO_VORTEX,
+    MOVE_BLOOM_DOOM,
+    MOVE_GIGAVOLT_HAVOC,
+    MOVE_SHATTERED_PSYCHE,
+    MOVE_SUBZERO_SLAMMER,
+    MOVE_DEVASTATING_DRAKE,
+    MOVE_BLACK_HOLE_ECLIPSE,
+    MOVE_TWINKLE_TACKLE,
+};
 #undef X
 
 // code
@@ -2023,19 +2045,22 @@ enum
     CANCELLER_FROZEN,
     CANCELLER_TRUANT,
     CANCELLER_FLINCH,
-    CANCELLER_DISABLED,
-    CANCELLER_GRAVITY,
-    CANCELLER_HEAL_BLOCKED,
-    CANCELLER_TAUNTED,
-    CANCELLER_IMPRISONED,
     CANCELLER_CONFUSED,
     CANCELLER_PARALYSED,
     CANCELLER_IN_LOVE,
     CANCELLER_BIDE,
     CANCELLER_THAW,
+    CANCELLER_SKY_DROP,
+    CANCELLER_CALL_Z_MOVE,
+    CANCELLER_CALL_STATUS_Z_MOVE,
+    // The following do not prevent Z-Moves
+    CANCELLER_DISABLED,
+    CANCELLER_GRAVITY,
+    CANCELLER_HEAL_BLOCKED,
+    CANCELLER_TAUNTED,
+    CANCELLER_IMPRISONED,
     CANCELLER_POWDER_MOVE,
     CANCELLER_POWDER_STATUS,
-    CANCELLER_SKY_DROP,
     CANCELLER_END,
     CANCELLER_PSYCHIC_TERRAIN,
     CANCELLER_MON_EXLUSIVE_MOVE,
@@ -2148,64 +2173,6 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_DISABLED: // disabled move
-            if (gDisableStructs[gBattlerAttacker].disabledMove == gCurrentMove && gDisableStructs[gBattlerAttacker].disabledMove != 0)
-            {
-                gProtectStructs[gBattlerAttacker].usedDisabledMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_HEAL_BLOCKED:
-            if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_GRAVITY:
-            if (gFieldStatuses & STATUS_FIELD_GRAVITY && IsGravityPreventingMove(gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedGravityPreventedMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedGravityPrevents;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_TAUNTED: // taunt
-            if (gDisableStructs[gBattlerAttacker].tauntTimer && gBattleMoves[gCurrentMove].power == 0)
-            {
-                gProtectStructs[gBattlerAttacker].usedTauntedMove = 1;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_IMPRISONED: // imprisoned
-            if (GetImprisonedMovesCount(gBattlerAttacker, gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedImprisonedMove = 1;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
         case CANCELLER_CONFUSED: // confusion
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_CONFUSION)
             {
@@ -2241,7 +2208,7 @@ u8 AtkCanceller_UnableToUseMove(void)
             {
                 gProtectStructs[gBattlerAttacker].prlzImmobility = 1;
                 // This is removed in Emerald for some reason
-                //CancelMultiTurnMoves(gBattlerAttacker);
+                CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalysed;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
@@ -2312,6 +2279,89 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
+        case CANCELLER_SKY_DROP:
+            if (gDisableStructs[gBattlerAttacker].skyDrop)
+            {
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_CALL_Z_MOVE: // using an offensive Z Move
+            if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker])
+            {
+                gBattleStruct->zMove.toUseZ &= ~(gBitTable[gBattlerAttacker]);
+                gCalledMove = sZMovesTable[GetBattlerHoldEffectParam(gBattlerAttacker)];
+                gBattleScripting.moveEffect = 0;
+                BattleScriptExecute(BattleScript_Z_Move);
+                effect = 2;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_CALL_STATUS_Z_MOVE: // using a status Z Move
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        // Cancellers that do not prevent the use of Z Moves
+        case CANCELLER_DISABLED: // disabled move
+            if (gDisableStructs[gBattlerAttacker].disabledMove == gCurrentMove && gDisableStructs[gBattlerAttacker].disabledMove != 0)
+            {
+                gProtectStructs[gBattlerAttacker].usedDisabledMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_HEAL_BLOCKED:
+            if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_GRAVITY:
+            if (gFieldStatuses & STATUS_FIELD_GRAVITY && IsGravityPreventingMove(gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedGravityPreventedMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedGravityPrevents;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_TAUNTED: // taunt
+            if (gDisableStructs[gBattlerAttacker].tauntTimer && gBattleMoves[gCurrentMove].power == 0)
+            {
+                gProtectStructs[gBattlerAttacker].usedTauntedMove = 1;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_IMPRISONED: // imprisoned
+            if (GetImprisonedMovesCount(gBattlerAttacker, gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedImprisonedMove = 1;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
         case CANCELLER_POWDER_MOVE:
             if (gBattleMoves[gCurrentMove].flags & FLAG_POWDER)
             {
@@ -2343,16 +2393,6 @@ u8 AtkCanceller_UnableToUseMove(void)
                     gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                     gBattlescriptCurrInstr = BattleScript_MoveUsedPowder;
                 }
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_SKY_DROP:
-            if (gDisableStructs[gBattlerAttacker].skyDrop)
-            {
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
             }
             gBattleStruct->atkCancellerTracker++;
             break;
