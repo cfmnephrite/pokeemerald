@@ -227,30 +227,53 @@ static const u16 sPercentToModifier[] =
     UQ_4_12(1.00), // 100
 };
 
+static const u16 sZMovesTable[] =
+{
+    MOVE_NONE,
+    MOVE_SAVAGE_SPIN_OUT,
+    MOVE_BLACK_HOLE_ECLIPSE,
+    MOVE_DEVASTATING_DRAKE,
+    MOVE_GIGAVOLT_HAVOC,
+    MOVE_TWINKLE_TACKLE,
+    MOVE_ALL_OUT_PUMELLING,
+    MOVE_INFERNO_OVERDRIVE,
+    MOVE_SUPERSONIC_SKYSTRIKE,
+    MOVE_NEVER_ENDING_NIGHTMARE,
+    MOVE_BLOOM_DOOM,
+    MOVE_TECTONIC_RAGE,
+    MOVE_SUBZERO_SLAMMER,
+    MOVE_BREAKNECK_BLITZ,
+    MOVE_ACID_DOWNPOUR,
+    MOVE_SHATTERED_PSYCHE,
+    MOVE_CONTINENTAL_CRUSH,
+    MOVE_CORKSCREW_CRASH,
+    MOVE_HYDRO_VORTEX,
+};
+
 #define X UQ_4_12
 
 static const u16 sTypeEffectivenessTable[NUMBER_OF_MON_TYPES][NUMBER_OF_MON_TYPES] =
 {
-//   normal  fight   flying  poison  ground  rock    bug     ghost   steel   mystery fire    water   grass  electric psychic ice     dragon  dark    fairy
-    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(0.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0)}, // normal
-    {X(2.0), X(1.0), X(0.5), X(0.5), X(1.0), X(2.0), X(0.5), X(0.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(2.0), X(0.5)}, // fight
-    {X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(2.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0)}, // flying
-    {X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(0.5), X(1.0), X(0.5), X(0.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0)}, // poison
-    {X(1.0), X(1.0), X(0.0), X(2.0), X(1.0), X(2.0), X(0.5), X(1.0), X(2.0), X(1.0), X(2.0), X(1.0), X(0.5), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0)}, // ground
-    {X(1.0), X(0.5), X(2.0), X(1.0), X(0.5), X(1.0), X(2.0), X(1.0), X(0.5), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0)}, // rock
-    {X(1.0), X(0.5), X(0.5), X(0.5), X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0), X(0.5), X(1.0), X(2.0), X(1.0), X(2.0), X(1.0), X(1.0), X(2.0), X(0.5)}, // bug
-    {X(0.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(1.0)}, // ghost
-    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(1.0), X(0.5), X(0.5), X(1.0), X(0.5), X(1.0), X(2.0), X(1.0), X(1.0), X(2.0)}, // steel
+    //???    bug     dark    dragon  electr  fairy   fight   fire    flying  ghost   grass   ground  ice     normal  poison  psychic rock    steel   water  
     {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0)}, // mystery
-    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(2.0), X(1.0), X(0.5), X(0.5), X(2.0), X(1.0), X(1.0), X(2.0), X(0.5), X(1.0), X(1.0)}, // fire
-    {X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(0.5), X(0.5), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0)}, // water
-    {X(1.0), X(1.0), X(0.5), X(0.5), X(2.0), X(2.0), X(0.5), X(1.0), X(0.5), X(1.0), X(0.5), X(2.0), X(0.5), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0)}, // grass
-    {X(1.0), X(1.0), X(2.0), X(1.0), X(0.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(0.5), X(0.5), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0)}, // electric
-    {X(1.0), X(2.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(0.0), X(1.0)}, // psychic
-    {X(1.0), X(1.0), X(2.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(0.5), X(0.5), X(2.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(1.0)}, // ice
-    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(0.0)}, // dragon
-    {X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(0.5)}, // dark
-    {X(1.0), X(2.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(2.0), X(1.0)}, // fairy
+    {X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(0.5), X(0.5), X(0.5), X(0.5), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(0.5), X(1.0)}, // bug
+    {X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0)}, // dark
+    {X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(0.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0)}, // dragon
+    {X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(0.5), X(0.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0)}, // electric
+    {X(1.0), X(1.0), X(2.0), X(2.0), X(1.0), X(1.0), X(2.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(0.5), X(1.0)}, // fairy
+    {X(1.0), X(0.5), X(2.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(0.5), X(0.0), X(1.0), X(1.0), X(2.0), X(2.0), X(0.5), X(0.5), X(2.0), X(2.0), X(1.0)}, // fighting
+    {X(1.0), X(2.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(2.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(0.5)}, // fire
+    {X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0)}, // flying
+    {X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0)}, // ghost
+    {X(1.0), X(0.5), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0), X(0.5), X(2.0), X(1.0), X(1.0), X(0.5), X(1.0), X(2.0), X(0.5), X(2.0)}, // grass
+    {X(1.0), X(0.5), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(2.0), X(0.5), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(2.0), X(2.0), X(1.0)}, // ground
+    {X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(2.0), X(2.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(0.5)}, // ice
+    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0)}, // normal
+    {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(0.5), X(1.0), X(1.0), X(0.5), X(1.0), X(0.5), X(0.0), X(1.0)}, // poison
+    {X(1.0), X(1.0), X(0.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(0.5), X(1.0), X(0.5), X(1.0)}, // psychic
+    {X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(2.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0)}, // rock
+    {X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(2.0), X(0.5), X(0.5)}, // steel
+    {X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(2.0), X(1.0), X(0.5)}, // water
 };
 
 #undef X
@@ -627,7 +650,7 @@ static bool32 IsBelchPreventingMove(u32 battler, u32 move)
 u8 TrySetCantSelectMoveBattleScript(void)
 {
     u32 limitations = 0;
-    u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
+    u8 moveId = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION | RET_Z_MOVE);
     u32 move = gBattleMons[gActiveBattler].moves[moveId];
     u32 holdEffect = GetBattlerHoldEffect(gActiveBattler, TRUE);
     u16 *choicedMove = &gBattleStruct->choicedMove[gActiveBattler];
@@ -2024,19 +2047,22 @@ enum
     CANCELLER_FROZEN,
     CANCELLER_TRUANT,
     CANCELLER_FLINCH,
-    CANCELLER_DISABLED,
-    CANCELLER_GRAVITY,
-    CANCELLER_HEAL_BLOCKED,
-    CANCELLER_TAUNTED,
-    CANCELLER_IMPRISONED,
     CANCELLER_CONFUSED,
     CANCELLER_PARALYSED,
     CANCELLER_IN_LOVE,
     CANCELLER_BIDE,
     CANCELLER_THAW,
+    CANCELLER_SKY_DROP,
+    CANCELLER_CALL_Z_MOVE,
+    CANCELLER_CALL_STATUS_Z_MOVE,
+    // The following do not prevent Z-Moves
+    CANCELLER_DISABLED,
+    CANCELLER_GRAVITY,
+    CANCELLER_HEAL_BLOCKED,
+    CANCELLER_TAUNTED,
+    CANCELLER_IMPRISONED,
     CANCELLER_POWDER_MOVE,
     CANCELLER_POWDER_STATUS,
-    CANCELLER_SKY_DROP,
     CANCELLER_END,
     CANCELLER_PSYCHIC_TERRAIN,
     CANCELLER_MON_EXLUSIVE_MOVE,
@@ -2149,64 +2175,6 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_DISABLED: // disabled move
-            if (gDisableStructs[gBattlerAttacker].disabledMove == gCurrentMove && gDisableStructs[gBattlerAttacker].disabledMove != 0)
-            {
-                gProtectStructs[gBattlerAttacker].usedDisabledMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_HEAL_BLOCKED:
-            if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_GRAVITY:
-            if (gFieldStatuses & STATUS_FIELD_GRAVITY && IsGravityPreventingMove(gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedGravityPreventedMove = 1;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedGravityPrevents;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_TAUNTED: // taunt
-            if (gDisableStructs[gBattlerAttacker].tauntTimer && gBattleMoves[gCurrentMove].power == 0)
-            {
-                gProtectStructs[gBattlerAttacker].usedTauntedMove = 1;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_IMPRISONED: // imprisoned
-            if (GetImprisonedMovesCount(gBattlerAttacker, gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedImprisonedMove = 1;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
         case CANCELLER_CONFUSED: // confusion
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_CONFUSION)
             {
@@ -2242,7 +2210,7 @@ u8 AtkCanceller_UnableToUseMove(void)
             {
                 gProtectStructs[gBattlerAttacker].prlzImmobility = 1;
                 // This is removed in Emerald for some reason
-                //CancelMultiTurnMoves(gBattlerAttacker);
+                CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalysed;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
@@ -2313,6 +2281,91 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
+        case CANCELLER_SKY_DROP:
+            if (gDisableStructs[gBattlerAttacker].skyDrop)
+            {
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_CALL_Z_MOVE: // using an offensive Z Move
+            if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker] && gBattleMoves[GetZMove(gBattlerAttacker, gCurrentMove)].split != SPLIT_STATUS)
+            {
+                gCalledMove = PrepareZMove(gBattlerAttacker, gCurrentMove);
+                gBattleScripting.moveEffect = 0;
+                PREPARE_HWORD_NUMBER_BUFFER(gBattleTextBuff1, 3, gBattleStruct->zMove.dynamicZBP)
+                gBattleStruct->zMove.alreadyUsedZ[GetBattlerPosition(gBattlerAttacker)] = TRUE;
+                gBattleStruct->zMove.usedZPartyIds[GetBattlerSide(gBattlerAttacker)] |= gBitTable[gBattlerPartyIndexes[gBattlerAttacker]];
+                BattleScriptExecute(BattleScript_Z_Move);
+                effect = 2;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_CALL_STATUS_Z_MOVE: // using a status Z Move
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        // Cancellers that do not prevent the use of Z Moves
+        case CANCELLER_DISABLED: // disabled move
+            if (gDisableStructs[gBattlerAttacker].disabledMove == gCurrentMove && gDisableStructs[gBattlerAttacker].disabledMove != 0)
+            {
+                gProtectStructs[gBattlerAttacker].usedDisabledMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_HEAL_BLOCKED:
+            if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_GRAVITY:
+            if (gFieldStatuses & STATUS_FIELD_GRAVITY && IsGravityPreventingMove(gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedGravityPreventedMove = 1;
+                gBattleScripting.battler = gBattlerAttacker;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedGravityPrevents;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_TAUNTED: // taunt
+            if (gDisableStructs[gBattlerAttacker].tauntTimer && gBattleMoves[gCurrentMove].power == 0)
+            {
+                gProtectStructs[gBattlerAttacker].usedTauntedMove = 1;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
+        case CANCELLER_IMPRISONED: // imprisoned
+            if (GetImprisonedMovesCount(gBattlerAttacker, gCurrentMove))
+            {
+                gProtectStructs[gBattlerAttacker].usedImprisonedMove = 1;
+                CancelMultiTurnMoves(gBattlerAttacker);
+                gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
+                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                effect = 1;
+            }
+            gBattleStruct->atkCancellerTracker++;
+            break;
         case CANCELLER_POWDER_MOVE:
             if (gBattleMoves[gCurrentMove].flags & FLAG_POWDER)
             {
@@ -2344,16 +2397,6 @@ u8 AtkCanceller_UnableToUseMove(void)
                     gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                     gBattlescriptCurrInstr = BattleScript_MoveUsedPowder;
                 }
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
-        case CANCELLER_SKY_DROP:
-            if (gDisableStructs[gBattlerAttacker].skyDrop)
-            {
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
             }
             gBattleStruct->atkCancellerTracker++;
             break;
@@ -5434,10 +5477,15 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerDef].status1 & STATUS1_BURN)
             basePower *= 1.5;
         break;
-    
     }
 
-    if (basePower == 0)
+    // If the move is a Z-Move, dynamic BP will be set
+    if (gBattleStruct->zMove.dynamicZBP)
+    {
+        basePower = gBattleStruct->zMove.dynamicZBP;
+        gBattleStruct->zMove.dynamicZBP = 0;
+    }
+    else if (basePower == 0)
         basePower = 1;
     return basePower;
 }
@@ -6458,6 +6506,239 @@ bool32 CanMegaEvolve(u8 battlerId)
 
     // All checks passed, the mon CAN mega evolve.
     return TRUE;
+}
+
+u8 GetMoveType(u8 battlerId, u16 move, bool32 omnitype)
+{
+    if (omnitype && gBattleMoves[move].flags & FLAG_OMNITYPE)
+    {
+        if (gBattleMons[battlerId].type1 != TYPE_MYSTERY)
+            return gBattleMons[battlerId].type1;
+        else if (gBattleMons[battlerId].type2 != TYPE_MYSTERY)
+            return gBattleMons[battlerId].type2;
+        else
+            return TYPE_NORMAL;
+    }
+    else
+        return gBattleMoves[move].type;
+}
+
+u8 GetMoveSplit(u8 battlerId, u16 move, bool32 magic)
+{
+    u8 split = gBattleMoves[move].split;
+    if (magic && gBattleMoves[move].flags & FLAG_MAGIC)
+    {
+        if ((split == SPLIT_PHYSICAL && gBattleMons[battlerId].spAttack > gBattleMons[battlerId].attack)
+            || (split == SPLIT_SPECIAL && gBattleMons[battlerId].attack > gBattleMons[battlerId].spAttack))
+            return split ^ 1;
+        else
+            return split;
+    }
+    else
+        return split;
+}
+
+u16 GetZMove(u8 battlerId, u16 move)
+{
+    
+    u8 zParam = GetBattlerHoldEffectParam(battlerId);
+    
+    // STILL NEED TO FIGURE OUT -ATE ABILITIES
+    if (zParam && zParam != GetMoveType(battlerId, move, 1))
+        return 0;
+    if (gBattleMoves[move].split == SPLIT_STATUS || gBattleMoves[move].flags & FLAG_SELF_Z)
+        return move;
+    
+    switch (zParam)
+    {
+        case 0:
+            // Mon-exclusive Z-Moves will be here soon enough!            
+            switch (gBattleMons[battlerId].item)
+            {
+            }
+            return 0;
+        case TYPE_BUG:
+        case TYPE_DARK:
+        case TYPE_DRAGON:
+        case TYPE_ELECTRIC:
+            switch (gBattleMons[battlerId].species)
+            {
+                case SPECIES_BULBASAUR: // SPECIES_ZEKROM
+                if(move == MOVE_FUSION_BOLT)
+                    return MOVE_BOLT_STRIKE;
+                case SPECIES_IVYSAUR: // SPECIES_ZERAORA
+                    return MOVE_PLASMA_FISTS;
+            }
+        case TYPE_FAIRY:
+        case TYPE_FIGHTING:
+        case TYPE_FIRE:
+            switch (gBattleMons[battlerId].species)
+            {
+                case SPECIES_CHARMANDER: // SPECIES_VICTINI
+                if(move == MOVE_SEARING_SHOT)
+                    return MOVE_V_CREATE;
+                case SPECIES_CHARMELEON: // SPECIES_RESHIRAM
+                if(move == MOVE_FUSION_FLARE)
+                    return MOVE_BLUE_FLARE;
+            }
+        case TYPE_FLYING:
+        case TYPE_GHOST:
+        case TYPE_GRASS:
+        case TYPE_GROUND:
+            switch (gBattleMons[battlerId].species)
+            {
+                case SPECIES_SQUIRTLE: // SPECIES_ZYGARDE
+                case SPECIES_WARTORTLE: // SPECIES_ZYGARDE-10
+                case SPECIES_CHARMELEON: // SPECIES_ZYGARDE-100
+                if(move == MOVE_THOUSAND_ARROWS || move == MOVE_THOUSAND_WAVES)
+                    return MOVE_LAND_S_WRATH;
+            }
+        case TYPE_ICE:
+        case TYPE_NORMAL:
+        case TYPE_POISON:
+        case TYPE_PSYCHIC:
+        case TYPE_ROCK:
+        case TYPE_STEEL:
+        case TYPE_WATER:
+            return sZMovesTable[zParam];
+        default:
+            return 0;
+    }
+}
+
+u16 PrepareZMove(u8 battlerId, u16 move)
+{
+    u16 zMove = GetZMove(battlerId, move);
+    struct zMoveData *zMoveStruct = &gBattleStruct->zMove;
+
+    if (gBattleMoves[zMove].power == 1)
+    {
+        u8 basePower = gBattleMoves[move].power;
+        if (gBattleMoves[move].flags & FLAG_Z_SPECIAL)
+        {
+            if (gBattleMoves[move].effect == EFFECT_MULTI_HIT && move != MOVE_WATER_SHURIKEN)
+                zMoveStruct->dynamicZBP = 140;
+            else
+            {
+                switch (move)
+                {
+                    case MOVE_DOUBLE_HIT:
+                    case MOVE_DOUBLE_KICK:
+                    case MOVE_DOUBLE_SLAP:
+                    case MOVE_DUAL_CHOP:
+                    case MOVE_GEAR_GRIND:
+                    case MOVE_HEX:
+                    case MOVE_WEATHER_BALL:
+                        zMoveStruct->dynamicZBP = 160;
+                        break;
+                    case MOVE_FLYING_PRESS:
+                        zMoveStruct->dynamicZBP = 170;
+                        break;
+                    case MOVE_TRIPLE_KICK:
+                        zMoveStruct->dynamicZBP = 175;
+                        break;
+                    case MOVE_DIZZY_PUNCH:
+                    case MOVE_DOUBLE_IRON_BASH:
+                    case MOVE_TWINEEDLE:
+                        zMoveStruct->dynamicZBP = 180;
+                        break;
+                    case MOVE_BARRAGE:
+                        zMoveStruct->dynamicZBP = 190;
+                        break;
+                    case MOVE_MULTI_ATTACK:
+                        zMoveStruct->dynamicZBP = 195;
+                        break;
+                }
+            }
+        }
+        else if (basePower >= 140)
+            zMoveStruct->dynamicZBP = 200;
+        else if (basePower >= 130)
+            zMoveStruct->dynamicZBP = 195;
+        else if (basePower >= 120)
+            zMoveStruct->dynamicZBP = 190;
+        else if (basePower >= 110)
+            zMoveStruct->dynamicZBP = 185;
+        else if (basePower >= 100)
+            zMoveStruct->dynamicZBP = 180;
+        else if (basePower >= 90)
+            zMoveStruct->dynamicZBP = 175;
+        else if (basePower >= 80)
+            zMoveStruct->dynamicZBP = 160;
+        else if (basePower >= 70)
+            zMoveStruct->dynamicZBP = 140;
+        else if (basePower >= 60)
+            zMoveStruct->dynamicZBP = 120;
+        else
+            zMoveStruct->dynamicZBP = 100;
+        
+        // Very special case for Nightmare:
+        if (gBattleMoves[move].effect == EFFECT_NIGHTMARE && GetBattlerAbility(battlerId) == ABILITY_BAD_DREAMS)
+            zMoveStruct->dynamicZBP *= 1.5;
+    }
+    else if (gBattleMoves[zMove].flags & FLAG_SELF_Z)
+    {
+        switch (move)
+        {
+            case MOVE_HYPER_BEAM:
+                zMoveStruct->dynamicZBP = 250;
+            case MOVE_LUNAR_DANCE:
+                zMoveStruct->dynamicZBP = 300;
+            case MOVE_SELF_DESTRUCT:
+                zMoveStruct->dynamicZBP = 400;
+            case MOVE_EXPLOSION:
+                zMoveStruct->dynamicZBP = 500;
+        }
+    }
+    if (gBattleMoves[zMove].power == 1 || gBattleMoves[zMove].flags & FLAG_Z_SPECIAL)
+    {
+        // Set the Z-Move category off of the base move
+        if (gBattleMoves[zMove].split != GetMoveSplit(battlerId, move, 1))
+            gBattleStruct->dynamicMoveSplit = 1;
+    }
+    return GetZMove(battlerId, move);
+}
+
+bool32 CanUseZMove(u8 battlerId)
+{
+    u32 itemId, holdEffect;
+    u8 type;
+    struct Pokemon *mon;
+    u16 cursorMove = gBattleMons[battlerId].moves[gMoveSelectionCursor[battlerId]];
+    u8 battlerPosition = GetBattlerPosition(battlerId);
+    u8 partnerPosition = GetBattlerPosition(BATTLE_PARTNER(battlerId));
+    struct zMoveData *zMove = &gBattleStruct->zMove;
+
+    // Check if trainer already used a Z move
+    if (zMove->alreadyUsedZ[battlerPosition])
+        return FALSE;
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+    {
+        if (IsPartnerMonFromSameTrainer(battlerId)
+            && (zMove->alreadyUsedZ[partnerPosition] || (zMove->toUseZ & gBitTable[BATTLE_PARTNER(battlerId)])))
+            return FALSE;
+    }
+
+    // Check if the pokemon holds an appropriate item.
+    if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
+        mon = &gEnemyParty[gBattlerPartyIndexes[battlerId]];
+    else
+        mon = &gPlayerParty[gBattlerPartyIndexes[battlerId]];
+
+    itemId = GetMonData(mon, MON_DATA_HELD_ITEM);
+    if (itemId == ITEM_ENIGMA_BERRY || ItemId_GetHoldEffect(itemId) != HOLD_EFFECT_Z_CRYSTAL)
+        return FALSE;
+    
+    // Can't make a Z-Move into a Z-Move
+    if (gBattleMoves[cursorMove].flags & FLAG_Z_MOVE)
+        return FALSE;
+    
+    // Can we get a valid Z-Move?
+    if(GetZMove(battlerId, cursorMove))
+        return TRUE;
+    else
+        // That's a shame...
+        return FALSE;
 }
 
 void UndoMegaEvolution(u8 monId)

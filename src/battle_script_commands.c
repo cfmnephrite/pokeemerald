@@ -999,6 +999,18 @@ static void atk00_attackcanceler(void)
 
     if (AtkCanceller_UnableToUseMove2())
         return;
+    
+    // Makes sure that moves called via Z Crystal are actually Z Moves
+    if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker])
+    {
+        gBattleStruct->zMove.toUseZ &= ~(gBitTable[gActiveBattler]);
+        if (!(gBattleMoves[gCurrentMove].flags & FLAG_Z_MOVE))
+        {
+            gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+            gBattlescriptCurrInstr = BattleScript_MoveEnd;
+            return;
+        }
+    }
     if (AbilityBattleEffects(ABILITYEFFECT_MOVES_BLOCK, gBattlerTarget, 0, 0, 0))
         return;
     if (!gBattleMons[gBattlerAttacker].pp[gCurrMovePos] && gCurrentMove != MOVE_STRUGGLE && !(gHitMarker & (HITMARKER_x800000 | HITMARKER_NO_ATTACKSTRING))
@@ -1677,10 +1689,8 @@ static void atk0C_datahpupdate(void)
 
     if (gBattleStruct->dynamicMoveType == 0)
         moveType = gBattleMoves[gCurrentMove].type;
-    else if (!(gBattleStruct->dynamicMoveType & 0x40))
-        moveType = gBattleStruct->dynamicMoveType & 0x3F;
     else
-        moveType = gBattleMoves[gCurrentMove].type;
+        moveType = gBattleStruct->dynamicMoveType;
 
     if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
     {
@@ -7553,14 +7563,14 @@ static void atk76_various(void)
         }
         break;
     case VARIOUS_TRY_THIRD_TYPE:
-        if (IS_BATTLER_OF_TYPE(gActiveBattler, gBattleMoves[gCurrentMove].argument))
+        if (IS_BATTLER_OF_TYPE(gActiveBattler, gBattleMoves[gCurrentMove].type))
         {
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         }
         else
         {
-            gBattleMons[gActiveBattler].type3 = gBattleMoves[gCurrentMove].argument;
-            PREPARE_TYPE_BUFFER(gBattleTextBuff1, gBattleMoves[gCurrentMove].argument);
+            gBattleMons[gActiveBattler].type3 = gBattleMoves[gCurrentMove].type;
+            PREPARE_TYPE_BUFFER(gBattleTextBuff1, gBattleMoves[gCurrentMove].type);
             gBattlescriptCurrInstr += 7;
         }
         return;
@@ -7582,7 +7592,7 @@ static void atk77_setprotectlike(void)
 
     if (sProtectSuccessRates[gDisableStructs[gBattlerAttacker].protectUses] >= Random() && notLastTurn)
     {
-        if (!gBattleMoves[gCurrentMove].argument) // Protects one mon only.
+        if (!(gBattleMoves[gCurrentMove].target & MOVE_TARGET_DEPENDS)) // Protects one mon only.
         {
             if (gBattleMoves[gCurrentMove].effect == EFFECT_ENDURE)
             {
@@ -9890,14 +9900,17 @@ static void atkBB_setsunny(void)
 static void atkBC_maxargstathalvehp(void) // belly drum and geomancy
 {
     u32 halfHp = gBattleMons[gBattlerAttacker].maxHP / 2;
-
+    u8 argStat = STAT_ATK;
+    if (gCurrentMove == MOVE_GEOMANCY)
+        argStat = STAT_SPATK;
+    
     if (!(gBattleMons[gBattlerAttacker].maxHP / 2))
         halfHp = 1;
 
-    if (gBattleMons[gBattlerAttacker].statStages[gBattleMoves[gCurrentMove].argument] < 12
+    if (gBattleMons[gBattlerAttacker].statStages[argStat] < 12
         && gBattleMons[gBattlerAttacker].hp > halfHp)
     {
-        gBattleMons[gBattlerAttacker].statStages[gBattleMoves[gCurrentMove].argument] = 12;
+        gBattleMons[gBattlerAttacker].statStages[argStat] = 12;
         gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 2;
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;

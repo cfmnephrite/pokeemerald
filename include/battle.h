@@ -484,6 +484,18 @@ struct MegaEvolutionData
     u8 indicatorSpriteIds[MAX_BATTLERS_COUNT];
 };
 
+struct zMoveData
+{
+    u8 toUseZ; // As flags using gBitTable.
+    u8 usedZPartyIds[2]; // As flags using gBitTable;
+    bool8 alreadyUsedZ[4]; // Array id is used for mon position.
+    u8 battlerId;
+    u16 dynamicZBP;
+    bool8 playerSelect;
+    u8 triggerSpriteId;
+    u8 indicatorSpriteIds[MAX_BATTLERS_COUNT];
+};
+
 struct BattleStruct
 {
     u8 turnEffectsTracker;
@@ -579,6 +591,7 @@ struct BattleStruct
     u8 activeAbilityPopUps; // as bits for each battler
     bool8 throwingPokeBall;
     struct MegaEvolutionData mega;
+    struct zMoveData zMove;
     const u8 *trainerSlideMsg;
     bool8 trainerSlideLowHpMsgDone;
     u8 introState;

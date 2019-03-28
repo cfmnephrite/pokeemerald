@@ -4107,13 +4107,13 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
 
-    [ITEM_0E3] =
+    [ITEM_Z_CRYSTAL_TESTING] =
     {
-        .name = _("????????"),
+        .name = _("Buginium Z"),
         .itemId = ITEM_NONE,
         .price = 0,
-        .holdEffect = HOLD_EFFECT_NONE,
-        .holdEffectParam = 0,
+        .holdEffect = HOLD_EFFECT_Z_CRYSTAL,
+        .holdEffectParam = TYPE_BUG,
         .description = gDummyItemDescription,
         .importance = 0,
         .unk19 = 0,
@@ -4127,11 +4127,11 @@ const struct Item gItems[] =
 
     [ITEM_0E4] =
     {
-        .name = _("????????"),
+        .name = _("Darkinium Z"),
         .itemId = ITEM_NONE,
         .price = 0,
-        .holdEffect = HOLD_EFFECT_NONE,
-        .holdEffectParam = 0,
+        .holdEffect = HOLD_EFFECT_Z_CRYSTAL,
+        .holdEffectParam = TYPE_DARK,
         .description = gDummyItemDescription,
         .importance = 0,
         .unk19 = 0,
@@ -4145,11 +4145,11 @@ const struct Item gItems[] =
 
     [ITEM_0E5] =
     {
-        .name = _("????????"),
+        .name = _("Dragonium Z"),
         .itemId = ITEM_NONE,
         .price = 0,
-        .holdEffect = HOLD_EFFECT_NONE,
-        .holdEffectParam = 0,
+        .holdEffect = HOLD_EFFECT_Z_CRYSTAL,
+        .holdEffectParam = TYPE_DRAGON,
         .description = gDummyItemDescription,
         .importance = 0,
         .unk19 = 0,

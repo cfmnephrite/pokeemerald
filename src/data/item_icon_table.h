@@ -246,7 +246,7 @@ const u32 *const gItemIconTable[][2] =
     [ITEM_STICK] = {gItemIcon_Stick, gItemIconPalette_Stick},
     // ????????
     [ITEM_MEGA_STONE_TESTING] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
-    [ITEM_0E3] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
+    [ITEM_Z_CRYSTAL_TESTING] = {gItemIcon_Stick, gItemIconPalette_Stick},
     [ITEM_0E4] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_0E5] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_0E6] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},

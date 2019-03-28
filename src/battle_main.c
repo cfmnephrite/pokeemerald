@@ -317,25 +317,25 @@ static const s8 gUnknown_0831ACE0[] ={-32, -16, -16, -32, -32, 0, 0, 0};
 
 const u8 gTypeNames[][TYPE_NAME_LENGTH + 1] =
 {
-    _("NORMAL"),
-    _("FIGHT"),
-    _("FLYING"),
-    _("POISON"),
-    _("GROUND"),
-    _("ROCK"),
-    _("BUG"),
-    _("GHOST"),
-    _("STEEL"),
     _("???"),
-    _("FIRE"),
-    _("WATER"),
-    _("GRASS"),
-    _("ELECTR"),
-    _("PSYCHC"),
-    _("ICE"),
-    _("DRAGON"),
+    _("BUG"),
     _("DARK"),
+    _("DRAGON"),
+    _("ELECTR"),
     _("FAIRY"),
+    _("FIGHT"),
+    _("FIRE"),
+    _("FLYING"),
+    _("GHOST"),
+    _("GRASS"),
+    _("GROUND"),
+    _("ICE"),
+    _("NORMAL"),
+    _("POISON"),
+    _("PSYCHC"),
+    _("ROCK"),
+    _("STEEL"),
+    _("WATER"),
 };
 
 // This is a factor in how much money you get for beating a trainer.
@@ -4114,11 +4114,15 @@ static void HandleTurnActionSelectionState(void)
                                 RecordedBattle_SetBattlerAction(gActiveBattler, gBattleResources->bufferB[gActiveBattler][2]);
                                 RecordedBattle_SetBattlerAction(gActiveBattler, gBattleResources->bufferB[gActiveBattler][3]);
                             }
-                            *(gBattleStruct->chosenMovePositions + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION);
+                            *(gBattleStruct->chosenMovePositions + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][2] & ~(RET_MEGA_EVOLUTION | RET_Z_MOVE);
                             gChosenMoveByBattler[gActiveBattler] = gBattleMons[gActiveBattler].moves[*(gBattleStruct->chosenMovePositions + gActiveBattler)];
                             *(gBattleStruct->moveTarget + gActiveBattler) = gBattleResources->bufferB[gActiveBattler][3];
                             if (gBattleResources->bufferB[gActiveBattler][2] & RET_MEGA_EVOLUTION)
                                 gBattleStruct->mega.toEvolve |= gBitTable[gActiveBattler];
+                            if (gBattleResources->bufferB[gActiveBattler][2] & RET_Z_MOVE)
+                                gBattleStruct->zMove.toUseZ |= gBitTable[gActiveBattler];
+                            else
+                                gBattleStruct->zMove.toUseZ &= ~(gBitTable[gActiveBattler]);
                             gBattleCommunication[gActiveBattler]++;
                         }
                         break;
@@ -4573,6 +4577,7 @@ static void SetActionsAndBattlersTurnOrder(void)
             }
             gBattleMainFunc = CheckMegaEvolutionBeforeTurn;
             gBattleStruct->mega.battlerId = 0;
+            gBattleStruct->zMove.battlerId = 0;
             return;
         }
         else
@@ -4615,6 +4620,7 @@ static void SetActionsAndBattlersTurnOrder(void)
     }
     gBattleMainFunc = CheckMegaEvolutionBeforeTurn;
     gBattleStruct->mega.battlerId = 0;
+    gBattleStruct->zMove.battlerId = 0;
 }
 
 static void TurnValuesCleanUp(bool8 var0)
@@ -4673,7 +4679,7 @@ static void CheckMegaEvolutionBeforeTurn(void)
                 BattleScriptExecute(BattleScript_MegaEvolution);
                 return;
             }
-        }
+        }      
     }
 
     gBattleMainFunc = CheckFocusPunch_ClearVarsBeforeTurnStarts;
@@ -5058,15 +5064,13 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
         if (WEATHER_HAS_EFFECT)
         {
             if (gBattleWeather & WEATHER_RAIN_ANY)
-                *(&gBattleStruct->dynamicMoveType) = TYPE_WATER | 0x80;
+                *(&gBattleStruct->dynamicMoveType) = TYPE_WATER;
             else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
-                *(&gBattleStruct->dynamicMoveType) = TYPE_ROCK | 0x80;
+                *(&gBattleStruct->dynamicMoveType) = TYPE_ROCK;
             else if (gBattleWeather & WEATHER_SUN_ANY)
-                *(&gBattleStruct->dynamicMoveType) = TYPE_FIRE | 0x80;
+                *(&gBattleStruct->dynamicMoveType) = TYPE_FIRE;
             else if (gBattleWeather & WEATHER_HAIL_ANY)
-                *(&gBattleStruct->dynamicMoveType) = TYPE_ICE | 0x80;
-            else
-                *(&gBattleStruct->dynamicMoveType) = TYPE_NORMAL | 0x80;
+                *(&gBattleStruct->dynamicMoveType) = TYPE_ICE;
         }
     }
     else if (gBattleMoves[move].effect == EFFECT_HIDDEN_POWER)
@@ -5077,16 +5081,15 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                      | ((gBattleMons[battlerAtk].spDefenseIV & 1) << 3);
 
         gBattleStruct->dynamicMoveType = typeBits + 1;
-        if (gBattleStruct->dynamicMoveType >= TYPE_MYSTERY)
-            gBattleStruct->dynamicMoveType = TYPE_DARK;
+        if (gBattleStruct->dynamicMoveType >= TYPE_NORMAL)
+            gBattleStruct->dynamicMoveType++;
         if (gBattleStruct->dynamicMoveType >= TYPE_PSYCHIC)
-            gBattleStruct->dynamicMoveType = TYPE_FAIRY;
-        gBattleStruct->dynamicMoveType |= 0xC0;
+            gBattleStruct->dynamicMoveType++;
     }
     else if (gBattleMoves[move].effect == EFFECT_TECHNO_BLAST)
     {
         if (GetBattlerHoldEffect(battlerAtk, TRUE) == HOLD_EFFECT_DRIVE)
-            gBattleStruct->dynamicMoveType = ItemId_GetSecondaryId(gBattleMons[battlerAtk].item) | 0x80;
+            gBattleStruct->dynamicMoveType = ItemId_GetSecondaryId(gBattleMons[battlerAtk].item);
     }
     else if (gBattleMoves[move].effect == EFFECT_JUDGMENT)
     {
@@ -5095,11 +5098,11 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
     else if (gBattleMoves[move].flags & FLAG_OMNITYPE)
     {
         if (gBattleMons[battlerAtk].type1 != TYPE_MYSTERY)
-            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type1 | 0x80;
+            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type1;
         else if (gBattleMons[battlerAtk].type2 != TYPE_MYSTERY)
-            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type2 | 0x80;
+            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type2;
         else if (gBattleMons[battlerAtk].type3 != TYPE_MYSTERY)
-            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type3 | 0x80;
+            gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type3;
     }
 
     attackerAbility = GetBattlerAbility(battlerAtk);
@@ -5107,7 +5110,7 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
     if ((gFieldStatuses & STATUS_FIELD_ION_DELUGE && moveType == TYPE_NORMAL)
         || gStatuses3[battlerAtk] & STATUS3_ELECTRIFIED)
     {
-        gBattleStruct->dynamicMoveType = 0x80 | TYPE_ELECTRIC;
+        gBattleStruct->dynamicMoveType = TYPE_ELECTRIC;
     }
     else if (gBattleMoves[move].type == TYPE_NORMAL
              && gBattleMoves[move].effect != EFFECT_HIDDEN_POWER
@@ -5121,7 +5124,7 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                 )
              )
     {
-        gBattleStruct->dynamicMoveType = 0x80 | ateType;
+        gBattleStruct->dynamicMoveType = ateType;
         gBattleStruct->ateBoost[battlerAtk] = 1;
     }
     else if (gBattleMoves[move].type != TYPE_NORMAL
@@ -5129,19 +5132,15 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
              && gBattleMoves[move].effect != EFFECT_WEATHER_BALL
              && attackerAbility == ABILITY_NORMALIZE)
     {
-        gBattleStruct->dynamicMoveType = 0x80 | TYPE_NORMAL;
+        gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
         gBattleStruct->ateBoost[battlerAtk] = 1;
     }
     
-    // CFM Magic Moves
-    if (gBattleMoves[move].flags & FLAG_MAGIC)
+    // CFM Magic Moves & Z-Moves
+    if (gBattleMoves[move].split != GetMoveSplit(battlerAtk, move, 1))
     {
-        if ((gBattleMoves[move].split == SPLIT_PHYSICAL && gBattleMons[battlerAtk].spAttack > gBattleMons[battlerAtk].attack)
-            || (gBattleMoves[move].split == SPLIT_SPECIAL && gBattleMons[battlerAtk].attack > gBattleMons[battlerAtk].spAttack))
-        {
-            // If this bit is set, the split of the move is flipped
-            gBattleStruct->dynamicMoveSplit = 1;
-        }
+        // If this bit is set, the split of the move is flipped
+        gBattleStruct->dynamicMoveSplit = 1;
     }
 }
 
@@ -5368,7 +5367,7 @@ static void HandleAction_UseMove(void)
             }
         }
     }
-
+ 
     // Choose battlescript.
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE
         && gProtectStructs[gBattlerAttacker].palaceUnableToUseMove)

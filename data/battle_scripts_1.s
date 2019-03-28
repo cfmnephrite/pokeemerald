@@ -401,12 +401,12 @@ BattleScript_CannotUseExclusiveMove::
 	goto BattleScript_MoveEnd	
 
 BattleScript_EffectLick:
-    jumpifspecies BS_ATTACKER, SPECIES_LICKITUNG, BattleScript_EffectLickitungExclusive
-    @jumpifspecies BS_ATTACKER, SPECIES_LICKILICKY, BattleScript_EffectLickitungExclusive
-    goto BattleScript_EffectHitArgOnlyEffect
+	jumpifspecies BS_ATTACKER, SPECIES_LICKITUNG, BattleScript_EffectLickitungExclusive
+	@jumpifspecies BS_ATTACKER, SPECIES_LICKILICKY, BattleScript_EffectLickitungExclusive
+	goto BattleScript_EffectHitArgOnlyEffect
 BattleScript_EffectLickitungExclusive:
-    setbyte sEFFECT_CHANCE, 0x64
-    goto BattleScript_EffectHitArgOnlyEffect
+	setbyte sEFFECT_CHANCE, 0x64
+	goto BattleScript_EffectHitArgOnlyEffect
 
 BattleScript_EffectNightmare:
 BattleScript_EffectHitArgOnlyEffect:	
@@ -5475,6 +5475,14 @@ BattleScript_MegaEvolution::
 	printstring STRINGID_MEGAEVOEVOLVED
 	waitmessage 0x40
 	end2
+
+BattleScript_Z_Move::
+	ppreduce
+	printstring STRINGID_SURROUNDEDBYZPOWER
+	waitmessage 0x40
+	printstring STRINGID_HITXTIMES
+	waitmessage 0x40
+	jumptocalledmove FALSE
 
 BattleScript_MoveUsedIsAsleep::
 	printstring STRINGID_PKMNFASTASLEEP

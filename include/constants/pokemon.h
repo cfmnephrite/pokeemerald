@@ -2,26 +2,25 @@
 #define GUARD_CONSTANTS_POKEMON_H
 
 // Pokemon types
-#define TYPE_NONE     0xFF
-#define TYPE_NORMAL   0x00
-#define TYPE_FIGHTING 0x01
-#define TYPE_FLYING   0x02
-#define TYPE_POISON   0x03
-#define TYPE_GROUND   0x04
-#define TYPE_ROCK     0x05
-#define TYPE_BUG      0x06
-#define TYPE_GHOST    0x07
-#define TYPE_STEEL    0x08
-#define TYPE_MYSTERY  0x09
-#define TYPE_FIRE     0x0a
-#define TYPE_WATER    0x0b
-#define TYPE_GRASS    0x0c
-#define TYPE_ELECTRIC 0x0d
-#define TYPE_PSYCHIC  0x0e
-#define TYPE_ICE      0x0f
-#define TYPE_DRAGON   0x10
-#define TYPE_DARK     0x11
-#define TYPE_FAIRY    0x12
+#define TYPE_MYSTERY            0x00
+#define TYPE_BUG                0x01
+#define TYPE_DARK               0x02
+#define TYPE_DRAGON             0x03
+#define TYPE_ELECTRIC           0x04
+#define TYPE_FAIRY              0x05
+#define TYPE_FIGHTING           0x06
+#define TYPE_FIRE               0x07
+#define TYPE_FLYING             0x08
+#define TYPE_GHOST              0x09
+#define TYPE_GRASS              0x0a
+#define TYPE_GROUND             0x0b
+#define TYPE_ICE                0x0c
+#define TYPE_NORMAL             0x0d
+#define TYPE_POISON             0x0e
+#define TYPE_PSYCHIC            0x0f
+#define TYPE_ROCK               0x10
+#define TYPE_STEEL              0x11
+#define TYPE_WATER              0x12
 #define NUMBER_OF_MON_TYPES     0x13
 
 
@@ -94,7 +93,7 @@
 #define FLAG_RECKLESS_BOOST         0x80
 #define FLAG_IRON_FIST_BOOST        0x100
 #define FLAG_STRONG_JAW_BOOST       0x200
-#define FLAG_UNUSED_IN_CFM          0x400
+#define FLAG_MEGA_LAUNCHER_BOOST    0x400
 #define FLAG_THAWS_USER             0x800
 #define FLAG_STAT_STAGES_IGNORED    0x1000
 #define FLAG_ANTI_AIR               0x2000
@@ -106,7 +105,8 @@
 #define FLAG_POWDER                 0x80000
 #define FLAG_DANCE                  0x100000
 #define FLAG_MON_EXCLUSIVE          0x200000
-#define FLAG_SELF_Z                 0x40000000
+#define FLAG_SELF_Z                 0x20000000
+#define FLAG_Z_SPECIAL              0x40000000
 #define FLAG_Z_MOVE                 0x80000000
 
 // Split defines.
