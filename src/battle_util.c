@@ -4091,8 +4091,7 @@ u32 GetBattlerAbility(u8 battlerId)
             && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability]
             && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
             && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
-            && gCurrentTurnActionNumber < gBattlersCount
-            && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
+            && gCurrentTurnActionNumber < gBattlersCount)
         return ABILITY_NONE;
 	else
 		return gBattleMons[battlerId].ability;
