@@ -641,6 +641,8 @@ static const u8 sText_PowderExplodes[] = _("When the flame touched the powder\no
 static const u8 sText_BelchCantUse[] = _("Belch cannot be used!\p");
 static const u8 sText_GravityGrounding[] = _("{B_DEF_NAME_WITH_PREFIX} can't stay airborne\nbecause of gravity!");
 static const u8 sText_CantUseExclusiveMove[] = _("But only {B_BUFF1} can use this move!");
+static const u8 sText_CantUseTypeExclusiveMove[] = _("But only {B_BUFF1}-type Pokémon\n can use this move!");
+static const u8 sText_CantUseStickyWeb[] = _("But only Bug-type Pokémon\n(or Masquerain) can use this move!");
 static const u8 sText_ArmorBroke[] = _("{B_DEF_NAME_WITH_PREFIX}'s Battle Armor \nwas shattered!");
 static const u8 sText_SpectralThiefSteal[] = _("{B_ATK_NAME_WITH_PREFIX} stole the target's\nboosted stats!");
 static const u8 sText_MistyTerrainPrevents[] = _("{B_DEF_NAME_WITH_PREFIX} surrounds itself\nwith a protective mist!");
@@ -1173,11 +1175,18 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_POWDEREXPLODES - 12] = sText_PowderExplodes,
     [STRINGID_GRAVITYGROUNDING - 12] = sText_GravityGrounding,
     [STRINGID_CANTUSEEXCLUSIVEMOVE - 12] = sText_CantUseExclusiveMove,
+    [STRINGID_CANTUSETYPEEXCLUSIVEMOVE - 12] = sText_CantUseTypeExclusiveMove,
+    [STRINGID_CANTUSESTICKYWEB - 12] = sText_CantUseStickyWeb,
     [STRINGID_BROKETHROUGHPROTECTLIKE - 12] = sText_BrokeThroughProtectLike,
     [STRINGID_CRAFTYSHIELDTAUNT - 12] = sText_CraftyShieldTaunt,
 	[STRINGID_FRISKDOUBLE - 12] = sText_FriskDouble,
 	[STRINGID_TARGETABILITYSTATLOWERFOE - 12] = sText_TargetAbilityLoweredFoeStat,
 	[STRINGID_HEALERACTIVATES - 12] = sText_HealerActivates,
+};
+
+const u16 gCantUseExclusiveMoveStringIds[] = 
+{
+    STRINGID_CANTUSEEXCLUSIVEMOVE, STRINGID_CANTUSETYPEEXCLUSIVEMOVE, STRINGID_CANTUSESTICKYWEB
 };
 
 const u16 gWeatherEndedStringIds[] =

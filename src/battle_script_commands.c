@@ -7050,8 +7050,10 @@ static void atk76_various(void)
         }
         else
         {
-            if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER)
-                gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP * 75 / 100);
+            if (gBattleMoves[gCurrentMove].flags & FLAG_MEGA_LAUNCHER_BOOST && GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER)
+                gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP * 3 / 4);
+            else if (gCurrentMove == MOVE_FLORAL_HEALING && gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+                gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP * 2 / 3);
             else
                 gBattleMoveDamage = -(gBattleMons[gActiveBattler].maxHP / 2);
 
@@ -10016,10 +10018,8 @@ static void atkC0_recoverbasedonsunlight(void)
 static void atkC1_setstickyweb(void)
 {
     u8 targetSide = GetBattlerSide(gBattlerTarget);
-    if (gSideStatuses[targetSide] & SIDE_STATUS_STICKY_WEB || !(gBattleMons[gBattlerAttacker].species == SPECIES_MASQUERAIN || IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_BUG)))
-    {
+    if (gSideStatuses[targetSide] & SIDE_STATUS_STICKY_WEB)
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-    }
     else
     {
         gSideStatuses[targetSide] |= SIDE_STATUS_STICKY_WEB;

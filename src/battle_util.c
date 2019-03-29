@@ -2455,6 +2455,23 @@ u8 AtkCanceller_UnableToUseMove2(void)
                         {
                             canUse = FALSE;
                             PREPARE_SPECIES_BUFFER(gBattleTextBuff1, SPECIES_PIKACHU);
+                            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                        }
+                        break;
+                    case MOVE_DARK_VOID:
+                        if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_DARK))
+                        {
+                            canUse = FALSE;
+                            PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_DARK);
+                            gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                        }
+                        break;
+                    case MOVE_STICKY_WEB:
+                        if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_BUG) || gBattleMons[gBattlerAttacker].species == SPECIES_MASQUERAIN))
+                        {
+                            canUse = FALSE;
+                            PREPARE_TYPE_BUFFER(gBattleTextBuff1, TYPE_BUG);
+                            gBattleCommunication[MULTISTRING_CHOOSER] = 2;
                         }
                         break;
                 }
@@ -5283,9 +5300,6 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
 
     switch (gBattleMoves[move].effect)
     {
-    //case EFFECT_AEROBLAST:
-        // todo
-        //break;
     case EFFECT_PLEDGE:
         // todo
         break;
@@ -5553,19 +5567,8 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
     case ABILITY_MEGA_LAUNCHER:
-        {
-            u16 megaMoves[9] = {MOVE_AURA_SPHERE, MOVE_DARK_PULSE, MOVE_DRAGON_PULSE, MOVE_FLASH_CANNON, MOVE_HYDRO_CANNON,
-                                MOVE_OCTAZOOKA, MOVE_ORIGIN_PULSE, MOVE_TECHNO_BLAST, MOVE_WATER_PULSE};
-            bool8 boosted = FALSE;
-            u32 i;
-            for (i = 0; i < 9; i++)
-            {
-                if (move == megaMoves[i])
-                    boosted = TRUE;
-            }
-            if (boosted)
-                MulModifier(&modifier, UQ_4_12(1.5));
-        }
+        if (gBattleMoves[move].flags & FLAG_MEGA_LAUNCHER_BOOST)
+           MulModifier(&modifier, UQ_4_12(1.5));
         break;
     case ABILITY_WATER_BUBBLE:
         if (moveType == TYPE_WATER)
@@ -6637,6 +6640,7 @@ u16 PrepareZMove(u8 battlerId, u16 move)
                     case MOVE_TRIPLE_KICK:
                         zMoveStruct->dynamicZBP = 175;
                         break;
+                    case MOVE_BONEMERANG:
                     case MOVE_DIZZY_PUNCH:
                     case MOVE_DOUBLE_IRON_BASH:
                     case MOVE_TWINEEDLE:

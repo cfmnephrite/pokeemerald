@@ -55,7 +55,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectTriAttack
 	.4byte BattleScript_EffectRest
 	.4byte BattleScript_EffectLick
-	.4byte BattleScript_EffectDarkVoid
+	.4byte BattleScript_EffectUnused39
 	.4byte BattleScript_EffectSuperFang
 	.4byte BattleScript_EffectFixedArgDamage
 	.4byte BattleScript_EffectTrap
@@ -396,7 +396,7 @@ BattleScript_RevelationDanceEnd::
 BattleScript_CannotUseExclusiveMove::
 	attackstring
 	ppreduce	
-	printstring STRINGID_CANTUSEEXCLUSIVEMOVE
+	printfromtable gCantUseExclusiveMoveStringIds
 	waitmessage 0x40
 	goto BattleScript_MoveEnd	
 
@@ -474,11 +474,6 @@ BattleScript_EffectSpA2DownArgEffect:
 BattleScript_EffectCustomStatDrop:
 	setargtoeffectself
 	goto BattleScript_EffectHit
-	
-BattleScript_EffectDarkVoid:
-	jumpiftype BS_ATTACKER, TYPE_DARK, BattleScript_EffectSleep
-	attackcanceler
-	goto BattleScript_ButItFailedAtkStringPpReduce
 	
 BattleScript_EffectConstrict:
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE | MOVE_EFFECT_CERTAIN
@@ -1718,6 +1713,7 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectUnused39:
 BattleScript_EffectUnused60:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
