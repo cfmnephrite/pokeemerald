@@ -5958,9 +5958,9 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
     }
 
     // reflect, light screen, aurora veil
-    if ((gSideStatuses[defSide] & SIDE_STATUS_REFLECT && IS_MOVE_PHYSICAL(move))
+    if (((gSideStatuses[defSide] & SIDE_STATUS_REFLECT && IS_MOVE_PHYSICAL(move))
         || (gSideStatuses[defSide] & SIDE_STATUS_LIGHTSCREEN && IS_MOVE_SPECIAL(move))
-        || (gSideStatuses[defSide] & SIDE_STATUS_AURORA_VEIL))
+        || (gSideStatuses[defSide] & SIDE_STATUS_AURORA_VEIL)) && abilityAtk != ABILITY_INFILTRATOR)
     {
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
             MulModifier(&finalModifier, UQ_4_12(0.66));
@@ -6421,4 +6421,28 @@ bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability)
         return TRUE;
     }
     return FALSE;
+}
+
+void UndoCastform(u8 monId)
+{
+	if(GetBattlerAbility(monId) == ABILITY_FORECAST)
+	{
+		//if (gBattleMons[monId].species == SPECIES_CASTFORM_SUN || gBattleMons[monId].species == SPECIES_CASTFORM_RAIN || gBattleMons[monId].species == SPECIES_HAIL){}
+		struct Pokemon *mon;
+		if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT)
+			mon = &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]];
+		else
+			mon = &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]];
+		gBattleMons[monId].species = SPECIES_CASTFORM;
+		if (GET_BATTLER_SIDE(monId) == B_SIDE_PLAYER)
+		{
+			SetMonData(&gPlayerParty[gBattlerPartyIndexes[monId]], MON_DATA_SPECIES, &gBattleMons[monId].species);
+			CalculateMonStats(&gPlayerParty[monId]);
+		}
+		else
+		{
+			SetMonData(&gEnemyParty[gBattlerPartyIndexes[monId]], MON_DATA_SPECIES, &gBattleMons[monId].species);
+			CalculateMonStats(&gEnemyParty[monId]);
+		}
+	}
 }
