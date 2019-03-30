@@ -6079,9 +6079,9 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
     }
 
     // reflect, light screen, aurora veil
-    if ((gSideStatuses[defSide] & SIDE_STATUS_REFLECT && IS_MOVE_PHYSICAL(move))
+    if (((gSideStatuses[defSide] & SIDE_STATUS_REFLECT && IS_MOVE_PHYSICAL(move))
         || (gSideStatuses[defSide] & SIDE_STATUS_LIGHTSCREEN && IS_MOVE_SPECIAL(move))
-        || (gSideStatuses[defSide] & SIDE_STATUS_AURORA_VEIL))
+        || (gSideStatuses[defSide] & SIDE_STATUS_AURORA_VEIL)) && abilityAtk != ABILITY_INFILTRATOR)
     {
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
             MulModifier(&finalModifier, UQ_4_12(0.66));
@@ -6804,4 +6804,30 @@ bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability)
         return TRUE;
     }
     return FALSE;
+}
+
+void UndoCastform(u8 monId)
+{
+	if(GetBattlerAbility(monId) == ABILITY_FORECAST)
+	{
+		//if (gBattleMons[monId].species == SPECIES_CASTFORM_SUN || gBattleMons[monId].species == SPECIES_CASTFORM_RAIN || gBattleMons[monId].species == SPECIES_HAIL){}
+		struct Pokemon *mon;
+		if (GetBattlerSide(monId) == B_SIDE_OPPONENT)
+			mon = &gEnemyParty[gBattlerPartyIndexes[monId]];
+		else
+			mon = &gPlayerParty[gBattlerPartyIndexes[monId]];
+		gBattleMons[monId].species = SPECIES_CASTFORM;
+		gBattleMons[monId].level = GetMonData(mon, MON_DATA_LEVEL);
+		gBattleMons[monId].hp = GetMonData(mon, MON_DATA_HP);
+		gBattleMons[monId].maxHP = GetMonData(mon, MON_DATA_MAX_HP);
+		gBattleMons[monId].attack = GetMonData(mon, MON_DATA_ATK);
+		gBattleMons[monId].defense = GetMonData(mon, MON_DATA_DEF);
+		gBattleMons[monId].speed = GetMonData(mon, MON_DATA_SPEED);
+		gBattleMons[monId].spAttack = GetMonData(mon, MON_DATA_SPATK);
+		gBattleMons[monId].spDefense = GetMonData(mon, MON_DATA_SPDEF);
+		gBattleMons[monId].type1 = gBaseStats[gBattleMons[monId].species].type1;
+        gBattleMons[monId].type2 = gBaseStats[gBattleMons[monId].species].type2;
+		SetMonData(mon, MON_DATA_SPECIES, &gBattleMons[monId].species);
+		CalculateMonStats(mon);
+	}
 }

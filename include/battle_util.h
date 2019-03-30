@@ -107,5 +107,6 @@ void UndoMegaEvolution(u8 monId);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
 bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId);
 bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability);
+void UndoCastform(u8 battlerId);
 
 #endif // GUARD_BATTLE_UTIL_H
