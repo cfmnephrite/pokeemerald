@@ -1705,18 +1705,11 @@ u8 DoBattlerEndTurnEffects(void)
                 gBattleStruct->turnEffectsTracker++;
                 break;
             case ENDTURN_TAUNT:  // taunt
-                if (gDisableStructs[gActiveBattler].tauntTimer != 0)
+                if (gDisableStructs[gActiveBattler].tauntTimer && --gDisableStructs[gActiveBattler].tauntTimer == 0)
                 {
-                    if (gDisableStructs[gActiveBattler].tauntTimer)
-                    {
-                        gDisableStructs[gActiveBattler].tauntTimer--;
-                        if(gDisableStructs[gActiveBattler].tauntTimer == 0)
-                        {
-                            BattleScriptExecute(BattleScript_SideSelfWoreOff);
-                            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_TAUNT);
-                            effect++;
-                        }
-                    }
+                    BattleScriptExecute(BattleScript_BufferEndTurn);
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_TAUNT);
+                    effect++;
                 }
                 gBattleStruct->turnEffectsTracker++;
                 break;
@@ -1742,9 +1735,7 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_LASER_FOCUS:
                 if (gStatuses3[gActiveBattler] & STATUS3_LASER_FOCUS)
                 {
-                    if (gDisableStructs[gActiveBattler].laserFocusTimer != 0)
-                        gDisableStructs[gActiveBattler].laserFocusTimer--;
-                    if (gDisableStructs[gActiveBattler].laserFocusTimer == 0)
+                    if (gDisableStructs[gActiveBattler].laserFocusTimer == 0 || --gDisableStructs[gActiveBattler].laserFocusTimer == 0)
                         gStatuses3[gActiveBattler] &= ~(STATUS3_LASER_FOCUS);
                 }
                 gBattleStruct->turnEffectsTracker++;
@@ -1752,9 +1743,7 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_EMBARGO:
                 if (gStatuses3[gActiveBattler] & STATUS3_EMBARGO)
                 {
-                    if (gDisableStructs[gActiveBattler].embargoTimer != 0)
-                        gDisableStructs[gActiveBattler].embargoTimer--;
-                    if (gDisableStructs[gActiveBattler].embargoTimer == 0)
+                    if (gDisableStructs[gActiveBattler].embargoTimer == 0 || --gDisableStructs[gActiveBattler].embargoTimer == 0)
                     {
                         gStatuses3[gActiveBattler] &= ~(STATUS3_EMBARGO);
                         BattleScriptExecute(BattleScript_EmbargoEndTurn);
@@ -1766,12 +1755,11 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_MAGNET_RISE:
                 if (gStatuses3[gActiveBattler] & STATUS3_MAGNET_RISE)
                 {
-                    if (gDisableStructs[gActiveBattler].magnetRiseTimer != 0)
-                        gDisableStructs[gActiveBattler].magnetRiseTimer--;
-                    if (gDisableStructs[gActiveBattler].magnetRiseTimer == 0)
+                    if (gDisableStructs[gActiveBattler].magnetRiseTimer == 0 || --gDisableStructs[gActiveBattler].magnetRiseTimer == 0)
                     {
                         gStatuses3[gActiveBattler] &= ~(STATUS3_MAGNET_RISE);
-                        BattleScriptExecute(BattleScript_MagnetRiseEndTurn);
+                        BattleScriptExecute(BattleScript_BufferEndTurn);
+                        PREPARE_STRING_BUFFER(gBattleTextBuff1, STRINGID_ELECTROMAGNETISM);
                         effect++;
                     }
                 }
@@ -1780,9 +1768,7 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_TELEKINESIS:
                 if (gStatuses3[gActiveBattler] & STATUS3_TELEKINESIS)
                 {
-                    if (gDisableStructs[gActiveBattler].telekinesisTimer != 0)
-                        gDisableStructs[gActiveBattler].telekinesisTimer--;
-                    if (gDisableStructs[gActiveBattler].telekinesisTimer == 0)
+                    if (gDisableStructs[gActiveBattler].telekinesisTimer == 0 || --gDisableStructs[gActiveBattler].telekinesisTimer == 0)
                     {
                         gStatuses3[gActiveBattler] &= ~(STATUS3_TELEKINESIS);
                         BattleScriptExecute(BattleScript_TelekinesisEndTurn);
@@ -1794,12 +1780,11 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_HEALBLOCK:
                 if (gStatuses3[gActiveBattler] & STATUS3_HEAL_BLOCK)
                 {
-                    if (gDisableStructs[gActiveBattler].healBlockTimer != 0)
-                        gDisableStructs[gActiveBattler].healBlockTimer--;
-                    if (gDisableStructs[gActiveBattler].healBlockTimer == 0)
+                    if (gDisableStructs[gActiveBattler].healBlockTimer == 0 || --gDisableStructs[gActiveBattler].healBlockTimer == 0)
                     {
                         gStatuses3[gActiveBattler] &= ~(STATUS3_HEAL_BLOCK);
-                        BattleScriptExecute(BattleScript_HealBlockEndTurn);
+                        BattleScriptExecute(BattleScript_BufferEndTurn);
+                        PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_HEAL_BLOCK);
                         effect++;
                     }
                 }
@@ -2294,6 +2279,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_CALL_Z_MOVE: // using an offensive Z Move
             if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker] && gBattleMoves[GetZMove(gBattlerAttacker, gCurrentMove)].split != SPLIT_STATUS)
             {
+                gBattleStruct->zMove.toUseZ &= ~(gBitTable[gBattlerAttacker]);
                 gCalledMove = PrepareZMove(gBattlerAttacker, gCurrentMove);
                 gBattleScripting.moveEffect = 0;
                 PREPARE_HWORD_NUMBER_BUFFER(gBattleTextBuff1, 3, gBattleStruct->zMove.dynamicZBP)
@@ -5496,7 +5482,8 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
     // If the move is a Z-Move, dynamic BP will be set
     if (gBattleStruct->zMove.dynamicZBP)
     {
-        basePower = gBattleStruct->zMove.dynamicZBP;
+        if (gBattleMoves[move].flags & (FLAG_Z_MOVE || FLAG_SELF_Z))
+            basePower = gBattleStruct->zMove.dynamicZBP;
         gBattleStruct->zMove.dynamicZBP = 0;
     }
     else if (basePower == 0)
@@ -6686,12 +6673,16 @@ u16 PrepareZMove(u8 battlerId, u16 move)
         {
             case MOVE_HYPER_BEAM:
                 zMoveStruct->dynamicZBP = 250;
+                break;
             case MOVE_LUNAR_DANCE:
                 zMoveStruct->dynamicZBP = 300;
+                break;
             case MOVE_SELF_DESTRUCT:
                 zMoveStruct->dynamicZBP = 400;
+                break;
             case MOVE_EXPLOSION:
                 zMoveStruct->dynamicZBP = 500;
+                break;
         }
     }
     if (gBattleMoves[zMove].power == 1 || gBattleMoves[zMove].flags & FLAG_Z_SPECIAL)

@@ -4109,11 +4109,11 @@ const struct Item gItems[] =
 
     [ITEM_Z_CRYSTAL_TESTING] =
     {
-        .name = _("Buginium Z"),
+        .name = _("Normalium Z"),
         .itemId = ITEM_NONE,
         .price = 0,
         .holdEffect = HOLD_EFFECT_Z_CRYSTAL,
-        .holdEffectParam = TYPE_BUG,
+        .holdEffectParam = TYPE_NORMAL,
         .description = gDummyItemDescription,
         .importance = 0,
         .unk19 = 0,
