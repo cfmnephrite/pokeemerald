@@ -1000,17 +1000,6 @@ static void atk00_attackcanceler(void)
     if (AtkCanceller_UnableToUseMove2())
         return;
     
-    // Makes sure that moves called via Z Crystal are actually Z Moves
-    if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker])
-    {
-        gBattleStruct->zMove.toUseZ &= ~(gBitTable[gActiveBattler]);
-        if (!(gBattleMoves[gCurrentMove].flags & FLAG_Z_MOVE))
-        {
-            gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-            gBattlescriptCurrInstr = BattleScript_MoveEnd;
-            return;
-        }
-    }
     if (AbilityBattleEffects(ABILITYEFFECT_MOVES_BLOCK, gBattlerTarget, 0, 0, 0))
         return;
     if (!gBattleMons[gBattlerAttacker].pp[gCurrMovePos] && gCurrentMove != MOVE_STRUGGLE && !(gHitMarker & (HITMARKER_x800000 | HITMARKER_NO_ATTACKSTRING))

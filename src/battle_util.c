@@ -2279,6 +2279,7 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_CALL_Z_MOVE: // using an offensive Z Move
             if (gBattleStruct->zMove.toUseZ & gBitTable[gBattlerAttacker] && gBattleMoves[GetZMove(gBattlerAttacker, gCurrentMove)].split != SPLIT_STATUS)
             {
+                gBattleStruct->zMove.toUseZ &= ~(gBitTable[gBattlerAttacker]);
                 gCalledMove = PrepareZMove(gBattlerAttacker, gCurrentMove);
                 gBattleScripting.moveEffect = 0;
                 PREPARE_HWORD_NUMBER_BUFFER(gBattleTextBuff1, 3, gBattleStruct->zMove.dynamicZBP)
@@ -5481,7 +5482,8 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
     // If the move is a Z-Move, dynamic BP will be set
     if (gBattleStruct->zMove.dynamicZBP)
     {
-        basePower = gBattleStruct->zMove.dynamicZBP;
+        if (gBattleMoves[move].flags & (FLAG_Z_MOVE || FLAG_SELF_Z))
+            basePower = gBattleStruct->zMove.dynamicZBP;
         gBattleStruct->zMove.dynamicZBP = 0;
     }
     else if (basePower == 0)
@@ -6671,12 +6673,16 @@ u16 PrepareZMove(u8 battlerId, u16 move)
         {
             case MOVE_HYPER_BEAM:
                 zMoveStruct->dynamicZBP = 250;
+                break;
             case MOVE_LUNAR_DANCE:
                 zMoveStruct->dynamicZBP = 300;
+                break;
             case MOVE_SELF_DESTRUCT:
                 zMoveStruct->dynamicZBP = 400;
+                break;
             case MOVE_EXPLOSION:
                 zMoveStruct->dynamicZBP = 500;
+                break;
         }
     }
     if (gBattleMoves[zMove].power == 1 || gBattleMoves[zMove].flags & FLAG_Z_SPECIAL)
