@@ -6755,6 +6755,25 @@ void UndoMegaEvolution(u8 monId)
     }
 }
 
+void UndoCastform(u8 monId)
+{
+    //if (gBattleMons[monId].species == SPECIES_CASTFORM_SUN || gBattleMons[monId].species == SPECIES_CASTFORM_RAIN || gBattleMons[monId].species == SPECIES_HAIL){}
+    if (gBattleMons[monId].ability == ABILITY_FORECAST)
+    {
+        gBattleMons[monId].species = SPECIES_CASTFORM;
+        if (GET_BATTLER_SIDE(monId) == B_SIDE_PLAYER)
+        {
+            SetMonData(&gPlayerParty[gBattlerPartyIndexes[monId]], MON_DATA_SPECIES, &gBattleMons[monId].species);
+            CalculateMonStats(&gPlayerParty[monId]);
+        }
+        else
+        {
+            SetMonData(&gEnemyParty[gBattlerPartyIndexes[monId]], MON_DATA_SPECIES, &gBattleMons[monId].species);
+            CalculateMonStats(&gEnemyParty[monId]);
+        }
+    }
+}
+
 bool32 DoBattlersShareType(u32 battler1, u32 battler2)
 {
     s32 i;

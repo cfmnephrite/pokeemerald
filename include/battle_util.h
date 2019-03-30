@@ -104,6 +104,7 @@ u16 PrepareZMove(u8 battlerId, u16 move);
 bool32 CanMegaEvolve(u8 battlerId);
 bool32 CanUseZMove(u8 battlerId);
 void UndoMegaEvolution(u8 monId);
+void UndoCastform(u8 monId);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
 bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId);
 bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability);

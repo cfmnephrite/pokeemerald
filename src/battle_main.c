@@ -4932,7 +4932,10 @@ static void HandleEndTurn_FinishBattle(void)
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
         for (i = 0; i < PARTY_SIZE; i++)
+        {
             UndoMegaEvolution(i);
+            UndoCastform(i);
+        }
         gBattleMainFunc = FreeResetData_ReturnToOvOrDoEvolutions;
         gCB2_AfterEvolution = BattleMainCB2;
     }
