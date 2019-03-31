@@ -55,7 +55,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectTriAttack
 	.4byte BattleScript_EffectRest
 	.4byte BattleScript_EffectLick
-	.4byte BattleScript_EffectUnused39
+	.4byte BattleScript_EffectBounce
 	.4byte BattleScript_EffectSuperFang
 	.4byte BattleScript_EffectFixedArgDamage
 	.4byte BattleScript_EffectTrap
@@ -214,7 +214,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSnatch
 	.4byte BattleScript_EffectLowKick
 	.4byte BattleScript_EffectSecretPower
-	.4byte BattleScript_EffectConstrict
+	.4byte BattleScript_EffectTrapPlusArgEffect
 	.4byte BattleScript_EffectTeeterDance
 	.4byte BattleScript_EffectHitEscape
 	.4byte BattleScript_EffectMudSport
@@ -237,7 +237,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectWringOut
 	.4byte BattleScript_EffectHex
 	.4byte BattleScript_EffectAssurance
-	.4byte BattleScript_EffectTrump_card
+	.4byte BattleScript_EffectTrumpCard
 	.4byte BattleScript_EffectAcrobatics
 	.4byte BattleScript_EffectHeatCrash
 	.4byte BattleScript_EffectPunishment
@@ -249,7 +249,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectRound
 	.4byte BattleScript_EffectBrine
 	.4byte BattleScript_EffectVenoshock
-	.4byte BattleScript_EffectRetalitate
+	.4byte BattleScript_EffectRetaliate
 	.4byte BattleScript_EffectAeroblast
 	.4byte BattleScript_EffectFoulPlay
 	.4byte BattleScript_EffectPsyshock
@@ -299,7 +299,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectElectrify
 	.4byte BattleScript_EffectScald
 	.4byte BattleScript_EffectReflectType
-	.4byte BattleScript_EffectSoak
+	.4byte BattleScript_EffectSpeedDownArgEffect
 	.4byte BattleScript_EffectAtk2DownArgEffect
 	.4byte BattleScript_EffectSpA2DownArgEffect
 	.4byte BattleScript_EffectHealOrder
@@ -307,7 +307,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectRecoil33
 	.4byte BattleScript_EffectRecoil50
 	.4byte BattleScript_EffectShellSmash
-	.4byte BattleScript_EffectShiftGear
+	.4byte BattleScript_EffectSpecialAttackUp3
 	.4byte BattleScript_EffectDefenseUp3
 	.4byte BattleScript_EffectNobleRoar
 	.4byte BattleScript_EffectVenomDrench
@@ -322,14 +322,14 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectDefog
 	.4byte BattleScript_EffectHitEnemyHealAlly
 	.4byte BattleScript_EffectSmackDown
-	.4byte BattleScript_EffectSynchronoise
+	.4byte BattleScript_EffectShiftGear
 	.4byte BattleScript_EffectPsychoShift
 	.4byte BattleScript_EffectPowerTrick
 	.4byte BattleScript_EffectFlameBurst
 	.4byte BattleScript_EffectAfterYou
 	.4byte BattleScript_EffectBestow
 	.4byte BattleScript_EffectRototiller
-	.4byte BattleScript_EffectUnused313
+	.4byte BattleScript_EffectSoak
 	.4byte BattleScript_EffectHitPreventEscape
 	.4byte BattleScript_EffectSpeedSwap
 	.4byte BattleScript_EffectDefenseUp2Hit
@@ -463,6 +463,10 @@ BattleScript_EffectEggBomb:
 	setmoveeffect MOVE_EFFECT_CLEAR_SMOG | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectLevelDamage	
 
+BattleScript_EffectSpeedDownArgEffect:
+	setmoveeffect MOVE_EFFECT_SPD_MINUS_1 | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHitArgEffect
+
 BattleScript_EffectAtk2DownArgEffect:
 	setmoveeffect MOVE_EFFECT_ATK_MINUS_2 | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHitArgEffect
@@ -475,7 +479,7 @@ BattleScript_EffectCustomStatDrop:
 	setargtoeffectself
 	goto BattleScript_EffectHit
 	
-BattleScript_EffectConstrict:
+BattleScript_EffectTrapPlusArgEffect:
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHitArgEffect
 
@@ -1713,58 +1717,55 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectUnused39:
 BattleScript_EffectUnused60:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
 BattleScript_EffectUnused96:
 BattleScript_EffectUnused104:
 BattleScript_EffectUnused125:
-BattleScript_EffectUnused313:
-BattleScript_EffectSynchronoise:
-BattleScript_EffectFreeze:	
-BattleScript_EffectAeroblast:
-BattleScript_EffectEvasionDownHit:
-BattleScript_EffectVitalThrow:
-BattleScript_EffectFalseSwipe:
-BattleScript_EffectAlwaysCrit:
-BattleScript_EffectPursuit:
-BattleScript_EffectFellStinger:
-BattleScript_EffectHit::
-BattleScript_EffectSolarbeam:
-BattleScript_EffectLowKick:
-BattleScript_EffectFlail:
-BattleScript_EffectFacade:
-BattleScript_EffectRevenge:
-BattleScript_EffectReturn:
-BattleScript_EffectFrustration:
-BattleScript_EffectEruption:
-BattleScript_EffectPledge:
-BattleScript_EffectFling:
-BattleScript_EffectNaturalGift:
-BattleScript_EffectWringOut:
-BattleScript_EffectHex:
-BattleScript_EffectAssurance:
-BattleScript_EffectTrump_card:
 BattleScript_EffectAcrobatics:
-BattleScript_EffectHeatCrash:
-BattleScript_EffectPunishment:
-BattleScript_EffectStoredPower:
-BattleScript_EffectElectroBall:
-BattleScript_EffectGyroBall:
-BattleScript_EffectEchoedVoice:
-BattleScript_EffectPayback:
-BattleScript_EffectRound:
-BattleScript_EffectBrine:
-BattleScript_EffectVenoshock:
-BattleScript_EffectRetalitate:
-BattleScript_EffectFoulPlay:
-BattleScript_EffectWeatherBall:
-BattleScript_EffectHiddenPower:
-BattleScript_EffectTwoTypedMove:
-BattleScript_EffectTechnoBlast:
-BattleScript_EffectJudgment:
+BattleScript_EffectAeroblast:
+BattleScript_EffectAlwaysCrit:
+BattleScript_EffectAssurance:
 BattleScript_EffectBelch:
+BattleScript_EffectBrine:
+BattleScript_EffectEchoedVoice:
+BattleScript_EffectElectroBall:
+BattleScript_EffectEruption:
+BattleScript_EffectEvasionDownHit:
+BattleScript_EffectFacade:
+BattleScript_EffectFalseSwipe:
+BattleScript_EffectFellStinger:
+BattleScript_EffectFlail:
+BattleScript_EffectFling:
+BattleScript_EffectFoulPlay:
+BattleScript_EffectFreeze:
+BattleScript_EffectFrustration:
+BattleScript_EffectGyroBall:
+BattleScript_EffectHeatCrash:
+BattleScript_EffectHex:
+BattleScript_EffectHiddenPower:
+BattleScript_EffectJudgment:
+BattleScript_EffectLowKick:
+BattleScript_EffectNaturalGift:
+BattleScript_EffectPayback:
+BattleScript_EffectPledge:
+BattleScript_EffectPunishment:
+BattleScript_EffectPursuit:
+BattleScript_EffectRetaliate:
+BattleScript_EffectReturn:
+BattleScript_EffectRevenge:
+BattleScript_EffectRound:
+BattleScript_EffectSolarbeam:
+BattleScript_EffectStoredPower:
+BattleScript_EffectTechnoBlast:
+BattleScript_EffectTrumpCard:
+BattleScript_EffectTwoTypedMove:
+BattleScript_EffectVenoshock:
+BattleScript_EffectVitalThrow:
+BattleScript_EffectWeatherBall:
+BattleScript_EffectWringOut:
+BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
 	jumpifnostatus3 BS_TARGET, STATUS3_UNDERWATER, BattleScript_HitFromAtkCanceler
 	orword gHitMarker, HITMARKER_IGNORE_UNDERWATER
@@ -2434,6 +2435,10 @@ BattleScript_EffectSpeedUp2::
 
 BattleScript_EffectSpecialAttackUp2::
 	setstatchanger STAT_SPATK, 2, FALSE
+	goto BattleScript_EffectStatUp
+
+BattleScript_EffectSpecialAttackUp3::
+	setstatchanger STAT_SPATK, 3, FALSE
 	goto BattleScript_EffectStatUp
 
 BattleScript_EffectSpecialDefenseUp2::
@@ -3470,6 +3475,8 @@ BattleScript_BeatUpAttack::
 BattleScript_BeatUpEnd::
 	end
 
+BattleScript_EffectBounce::
+    jumpiftype BS_ATTACKER, TYPE_FLYING, BattleScript_EffectHitArgOnlyEffect
 BattleScript_EffectSemiInvulnerable::
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SecondTurnSemiInvulnerable
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_SecondTurnSemiInvulnerable
@@ -3507,7 +3514,7 @@ BattleScript_MoveEffectSkyDrop::
 	
 BattleScript_SecondTurnSemiInvulnerable::
 	attackcanceler
-	setmoveeffect MOVE_EFFECT_CHARGING | MOVE_EFFECT_CERTAIN
+	setmoveeffect MOVE_EFFECT_CHARGING
 	setbyte sB_ANIM_TURN, 0x1
 	clearstatusfromeffect BS_ATTACKER
 	orword gHitMarker, HITMARKER_NO_PPDEDUCT
@@ -3558,8 +3565,7 @@ BattleScript_AlreadyAtFullHp::
 BattleScript_EffectFakeOut::
 	attackcanceler
 	jumpifnotfirstturn BattleScript_ButItFailedAtkStringPpReduce
-	setmoveeffect MOVE_EFFECT_FLINCH
-	goto BattleScript_EffectHit
+	goto BattleScript_EffectHitArgOnlyEffect
 
 BattleScript_ButItFailedAtkStringPpReduce::
 	attackstring

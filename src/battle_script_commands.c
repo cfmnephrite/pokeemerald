@@ -1210,6 +1210,8 @@ static bool32 AccuracyCalcHelper(u16 move)
     
     if ((WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
      || ((gBattleWeather & (WEATHER_RAIN_ANY | WEATHER_HAIL_ANY)) && gBattleMoves[move].effect == EFFECT_HURRICANE)
+     || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)
+     || ((gBattleWeather & WEATHER_SANDSTORM_ANY) && move == MOVE_STONE_EDGE)
      || ((gBattleWeather & WEATHER_SUN_ANY) && gBattleMoves[move].effect == EFFECT_HURRICANE && IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_FIRE))))
      || (gBattleMoves[move].effect == EFFECT_VITAL_THROW)
      || (gBattleMoves[move].accuracy == 0))

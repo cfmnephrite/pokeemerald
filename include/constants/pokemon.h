@@ -105,6 +105,8 @@
 #define FLAG_POWDER                 0x80000
 #define FLAG_DANCE                  0x100000
 #define FLAG_MON_EXCLUSIVE          0x200000
+#define FLAG_SPECIAL_TYPEMOD        0x400000
+#define FLAG_TARGET_ABILITY_IGNORED 0x800000
 #define FLAG_SELF_Z                 0x20000000
 #define FLAG_Z_SPECIAL              0x40000000
 #define FLAG_Z_MOVE                 0x80000000

@@ -33,15 +33,24 @@
 // rom const data
 
 static const u8 sAbilitiesAffectedByMoldBreaker[] =
-{
+{   [ABILITY_AROMA_VEIL] = 1,
     [ABILITY_BATTLE_ARMOR] = 1,
+    [ABILITY_BIG_PECKS] = 1,
+    [ABILITY_BULLETPROOF] = 1,
     [ABILITY_CLEAR_BODY] = 1,
+    [ABILITY_CONTRARY] = 1,
     [ABILITY_DAMP] = 1,
+    [ABILITY_DAZZLING] = 1,
+    [ABILITY_DISGUISE] = 1,
     [ABILITY_DRY_SKIN] = 1,
     [ABILITY_FILTER] = 1,
     [ABILITY_FLASH_FIRE] = 1,
-    [ABILITY_FLOWER_GIFT] = 1,
+    [ABILITY_FLOWER_VEIL] = 1,
+    [ABILITY_FLUFFY] = 1,
+    [ABILITY_FRIEND_GUARD] = 1,
+    [ABILITY_FUR_COAT] = 1,
     [ABILITY_HEATPROOF] = 1,
+    [ABILITY_HEAVY_METAL] = 1,
     [ABILITY_HYPER_CUTTER] = 1,
     [ABILITY_IMMUNITY] = 1,
     [ABILITY_INNER_FOCUS] = 1,
@@ -49,14 +58,20 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
     [ABILITY_KEEN_EYE] = 1,
     [ABILITY_LEAF_GUARD] = 1,
     [ABILITY_LEVITATE] = 1,
+    [ABILITY_LIGHT_METAL] = 1,
     [ABILITY_LIGHTNING_ROD] = 1,
     [ABILITY_LIMBER] = 1,
+    [ABILITY_MAGIC_BOUNCE] = 1,
     [ABILITY_MAGMA_ARMOR] = 1,
     [ABILITY_MARVEL_SCALE] = 1,
     [ABILITY_MOTOR_DRIVE] = 1,
+    [ABILITY_MULTISCALE] = 1,
     [ABILITY_OBLIVIOUS] = 1,
+    [ABILITY_OVERCOAT] = 1,
     [ABILITY_OWN_TEMPO] = 1,
+    [ABILITY_QUEENLY_MAJESTY] = 1,
     [ABILITY_SAND_VEIL] = 1,
+    [ABILITY_SAP_SIPPER] = 1,
     [ABILITY_SHELL_ARMOR] = 1,
     [ABILITY_SHIELD_DUST] = 1,
     [ABILITY_SIMPLE] = 1,
@@ -67,36 +82,20 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
     [ABILITY_STORM_DRAIN] = 1,
     [ABILITY_STURDY] = 1,
     [ABILITY_SUCTION_CUPS] = 1,
+    [ABILITY_SWEET_VEIL] = 1,
     [ABILITY_TANGLED_FEET] = 1,
+    [ABILITY_TELEPATHY] = 1,
     [ABILITY_THICK_FAT] = 1,
     [ABILITY_UNAWARE] = 1,
     [ABILITY_VITAL_SPIRIT] = 1,
     [ABILITY_VOLT_ABSORB] = 1,
     [ABILITY_WATER_ABSORB] = 1,
+    [ABILITY_WATER_BUBBLE] = 1,
     [ABILITY_WATER_VEIL] = 1,
     [ABILITY_WHITE_SMOKE] = 1,
     [ABILITY_WONDER_GUARD] = 1,
-    [ABILITY_BIG_PECKS] = 1,
-    [ABILITY_CONTRARY] = 1,
-    [ABILITY_FRIEND_GUARD] = 1,
-    [ABILITY_HEAVY_METAL] = 1,
-    [ABILITY_LIGHT_METAL] = 1,
-    [ABILITY_MAGIC_BOUNCE] = 1,
-    [ABILITY_MULTISCALE] = 1,
-    [ABILITY_SAP_SIPPER] = 1,
-    [ABILITY_TELEPATHY] = 1,
     [ABILITY_WONDER_SKIN] = 1,
-    [ABILITY_AROMA_VEIL] = 1,
-    [ABILITY_BULLETPROOF] = 1,
-    [ABILITY_FLOWER_VEIL] = 1,
-    [ABILITY_FUR_COAT] = 1,
-    [ABILITY_OVERCOAT] = 1,
-    [ABILITY_SWEET_VEIL] = 1,
-    [ABILITY_DAZZLING] = 1,
-    [ABILITY_DISGUISE] = 1,
-    [ABILITY_FLUFFY] = 1,
-    [ABILITY_QUEENLY_MAJESTY] = 1,
-    [ABILITY_WATER_BUBBLE] = 1,
+
 };
 
 static const u8 sHoldEffectToType[][2] =
@@ -5070,14 +5069,15 @@ u32 GetBattlerAbility(u8 battlerId)
 {
     if (gStatuses3[battlerId] & STATUS3_GASTRO_ACID)
         return ABILITY_NONE;
-    else if ((gBattleMons[gBattlerAttacker].ability == ABILITY_MOLD_BREAKER
+    else if ((((gBattleMons[gBattlerAttacker].ability == ABILITY_MOLD_BREAKER
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TERAVOLT
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TURBOBLAZE)
+            && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
+            || gBattleMoves[gCurrentMove].flags & FLAG_TARGET_ABILITY_IGNORED)
         && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability]
         && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
         && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
-        && gCurrentTurnActionNumber < gBattlersCount
-        && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
+        && gCurrentTurnActionNumber < gBattlersCount)
         return ABILITY_NONE;
     else
         return gBattleMons[battlerId].ability;
@@ -5720,7 +5720,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY)
             MulModifier(&modifier, UQ_4_12(2.0));
         break;
-    case EFFECT_RETALITATE:
+    case EFFECT_RETALIATE:
         // todo
         break;
     case EFFECT_SOLARBEAM:
@@ -6219,17 +6219,54 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
         mod = UQ_4_12(1.0);
     if ((moveType == TYPE_FIGHTING || moveType == TYPE_NORMAL) && defType == TYPE_GHOST && atkAblity == ABILITY_SCRAPPY)
         mod = UQ_4_12(1.0);
-    if (moveType == TYPE_PSYCHIC && defType == TYPE_DARK && ((gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED) || move == MOVE_LUNAR_DANCE))
+    if (moveType == TYPE_PSYCHIC && defType == TYPE_DARK && (gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED))
         mod = UQ_4_12(1.0);
-    if ((move == MOVE_ACID && defType == TYPE_STEEL)
-        || (move == MOVE_FREEZE_DRY && defType == TYPE_WATER)
-        || (move == MOVE_LUSTER_PURGE && defType == TYPE_DARK)
-        || (move == MOVE_MIST_BALL && defType == TYPE_FAIRY)
-        || (move == MOVE_ROCK_CLIMB && defType == TYPE_ROCK)
-        || (move == MOVE_SEED_FLARE && defType == TYPE_POISON))
-            mod = UQ_4_12(2.0);
-    if (gBattleMoves[move].effect == EFFECT_SYNCHRONOISE && defType == gBattleMons[gBattlerAttacker].type1)
-        mod = UQ_4_12(2.0);
+    if (gBattleMoves[move].flags & FLAG_SPECIAL_TYPEMOD)
+    {
+        switch (move)
+        {
+            case MOVE_ACID:
+                if (defType != TYPE_STEEL)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_FREEZE_DRY:
+                if (defType != TYPE_WATER)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_LUNAR_DANCE:
+                if (defType != TYPE_DARK)
+                    break;
+                mod = UQ_4_12(1.0);
+                break;
+            case MOVE_LUSTER_PURGE:
+                if (defType != TYPE_DARK)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_MIST_BALL:
+                if (defType != TYPE_FAIRY)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_ROCK_CLIMB:
+                if (defType != TYPE_ROCK)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_SEED_FLARE:
+                if (defType != TYPE_POISON)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+            case MOVE_SYNCHRONOISE:
+                if (defType != gBattleMons[gBattlerAttacker].type1)
+                    break;
+                mod = UQ_4_12(2.0);
+                break;
+        }
+    }
     if (moveType == TYPE_GROUND && defType == TYPE_FLYING && IsBattlerGrounded(battlerDef))
         mod = UQ_4_12(1.0);
 
