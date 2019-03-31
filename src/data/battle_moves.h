@@ -3790,7 +3790,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
     },
 
-    [MOVE_HI_JUMP_KICK] = {
+    [MOVE_HIGH_JUMP_KICK] = {
         .effect = EFFECT_RECOIL_IF_MISS,
         .power = 130,
         .type = TYPE_FIGHTING,
@@ -4564,10 +4564,10 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_JUMP_KICK] = {
         .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 70,
+        .power = 100,
         .type = TYPE_FIGHTING,
         .accuracy = 95,
-        .pp = 25,
+        .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -6113,7 +6113,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .accuracy = 90,
         .pp = 35,
         .secondaryEffectChance = 0,
-        .target = MOVE_TARGET_SELECTED,
+        .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
