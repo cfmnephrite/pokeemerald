@@ -660,9 +660,13 @@ static const u8 sText_FriskDouble[] = _("{B_EFF_NAME_WITH_PREFIX} frisked its fo
 static const u8 sText_TargetAbilityLoweredFoeStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nlowered {B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_HealerActivates[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_EFF_ABILITY} cured\n{B_BUFF1}'s status problem!");
 static const u8 sText_SurroundedbyZPower[] = _("{B_ATK_NAME_WITH_PREFIX} surrounded\nitself with its Z-Power!");
+static const u8 sText_FlowerVeilProtected[] = _("{B_DEF_NAME_WITH_PREFIX} surrounded itself\nwith a veil of petals!");
+static const u8 sText_SweetVeilProtected[] = _("{B_DEF_NAME_WITH_PREFIX} surrounded itself\nwith a veil of sweetness!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
+    [STRINGID_SWEETVEILPROTECTED - 12] = sText_SweetVeilProtected,
+    [STRINGID_FLOWERVEILPROTECTED - 12] = sText_FlowerVeilProtected,
     [STRINGID_SURROUNDEDBYZPOWER - 12] = sText_SurroundedbyZPower,
     [STRINGID_NEEDLEARMEFFECT - 12] = sText_NeedleArmEffect,
     [STRINGID_NEEDLEARMDAMAGE - 12] = sText_NeedleArmDmg,

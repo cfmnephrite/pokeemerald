@@ -171,12 +171,20 @@
 	.4byte \ptr
 	.endm
 
-	.macro jumpifmonhastype battler:req, type:req, param2:req, ptr:req
+	.macro jumpbasedontype battler:req, type:req, case:req, ptr:req
 	.byte 0x22
 	.byte \battler
 	.byte \type
-	.byte \param2
+	.byte \case
 	.4byte \ptr
+	.endm
+	
+	.macro jumpiftype battler:req, type:req, ptr:req
+	jumpbasedontype \battler, \type, 1, \ptr
+	.endm
+	
+	.macro jumpifnottype battler:req, type:req, ptr:req
+	jumpbasedontype \battler, \type, 0, \ptr
 	.endm
 
 	.macro getexp battler:req
@@ -1738,14 +1746,6 @@
 	.macro jumpifnostatus3 battler:req, status:req, jumpptr:req
 	jumpifstatus3condition \battler, \status, 0x1, \jumpptr
 	.endm
-
-	.macro jumpiftype battler:req, type:req, jumpptr:req
-	jumpifmonhastype \battler, \type, 0x0, \jumpptr
-	.endm
-	
-	.macro jumpifnottype battler:req, type:req, jumpptr:req
-	jumpifmonhastype \battler, \type, 0x1, \jumpptr
-	.endm
 	
 	.macro jumpifmovehadnoeffect jumpptr:req
 	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpptr
@@ -1770,3 +1770,10 @@
 	.macro dmgtocurrattackerhp
 	manipulatedamage ATK80_CURR_ATTACKER_HP
 	.endm
+	
+	.macro jumpifflowerveil jumpptr:req
+	jumpifnottype BS_TARGET, TYPE_GRASS, 1f
+	jumpifability BS_TARGET_SIDE, ABILITY_FLOWER_VEIL, \jumpptr
+	1:
+	.endm
+

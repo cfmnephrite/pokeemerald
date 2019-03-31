@@ -325,5 +325,7 @@ extern const u8 BattleScript_HealerActivates[];
 extern const u8 BattleScript_AbilityActiveEffect[];
 extern const u8 BattleScript_ImmunityOrWaterVeilActivates[];
 extern const u8 BattleScript_Z_Move[];
+extern const u8 BattleScript_FlowerVeilProtectsRet[];
+extern const u8 BattleScript_SweetVeilProtectsRet[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H
