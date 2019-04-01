@@ -696,6 +696,22 @@ static const u8* const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_RECOIL_33] = BattleScript_MoveEffectRecoil,
 };
 
+static u8* const fieldTerrainTimers[] =
+{
+    &gFieldTimers.grassyTerrainTimer,
+    &gFieldTimers.mistyTerrainTimer,
+    &gFieldTimers.electricTerrainTimer,
+    &gFieldTimers.psychicTerrainTimer
+};
+
+static const u8 fieldTerrains[] =
+{
+    [STATUS_FIELD_GRASSY_TERRAIN] = 0,
+    [STATUS_FIELD_MISTY_TERRAIN] = 1,
+    [STATUS_FIELD_ELECTRIC_TERRAIN] = 2,
+    [STATUS_FIELD_PSYCHIC_TERRAIN] = 3,
+};
+
 static const struct WindowTemplate sUnusedWinTemplate = {0, 1, 3, 7, 0xF, 0x1F, 0x3F};
 
 static const u16 sUnknown_0831C2C8[] = INCBIN_U16("graphics/battle_interface/unk_battlebox.gbapal");
@@ -2802,6 +2818,30 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     gBattleMons[gEffectBattler].status2 |= STATUS2_NEEDLE_ARM;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_NeedleArmEffect;
+                }
+                break;
+            case MOVE_EFFECT_SET_ARG_TERRAIN:
+                if (gFieldStatuses & gBattleMoves[gCurrentMove].argument)
+                {
+                    gBattlescriptCurrInstr++;
+                }
+                else
+                {
+                    // Remove all other terrains and set our own
+                    gFieldStatuses &= ~(STATUS_FIELD_GRASSY_TERRAIN | STATUS_FIELD_MISTY_TERRAIN | STATUS_FIELD_ELECTRIC_TERRAIN | STATUS_FIELD_PSYCHIC_TERRAIN);
+                    gFieldStatuses |= gBattleMoves[gCurrentMove].argument;
+                    
+                    // Choose starting string based on arg
+                    gBattleCommunication[MULTISTRING_CHOOSER] = fieldTerrains[gBattleMoves[gCurrentMove].argument];
+        
+                    // Take terrain extender into account and set time
+                    if (GetBattlerHoldEffect(gBattlerAttacker, TRUE) == HOLD_EFFECT_TERRAIN_EXTENDER)
+                        *fieldTerrainTimers[gBattleCommunication[MULTISTRING_CHOOSER]] = 8;
+                    else
+                        *fieldTerrainTimers[gBattleCommunication[MULTISTRING_CHOOSER]] = 5;
+                    
+                    BattleScriptPush(gBattlescriptCurrInstr + 1);
+                    gBattlescriptCurrInstr = BattleScript_MoveEffectSetTerrain;
                 }
                 break;
             }
@@ -6463,7 +6503,7 @@ static bool32 ClearDefogHazards(u8 battlerAtk, bool32 clear)
 
 u32 IsFlowerVeilProtected(u32 battler)
 {
-    if (IS_BATTLER_OF_TYPE(battler, TYPE_GRASS) && gFieldStatuses & gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+    if (IS_BATTLER_OF_TYPE(battler, TYPE_GRASS) && gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
         return IsAbilityOnSide(battler, ABILITY_FLOWER_VEIL);
     else
         return 0;

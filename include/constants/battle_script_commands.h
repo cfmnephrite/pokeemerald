@@ -37,6 +37,8 @@
 
 #define cMULTISTRING_CHOOSER gBattleCommunication + 5
 
+#define tGRASSY_TERRAIN_TIMER gFieldTimers + 4
+
 // Battle Script defines for getting the wanted battler
 #define BS_TARGET                   0
 #define BS_ATTACKER                 1

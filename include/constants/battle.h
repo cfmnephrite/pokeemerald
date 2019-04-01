@@ -219,13 +219,13 @@
 #define STATUS_FIELD_MAGIC_ROOM         0x1
 #define STATUS_FIELD_TRICK_ROOM         0x2
 #define STATUS_FIELD_WONDER_ROOM        0x4
-#define STATUS_FIELD_MUDSPORT           0x8
-#define STATUS_FIELD_WATERSPORT         0x10
-#define STATUS_FIELD_GRAVITY            0x20
-#define STATUS_FIELD_GRASSY_TERRAIN     0x40
-#define STATUS_FIELD_MISTY_TERRAIN      0x80
-#define STATUS_FIELD_ELECTRIC_TERRAIN   0x100
-#define STATUS_FIELD_PSYCHIC_TERRAIN    0x200
+#define STATUS_FIELD_GRAVITY            0x8
+#define STATUS_FIELD_GRASSY_TERRAIN     0x10
+#define STATUS_FIELD_MISTY_TERRAIN      0x20
+#define STATUS_FIELD_ELECTRIC_TERRAIN   0x40
+#define STATUS_FIELD_PSYCHIC_TERRAIN    0x80
+#define STATUS_FIELD_MUDSPORT           0x100
+#define STATUS_FIELD_WATERSPORT         0x200
 #define STATUS_FIELD_ION_DELUGE         0x400
 
 // Flags describing move's result
@@ -336,7 +336,7 @@
 #define MOVE_EFFECT_FLAME_BURST         0x3D
 #define MOVE_EFFECT_FEINT               0x3E
 #define MOVE_EFFECT_SPECTRAL_THIEF      0x3F
-#define MOVE_EFFECT_UNUSED_IN_CFM3      0x40
+#define MOVE_EFFECT_SET_ARG_TERRAIN     0x40
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000
 
@@ -360,6 +360,7 @@
 #define Z_MOVE_EFFECT_RESTORE_HP        0x11
 #define Z_MOVE_EFFECT_SWITCH_RESTORE_HP 0x12
 #define Z_MOVE_EFFECT_FOLLOW_ME         0x13
+#define Z_MOVE_EFFECT_METRONOME         0x14
 
 // Battle terrain defines for gBattleTerrain.
 #define BATTLE_TERRAIN_GRASS        0

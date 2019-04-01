@@ -112,14 +112,14 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectConversion2
 	.4byte BattleScript_EffectLockOn
 	.4byte BattleScript_EffectSketch
-	.4byte BattleScript_EffectUnused96
+	.4byte BattleScript_EffectAlwaysCrit
 	.4byte BattleScript_EffectSleepTalk
 	.4byte BattleScript_EffectDestinyBond
 	.4byte BattleScript_EffectFlail
 	.4byte BattleScript_EffectSpite
 	.4byte BattleScript_EffectFalseSwipe
 	.4byte BattleScript_EffectHealBell
-	.4byte BattleScript_EffectAlwaysCrit
+	.4byte BattleScript_EffectUnused103
 	.4byte BattleScript_EffectUnused104
 	.4byte BattleScript_EffectThief
 	.4byte BattleScript_EffectMeanLook
@@ -141,7 +141,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectPresent
 	.4byte BattleScript_EffectFrustration
 	.4byte BattleScript_EffectSafeguard
-	.4byte BattleScript_EffectUnused125
+	.4byte BattleScript_EffectHitSetTerrain
 	.4byte BattleScript_EffectMagnitude
 	.4byte BattleScript_EffectBatonPass
 	.4byte BattleScript_EffectPursuit
@@ -345,6 +345,15 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectBelch
 	.4byte BattleScript_EffectPartingShot
 	.4byte BattleScript_EffectSpectralThief
+
+BattleScript_EffectHitSetTerrain:
+	setmoveeffect MOVE_EFFECT_SET_ARG_TERRAIN | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHit
+
+BattleScript_MoveEffectSetTerrain::
+	printfromtable gTerrainStringIds
+    waitmessage 0x40
+    return
 
 BattleScript_EffectNeedleArm:
 	setmoveeffect MOVE_EFFECT_NEEDLE_ARM | MOVE_EFFECT_CERTAIN
@@ -1713,9 +1722,8 @@ BattleScript_EffectPlaceholder:
 
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
-BattleScript_EffectUnused96:
+BattleScript_EffectUnused103:
 BattleScript_EffectUnused104:
-BattleScript_EffectUnused125:
 BattleScript_EffectAcrobatics:
 BattleScript_EffectAeroblast:
 BattleScript_EffectAlwaysCrit:
@@ -3485,7 +3493,7 @@ BattleScript_BeatUpEnd::
 	end
 
 BattleScript_EffectBounce::
-    jumpiftype BS_ATTACKER, TYPE_FLYING, BattleScript_EffectHitArgOnlyEffect
+	jumpiftype BS_ATTACKER, TYPE_FLYING, BattleScript_EffectHitArgOnlyEffect
 BattleScript_EffectSemiInvulnerable::
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SecondTurnSemiInvulnerable
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_SecondTurnSemiInvulnerable
@@ -6158,7 +6166,7 @@ BattleScript_GrassyTerrainLoopIncrement::
 	jumpifbytenotequal gBattleCommunication, gBattlersCount, BattleScript_GrassyTerrainLoop
 BattleScript_GrassyTerrainLoopEnd::
 	bicword gHitMarker, HITMARKER_x20 | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_x100000
-	jumpifbyte CMP_EQUAL, gFieldTimers + 5, 0x0, BattleScript_GrassyTerrainEnds
+	jumpifbyte CMP_EQUAL, tGRASSY_TERRAIN_TIMER, 0x0, BattleScript_GrassyTerrainEnds
 	end2
 	
 BattleScript_AbilityNoSpecificStatLoss::

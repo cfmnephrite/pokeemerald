@@ -3220,7 +3220,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_GENESIS_SUPERNOVA] = {
-        .effect = EFFECT_PLACEHOLDER, 
+        .effect = EFFECT_HIT_SET_TERRAIN, 
         .power = 185,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -3230,6 +3230,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_Z_SPECIAL | FLAG_Z_MOVE,
         .split = SPLIT_SPECIAL,
+        .argument = STATUS_FIELD_PSYCHIC_TERRAIN,
     },
 
     [MOVE_GEOMANCY] = {
@@ -6040,7 +6041,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_PLASMA_FISTS] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_HIT_SET_TERRAIN,
         .power = 185,
         .type = TYPE_ELECTRIC,
         .accuracy = 0,
@@ -6050,6 +6051,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_Z_SPECIAL | FLAG_Z_MOVE,
         .split = SPLIT_PHYSICAL,
+        .argument = STATUS_FIELD_ELECTRIC_TERRAIN,
     },
 
     [MOVE_PLAY_NICE] = {

@@ -801,7 +801,7 @@ static const struct TrHillTag sDataTagNormal =
                         {
                             .species = SPECIES_MEDICHAM,
                             .heldItem = ITEM_QUICK_CLAW,
-                            .moves = {MOVE_PSYCH_UP, MOVE_HI_JUMP_KICK, MOVE_MEGA_KICK, MOVE_ROCK_SLIDE},
+                            .moves = {MOVE_PSYCH_UP, MOVE_HIGH_JUMP_KICK, MOVE_MEGA_KICK, MOVE_ROCK_SLIDE},
                             .level = 0,
                             .ppBonuses = 0,
                             .hpEV = 252,
@@ -3505,7 +3505,7 @@ static const struct TrHillTag sDataTagUnique =
                         {
                             .species = SPECIES_HITMONLEE,
                             .heldItem = ITEM_FOCUS_BAND,
-                            .moves = {MOVE_MEGA_KICK, MOVE_MIND_READER, MOVE_FOCUS_ENERGY, MOVE_HI_JUMP_KICK},
+                            .moves = {MOVE_MEGA_KICK, MOVE_MIND_READER, MOVE_FOCUS_ENERGY, MOVE_HIGH_JUMP_KICK},
                             .level = 0,
                             .ppBonuses = 0,
                             .hpEV = 255,

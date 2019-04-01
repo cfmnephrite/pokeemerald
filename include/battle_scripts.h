@@ -320,6 +320,7 @@ extern const u8 BattleScript_CraftyShieldEffect[];
 extern const u8 BattleScript_ProtectLikeStatusEffect[];
 extern const u8 BattleScript_NeedleArmEffect[];
 extern const u8 BattleScript_NeedleArmDmg[];
+extern const u8 BattleScript_MoveEffectSetTerrain[];
 extern const u8 BattleScript_GooeyActivates[];
 extern const u8 BattleScript_HealerActivates[];
 extern const u8 BattleScript_AbilityActiveEffect[];

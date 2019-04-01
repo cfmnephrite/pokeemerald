@@ -4134,7 +4134,7 @@ const struct TrainerMonNoItemCustomMoves gTrainerParty_Vicky[] = {
     .iv = 200,
     .lvl = 18,
     .species = SPECIES_MEDITITE,
-    .moves = MOVE_HI_JUMP_KICK, MOVE_MEDITATE, MOVE_CONFUSION, MOVE_DETECT
+    .moves = MOVE_HIGH_JUMP_KICK, MOVE_MEDITATE, MOVE_CONFUSION, MOVE_DETECT
     }
 };
 
