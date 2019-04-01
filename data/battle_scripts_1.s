@@ -352,8 +352,8 @@ BattleScript_EffectHitSetTerrain:
 
 BattleScript_MoveEffectSetTerrain::
 	printfromtable gTerrainStringIds
-    waitmessage 0x40
-    return
+	waitmessage 0x40
+	return
 
 BattleScript_EffectNeedleArm:
 	setmoveeffect MOVE_EFFECT_NEEDLE_ARM | MOVE_EFFECT_CERTAIN

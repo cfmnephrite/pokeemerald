@@ -78,7 +78,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_ACID_DOWNPOUR] = {
@@ -131,7 +131,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOCUS_ENERGY,
+        .argument = Z_STATUS_EFFECT_FOCUS_ENERGY,
     },
 
     [MOVE_AERIAL_ACE] = {
@@ -171,7 +171,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_AGILITY] = {
@@ -185,7 +185,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_AIR_CUTTER] = {
@@ -238,7 +238,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 1,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_AMNESIA] = {
@@ -252,7 +252,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_ANCHOR_SHOT] = {
@@ -305,7 +305,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_AQUA_TAIL] = {
@@ -345,7 +345,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_AROMATIC_MIST] = {
@@ -359,7 +359,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
     [MOVE_ASSIST] = {
@@ -425,7 +425,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_AURA_SPHERE] = {
@@ -465,7 +465,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_AUTOTOMIZE] = {
@@ -479,7 +479,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_AVALANCHE] = {
@@ -506,7 +506,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 1,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_BANEFUL_BUNKER] = {
@@ -520,7 +520,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 4,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_BARRAGE] = {
@@ -548,7 +548,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_BATON_PASS] = {
@@ -562,7 +562,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_BEAK_BLAST] = {
@@ -615,7 +615,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_BESTOW] = {
@@ -736,7 +736,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_BLOOM_DOOM] = {
@@ -989,7 +989,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_BULLDOZE] = {
@@ -1055,7 +1055,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_CAMOUFLAGE] = {
@@ -1069,7 +1069,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_CAPTIVATE] = {
@@ -1083,7 +1083,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
     [MOVE_CATASTROPIKA] = {
@@ -1111,7 +1111,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_CHARGE] = {
@@ -1125,7 +1125,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_CHARGE_BEAM] = {
@@ -1152,7 +1152,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_CHATTER] = {
@@ -1273,7 +1273,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_COMET_PUNCH] = {
@@ -1300,7 +1300,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_CONFUSE_RAY] = {
@@ -1314,7 +1314,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_CONFUSION] = {
@@ -1369,7 +1369,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_CONVERSION_2] = {
@@ -1383,7 +1383,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_COPYCAT] = {
@@ -1397,7 +1397,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_CORE_ENFORCER] = {
@@ -1437,7 +1437,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_COTTON_GUARD] = {
@@ -1451,7 +1451,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_COTTON_SPORE] = {
@@ -1465,7 +1465,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_COUNTER] = {
@@ -1518,7 +1518,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_CROSS_CHOP] = {
@@ -1637,7 +1637,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MON_EXCLUSIVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_DARKEST_LARIAT] = {
@@ -1677,7 +1677,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_DEFENSE_CURL] = {
@@ -1691,7 +1691,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_DEFOG] = {
@@ -1705,7 +1705,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_DESTINY_BOND] = {
@@ -1719,7 +1719,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOLLOW_ME,
+        .argument = Z_STATUS_EFFECT_FOLLOW_ME,
     },
 
     [MOVE_DETECT] = {
@@ -1733,7 +1733,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_DEVASTATING_DRAKE] = {
@@ -1786,7 +1786,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_DISARMING_VOICE] = {
@@ -1936,7 +1936,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_DRACO_METEOR] = {
@@ -2005,7 +2005,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_DRAGON_HAMMER] = {
@@ -2218,7 +2218,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_EGG_BOMB] = {
@@ -2245,7 +2245,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_ELECTRIFY] = {
@@ -2259,7 +2259,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_ELECTRO_BALL] = {
@@ -2299,7 +2299,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_EMBER] = {
@@ -2327,7 +2327,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_ENDEAVOR] = {
@@ -2354,7 +2354,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_ENERGY_BALL] = {
@@ -2381,7 +2381,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_ERUPTION] = {
@@ -2486,7 +2486,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_FAIRY_WIND] = {
@@ -2527,7 +2527,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_FALSE_SWIPE] = {
@@ -2554,7 +2554,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_FEINT] = {
@@ -2809,7 +2809,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_FLASH_CANNON] = {
@@ -2836,7 +2836,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_FLEUR_CANNON] = {
@@ -2877,7 +2877,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_FLOWER_SHIELD] = {
@@ -2891,7 +2891,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_FLY] = {
@@ -2945,7 +2945,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_FOCUS_PUNCH] = {
@@ -2972,7 +2972,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_FORCE_PALM] = {
@@ -3000,7 +3000,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOCUS_ENERGY,
+        .argument = Z_STATUS_EFFECT_FOCUS_ENERGY,
     },
 
     [MOVE_FOREST_S_CURSE] = {
@@ -3014,7 +3014,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_FOUL_PLAY] = {
@@ -3188,7 +3188,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_GEAR_GRIND] = {
@@ -3216,7 +3216,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_GENESIS_SUPERNOVA] = {
@@ -3244,7 +3244,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_GIGA_DRAIN] = {
@@ -3311,7 +3311,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_GRASS_KNOT] = {
@@ -3365,7 +3365,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_GRAVITY] = {
@@ -3379,7 +3379,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_GROWL] = {
@@ -3393,7 +3393,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_GROWTH] = {
@@ -3407,7 +3407,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_GRUDGE] = {
@@ -3421,7 +3421,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOLLOW_ME,
+        .argument = Z_STATUS_EFFECT_FOLLOW_ME,
     },
 
     [MOVE_GUARD_SPLIT] = {
@@ -3435,7 +3435,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_GUARD_SWAP] = {
@@ -3449,7 +3449,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_GUARDIAN_OF_ALOLA] = {
@@ -3530,7 +3530,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_HAMMER_ARM] = {
@@ -3558,7 +3558,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_HARDEN] = {
@@ -3572,7 +3572,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_HAZE] = {
@@ -3586,7 +3586,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_HEAD_CHARGE] = {
@@ -3639,7 +3639,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_HEAL_BLOCK] = {
@@ -3653,7 +3653,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_2,
     },
 
     [MOVE_HEAL_ORDER] = {
@@ -3667,7 +3667,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_HEAL_PULSE] = {
@@ -3681,7 +3681,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_HEALING_WISH] = {
@@ -3721,7 +3721,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOCUS_ENERGY,
+        .argument = Z_STATUS_EFFECT_FOCUS_ENERGY,
     },
 
     [MOVE_HEAT_CRASH] = {
@@ -3775,7 +3775,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 5,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_HEX] = {
@@ -3854,7 +3854,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_HONE_CLAWS] = {
@@ -3868,7 +3868,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_HORN_ATTACK] = {
@@ -3922,7 +3922,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_HP_BUG] = {
@@ -4262,7 +4262,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_ICE_BALL] = {
@@ -4411,7 +4411,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
     [MOVE_INCINERATE] = {
@@ -4479,7 +4479,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_INSTRUCT] = {
@@ -4493,7 +4493,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_ION_DELUGE] = {
@@ -4507,7 +4507,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 1,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_IRON_DEFENSE] = {
@@ -4521,7 +4521,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_IRON_HEAD] = {
@@ -4600,7 +4600,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_KING_S_SHIELD] = {
@@ -4614,7 +4614,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_KNOCK_OFF] = {
@@ -4654,7 +4654,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_LAST_RESORT] = {
@@ -4761,7 +4761,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_LEER] = {
@@ -4775,7 +4775,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_LET_S_SNUGGLE_FOREVER] = {
@@ -4829,7 +4829,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_LIGHT_THAT_BURNS_THE_SKY] = {
@@ -4869,7 +4869,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_LOVELY_KISS] = {
@@ -4883,7 +4883,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_LOW_KICK] = {
@@ -4923,7 +4923,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_LUNAR_DANCE] = {
@@ -4989,7 +4989,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 4,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
     [MOVE_MAGIC_ROOM] = {
@@ -5003,7 +5003,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_MAGICAL_LEAF] = {
@@ -5056,7 +5056,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_MAGNETIC_FLUX] = {
@@ -5070,7 +5070,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_MAGNITUDE] = {
@@ -5110,7 +5110,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_ME_FIRST] = {
@@ -5124,7 +5124,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_MEAN_LOOK] = {
@@ -5138,7 +5138,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_MEDITATE] = {
@@ -5152,7 +5152,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_MEGA_DRAIN] = {
@@ -5218,7 +5218,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SWITCH_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_SWITCH_RESTORE_HP,
     },
 
     [MOVE_MENACING_MOONRAZE_MAELSTROM] = {
@@ -5271,7 +5271,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_METEOR_MASH] = {
@@ -5311,7 +5311,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_MIMIC] = {
@@ -5325,7 +5325,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_MIND_BLOWN] = {
@@ -5352,7 +5352,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_MINIMIZE] = {
@@ -5366,7 +5366,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_MIRACLE_EYE] = {
@@ -5380,7 +5380,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_MIRROR_COAT] = {
@@ -5407,7 +5407,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_2,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_2,
     },
 
     [MOVE_MIRROR_SHOT] = {
@@ -5434,7 +5434,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_MIST_BALL] = {
@@ -5461,7 +5461,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_MOONBLAST] = {
@@ -5501,7 +5501,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_MORNING_SUN] = {
@@ -5515,7 +5515,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_MUD_BOMB] = {
@@ -5569,7 +5569,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_MUDDY_WATER] = {
@@ -5623,7 +5623,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_NATURAL_GIFT] = {
@@ -5755,7 +5755,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_NUZZLE] = {
@@ -5823,7 +5823,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_OMINOUS_WIND] = {
@@ -5890,7 +5890,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_PARABOLIC_CHARGE] = {
@@ -5917,7 +5917,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SWITCH_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_SWITCH_RESTORE_HP,
     },
 
     [MOVE_PAY_DAY] = {
@@ -5971,7 +5971,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_PETAL_BLIZZARD] = {
@@ -6065,7 +6065,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_PLAY_ROUGH] = {
@@ -6119,7 +6119,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_POISON_JAB] = {
@@ -6147,7 +6147,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_POISON_STING] = {
@@ -6215,7 +6215,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 1,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
     [MOVE_POWDER_SNOW] = {
@@ -6256,7 +6256,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_POWER_SWAP] = {
@@ -6270,7 +6270,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_POWER_TRICK] = {
@@ -6284,7 +6284,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_POWER_TRIP] = {
@@ -6376,7 +6376,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_PSYBEAM] = {
@@ -6404,7 +6404,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_PSYCHIC] = {
@@ -6444,7 +6444,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_PSYCHO_BOOST] = {
@@ -6484,7 +6484,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_2,
     },
 
     [MOVE_PSYSHOCK] = {
@@ -6565,7 +6565,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_PURSUIT] = {
@@ -6592,7 +6592,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_QUICK_ATTACK] = {
@@ -6619,7 +6619,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_QUIVER_DANCE] = {
@@ -6633,7 +6633,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_RAGE] = {
@@ -6660,7 +6660,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 2,
         .flags = FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_RAIN_DANCE] = {
@@ -6674,7 +6674,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_RAPID_SPIN] = {
@@ -6741,7 +6741,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_RECYCLE] = {
@@ -6755,7 +6755,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_REFLECT] = {
@@ -6769,7 +6769,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_REFLECT_TYPE] = {
@@ -6783,7 +6783,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_REFRESH] = {
@@ -6797,7 +6797,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_RELIC_SONG] = {
@@ -6825,7 +6825,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_RETALIATE] = {
@@ -6904,7 +6904,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = -6,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_ROAR_OF_TIME] = {
@@ -6958,7 +6958,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_ROCK_SLIDE] = {
@@ -7038,7 +7038,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_ROLLING_KICK] = {
@@ -7078,7 +7078,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_ROTOTILLER] = {
@@ -7092,7 +7092,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_ROUND] = {
@@ -7146,7 +7146,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SAND_ATTACK] = {
@@ -7160,7 +7160,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_ANTI_AIR,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_SAND_TOMB] = {
@@ -7187,7 +7187,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SAVAGE_SPIN_OUT] = {
@@ -7228,7 +7228,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SCRATCH] = {
@@ -7255,7 +7255,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_SEARING_SHOT] = {
@@ -7452,7 +7452,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_SHATTERED_PSYCHE] = {
@@ -7493,7 +7493,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SHELL_TRAP] = {
@@ -7520,7 +7520,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SHOCK_WAVE] = {
@@ -7547,7 +7547,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SIGNAL_BEAM] = {
@@ -7588,7 +7588,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_SING] = {
@@ -7602,7 +7602,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SINISTER_ARROW_RAID] = {
@@ -7629,7 +7629,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_SKILL_SWAP] = {
@@ -7643,7 +7643,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SKULL_BASH] = {
@@ -7667,7 +7667,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .pp = 5,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
+        .priority = -3,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
@@ -7709,7 +7709,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SLAM] = {
@@ -7749,7 +7749,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SLEEP_TALK] = {
@@ -7763,7 +7763,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOCUS_ENERGY,
+        .argument = Z_STATUS_EFFECT_FOCUS_ENERGY,
     },
 
     [MOVE_SLUDGE] = {
@@ -7873,7 +7873,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_EVS_PLUS_1,
+        .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
     [MOVE_SNARL] = {
@@ -7900,7 +7900,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 4,
         .flags = FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_SNORE] = {
@@ -7927,7 +7927,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_SOFT_BOILED] = {
@@ -7941,7 +7941,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SOLAR_BEAM] = {
@@ -8062,7 +8062,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SPIDER_WEB] = {
@@ -8102,7 +8102,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_SPIKY_SHIELD] = {
@@ -8116,7 +8116,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 4,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_SPIRIT_SHACKLE] = {
@@ -8156,7 +8156,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_SPLASH] = {
@@ -8170,7 +8170,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_3,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_3,
     },
 
     [MOVE_SPLINTERED_STORMSHARDS] = {
@@ -8197,7 +8197,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SPOTLIGHT] = {
@@ -8211,7 +8211,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_STEALTH_ROCK] = {
@@ -8225,7 +8225,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAGICCOAT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_STEAM_ERUPTION] = {
@@ -8279,7 +8279,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAGICCOAT_AFFECTED | FLAG_MON_EXCLUSIVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_STOCKPILE] = {
@@ -8293,7 +8293,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_STOKED_SPARKSURFER] = {
@@ -8399,7 +8399,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_STRING_SHOT] = {
@@ -8413,7 +8413,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_STRUGGLE] = {
@@ -8453,7 +8453,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_SUBMISSION] = {
@@ -8480,7 +8480,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SUBZERO_SLAMMER] = {
@@ -8520,7 +8520,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SUNSTEEL_STRIKE] = {
@@ -8574,7 +8574,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_SUPERSONIC_SKYSTRIKE] = {
@@ -8614,7 +8614,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SWALLOW] = {
@@ -8628,7 +8628,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SWEET_KISS] = {
@@ -8642,7 +8642,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_SWEET_SCENT] = {
@@ -8656,7 +8656,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_SWIFT] = {
@@ -8683,7 +8683,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_SWORDS_DANCE] = {
@@ -8697,7 +8697,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_SYNCHRONOISE] = {
@@ -8724,7 +8724,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_TACKLE] = {
@@ -8751,7 +8751,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESET_STATS,
+        .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
     [MOVE_TAIL_SLAP] = {
@@ -8778,7 +8778,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_TAILWIND] = {
@@ -8792,7 +8792,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_FOCUS_ENERGY,
+        .argument = Z_STATUS_EFFECT_FOCUS_ENERGY,
     },
 
     [MOVE_TAKE_DOWN] = {
@@ -8819,7 +8819,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_TEARFUL_LOOK] = {
@@ -8833,7 +8833,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_TECHNO_BLAST] = {
@@ -8873,7 +8873,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_TELEKINESIS] = {
@@ -8887,7 +8887,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
     [MOVE_TELEPORT] = {
@@ -8901,7 +8901,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_THIEF] = {
@@ -9036,7 +9036,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_THUNDERBOLT] = {
@@ -9064,7 +9064,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_TOPSY_TURVY] = {
@@ -9078,7 +9078,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_TORMENT] = {
@@ -9092,7 +9092,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_TOXIC] = {
@@ -9106,7 +9106,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_TOXIC_THREAD] = {
@@ -9134,7 +9134,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_RESTORE_HP,
+        .argument = Z_STATUS_EFFECT_RESTORE_HP,
     },
 
     [MOVE_TRI_ATTACK] = {
@@ -9161,7 +9161,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_2,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
 
     [MOVE_TRICK_OR_TREAT] = {
@@ -9175,7 +9175,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ALL_STATS_UP,
+        .argument = Z_STATUS_EFFECT_ALL_STATS_UP,
     },
 
     [MOVE_TRICK_ROOM] = {
@@ -9189,7 +9189,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = -7,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ACC_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
     },
 
     [MOVE_TRIPLE_KICK] = {
@@ -9336,7 +9336,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_VENOSHOCK] = {
@@ -9496,7 +9496,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_WATER_SPOUT] = {
@@ -9562,7 +9562,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = -6,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_WIDE_GUARD] = {
@@ -9576,7 +9576,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 3,
         .flags = FLAG_PROTECTION_MOVE,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_WILD_CHARGE] = {
@@ -9604,7 +9604,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_WING_ATTACK] = {
@@ -9631,7 +9631,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_WITHDRAW] = {
@@ -9645,7 +9645,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
     [MOVE_WONDER_ROOM] = {
@@ -9659,7 +9659,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = 0,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SP_DEF_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
     [MOVE_WOOD_HAMMER] = {
@@ -9686,7 +9686,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_ATK_PLUS_1,
+        .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
     [MOVE_WORRY_SEED] = {
@@ -9700,7 +9700,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_WRAP] = {
@@ -9753,7 +9753,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
-        .argument = Z_MOVE_EFFECT_SPD_PLUS_1,
+        .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
     },
 
     [MOVE_ZAP_CANNON] = {
