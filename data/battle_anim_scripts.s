@@ -1259,31 +1259,29 @@ Move_FLARE_BLITZ:
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	loadspritegfx ANIM_TAG_SMALL_EMBER
 	monbg ANIM_TARGET
-	delay 2
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 0, 0, 16, RGB_BLACK
-	setalpha 12, 8
-	monbg ANIM_DEF_PARTNER
 	monbgprio_2A ANIM_TARGET
+	setalpha 12, 8
 	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 0
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 2
+	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 2
 	playsewithpan SE_W172, SOUND_PAN_ATTACKER
 	delay 2
 	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 4
 	playsewithpan SE_W172, SOUND_PAN_ATTACKER
 	delay 2
+	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 6
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 2
 	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 8
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 2
+	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 10
 	playsewithpan SE_W172, SOUND_PAN_ATTACKER
 	delay 2
 	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 12
 	playsewithpan SE_W172, SOUND_PAN_ATTACKER
 	delay 2
-	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 16
-	playsewithpan SE_W172, SOUND_PAN_ATTACKER
-	delay 2
-	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 20
-	playsewithpan SE_W172, SOUND_PAN_ATTACKER
-	delay 2
-	createsprite gBattleAnimSpriteTemplate_8595584, ANIM_ATTACKER, 3, 0, 0, 56, 24
-	playsewithpan SE_W172, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	createvisualtask AnimTask_TranslateMonEllipticalRespectSide, 2, ANIM_ATTACKER, 12, 4, 1, 4
 	waitforvisualfinish
@@ -1325,13 +1323,13 @@ Move_FLARE_BLITZ:
 	playsewithpan SE_W004, +63	
 	waitforvisualfinish
 	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, 9
+	waitforvisualfinish
 	clearmonbg ANIM_TARGET
 	blendoff
 	delay 2
 	restorebg
 	waitbgfadein
 	end
-	
 	
 Move_FORCE_PALM:
 	end
@@ -1788,7 +1786,6 @@ Move_SHADOW_CLAW:
 	end
 	
 Move_THUNDER_FANG:
-
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_LIGHTNING
 	loadspritegfx ANIM_TAG_SHARP_TEETH
@@ -2279,6 +2276,29 @@ Move_WORK_UP:
 	end
 	
 Move_ELECTROWEB:
+	loadspritegfx ANIM_TAG_SPIDER_WEB
+	loadspritegfx ANIM_TAG_WEB_THREAD
+	loadspritegfx ANIM_TAG_SPARK_2
+	monbg ANIM_DEF_PARTNER
+	delay 0
+	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_SPIDER_WEB, 0, 6, 6, RGB(31, 30, 1)
+	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 5, 1, 2, 0, 9, RGB_BLACK
+	waitforvisualfinish
+	monbgprio_28 ANIM_TARGET
+	waitforvisualfinish
+	playsewithpan SE_W081B, SOUND_PAN_TARGET
+	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, 0, 0
+	waitforvisualfinish
+	clearmonbg ANIM_DEF_PARTNER
+	delay 1
+	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 5, 1, 2, 9, 0, RGB_BLACK
+	
+	@ ElectricityEffect looks ugly against both opponents, to do later
+	jumpifdoublebattle Move_ELECTROWEB_Wait
+	
+	call ElectricityEffect
+Move_ELECTROWEB_Wait:
+	waitforvisualfinish
 	end
 	
 Move_WILD_CHARGE:
