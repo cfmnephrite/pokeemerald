@@ -76,9 +76,19 @@
 #define B_BUFF_NEGATIVE_FLAVOR          8
 #define B_BUFF_ABILITY                  9
 #define B_BUFF_ITEM                     10
+#define B_BUFF_PUNCTUATION              11
 
 #define B_BUFF_PLACEHOLDER_BEGIN        0xFD
 #define B_BUFF_EOS                      0xFF
+
+// Punctuation strings
+#define commaSpace                      0
+#define commaNewline                    1
+#define oxfordCommaAnd                  2
+#define spaceAnd                        3
+#define newlineAnd                      4
+#define newline                         5
+#define justSpace                       6
 
 #define PREPARE_FLAVOR_BUFFER(textVar, flavorId)                            \
 {                                                                           \

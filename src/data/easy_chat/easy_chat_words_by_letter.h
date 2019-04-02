@@ -705,7 +705,7 @@ const u16 gEasyChatWordsByLetter_H[] = {
     EC_WORD_HEY_THERE,
     EC_WORD_HEY_QUES,
     EC_WORD_HI,
-    EC_MOVE2(HI_JUMP_KICK),
+    EC_MOVE2(HIGH_JUMP_KICK),
     EC_WORD_HIDDEN,
     EC_MOVE2(HIDDEN_POWER),
     EC_WORD_HIGH,

@@ -651,7 +651,8 @@ struct BattleScripting
     u8 animArg2;
     u16 cfmHalfWord;
     u8 atk49_state;
-    u8 unused_15;
+    u8 statBoostCounter:4;
+    u8 statBoostTracker:4;
     u8 effectChance:7;
     u8 abilityEffect:1;
     u8 battler;
