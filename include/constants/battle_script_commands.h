@@ -11,8 +11,8 @@
 #define sB_ANIM_ARG2 gBattleScripting + 0x11
 #define sTRIPLE_KICK_POWER gBattleScripting + 0x12
 #define sMOVEEND_STATE gBattleScripting + 0x14
-#define sUNUSED_15 gBattleScripting + 0x15
-#define sUNUSED_16 gBattleScripting + 0x16
+#define sSTAT_BOOST_TRACKER gBattleScripting + 0x15
+#define sSTAT_BOOST_STRING_INDEX gBattleScripting + 0x16
 #define sBATTLER gBattleScripting + 0x17
 #define sB_ANIM_TURN gBattleScripting + 0x18
 #define sB_ANIM_TARGETS_HIT gBattleScripting + 0x19
@@ -151,9 +151,20 @@
 // atk4F, a flag used for the jumpifcantswitch command
 #define ATK4F_DONT_CHECK_STATUSES   0x80
 
+// define stats in bit space
+#define BIT_HP                              0x1
+#define BIT_ATK                             0x2
+#define BIT_DEF                             0x4
+#define BIT_SPEED                           0x8
+#define BIT_SPATK                           0x10
+#define BIT_SPDEF                           0x20
+#define BIT_ACC                             0x40
+#define BIT_EVASION                         0x80
+
 // statchange defines
-#define STAT_CHANGE_BS_PTR                  0x1
-#define STAT_CHANGE_NOT_PROTECT_AFFECTED    0x20
+#define STAT_CHANGE_BS_PTR                  0x100
+#define STAT_CHANGE_NOT_PROTECT_AFFECTED    0x200
+#define STAT_CHANGE_AFFECT_MULTIPLE_STATS   0x400
 
 // atk48
 #define ATK48_STAT_NEGATIVE         0x1
@@ -182,14 +193,5 @@
 #define ATK49_NEXT_TARGET 17
 #define ATK49_CLEAR_BITS 18
 #define ATK49_COUNT 19
-
-#define BIT_HP                      0x1
-#define BIT_ATK                     0x2
-#define BIT_DEF                     0x4
-#define BIT_SPEED                   0x8
-#define BIT_SPATK                   0x10
-#define BIT_SPDEF                   0x20
-#define BIT_ACC                     0x40
-#define BIT_EVASION                 0x80
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

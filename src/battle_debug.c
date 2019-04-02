@@ -149,6 +149,13 @@ static const u8 sText_HeldItem[] = _("Held Item");
 static const u8 sText_SideStatus[] = _("Side Status");
 static const u8 sText_MaxHp[] = _("HP Max");
 static const u8 sText_CurrHp[] = _("HP Current");
+static const u8 sText_Attack[] = _("Attack");
+static const u8 sText_Defense[] = _("Defense");
+static const u8 sText_SpAttack[] = _("Sp. Atk");
+static const u8 sText_SpDefense[] = _("Sp. Def");
+static const u8 sText_Speed[] = _("Speed");
+static const u8 sText_Accuracy[] = _("Accuracy");
+static const u8 sText_Evasiveness[] = _("Evasion");
 static const u8 sText_Freeze[] = _("Freeze");
 static const u8 sText_ToxicPoison[] = _("Toxic Poison");
 static const u8 sText_ToxicCounter[] = _("Toxic Counter");
@@ -334,11 +341,11 @@ static const struct ListMenuItem sStatsListItems[] =
 {
     {sText_CurrHp, 0},
     {sText_MaxHp, 1},
-    {gText_Attack, 2},
-    {gText_Defense, 3},
-    {gText_Speed, 4},
-    {gText_SpAtk, 5},
-    {gText_SpDef, 6},
+    {sText_Attack, 2},
+    {sText_Defense, 3},
+    {sText_Speed, 4},
+    {sText_SpAttack, 5},
+    {sText_SpDefense, 6},
 };
 
 static const struct ListMenuItem sStatus1ListItems[] =

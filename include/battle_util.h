@@ -89,6 +89,8 @@ s32 GetStealthHazardDamage(u8 hazardType, u8 battlerId);
 u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
 bool32 CanMegaEvolve(u8 battlerId);
 void UndoMegaEvolution(u8 monId);
+bool8 MultiStatSameBoost(u8 battlerId, u8 statBits, s8 amount);
+bool8 CanChangeStat(u8 battlerId, u8 statId, s8 amount);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
 bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId);
 
