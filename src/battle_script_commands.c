@@ -4611,6 +4611,8 @@ static void atk49_moveend(void)
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
             gBattleScripting.statBoostCounter = 0;
             gBattleScripting.statBoostTracker = 0;
+            gBattleScripting.effectChance = 0;
+            gBattleScripting.abilityEffect = 0;
             gBattleScripting.atk49_state++;
             break;
         case ATK49_COUNT:

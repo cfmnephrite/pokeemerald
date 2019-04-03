@@ -2452,6 +2452,12 @@ u8 AtkCanceller_UnableToUseMove2(void)
                             gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                         }
                         break;
+                    case MOVE_LICK:
+                        if (gBattleMons[gBattlerAttacker].species == SPECIES_LICKITUNG)
+                        {
+                            gBattleScripting.effectChance = 100;
+                        }
+                        break;
                     case MOVE_STICKY_WEB:
                         if (!(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_BUG) || gBattleMons[gBattlerAttacker].species == SPECIES_MASQUERAIN))
                         {

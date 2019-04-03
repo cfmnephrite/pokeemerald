@@ -4792,7 +4792,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_LICK] = {
-        .effect = EFFECT_LICK,
+        .effect = EFFECT_HIT_ARG_ONLY_EFFECT,
         .power = 30,
         .type = TYPE_NORMAL,
         .accuracy = 100,
@@ -4800,7 +4800,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 30,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_OMNITYPE,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_OMNITYPE | FLAG_MON_EXCLUSIVE,
         .split = SPLIT_PHYSICAL,
         .argument = MOVE_EFFECT_LICK,
     },

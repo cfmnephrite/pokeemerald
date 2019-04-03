@@ -54,7 +54,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectLightScreen
 	.4byte BattleScript_EffectTriAttack
 	.4byte BattleScript_EffectRest
-	.4byte BattleScript_EffectLick
+	.4byte BattleScript_EffectUnused38
 	.4byte BattleScript_EffectBounce
 	.4byte BattleScript_EffectSuperFang
 	.4byte BattleScript_EffectFixedArgDamage
@@ -408,14 +408,6 @@ BattleScript_CannotUseExclusiveMove::
 	printfromtable gCantUseExclusiveMoveStringIds
 	waitmessage 0x40
 	goto BattleScript_MoveEnd	
-
-BattleScript_EffectLick:
-	jumpifspecies BS_ATTACKER, SPECIES_LICKITUNG, BattleScript_EffectLickitungExclusive
-	@jumpifspecies BS_ATTACKER, SPECIES_LICKILICKY, BattleScript_EffectLickitungExclusive
-	goto BattleScript_EffectHitArgOnlyEffect
-BattleScript_EffectLickitungExclusive:
-	setbyte sEFFECT_CHANCE, 0x64
-	goto BattleScript_EffectHitArgOnlyEffect
 
 BattleScript_EffectNightmare:
 BattleScript_EffectHitArgOnlyEffect:	
@@ -1721,6 +1713,7 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectUnused38:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
 BattleScript_EffectUnused103:
