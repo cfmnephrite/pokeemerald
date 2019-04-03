@@ -649,12 +649,14 @@ struct BattleScripting
     u8 twoTurnsMoveStringId;
     u8 animArg1;
     u8 animArg2;
-    u16 cfmHalfWord;
-    u8 atk49_state;
-    u8 statBoostCounter:4;
-    u8 statBoostTracker:4;
+    u8 cfmByte;
     u8 effectChance:7;
     u8 abilityEffect:1;
+    u8 atk49_state;
+    u8 statBoostCounter:3;
+    u8 statBoostFailure:1;
+    u8 statBoostTracker:4;
+    u8 statBoostStringIndex;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;

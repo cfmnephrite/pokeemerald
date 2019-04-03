@@ -6762,6 +6762,28 @@ void UndoMegaEvolution(u8 monId)
     }
 }
 
+bool8 CanChangeStat(u8 battlerId, u8 statId, s8 amount)
+{
+    u8 boostLevel = gBattleMons[battlerId].statStages[statId];
+    bool8 contrary = (GetBattlerAbility(battlerId) == ABILITY_CONTRARY);
+    
+    if (amount >= 0)
+    {
+        if ((!contrary && boostLevel > 12 - amount) || (contrary && boostLevel < amount))
+            return FALSE;
+        else
+            return TRUE;
+    }
+    else
+    {
+        amount *= -1;
+        if ((!contrary && boostLevel < amount) || (contrary && boostLevel > 12 - amount))
+            return FALSE;
+        else
+            return TRUE;
+    }
+}
+
 bool32 DoBattlersShareType(u32 battler1, u32 battler2)
 {
     s32 i;

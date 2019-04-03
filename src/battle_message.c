@@ -428,10 +428,12 @@ static const u8 sText_HP2[] = _("HP");
 static const u8 sText_Attack2[] = _("Attack");
 static const u8 sText_Defense2[] = _("Defence");
 const u8 gText_Speed[] = _("Speed");
-static const u8 sText_SpAtk2[] = _("Special Attack");
-static const u8 sText_SpDef2[] = _("Special Defence");
+static const u8 sText_SpAtk2[] = _("Sp. Attack");
+static const u8 sText_SpDef2[] = _("Sp. Defence");
 static const u8 sText_Accuracy[] = _("Accuracy");
 static const u8 sText_Evasiveness[] = _("Evasiveness");
+
+// Stylish punctuation
 static const u8 sText_CommaSpace[] = _(", ");
 static const u8 sText_CommaNewline[] = _(",\n");
 static const u8 sText_OxfordCommaAnd[] = _(", and ");
