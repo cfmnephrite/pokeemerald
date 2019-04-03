@@ -4610,7 +4610,9 @@ static void atk49_moveend(void)
             gBattleStruct->ateBoost[gBattlerAttacker] = 0;
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
             gBattleScripting.statBoostCounter = 0;
+            gBattleScripting.statBoostFailure = 0;
             gBattleScripting.statBoostTracker = 0;
+            gBattleScripting.statBoostStringIndex = 0;
             gBattleScripting.effectChance = 0;
             gBattleScripting.abilityEffect = 0;
             gBattleScripting.atk49_state++;
@@ -8079,16 +8081,20 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     bool32 certain = FALSE;
     bool32 notProtectAffected = FALSE;
     u32 index;
+    
+    // Determine the actual signed value of boost to be applied
+    statValue = GET_STAT_BUFF_VALUE(statValue);
 
+    // Determine if this is a self-inflicted stat boost
     if (flags & MOVE_EFFECT_AFFECTS_USER)
         gActiveBattler = gBattlerAttacker;
     else
         gActiveBattler = gBattlerTarget;
 
     gSpecialStatuses[gActiveBattler].changedStatsBattlerId = gBattlerAttacker;
-
     flags &= ~(MOVE_EFFECT_AFFECTS_USER);
 
+    // Whether or not it's a certain boost affects the behaviour of certain abilities, notably Shield Dust
     if (flags & MOVE_EFFECT_CERTAIN)
         certain++;
     flags &= ~(MOVE_EFFECT_CERTAIN);
@@ -8097,53 +8103,53 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         notProtectAffected++;
     flags &= ~(STAT_CHANGE_NOT_PROTECT_AFFECTED);
 
+    // Invert stat changes if Contrary
     if (GetBattlerAbility(gActiveBattler) == ABILITY_CONTRARY)
     {
-        statValue ^= STAT_BUFF_NEGATIVE;
+        statValue *= -1;
         gBattleScripting.statChanger ^= STAT_BUFF_NEGATIVE;
     }
-    else if (GetBattlerAbility(gActiveBattler) == ABILITY_SIMPLE)
+    
+    // Double stat changes if Simple
+    if (GetBattlerAbility(gActiveBattler) == ABILITY_SIMPLE)
     {
-        statValue = (SET_STAT_BUFF_VALUE(GET_STAT_BUFF_VALUE(statValue) * 2)) | ((statValue <= -1) ? STAT_BUFF_NEGATIVE : 0);
+        statValue *= 2;
     }
     
-    while (!(CanChangeStat(gActiveBattler, statId, statValue) || statValue * statValue == 1))
+    // If the mon is near the boosting limit e.g. at +5 and not able to boost by +2, this will adjust the value of the boost
+    while (!(CanChangeStat(gActiveBattler, statId, statValue) || statValue == 1 || statValue == -1))
     {
-        statValue = (statValue < -1 ? statValue++ : statValue--);
+        if (statValue < -1)
+            statValue++;
+        else
+            statValue--;
     }
-
-    gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PLACEHOLDER_BEGIN;
     switch (gBattleScripting.statBoostTracker)
     {
     case 2:
         switch (gBattleScripting.statBoostCounter)
         {
         case 0:
-            gBattleScripting.statBoostStringIndex++;
-            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
-            gBattleScripting.statBoostStringIndex++;
-            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = statId;
+            if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE) gBattleScripting.statBoostFailure = 1;
+            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PLACEHOLDER_BEGIN;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             gBattleScripting.statBoostCounter++;
             break;
         case 1:
-            if (gBattleScripting.statBoostFailure)
+            if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
             {
                 gBattleScripting.statBoostFailure = 0;
-                gBattleScripting.statBoostStringIndex -= 1;
+                gBattleScripting.statBoostStringIndex--;
                 gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
-                gBattleScripting.statBoostStringIndex++;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = statId;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
             else
             {
-                gBattleScripting.statBoostStringIndex++;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                gBattleScripting.statBoostStringIndex++;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = newlineAnd;
-                gBattleScripting.statBoostStringIndex++;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
-                gBattleScripting.statBoostStringIndex++;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = statId;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
             gBattleScripting.statBoostCounter++;
             break;
@@ -8153,7 +8159,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         switch (gBattleScripting.statBoostCounter)
         {
         case 0:
-            if (!(CanChangeStat(gActiveBattler, statId, statValue))) gBattleScripting.statBoostFailure = 1;
+            if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE) gBattleScripting.statBoostFailure = 1;
+            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PLACEHOLDER_BEGIN;
             gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
             gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             gBattleScripting.statBoostCounter++;
@@ -8162,8 +8169,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
             {
                 gBattleScripting.statBoostFailure = 0;
-                gBattleScripting.statBoostStringIndex -= 2;
-                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleScripting.statBoostStringIndex--;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
             else
@@ -8179,11 +8186,11 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
             {
                 gBattleScripting.statBoostFailure = 0;
-                gBattleScripting.statBoostStringIndex -= 4;
-                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleScripting.statBoostStringIndex -= 5;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
-            else if (!(CanChangeStat(gActiveBattler, statId, statValue)))
+            else if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE && !(gBattleScripting.statBoostFailure))
             {
                 gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 3] = B_BUFF_PUNCTUATION;
                 gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 2] = newlineAnd;
@@ -8199,19 +8206,19 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             break;
         }
         break;
+    default:
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
+        gBattleScripting.statBoostStringIndex = 2;
+        break;
     }
 
     if (gBattleScripting.statBoostCounter == gBattleScripting.statBoostTracker)
     {
-        gBattleScripting.statBoostStringIndex++;
-        gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-        gBattleScripting.statBoostStringIndex++;
-        gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = justSpace;
-        gBattleScripting.statBoostStringIndex++;
-        gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_EOS;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = justSpace;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_EOS;
         gBattleScripting.statBoostCounter = gBattleScripting.statBoostTracker = gBattleScripting.statBoostStringIndex = 0;
     }
-    
     if (statValue <= -1) // Stat decrease.
     {
         if (gSideTimers[GET_BATTLER_SIDE(gActiveBattler)].mistTimer
@@ -8306,7 +8313,6 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else // try to decrease
         {
-            statValue = -GET_STAT_BUFF_VALUE(statValue);
             gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
             index = 1;
             if (statValue == -2)
@@ -8336,7 +8342,6 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     }
     else // stat increase
     {
-        statValue = GET_STAT_BUFF_VALUE(statValue);
         gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
         index = 1;
         if (statValue == 2)
