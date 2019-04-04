@@ -4631,8 +4631,8 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_LAND_S_WRATH] = {
-        .effect = EFFECT_PLACEHOLDER, // Traps + grounds (guaranteed, not a secondary effect)
-        .power = 180,
+        .effect = EFFECT_TRAP_AND_GROUND_CERTAIN, // Traps + grounds (guaranteed, not a secondary effect)
+        .power = 1,
         .type = TYPE_GROUND,
         .accuracy = 0,
         .pp = 1,
@@ -4641,6 +4641,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_ANTI_AIR | FLAG_Z_MOVE,
         .split = SPLIT_PHYSICAL,
+        .argument = MOVE_EFFECT_SMACK_DOWN,
     },
 
     [MOVE_LASER_FOCUS] = {

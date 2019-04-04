@@ -254,7 +254,7 @@ static const u16 sZMovesTable[] =
 
 static const u16 sTypeEffectivenessTable[NUMBER_OF_MON_TYPES][NUMBER_OF_MON_TYPES] =
 {
-    //???    bug     dark    dragon  electr  fairy   fight   fire    flying  ghost   grass   ground  ice     normal  poison  psychic rock    steel   water  
+    //???    bug     dark    dragon  electr  fairy   fight   fire    flying  ghost   grass   ground  ice     normal  poison  psychic rock    steel   water
     {X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0)}, // mystery
     {X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(0.5), X(0.5), X(0.5), X(0.5), X(0.5), X(2.0), X(1.0), X(1.0), X(1.0), X(0.5), X(2.0), X(1.0), X(0.5), X(1.0)}, // bug
     {X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(0.5), X(0.5), X(1.0), X(1.0), X(2.0), X(1.0), X(1.0), X(1.0), X(1.0), X(1.0), X(0.5), X(1.0), X(1.0), X(1.0)}, // dark
@@ -1805,7 +1805,7 @@ u8 DoBattlerEndTurnEffects(void)
             case ENDTURN_POWDER:
                 gBattleMons[gActiveBattler].status2 &= ~(STATUS2_POWDER);
                 gBattleStruct->turnEffectsTracker++;
-            case ENDTURN_NEEDLE_ARM:  
+            case ENDTURN_NEEDLE_ARM:
                 if ((gBattleMons[gActiveBattler].status2 & STATUS2_NEEDLE_ARM)
                     && gBattleMons[gActiveBattler].hp != 0
                     && ability != ABILITY_MAGIC_GUARD)
@@ -2732,8 +2732,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 i, j;
     u32 move;
     u8 side;
-    u8 target1;    
-    
+    u8 target1;
+
     if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
         return 0;
 
@@ -3108,7 +3108,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                                 tempBp = 80;
                             else if (amove == MOVE_COUNTER || amove == MOVE_MIRROR_COAT || amove == MOVE_METAL_BURST)
                                 tempBp = 120;
-                            /*else if (gBattleMoves[amove].effect == EFFECT_OHKO) //no longer exists, oops 
+                            /*else if (gBattleMoves[amove].effect == EFFECT_OHKO) //no longer exists, oops
                                 tempBp = 150;/*/
                             if ((gBattleMoves[amove].power == tempBp && RandomChance(1, 3)) || gBattleMoves[amove].power > tempBp)
                             {
@@ -3151,7 +3151,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
                 if (friskCount > 0)
                 {
-                    
+
                     gBattlerAbility = gEffectBattler = battler;
                     gSpecialStatuses[battler].switchInAbilityDone = 1;
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, toFrisk, gBattlerPartyIndexes[toFrisk]);
@@ -3767,7 +3767,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gBattleMons[gBattlerTarget].hp != 0
              && (gBattleMoves[gLastUsedMove].flags & FLAG_DANCE) gLastUsedMove == MOVE_SPLASH)
             {
-                u16 danceMoves[9] = {MOVE_FEATHER_DANCE, MOVE_FIERY_DANCE, MOVE_DRAGON_DANCE, MOVE_LUNAR_DANCE, 
+                u16 danceMoves[9] = {MOVE_FEATHER_DANCE, MOVE_FIERY_DANCE, MOVE_DRAGON_DANCE, MOVE_LUNAR_DANCE,
                 MOVE_PETAL_DANCE, MOVE_REVELATION_DANCE, MOVE_QUIVER_DANCE, MOVE_SWORDS_DANCE, MOVE_TEETER_DANCE};
                 bool8 dance = FALSE;
                 for(i = 0; i < 9; i++)
@@ -3778,7 +3778,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if(dance == TRUE)
                 {
                     gCalledMove = gLastUsedMove;
-                    gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);                
+                    gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);
                     gBattlerTarget = GetMoveTarget(gCalledMove, 0);
                     BattleScriptPushCursor();
                     gBattlescriptCurrInstr = BattleScript_DancerActivates;
@@ -5981,12 +5981,12 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
             MulModifier(&modifier, UQ_4_12(1.5));
         break;
     }
-    
+
     //weather effects
-    
+
     if (IS_BATTLER_OF_TYPE(battlerDef, TYPE_ROCK) && !usesDefStat && gBattleWeather & WEATHER_SANDSTORM_ANY)
         MulModifier(&modifier, UQ_4_12(1.5));
-    
+
     return ApplyModifier(modifier, defStat);
 }
 
@@ -6248,7 +6248,7 @@ static inline void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, 
 
     if (gProtectStructs[battlerDef].kingsShielded)
         mod = UQ_4_12(1.0);
-    
+
     MulModifier(modifier, mod);
 }
 
@@ -6314,7 +6314,7 @@ static u16 CalcTypeEffectivenessMultiplierInternal(u16 move, u8 moveType, u8 bat
         modifier = UQ_4_12(0.0);
         gDisableStructs[battlerDef].skyDrop = 0;
         gDisableStructs[battlerDef].skyDropTrappingBattler = 0;
-        gStatuses3[battlerDef] &= ~STATUS3_ON_AIR;            
+        gStatuses3[battlerDef] &= ~STATUS3_ON_AIR;
     }
     if (GetBattlerAbility(battlerDef) == ABILITY_DAMP && moveType == TYPE_FIRE && modifier >= UQ_4_12(1.0))
         modifier = UQ_4_12(0.5);
@@ -6547,19 +6547,19 @@ u8 GetMoveSplit(u8 battlerId, u16 move, bool32 magic)
 
 u16 GetZMove(u8 battlerId, u16 move)
 {
-    
+
     u8 zParam = GetBattlerHoldEffectParam(battlerId);
-    
+
     // STILL NEED TO FIGURE OUT -ATE ABILITIES
     if (zParam && zParam != GetMoveType(battlerId, move, 1))
         return 0;
     if (gBattleMoves[move].split == SPLIT_STATUS || gBattleMoves[move].flags & FLAG_SELF_Z)
         return move;
-    
+
     switch (zParam)
     {
         case 0:
-            // Mon-exclusive Z-Moves will be here soon enough!            
+            // Mon-exclusive Z-Moves will be here soon enough!
             switch (gBattleMons[battlerId].item)
             {
             }
@@ -6679,7 +6679,7 @@ u16 PrepareZMove(u8 battlerId, u16 move)
             zMoveStruct->dynamicZBP = 120;
         else
             zMoveStruct->dynamicZBP = 100;
-        
+
         // Very special case for Nightmare:
         if (gBattleMoves[move].effect == EFFECT_NIGHTMARE && GetBattlerAbility(battlerId) == ABILITY_BAD_DREAMS)
             zMoveStruct->dynamicZBP *= 1.5;
@@ -6740,11 +6740,11 @@ bool32 CanUseZMove(u8 battlerId)
     itemId = GetMonData(mon, MON_DATA_HELD_ITEM);
     if (itemId == ITEM_ENIGMA_BERRY || ItemId_GetHoldEffect(itemId) != HOLD_EFFECT_Z_CRYSTAL)
         return FALSE;
-    
+
     // Can't make a Z-Move into a Z-Move
     if (gBattleMoves[cursorMove].flags & FLAG_Z_MOVE)
         return FALSE;
-    
+
     // Can we get a valid Z-Move?
     if(GetZMove(battlerId, cursorMove))
         return TRUE;
