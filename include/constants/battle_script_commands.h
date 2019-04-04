@@ -9,10 +9,11 @@
 #define sTWOTURN_STRINGID gBattleScripting + 0xF
 #define sB_ANIM_ARG1 gBattleScripting + 0x10
 #define sB_ANIM_ARG2 gBattleScripting + 0x11
-#define sCFM_HWORD gBattleScripting + 0x12
+#define sCFM_BYTE gBattleScripting + 0x12
+#define sEFFECT_CHANCE gBattleScripting + 0x13
 #define sMOVEEND_STATE gBattleScripting + 0x14
 #define sSTAT_BOOST_TRACKER gBattleScripting + 0x15
-#define sEFFECT_CHANCE gBattleScripting + 0x16
+#define sSTAT_BOOST_STRING_INDEX gBattleScripting + 0x16
 #define sBATTLER gBattleScripting + 0x17
 #define sB_ANIM_TURN gBattleScripting + 0x18
 #define sB_ANIM_TARGETS_HIT gBattleScripting + 0x19

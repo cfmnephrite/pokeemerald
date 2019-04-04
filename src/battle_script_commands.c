@@ -4610,7 +4610,9 @@ static void atk49_moveend(void)
             gBattleScripting.effectChance = 0;
             gBattleScripting.abilityEffect = 0;
             gBattleScripting.statBoostCounter = 0;
+            gBattleScripting.statBoostFailure = 0;
             gBattleScripting.statBoostTracker = 0;
+            gBattleScripting.statBoostStringIndex = 0;
             gBattleScripting.effectChance = 0;
             gBattleScripting.abilityEffect = 0;
             gBattleScripting.atk49_state++;
@@ -8079,16 +8081,20 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     bool32 certain = FALSE;
     bool32 notProtectAffected = FALSE;
     u32 index;
+    
+    // Determine the actual signed value of boost to be applied
+    statValue = GET_STAT_BUFF_VALUE(statValue);
 
+    // Determine if this is a self-inflicted stat boost
     if (flags & MOVE_EFFECT_AFFECTS_USER)
         gActiveBattler = gBattlerAttacker;
     else
         gActiveBattler = gBattlerTarget;
 
     gSpecialStatuses[gActiveBattler].changedStatsBattlerId = gBattlerAttacker;
-
     flags &= ~(MOVE_EFFECT_AFFECTS_USER);
 
+    // Whether or not it's a certain boost affects the behaviour of certain abilities, notably Shield Dust
     if (flags & MOVE_EFFECT_CERTAIN)
         certain++;
     flags &= ~(MOVE_EFFECT_CERTAIN);
@@ -8097,67 +8103,122 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         notProtectAffected++;
     flags &= ~(STAT_CHANGE_NOT_PROTECT_AFFECTED);
 
+    // Invert stat changes if Contrary
     if (GetBattlerAbility(gActiveBattler) == ABILITY_CONTRARY)
     {
-        statValue ^= STAT_BUFF_NEGATIVE;
+        statValue *= -1;
         gBattleScripting.statChanger ^= STAT_BUFF_NEGATIVE;
     }
-    else if (GetBattlerAbility(gActiveBattler) == ABILITY_SIMPLE)
+    
+    // Double stat changes if Simple
+    if (GetBattlerAbility(gActiveBattler) == ABILITY_SIMPLE)
     {
-        statValue = (SET_STAT_BUFF_VALUE(GET_STAT_BUFF_VALUE(statValue) * 2)) | ((statValue <= -1) ? STAT_BUFF_NEGATIVE : 0);
+        statValue *= 2;
     }
-
+    
+    // If the mon is near the boosting limit e.g. at +5 and not able to boost by +2, this will adjust the value of the boost
+    while (!(CanChangeStat(gActiveBattler, statId, statValue) || statValue == 1 || statValue == -1))
+    {
+        if (statValue < -1)
+            statValue++;
+        else
+            statValue--;
+    }
     switch (gBattleScripting.statBoostTracker)
     {
+    case 2:
+        switch (gBattleScripting.statBoostCounter)
+        {
         case 0:
-            PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
+            if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE) gBattleScripting.statBoostFailure = 1;
+            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PLACEHOLDER_BEGIN;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
+            gBattleScripting.statBoostCounter++;
             break;
         case 1:
-            if (gBattleMons[gActiveBattler].statStages[statId] != 0)
+            if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
             {
-                PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
-                gBattleScripting.statBoostTracker++;
+                gBattleScripting.statBoostFailure = 0;
+                gBattleScripting.statBoostStringIndex--;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
             else
             {
-                gBattleTextBuff1[3] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff1[4] = newlineAnd;
-                gBattleTextBuff1[5] = B_BUFF_STAT;
-                gBattleTextBuff1[6] = statId;
-                gBattleTextBuff1[7] = B_BUFF_EOS;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
+            gBattleScripting.statBoostCounter++;
+            break;
+        }
+        break;
+    case 3:
+        switch (gBattleScripting.statBoostCounter)
+        {
+        case 0:
+            if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE) gBattleScripting.statBoostFailure = 1;
+            gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_PLACEHOLDER_BEGIN;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+            gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
+            gBattleScripting.statBoostCounter++;
+            break;
+        case 1:
+            if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
+            {
+                gBattleScripting.statBoostFailure = 0;
+                gBattleScripting.statBoostStringIndex--;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
+            }
+            else
+            {
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = commaNewline;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
+            }
+            gBattleScripting.statBoostCounter++;
             break;
         case 2:
-            if (gBattleScripting.statBoostCounter == 0)
+            if (CanChangeStat(gActiveBattler, statId, statValue) && gBattleScripting.statBoostFailure)
             {
-                gBattleTextBuff1[0] = B_BUFF_PLACEHOLDER_BEGIN;
-                gBattleTextBuff1[1] = B_BUFF_STAT;
-                gBattleTextBuff1[2] = statId;
-                gBattleScripting.statBoostCounter++;
+                gBattleScripting.statBoostFailure = 0;
+                gBattleScripting.statBoostStringIndex -= 5;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
-            else if (gBattleScripting.statBoostCounter == 1)
+            else if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE && !(gBattleScripting.statBoostFailure))
             {
-                if (gBattleMons[gActiveBattler].statStages[statId] == 0)
-                    gBattleTextBuff1[3] = B_BUFF_EOS;
-                else
-                {
-                    gBattleTextBuff1[3] = B_BUFF_PUNCTUATION;
-                    gBattleTextBuff1[4] = newlineAnd;
-                    gBattleTextBuff1[5] = B_BUFF_STAT;
-                    gBattleTextBuff1[6] = statId;
-                    gBattleTextBuff1[7] = B_BUFF_EOS;
-                }
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 3] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 2] = newlineAnd;
             }
-            else if (gBattleScripting.statBoostCounter == 2 || gBattleMons[gActiveBattler].statStages[statId] == 0)
+            else
             {
-                gBattleTextBuff1[3] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff1[4] = newline;
-                gBattleTextBuff1[5] = B_BUFF_EOS;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;                                               
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
+            gBattleScripting.statBoostCounter++;
             break;
+        }
+        break;
+    default:
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
+        gBattleScripting.statBoostStringIndex = 2;
         break;
     }
 
+    if (gBattleScripting.statBoostCounter == gBattleScripting.statBoostTracker)
+    {
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = justSpace;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_EOS;
+        gBattleScripting.statBoostCounter = gBattleScripting.statBoostTracker = gBattleScripting.statBoostStringIndex = 0;
+    }
     if (statValue <= -1) // Stat decrease.
     {
         if (gSideTimers[GET_BATTLER_SIDE(gActiveBattler)].mistTimer
@@ -8252,76 +8313,57 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else // try to decrease
         {
-            statValue = -GET_STAT_BUFF_VALUE(statValue);
             gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
             index = 1;
-            if (gBattleScripting.statBoostTracker == 0)
-            {
-                gBattleTextBuff2[index] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff2[index + 1] = newline;
-            }
-            else
-            {
-                gBattleTextBuff2[index] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff2[index + 1] = justSpace;
-            }
-            index += 2;
             if (statValue == -2)
             {
                 gBattleTextBuff2[index] = B_BUFF_STRING;
-                gBattleTextBuff2[index + 1] = STRINGID_STATHARSHLY;
-                gBattleTextBuff2[index + 2] = STRINGID_STATHARSHLY >> 8;
-                index += 3;
+                gBattleTextBuff2[++index] = STRINGID_STATHARSHLY;
+                gBattleTextBuff2[++index] = STRINGID_STATHARSHLY >> 8;
+                index++;
             }
             else if (statValue <= -3)
             {
                 gBattleTextBuff2[index] = B_BUFF_STRING;
-                gBattleTextBuff2[index + 1] = STRINGID_SEVERELY & 0xFF;
-                gBattleTextBuff2[index + 2] = STRINGID_SEVERELY >> 8;
-                index += 3;
+                gBattleTextBuff2[++index] = STRINGID_SEVERELY & 0xFF;
+                gBattleTextBuff2[++index] = STRINGID_SEVERELY >> 8;
+                index++;
             }
             gBattleTextBuff2[index] = B_BUFF_STRING;
-            gBattleTextBuff2[index + 1] = STRINGID_STATFELL;
-            gBattleTextBuff2[index + 2] = STRINGID_STATFELL >> 8;
-            gBattleTextBuff2[index + 3] = B_BUFF_EOS;
+            gBattleTextBuff2[++index] = STRINGID_STATFELL;
+            gBattleTextBuff2[++index] = STRINGID_STATFELL >> 8;
+            gBattleTextBuff2[++index] = B_BUFF_EOS;
 
-            if (gBattleMons[gActiveBattler].statStages[statId] == 0)
-                if (gBattleScripting.statBoostTracker == 1)
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 2;
-                else
-                    gBattleScripting.statBoostTracker--;
+            if (gBattleScripting.statBoostFailure)
+                gBattleCommunication[MULTISTRING_CHOOSER] = 2;
             else
                 gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
         }
     }
     else // stat increase
     {
-        statValue = GET_STAT_BUFF_VALUE(statValue);
         gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
         index = 1;
         if (statValue == 2)
         {
-            gBattleTextBuff2[1] = B_BUFF_STRING;
-            gBattleTextBuff2[2] = STRINGID_STATSHARPLY;
-            gBattleTextBuff2[3] = STRINGID_STATSHARPLY >> 8;
-            index = 4;
+            gBattleTextBuff2[index] = B_BUFF_STRING;
+            gBattleTextBuff2[++index] = STRINGID_STATSHARPLY;
+            gBattleTextBuff2[++index] = STRINGID_STATSHARPLY >> 8;
+            index++;
         }
         else if (statValue >= 3)
         {
-            gBattleTextBuff2[1] = B_BUFF_STRING;
-            gBattleTextBuff2[2] = STRINGID_DRASTICALLY & 0xFF;
-            gBattleTextBuff2[3] = STRINGID_DRASTICALLY >> 8;
-            index = 4;
+            gBattleTextBuff2[index] = B_BUFF_STRING;
+            gBattleTextBuff2[++index] = STRINGID_DRASTICALLY & 0xFF;
+            gBattleTextBuff2[++index] = STRINGID_DRASTICALLY >> 8;
+            index++;
         }
         gBattleTextBuff2[index] = B_BUFF_STRING;
-        index++;
-        gBattleTextBuff2[index] = STRINGID_STATROSE;
-        index++;
-        gBattleTextBuff2[index] = STRINGID_STATROSE >> 8;
-        index++;
-        gBattleTextBuff2[index] = B_BUFF_EOS;
+        gBattleTextBuff2[++index] = STRINGID_STATROSE;
+        gBattleTextBuff2[++index] = STRINGID_STATROSE >> 8;
+        gBattleTextBuff2[++index] = B_BUFF_EOS;
 
-        if (gBattleMons[gActiveBattler].statStages[statId] == 0xC)
+        if (gBattleScripting.statBoostFailure)
             gBattleCommunication[MULTISTRING_CHOOSER] = 2;
         else
             gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);

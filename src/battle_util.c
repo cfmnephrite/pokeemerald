@@ -6763,6 +6763,14 @@ void UndoMegaEvolution(u8 monId)
     }
 }
 
+bool8 CanChangeStat(u8 battlerId, u8 statId, s8 amount)
+{
+    if ((gBattleMons[battlerId].statStages[statId] + amount) < 0 || (gBattleMons[battlerId].statStages[statId] + amount) > 12)
+        return FALSE;
+    else
+        return TRUE;
+}
+
 bool32 DoBattlersShareType(u32 battler1, u32 battler2)
 {
     s32 i;

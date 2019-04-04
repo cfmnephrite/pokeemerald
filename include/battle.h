@@ -633,7 +633,7 @@ struct BattleStruct
 
 #define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
-#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40
+#define GET_STAT_BUFF_VALUE(n)(((n & STAT_BUFF_NEGATIVE) ? -1 : 1) * ((n >> 3) & 0xF))     // 0x8, 0x10, 0x20, 0x40
 #define STAT_BUFF_NEGATIVE 0x80                     // 0x80, the sign bit
 
 #define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
@@ -649,12 +649,15 @@ struct BattleScripting
     u8 twoTurnsMoveStringId;
     u8 animArg1;
     u8 animArg2;
-    u16 cfmHalfWord;
-    u8 atk49_state;
-    u8 statBoostCounter:4;
-    u8 statBoostTracker:4;
+    u8 cfmByte;
     u8 effectChance:7;
     u8 abilityEffect:1;
+    u8 atk49_state;
+    u8 statBoostFailure:1;
+    u8 statBoostCounter:3;
+    u8 statBoostTracker:4;
+    u8 statBoostStringIndex:7;
+    u8 statBoostSplitStrings:1;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;
