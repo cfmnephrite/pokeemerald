@@ -631,7 +631,7 @@ static const u8 sText_ImposterTransform[] = _("{B_ATK_NAME_WITH_PREFIX} transfor
 static const u8 sText_NotDoneYet[] = _("This move effect is not done yet!\p");
 static const u8 sText_PkmnBlewAwayStickyWeb[] = _("{B_ATK_NAME_WITH_PREFIX} blew away\nSTICKY WEB!");
 static const u8 sText_PkmnBlewAwayStealthRock[] = _("{B_ATK_NAME_WITH_PREFIX} blew away\nSTEALTH ROCK!");
-static const u8 sText_StickyWebUsed[] = _("A sticky web spreads out on the\nground around {B_ATK_TEAM1}!");
+static const u8 sText_StickyWebUsed[] = _("A sticky web spreads out on the\nground around {B_DEF_TEAM2} team!");
 static const u8 sText_QuashSuccess[] = _("The opposing {B_ATK_NAME_WITH_PREFIX}'s move was postponed!");
 static const u8 sText_IonDelugeOn[] = _("A deluge of ions showers\nthe battlefield!");
 static const u8 sText_TopsyTurvySwitchedStats[] = _("{B_ATK_NAME_WITH_PREFIX}'s stat changes were\nall reversed!");
@@ -3174,6 +3174,18 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 break;
             case B_TXT_ATK_TEAM2:
                 if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
+                    toCpy = sText_Your2;
+                else
+                    toCpy = sText_Opposing2;
+                break;
+            case B_TXT_DEF_TEAM1:
+                if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
+                    toCpy = sText_Your1;
+                else
+                    toCpy = sText_Opposing1;
+                break;
+            case B_TXT_DEF_TEAM2:
+                if (GetBattlerSide(gBattlerTarget) == B_SIDE_PLAYER)
                     toCpy = sText_Your2;
                 else
                     toCpy = sText_Opposing2;

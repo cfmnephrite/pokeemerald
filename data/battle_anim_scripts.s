@@ -752,7 +752,7 @@ Move_MIRACLE_EYE:
 	createvisualtask sub_8115A04, 2, 1, 1, 2, 0, 10, RGB_BLACK
 	call MindReaderEffect
 	waitforvisualfinish
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	clearmonbg ANIM_DEF_PARTNER
 	end	
 	
@@ -803,7 +803,7 @@ Move_HAMMER_ARM:
 Move_GYRO_BALL:
 	loadspritegfx ANIM_TAG_IMPACT
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 0, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 0, 0, 0
 	waitforvisualfinish
 	playsewithpan SE_W207, SOUND_PAN_ATTACKER
 	waitplaysewithpan SE_W207, SOUND_PAN_ATTACKER, 8
@@ -901,23 +901,36 @@ Move_PLUCK:
 	
 Move_TAILWIND:
 	loadspritegfx ANIM_TAG_FLYING_DIRT
-	playsewithpan SE_W201, 0
-	createvisualtask AnimTask_LoadSandstormBackground, 5, FALSE
-	createvisualtask AnimTask_BlendBackground, 6, 6, RGB_WHITE
-	delay 16
+	playsewithpan SE_W016, SOUND_PAN_ATTACKER
+	call SetHighSpeedBg
+	monbg ANIM_ATK_PARTNER
+	setalpha 12, 8
+	createvisualtask AnimTask_TranslateMonEllipticalRespectSide, 2, ANIM_ATTACKER, 24, 6, 4, 4
+	createvisualtask sub_81169C0, 2, 0, 4, 7, 10
+	playsewithpan SE_W104, SOUND_PAN_ATTACKER
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 10, 2304, 96, 0
-	delay 10
+	delay 12
+	playsewithpan SE_W104, SOUND_PAN_ATTACKER
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 90, 2048, 96, 0
-	delay 10
+	delay 12
+	playsewithpan SE_W104, SOUND_PAN_ATTACKER
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 50, 2560, 96, 0
-	delay 10
+	delay 12
+	playsewithpan SE_W104, SOUND_PAN_ATTACKER
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 20, 2304, 96, 0
-	delay 10
+	delay 12
+	playsewithpan SE_W104, SOUND_PAN_ATTACKER
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 70, 1984, 96, 0
-	delay 10
+	delay 12
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 0, 2816, 96, 0
 	delay 10
 	createsprite gBattleAnimSpriteTemplate_8596BA0, ANIM_ATTACKER, 40, 60, 2560, 96, 0
+	waitforvisualfinish
+	stopsound
+	call UnsetHighSpeedBg
+	clearmonbg ANIM_ATK_PARTNER
+	blendoff
+	delay 1
 	end
 	
 Move_ACUPRESSURE:
@@ -927,7 +940,7 @@ Move_METAL_BURST:
 	loadspritegfx ANIM_TAG_ECLIPSING_ORB
 	loadspritegfx ANIM_TAG_RED_ORB
 	loopsewithpan SE_W161, -64, 18, 3
-	createvisualtask sub_811489C, 5, 0, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 0
 	createvisualtask sub_815B338, 5
 	waitforvisualfinish
 	setarg 7, -1
@@ -942,7 +955,7 @@ Move_METAL_BURST:
 	createsprite gHiddenPowerOrbScatterSpriteTemplate, ANIM_TARGET, 20, 192
 	createsprite gHiddenPowerOrbScatterSpriteTemplate, ANIM_TARGET, 2, 224
 	waitforvisualfinish
-	createvisualtask sub_811489C, 5, 0, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 1
 	waitforvisualfinish
 	end
 	
@@ -968,8 +981,7 @@ Move_U_TURN:
 Move_CLOSE_COMBAT:
 	loadspritegfx ANIM_TAG_IMPACT	
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
-	fadetobg BG_HIGHSPEED_OPPONENT
-	delay 20
+	call SetHighSpeedBg
 	createsprite gUnknown_08595EB0, ANIM_TARGET, 3, 1, 10, 0
 	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 7, 1
 	playsewithpan SE_W004, +63
@@ -994,10 +1006,7 @@ Move_CLOSE_COMBAT:
 	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 7, 1
 	playsewithpan SE_W025B, +63
 	delay 10
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	clearmonbg ANIM_TARGET
 	blendoff
 	delay 1
@@ -1340,11 +1349,7 @@ Move_AURA_SPHERE:
 	monbg ANIM_ATK_PARTNER
 	monbgprio_28 ANIM_ATTACKER
 	setalpha 12, 8
-	createvisualtask AnimTask_GetAttackerSide, 2
-	fadetobg BG_HIGHSPEED_OPPONENT
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
-	waitbgfadein
+	call SetHighSpeedBg
 	playsewithpan SE_W327, 0
 	delay 60
 	createsprite gAuraSphereBlast, ANIM_TARGET, 3, 0
@@ -1353,10 +1358,7 @@ Move_AURA_SPHERE:
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 8, 0, 16, 1
 	playsewithpan SE_W025B, SOUND_PAN_TARGET
 	waitforvisualfinish
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	clearmonbg ANIM_ATK_PARTNER
 	blendoff
 	delay 1
@@ -1628,24 +1630,17 @@ Move_FOCUS_BLAST:
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
 	loadspritegfx ANIM_TAG_METEOR
 	loadspritegfx ANIM_TAG_FLAT_ROCK
-	monbg ANIM_ATK_PARTNER
-	monbgprio_28 ANIM_ATTACKER
+	monbg ANIM_TARGET
+	monbgprio_28 ANIM_TARGET
 	setalpha 12, 8
-	createvisualtask AnimTask_GetAttackerSide, 2
-	fadetobg BG_HIGHSPEED_OPPONENT
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
-	waitbgfadein
+	call SetHighSpeedBg
 	createsprite gUnknown_08595FEC, ANIM_TARGET, 2, 0
 	playsewithpan SE_W025, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 8, 0, 16, 1
 	playsewithpan SE_W025B, SOUND_PAN_TARGET
 	waitforvisualfinish
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	clearmonbg ANIM_TARGET
 	blendoff
 	delay 1
@@ -1768,7 +1763,7 @@ Move_ICE_SHARD:
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	fadetobg BG_ICE
 	waitbgfadein
-	createsoundtask sub_8158C58, 183, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 4, 4, 0, 10
+	createsoundtask sub_8158C58, SE_W062B, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 4, 4, 0, 10
 	createsprite gUnknown_08595B2C, ANIM_ATTACKER, 2, -20, 70,  0, 42, 35
 	createsprite gUnknown_08595B14, ANIM_ATTACKER, 2, -20, 58,  0, 30, 35
 	createsprite gUnknown_08595B2C, ANIM_ATTACKER, 2, -20, -12, 0, 22, 40
@@ -2037,7 +2032,7 @@ Move_IRON_HEAD:
 	loadspritegfx ANIM_TAG_GUST
 	loadspritegfx ANIM_TAG_IMPACT
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 1, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 1, 0, 0
 	waitforvisualfinish
 	createsprite gUnknown_08592CD8, ANIM_ATTACKER, 2, 0
 	playsewithpan SE_W029, SOUND_PAN_ATTACKER
@@ -2051,7 +2046,7 @@ Move_IRON_HEAD:
 	createsprite gUnknown_085973E8, ANIM_TARGET, 3, 0, 0, 1, 1
 	playsewithpan SE_W233B, SOUND_PAN_TARGET
 	waitforvisualfinish
-	createvisualtask sub_811489C, 5, 0, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 1
 	waitforvisualfinish
 	end
 	
@@ -2334,7 +2329,7 @@ Move_ELECTROWEB:
 	monbgprio_28 ANIM_TARGET
 	waitforvisualfinish
 	playsewithpan SE_W081B, SOUND_PAN_TARGET
-	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, 0, 0
+	createsprite gSpiderWebSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, TRUE
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	delay 1
@@ -2481,13 +2476,13 @@ Move_STICKY_WEB:
 	call SpiderWeb1
 	waitforvisualfinish
 	playsewithpan SE_W081B, SOUND_PAN_TARGET
-	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, 0, 0
+	createsprite gSpiderWebSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, TRUE
 	delay 50
 	playsewithpan SE_W081B, SOUND_PAN_TARGET
-	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, -30, 30
+	createsprite gSpiderWebSpriteTemplate, ANIM_ATTACKER, 2, -30, 30, TRUE
 	delay 50
 	playsewithpan SE_W081B, SOUND_PAN_TARGET
-	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, 30, -30
+	createsprite gSpiderWebSpriteTemplate, ANIM_ATTACKER, 2, 30, -30, TRUE
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	delay 1
@@ -3797,7 +3792,7 @@ Move_VINE_WHIP:
 	createsprite gHorizontalLungeSpriteTemplate, ANIM_ATTACKER, 2, 4, 6
 	delay 6
 	playsewithpan SE_W010, SOUND_PAN_TARGET
-	createsprite gUnknown_085928E8, ANIM_TARGET, 2, 0, 0
+	createsprite gVineWhipSpriteTemplate, ANIM_TARGET, 2, 0, 0
 	delay 6
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 6, 1
 	end
@@ -3938,12 +3933,12 @@ Explosion1:
 Move_DEFENSE_CURL:
 	loadspritegfx ANIM_TAG_ECLIPSING_ORB
 	loopsewithpan SE_W161, SOUND_PAN_ATTACKER, 18, 3
-	createvisualtask sub_811489C, 5, 0, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 0
 	createvisualtask sub_815B338, 5
 	waitforvisualfinish
 	createsprite gUnknown_085CE338, ANIM_ATTACKER, 2, 0, 6, 0, 1
 	waitforvisualfinish
-	createvisualtask sub_811489C, 5, 0, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 1
 	waitforvisualfinish
 	end
 
@@ -4285,7 +4280,7 @@ Move_ATTRACT:
 	createsprite gBattleAnimSpriteTemplate_85939B8, ANIM_TARGET, 3, -384, -31
 	waitforvisualfinish
 	waitplaysewithpan SE_W213B, 0, 15
-	createvisualtask sub_81062E8, 5
+	createvisualtask AnimTask_HeartsBackground, 5
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 16, 256, 0
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 224, 240, 15
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 126, 272, 30
@@ -4294,7 +4289,7 @@ Move_ATTRACT:
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 40, 256, 75
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 112, 256, 90
 	createsprite gUnknown_085939D0, ANIM_ATTACKER, 40, 200, 272, 90
-	delay 0x4B
+	delay 75
 	createvisualtask sub_8115A04, 2, 4, 4, 4, 0, 10, RGB(31, 25, 27)
 	end
 
@@ -4985,7 +4980,7 @@ Move_MEDITATE:
 	delay 16
 	playsewithpan SE_W036, SOUND_PAN_ATTACKER
 	waitforvisualfinish
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_AGILITY:
@@ -5052,7 +5047,7 @@ Move_TELEPORT:
 	createvisualtask sub_810F83C, 2
 	playsewithpan SE_W100, SOUND_PAN_ATTACKER
 	delay 15
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	waitforvisualfinish
 	end
 
@@ -5145,7 +5140,7 @@ Move_AMNESIA:
 	delay 54
 	loopsewithpan SE_W118, SOUND_PAN_ATTACKER, 16, 3
 	waitforvisualfinish
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_KINESIS:
@@ -5164,7 +5159,7 @@ Move_KINESIS:
 	delay 70
 	playsewithpan SE_W207B, SOUND_PAN_ATTACKER
 	waitforvisualfinish
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_GLARE:
@@ -5402,18 +5397,32 @@ Move_SPITE:
 	waitbgfadein
 	clearmonbg ANIM_TARGET
 	end
+	
+SetHighSpeedBg:
+	createvisualtask AnimTask_GetAttackerSide, 2
+	jumprettrue SetHighSpeedBgPlayer
+	fadetobg BG_HIGHSPEED_OPPONENT
+	goto SetHighSpeedBgFade
+SetHighSpeedBgPlayer:
+	fadetobg BG_HIGHSPEED_PLAYER
+SetHighSpeedBgFade:
+	waitbgfadeout
+	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
+	waitbgfadein
+	return
+	
+UnsetHighSpeedBg:
+	restorebg
+	waitbgfadeout
+	setarg 7, -1
+	waitbgfadein
+	return
 
 Move_MACH_PUNCH:
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	monbg ANIM_ATK_PARTNER
-	createvisualtask AnimTask_GetAttackerSide, 2
-	jumprettrue MachPunchAgainstPlayer
-	fadetobg BG_HIGHSPEED_OPPONENT
-MachPunchContinue:
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
-	waitbgfadein
+	call SetHighSpeedBg
 	delay 0
 	setalpha 9, 8
 	createvisualtask sub_80A8BC4, 2, 28968, 10
@@ -5426,14 +5435,8 @@ MachPunchContinue:
 	waitforvisualfinish
 	clearmonbg ANIM_ATK_PARTNER
 	blendoff
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	end
-MachPunchAgainstPlayer:
-	fadetobg BG_HIGHSPEED_PLAYER
-	goto MachPunchContinue
 
 Move_FORESIGHT:
 	loadspritegfx ANIM_TAG_MAGNIFYING_GLASS
@@ -5502,13 +5505,13 @@ EndureEffect:
 Move_CHARM:
 	loadspritegfx ANIM_TAG_MAGENTA_HEART
 	createvisualtask AnimTask_RockMonBackAndForth, 5, ANIM_ATTACKER, 2, 0
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 0, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 0, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	delay 15
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, -20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, -20, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	delay 15
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 20, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	end
@@ -5667,13 +5670,7 @@ Move_MOONLIGHT:
 Move_EXTREME_SPEED:
 	loadspritegfx ANIM_TAG_SPEED_DUST
 	loadspritegfx ANIM_TAG_IMPACT
-	createvisualtask AnimTask_GetAttackerSide, 2
-	jumprettrue ExtremeSpeedAgainstPlayer
-	fadetobg BG_HIGHSPEED_OPPONENT
-ExtremeSpeedContinue:
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
-	waitbgfadein
+	call SetHighSpeedBg
 	createvisualtask sub_810577C, 2
 	loopsewithpan SE_W013B, SOUND_PAN_ATTACKER, 8, 3
 	waitforvisualfinish
@@ -5698,19 +5695,13 @@ ExtremeSpeedContinue:
 	createvisualtask sub_810599C, 2
 	loopsewithpan SE_W104, SOUND_PAN_ATTACKER, 8, 4
 	waitforvisualfinish
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	clearmonbg ANIM_TARGET
 	blendoff
 	delay 1
 	setarg 7, 0x1000
 	delay 1
 	end
-ExtremeSpeedAgainstPlayer:
-	fadetobg BG_HIGHSPEED_PLAYER
-	goto ExtremeSpeedContinue
 
 Move_UPROAR:
 	loadspritegfx ANIM_TAG_JAGGED_MUSIC_NOTE
@@ -6111,7 +6102,7 @@ Move_SKILL_SWAP:
 	createvisualtask sub_810FBF0, 3, 0
 	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_ATTACKER, RGB_WHITE, 12, 3, 1
 	waitforvisualfinish
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_IMPRISON:
@@ -6128,7 +6119,7 @@ Move_IMPRISON:
 	createvisualtask sub_81152DC, 5, 4, 1, 10
 	playsewithpan SE_W063, SOUND_PAN_ATTACKER
 	clearmonbg ANIM_DEF_PARTNER
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_GRUDGE:
@@ -6223,7 +6214,7 @@ Move_LUSTER_PURGE:
 	waitforvisualfinish
 	clearmonbg ANIM_ATTACKER
 	blendoff
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_MIST_BALL:
@@ -6618,7 +6609,7 @@ Move_EXTRASENSORY:
 	waitforvisualfinish
 	blendoff
 	clearmonbg ANIM_DEF_PARTNER
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_AERIAL_ACE:
@@ -6640,7 +6631,7 @@ Move_AERIAL_ACE:
 
 Move_IRON_DEFENSE:
 	loopsewithpan SE_REAPOKE, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 0, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 0, 0, 0
 	createsprite gComplexPaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 8, 2, RGB_WHITEALPHA, 14, -1, 0
 	waitforvisualfinish
 	end
@@ -6675,13 +6666,13 @@ Move_COVET:
 	loadspritegfx ANIM_TAG_MAGENTA_HEART
 	loadspritegfx ANIM_TAG_ITEM_BAG
 	createvisualtask AnimTask_RockMonBackAndForth, 5, ANIM_ATTACKER, 2, 0
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 0, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 0, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	delay 15
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, -20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, -20, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	delay 15
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 20, 20
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 8, 1
@@ -6852,7 +6843,7 @@ Move_SHOCK_WAVE:
 
 Move_HARDEN:
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 0, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 0, 0, 0
 	waitforvisualfinish
 	end
 
@@ -7001,7 +6992,7 @@ Move_CONFUSION:
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_PSYCHIC:
@@ -7018,7 +7009,7 @@ Move_PSYCHIC:
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_FUTURE_SIGHT:
@@ -7026,7 +7017,7 @@ Move_FUTURE_SIGHT:
 FutureSightContinue:
 	waitforvisualfinish
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 FutureSight:
 	monbg ANIM_ATK_PARTNER
@@ -7629,7 +7620,7 @@ Move_ICE_BEAM:
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 1, 0, 7, RGB_BLACK
 	waitforvisualfinish
-	createsoundtask sub_8158C58, 183, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 4, 4, 0, 10
+	createsoundtask sub_8158C58, SE_W062B, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 4, 4, 0, 10
 	createsprite gUnknown_08595B2C, ANIM_ATTACKER, 2, 20, 12, 0, 12, 20
 	createsprite gUnknown_08595B2C, ANIM_ATTACKER, 2, 20, -12, 0, -12, 20
 	delay 1
@@ -7685,7 +7676,7 @@ Move_AURORA_BEAM:
 	call AuroraBeam1
 	call AuroraBeam1
 	setarg 7, -1
-	createsoundtask sub_8158C58, 183, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 6, 0, 10
+	createsoundtask sub_8158C58, SE_W062B, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 6, 0, 10
 	createvisualtask AnimTask_ShakeMon2, 5, ANIM_TARGET, 2, 0, 40, 1
 	call AuroraBeam1
 	call AuroraBeam1
@@ -7800,13 +7791,7 @@ SolarBeamUnleash1:
 Move_BLIZZARD:
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	monbg ANIM_DEF_PARTNER
-	createvisualtask AnimTask_GetAttackerSide, 2
-	jumprettrue BlizzardAgainstPlayer
-	fadetobg BG_HIGHSPEED_OPPONENT
-BlizzardContinue:
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -2304, 0, 1, -1
-	waitbgfadein
+	call SetHighSpeedBg
 	waitforvisualfinish
 	panse_1B SE_W059, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, +2, 0
 	call Blizzard1
@@ -7816,10 +7801,7 @@ BlizzardContinue:
 	call FreezeEffect2
 	waitforvisualfinish
 	delay 20
-	restorebg
-	waitbgfadeout
-	setarg 7, -1
-	waitbgfadein
+	call UnsetHighSpeedBg
 	clearmonbg ANIM_DEF_PARTNER
 	end
 Blizzard1:
@@ -7845,9 +7827,6 @@ Blizzard1:
 	createsprite gUnknown_08595BB0, ANIM_ATTACKER, 40, 0, 20, 0, 20, 80, 0, 0, 1
 	delay 3
 	return
-BlizzardAgainstPlayer:
-	fadetobg BG_HIGHSPEED_PLAYER
-	goto BlizzardContinue
 
 Move_POWDER_SNOW:
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
@@ -9303,7 +9282,7 @@ Move_DREAM_EATER:
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 DreamEaterEffect:
 	playsewithpan SE_W207, SOUND_PAN_TARGET
@@ -9405,7 +9384,7 @@ Move_PSYBEAM:
 	loadspritegfx ANIM_TAG_GOLD_RING
 	playsewithpan SE_W060, SOUND_PAN_ATTACKER
 	call SetPsychicBackground
-	createsoundtask sub_8158C58, 200, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 4, 0, 15
+	createsoundtask sub_8158C58, SE_W060B, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 4, 0, 15
 	call Psybeam1
 	call Psybeam1
 	createvisualtask AnimTask_SwayMon, 5, 0, 6, 2048, 4, ANIM_TARGET
@@ -9421,7 +9400,7 @@ Move_PSYBEAM:
 	call Psybeam1
 	waitforvisualfinish
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 Psybeam1:
 	createsprite gUnknown_0859663C, ANIM_TARGET, 2, 16, 0, 0, 0, 13, 0
@@ -9437,7 +9416,7 @@ Move_HYPNOSIS:
 	createvisualtask sub_8115A04, 2, 4, 2, 2, 0, 12, RGB(31, 18, 31)
 	waitforvisualfinish
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 Hypnosis1:
 	playsewithpan SE_W048, SOUND_PAN_ATTACKER
@@ -9451,7 +9430,7 @@ Move_PSYWAVE:
 	playsewithpan SE_W060, SOUND_PAN_ATTACKER
 	call SetPsychicBackground
 	createvisualtask sub_81076C8, 5, 100
-	createsoundtask sub_8158C58, 203, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 2, 9, 0, 10
+	createsoundtask sub_8158C58, SE_W100, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 2, 9, 0, 10
 	call Psywave1
 	call Psywave1
 	createvisualtask sub_8115A04, 2, 4, 1, 4, 0, 12, RGB(31, 18, 31)
@@ -9461,7 +9440,7 @@ Move_PSYWAVE:
 	call Psywave1
 	waitforvisualfinish
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 Psywave1:
 	createsprite gUnknown_08595170, ANIM_TARGET, 3, 10, 10, 0, 16
@@ -9495,7 +9474,7 @@ Move_STEEL_WING:
 	loadspritegfx ANIM_TAG_GUST
 	loadspritegfx ANIM_TAG_IMPACT
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 0, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 0, 0, 0
 	waitforvisualfinish
 	monbg ANIM_DEF_PARTNER
 	monbgprio_28 ANIM_TARGET
@@ -9521,7 +9500,7 @@ Move_STEEL_WING:
 Move_IRON_TAIL:
 	loadspritegfx ANIM_TAG_IMPACT
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 1, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 1, 0, 0
 	waitforvisualfinish
 	monbg ANIM_TARGET
 	setalpha 12, 8
@@ -9531,7 +9510,7 @@ Move_IRON_TAIL:
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
 	playsewithpan SE_W233B, SOUND_PAN_TARGET
 	waitforvisualfinish
-	createvisualtask sub_811489C, 5, 0, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 1
 	clearmonbg ANIM_TARGET
 	blendoff
 	waitforvisualfinish
@@ -9541,7 +9520,7 @@ Move_POISON_TAIL:
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_POISON_BUBBLE
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 1, 1, RGB(24, 6, 23)
+	createvisualtask AnimTask_MetallicShine, 5, 1, 1, RGB(24, 6, 23)
 	waitforvisualfinish
 	monbg ANIM_TARGET
 	setalpha 12, 8
@@ -9551,7 +9530,7 @@ Move_POISON_TAIL:
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
 	playsewithpan SE_W233B, SOUND_PAN_TARGET
 	waitforvisualfinish
-	createvisualtask sub_811489C, 5, 0, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_ATTACKER, 1
 	clearmonbg ANIM_TARGET
 	blendoff
 	call PoisonBubblesEffect
@@ -9561,7 +9540,7 @@ Move_POISON_TAIL:
 Move_METAL_CLAW:
 	loadspritegfx ANIM_TAG_CLAW_SLASH
 	loopsewithpan SE_W231, SOUND_PAN_ATTACKER, 28, 2
-	createvisualtask sub_81144F8, 5, 0, 0, 0
+	createvisualtask AnimTask_MetallicShine, 5, 0, 0, 0
 	waitforvisualfinish
 	createsprite gHorizontalLungeSpriteTemplate, ANIM_ATTACKER, 2, 6, 4
 	delay 2
@@ -9628,8 +9607,8 @@ Move_SHADOW_BALL:
 	fadetobg BG_GHOST
 	waitbgfadein
 	delay 15
-	createsoundtask sub_8158C58, 168, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 5, 5, 0, 5
-	createsprite gUnknown_08596D58, ANIM_TARGET, 2, 16, 16, 8
+	createsoundtask sub_8158C58, SE_W054, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 5, 5, 0, 5
+	createsprite gShadowBallSpriteTemplate, ANIM_TARGET, 2, 16, 16, 8
 	waitforvisualfinish
 	playsewithpan SE_W028, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 8, 1
@@ -9741,7 +9720,7 @@ Move_STRING_SHOT:
 	end
 
 StringShot1:
-	createsprite gUnknown_085969E0, ANIM_TARGET, 2, 20, 0, 512, 20, 1
+	createsprite gWebThreadSpriteTemplate, ANIM_TARGET, 2, 20, 0, 512, 20, 1
 	delay 1
 	return
 
@@ -9770,7 +9749,7 @@ Move_SPIDER_WEB:
 	call SpiderWeb1
 	waitforvisualfinish
 	playsewithpan SE_W081B, SOUND_PAN_TARGET
-	createsprite gUnknown_08596A2C, ANIM_ATTACKER, 2, 0, 0
+	createsprite gSpiderWebSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, FALSE
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	delay 1
@@ -9778,7 +9757,7 @@ Move_SPIDER_WEB:
 	end
 
 SpiderWeb1:
-	createsprite gUnknown_085969E0, ANIM_TARGET, 2, 20, 0, 512, 20, 0
+	createsprite gWebThreadSpriteTemplate, ANIM_TARGET, 2, 20, 0, 512, 20, 0
 	delay 1
 	return
 
@@ -10223,16 +10202,16 @@ Move_PERISH_SONG:
 	panse_1B SE_W195, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, +2, 0
 	delay 80
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 3, 0, 16, RGB_BLACK
-	createvisualtask sub_811489C, 5, 4, 0
-	createvisualtask sub_811489C, 5, 5, 0
-	createvisualtask sub_811489C, 5, 6, 0
-	createvisualtask sub_811489C, 5, 7, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 4, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 5, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 6, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 7, 0
 	delay 100
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 3, 16, 0, RGB_BLACK
-	createvisualtask sub_811489C, 5, 4, 1
-	createvisualtask sub_811489C, 5, 5, 1
-	createvisualtask sub_811489C, 5, 6, 1
-	createvisualtask sub_811489C, 5, 7, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 4, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 5, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 6, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, 7, 1
 	waitforvisualfinish
 	end
 
@@ -10301,7 +10280,7 @@ Move_TRI_ATTACK:
 	delay 20
 	playsewithpan SE_W161, SOUND_PAN_ATTACKER
 	delay 20
-	createsoundtask sub_8158C58, 220, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 5, 6, 0, 7
+	createsoundtask sub_8158C58, SE_W161, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 5, 6, 0, 7
 	waitforvisualfinish
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 2, 0, 16, RGB_BLACK
 	delay 16
@@ -10638,7 +10617,7 @@ Move_HYPER_BEAM:
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATTACKER, 1, 0, 4, 1
 	waitforvisualfinish
 	delay 30
-	createsoundtask sub_8158C58, 247, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 1, 15, 0, 5
+	createsoundtask sub_8158C58, SE_W063B, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 1, 15, 0, 5
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_ATTACKER, 0, 4, 50, 1
 	createvisualtask sub_8115D94, 2, ANIM_TAG_ORBS, 1, 12, 31, 16, 0, 0
 	call HyperBeam1
@@ -11824,7 +11803,7 @@ Move_PSYCHO_BOOST:
 	waitforvisualfinish
 	clearmonbg ANIM_ATK_PARTNER
 	blendoff
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 Move_KNOCK_OFF:
@@ -11852,7 +11831,7 @@ Move_DOOM_DESIRE:
 	createvisualtask sub_8114960, 2
 	delay 1
 	monbg ANIM_ATK_PARTNER
-	createvisualtask sub_811489C, 5, 1, 0
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_TARGET, 0
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 1, 0, 4, RGB_BLACK
 	waitforvisualfinish
 	setalpha 8, 8
@@ -11860,7 +11839,7 @@ Move_DOOM_DESIRE:
 	createvisualtask AnimTask_ScaleMonAndRestore, 5, -4, -4, 15, ANIM_ATTACKER, 1
 	waitforvisualfinish
 	delay 20
-	createvisualtask sub_811489C, 5, 1, 1
+	createvisualtask AnimTask_SetGreyscaleOrOriginalPal, 5, ANIM_TARGET, 1
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 1, 4, 0, RGB_BLACK
 	waitforvisualfinish
 	clearmonbg ANIM_ATK_PARTNER
@@ -12440,7 +12419,7 @@ SetPsychicBackground:
 	waitbgfadein
 	return
 
-UnsetPsychicBackground:
+UnsetPsychicBg:
 	restorebg
 	waitbgfadeout
 	setarg 7, -1
@@ -12519,13 +12498,13 @@ Burn1:
 Status_Infatuation:
 	loadspritegfx ANIM_TAG_MAGENTA_HEART
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 0, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 0, 20
 	delay 15
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, -20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, -20, 20
 	delay 15
 	playsewithpan SE_W204, SOUND_PAN_ATTACKER
-	createsprite gUnknown_08593970, ANIM_ATTACKER, 3, 20, 20
+	createsprite gMagentaHeartSpriteTemplate, ANIM_ATTACKER, 3, 20, 20
 	end
 
 Status_Sleep:
@@ -12865,7 +12844,7 @@ General_FutureSightHit:
 	blendoff
 	waitforvisualfinish
 	delay 1
-	call UnsetPsychicBackground
+	call UnsetPsychicBg
 	end
 
 General_DoomDesireHit:
