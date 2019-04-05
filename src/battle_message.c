@@ -424,14 +424,15 @@ static const u8 sText_ExclamationMark2[] = _("!");
 static const u8 sText_ExclamationMark3[] = _("!");
 static const u8 sText_ExclamationMark4[] = _("!");
 static const u8 sText_ExclamationMark5[] = _("!");
-static const u8 sText_HP2[] = _("HP");
-static const u8 sText_Attack2[] = _("Attack");
-static const u8 sText_Defense2[] = _("Defence");
-const u8 gText_Speed[] = _("Speed");
-static const u8 sText_SpAtk2[] = _("Sp. Attack");
-static const u8 sText_SpDef2[] = _("Sp. Defence");
+static const u8 sText_HP[] = _("HP");
+static const u8 sText_Attack[] = _("Attack");
+static const u8 sText_Defence[] = _("Defence");
+static const u8 sText_Speed[] = _("Speed");
+static const u8 sText_SpAttack[] = _("Sp. Attack");
+static const u8 sText_SpDefence[] = _("Sp. Defence");
 static const u8 sText_Accuracy[] = _("Accuracy");
 static const u8 sText_Evasiveness[] = _("Evasiveness");
+static const u8 sText_AllStats[] = _("stats");
 
 // Stylish punctuation
 static const u8 sText_CommaSpace[] = _(", ");
@@ -452,9 +453,10 @@ const u8 * const gPunctuationTable[] =
 
 const u8 * const gStatNamesTable[] =
 {
-    sText_HP2, sText_Attack2, sText_Defense2,
-    gText_Speed, sText_SpAtk2, sText_SpDef2,
-    sText_Accuracy, sText_Evasiveness
+    sText_HP, sText_Attack, sText_Defence,
+    sText_Speed, sText_SpAttack, sText_SpDefence,
+    sText_Accuracy, sText_Evasiveness,
+    sText_AllStats
 };
 
 static const u8 sText_PokeblockWasTooSpicy[] = _("was too spicy!");
@@ -1533,19 +1535,6 @@ const u8 gText_BattleSwitchWhich2[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNA
 const u8 gText_BattleSwitchWhich3[] = _("{UP_ARROW}");
 const u8 gText_BattleSwitchWhich4[] = _("{ESCAPE 4}");
 const u8 gText_BattleSwitchWhich5[] = _("-");
-
-const u8 sText_HP[] = _("HP");
-const u8 gText_Attack[] = _("ATTACK");
-const u8 gText_Defense[] = _("DEFENSE");
-const u8 gText_SpAtk[] = _("SP. ATK");
-const u8 gText_SpDef[] = _("SP. DEF");
-
-const u8 * const gStatNamesTable2[] =
-{
-    sText_HP, gText_SpAtk, gText_Attack,
-    gText_SpDef, gText_Defense, gText_Speed
-};
-
 const u8 gText_SafariBalls[] = _("{HIGHLIGHT DARK_GREY}SAFARI BALLS");
 const u8 gText_SafariBallLeft[] = _("{HIGHLIGHT DARK_GREY}Left: $" "{HIGHLIGHT DARK_GREY}");
 const u8 gText_Sleep[] = _("sleep");

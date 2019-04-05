@@ -4609,9 +4609,7 @@ static void atk49_moveend(void)
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
             gBattleScripting.effectChance = 0;
             gBattleScripting.abilityEffect = 0;
-            gBattleScripting.statBoostCounter = 0;
             gBattleScripting.statBoostFailure = 0;
-            gBattleScripting.statBoostTracker = 0;
             gBattleScripting.statBoostSplitStrings = 0;
             gBattleScripting.statBoostStringIndex = 0;
             gBattleScripting.effectChance = 0;
@@ -8118,100 +8116,38 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     }
 
     // Check if different stats are going to be raised/lowered by different amounts, thus determining how many strings to use
-    if (flags & STAT_CHANGE_RAISE_MULTIPLE_STATS)
+    if (flags & STAT_CHANGE_AFFECT_MULTIPLE_STATS && !(statValue == 1 || statValue == -1))
     {
-        flags &= ~(STAT_CHANGE_RAISE_MULTIPLE_STATS);
-        if (statValue != 1 || gCurrentMove == MOVE_SHIFT_GEAR)
+        u8 effect = 0;
+        flags &= ~(STAT_CHANGE_AFFECT_MULTIPLE_STATS);
+        if (gCurrentMove == MOVE_SHIFT_GEAR)
         {
-            u8 effect = 0;
-            switch (gCurrentMove)
+            switch (statValue)
             {
-            // All stats
-            case MOVE_ANCIENT_POWER:
-            case MOVE_OMINOUS_WIND:
-            case MOVE_SILVER_WIND:
-            case MOVE_CLANGOROUS_SOULBLAZE:
-            case MOVE_EXTREME_EVOBOOST:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_DEF | BIT_SPEED | BIT_SPATK | BIT_SPDEF, statValue) == FALSE)
-                    effect++;
+            case 4:
+                if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, 3)
+                    || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, 2) == FALSE)
+                effect++;
                 break;
-            // Attack and Defence
-            case MOVE_SUPERPOWER:
-            case MOVE_TICKLE:
-            case MOVE_BULK_UP:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_DEF, statValue) == FALSE)
-                    effect++;
+            case -4:
+                if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, -3)
+                    || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, -2) == FALSE)
+                effect++;
                 break;
-            // Sp. Atk and Sp. Def
-            case MOVE_CALM_MIND:
-                if (MultiStatSameBoost(gActiveBattler, BIT_SPATK | BIT_SPDEF, statValue) == FALSE)
-                    effect++;
-                break;
-            // Attack and Speed
-            case MOVE_DRAGON_DANCE:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, statValue) == FALSE)
-                    effect++;
-                break;
-            // Special case for Shift Gear
-            case MOVE_SHIFT_GEAR:
-                switch (statValue)
-                {
-                case 4:
-                    if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, 3)
-                        || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, 2) == FALSE)
-                    effect++;
-                    break;
-                case -4:
-                    if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, -3)
-                        || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, -2) == FALSE)
-                    effect++;
-                    break;
-                case 2:
-                case -2:
-                    if ((CanChangeStat(gActiveBattler, STAT_SPEED, statValue)))
-                    effect++;
-                    break;
-                }
-                break;
-            // Attack and Accuracy
-            case MOVE_HONE_CLAWS:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_ACC, statValue) == FALSE)
-                    effect++;
-                break;
-            // Sp. Atk, Sp. Def & Speed
-            case MOVE_QUIVER_DANCE:
-                if (MultiStatSameBoost(gActiveBattler, BIT_SPEED | BIT_SPATK | BIT_SPDEF, statValue) == FALSE)
-                    effect++;
-                break;
-            // Attack and Sp. Atk
-            case MOVE_MEMENTO:
-            case MOVE_NOBLE_ROAR:
-            case MOVE_PARTING_SHOT:
-            case MOVE_TEARFUL_LOOK:
-            case MOVE_WORK_UP:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPATK, statValue) == FALSE)
-                    effect++;
-                break;
-            // Close Combat/Dragon Ascent
-            case MOVE_CLOSE_COMBAT:
-            case MOVE_DRAGON_ASCENT:
-                if (MultiStatSameBoost(gActiveBattler, BIT_DEF | BIT_SPDEF, statValue) == FALSE)
-                    effect++;
-                break;
-            // Revelation Dance
-            case MOVE_REVELATION_DANCE:
-                if ((statId == STAT_ATK && MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_DEF | BIT_SPEED, statValue) == FALSE)
-                    || (statId == STAT_SPATK && MultiStatSameBoost(gActiveBattler, BIT_SPEED | BIT_SPATK | BIT_SPDEF, statValue) == FALSE))
-                    effect++;
-                break;
-            // Venom Drench
-            case MOVE_VENOM_DRENCH:
-                if (MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED | BIT_SPATK, statValue) == FALSE)
-                    effect++;
+            case 2:
+            case -2:
+                if ((CanChangeStat(gActiveBattler, STAT_SPEED, statValue)))
+                effect++;
                 break;
             }
-            if (effect)
-                gBattleScripting.statBoostSplitStrings = 1;
+        }
+        else
+            if (MultiStatSameBoost(gActiveBattler, (flags & 0xFF), statValue) == FALSE) effect++;
+
+        if (effect)
+        {
+            gBattleScripting.statBoostSplitStrings = 1;
+            gBattleScripting.statBoostTracker = 0;
         }
     }
 
@@ -8223,9 +8159,6 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         else
             statValue--;
     }
-
-    if (gBattleScripting.statBoostSplitStrings)
-        gBattleScripting.statBoostTracker = 0;
 
     switch (gBattleScripting.statBoostTracker)
     {
@@ -8310,8 +8243,15 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         break;
     default:
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
-        gBattleScripting.statBoostStringIndex = 2;
+        if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE && gBattleScripting.statBoostSplitStrings)
+            return STAT_CHANGE_DIDNT_WORK;
+        else
+        {
+            PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
+            gBattleScripting.statBoostStringIndex = 2;
+            if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE)
+                gBattleScripting.statBoostFailure = 1;
+        }
         break;
     }
 
@@ -8321,10 +8261,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = justSpace;
         gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_EOS;
 
-        if(CanChangeStat(gActiveBattler, statId, statValue) == FALSE)
-            gBattleScripting.statBoostFailure = 1;
-        
-        gBattleScripting.statBoostTracker = gBattleScripting.statBoostCounter = gBattleScripting.statBoostStringIndex = 0;
+        gBattleScripting.statBoostTracker = gBattleScripting.statBoostCounter = 0;
     }
     if (statValue <= -1) // Stat decrease.
     {
@@ -8421,70 +8358,61 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         else // try to decrease
         {
             gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-            index = 1;
             if (statValue == -2)
             {
-                gBattleTextBuff2[index] = B_BUFF_STRING;
+                gBattleTextBuff2[++index] = B_BUFF_STRING;
                 gBattleTextBuff2[++index] = STRINGID_STATHARSHLY;
                 gBattleTextBuff2[++index] = STRINGID_STATHARSHLY >> 8;
-                index++;
             }
             else if (statValue <= -3)
             {
-                gBattleTextBuff2[index] = B_BUFF_STRING;
+                gBattleTextBuff2[++index] = B_BUFF_STRING;
                 gBattleTextBuff2[++index] = STRINGID_SEVERELY & 0xFF;
                 gBattleTextBuff2[++index] = STRINGID_SEVERELY >> 8;
-                index++;
             }
-            gBattleTextBuff2[index] = B_BUFF_STRING;
+            gBattleTextBuff2[++index] = B_BUFF_STRING;
             gBattleTextBuff2[++index] = STRINGID_STATFELL;
             gBattleTextBuff2[++index] = STRINGID_STATFELL >> 8;
             gBattleTextBuff2[++index] = B_BUFF_EOS;
-
-            if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings == 0)
-                gBattleCommunication[MULTISTRING_CHOOSER] = 2;
-            else if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings)
-                gBattleScripting.statBoostTracker = 1;
-            else
-                gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
         }
     }
     else // stat increase
     {
         gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-        index = 1;
         if (statValue == 2)
         {
-            gBattleTextBuff2[index] = B_BUFF_STRING;
+            gBattleTextBuff2[++index] = B_BUFF_STRING;
             gBattleTextBuff2[++index] = STRINGID_STATSHARPLY;
             gBattleTextBuff2[++index] = STRINGID_STATSHARPLY >> 8;
-            index++;
         }
         else if (statValue >= 3)
         {
-            gBattleTextBuff2[index] = B_BUFF_STRING;
+            gBattleTextBuff2[++index] = B_BUFF_STRING;
             gBattleTextBuff2[++index] = STRINGID_DRASTICALLY & 0xFF;
             gBattleTextBuff2[++index] = STRINGID_DRASTICALLY >> 8;
-            index++;
         }
-        gBattleTextBuff2[index] = B_BUFF_STRING;
+        gBattleTextBuff2[++index] = B_BUFF_STRING;
         gBattleTextBuff2[++index] = STRINGID_STATROSE;
         gBattleTextBuff2[++index] = STRINGID_STATROSE >> 8;
         gBattleTextBuff2[++index] = B_BUFF_EOS;
-
-        if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings == 0)
-            gBattleCommunication[MULTISTRING_CHOOSER] = 2;
-        else if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings)
-            gBattleScripting.statBoostTracker = 1;
-        else
-            gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
     }
+
+    if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings == 0)
+    {
+        gBattleScripting.statBoostFailure = 0;
+        gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+    }
+    else
+        gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
 
     gBattleMons[gActiveBattler].statStages[statId] += statValue;
     if (gBattleMons[gActiveBattler].statStages[statId] < 0)
         gBattleMons[gActiveBattler].statStages[statId] = 0;
     if (gBattleMons[gActiveBattler].statStages[statId] > 0xC)
         gBattleMons[gActiveBattler].statStages[statId] = 0xC;
+
+    if (gBattleTextBuff1[gBattleScripting.statBoostStringIndex] != B_BUFF_EOS)
+        return 1;
 
     if (gBattleCommunication[MULTISTRING_CHOOSER] == 2 && flags & STAT_CHANGE_BS_PTR)
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -11139,7 +11067,7 @@ static void atkE6_docastformchangeanimation(void)
     gActiveBattler = gBattleScripting.battler;
     if (gBattleMons[gActiveBattler].status2 & STATUS2_SUBSTITUTE)
         *(&gBattleStruct->formToChangeInto) |= 0x80;
-    
+
         if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT)
         mon = &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]];
     else
