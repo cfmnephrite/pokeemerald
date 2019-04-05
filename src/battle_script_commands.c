@@ -8209,6 +8209,11 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                 gBattleTextBuff1[gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
+            else if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE && !(gBattleScripting.statBoostFailure))
+            {
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
+            }
             else
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
@@ -8228,13 +8233,21 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             }
             else if (CanChangeStat(gActiveBattler, statId, statValue) == FALSE && !(gBattleScripting.statBoostFailure))
             {
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 3] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 2] = newlineAnd;
+                if (gBattleScripting.statBoostStringIndex == 4)
+                    gBattleScripting.statBoostStringIndex -= 2;
+                else
+                {
+                    gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 3] = B_BUFF_PUNCTUATION;
+                    gBattleTextBuff1[gBattleScripting.statBoostStringIndex - 2] = newlineAnd;
+                }
             }
             else
             {
-                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
+                if (gBattleScripting.statBoostStringIndex == 6)
+                {
+                    gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
+                    gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
+                }
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
@@ -8258,7 +8271,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     if (gBattleScripting.statBoostCounter == gBattleScripting.statBoostTracker)
     {
         gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = justSpace;
+        gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = (gBattleScripting.statBoostStringIndex == 4 ? newline : justSpace);
         gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_EOS;
 
         gBattleScripting.statBoostTracker = gBattleScripting.statBoostCounter = 0;
