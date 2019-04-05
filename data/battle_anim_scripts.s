@@ -1591,6 +1591,30 @@ Move_XSCISSOR:
 	end
 	
 Move_BUG_BUZZ:
+	loadspritegfx ANIM_TAG_JAGGED_MUSIC_NOTE
+	loadspritegfx ANIM_TAG_THIN_RING
+	monbg ANIM_DEF_PARTNER
+	call SetBugBg
+	createvisualtask sub_8106D90, 2, 0
+	createsprite gBattleAnimSpriteTemplate_8593898, ANIM_ATTACKER, 3, 0, 0, 0, 0, 31, 8
+	playsewithpan SE_W253, SOUND_PAN_ATTACKER
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, 29, -12, 0
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, -12, -29, 1
+	delay 16
+	createvisualtask sub_8106D90, 2, 0
+	createsprite gBattleAnimSpriteTemplate_8593898, ANIM_ATTACKER, 3, 0, 0, 0, 0, 31, 8
+	playsewithpan SE_W253, SOUND_PAN_ATTACKER
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, 12, -29, 1
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, -29, -12, 0
+	delay 16
+	createvisualtask sub_8106D90, 2, 0
+	createsprite gBattleAnimSpriteTemplate_8593898, ANIM_ATTACKER, 3, 0, 0, 0, 0, 31, 8
+	playsewithpan SE_W253, SOUND_PAN_ATTACKER
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, 24, -24, 1
+	createsprite gBattleAnimSpriteTemplate_8593BB8, ANIM_ATTACKER, 2, 0, -24, -24, 0
+	waitforvisualfinish
+	clearmonbg ANIM_DEF_PARTNER
+	call UnsetBugBg
 	end
 	
 Move_DRAGON_PULSE:
@@ -2004,6 +2028,17 @@ Move_LEAF_STORM:
 	end
 	
 Move_POWER_WHIP:
+	loadspritegfx ANIM_TAG_WHIP_HIT
+	playsewithpan SE_W026, SOUND_PAN_ATTACKER
+	createsprite gHorizontalLungeSpriteTemplate, ANIM_ATTACKER, 2, 4, 10
+	delay 6
+	playsewithpan SE_W010, SOUND_PAN_TARGET
+	createsprite gVineWhipSpriteTemplate, ANIM_TARGET, 2, 0, 0
+	delay 6
+	call SetImpactBackground
+	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 8, 1
+	restorebg
+	waitbgfadein
 	end
 	
 Move_ROCK_WRECKER:
@@ -3212,6 +3247,25 @@ Ember1:
 	delay 4
 	return
 
+SetImpactBackground:
+	delay 2
+	createvisualtask AnimTask_IsContest, 2
+	jumprettrue SetImpactContestsBG
+	createvisualtask AnimTask_IsTargetPlayerSide, 2
+	jumpretfalse SetImpactOpponentBG
+	jumprettrue SetImpactPlayerBG
+SetImpactBackgroundRet:
+	return
+SetImpactOpponentBG:
+	changebg BG_IMPACT_OPPONENT
+	goto SetImpactBackgroundRet
+SetImpactPlayerBG:
+	changebg BG_IMPACT_PLAYER
+	goto SetImpactBackgroundRet
+SetImpactContestsBG:
+	changebg BG_IMPACT_CONTESTS
+	goto SetImpactBackgroundRet
+
 Move_MEGA_PUNCH:
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
@@ -3236,24 +3290,6 @@ Move_MEGA_PUNCH:
 	restorebg
 	waitbgfadein
 	end
-SetImpactBackground:
-	delay 2
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue SetImpactContestsBG
-	createvisualtask AnimTask_IsTargetPlayerSide, 2
-	jumpretfalse SetImpactOpponentBG
-	jumprettrue SetImpactPlayerBG
-SetImpactBackgroundRet:
-	return
-SetImpactOpponentBG:
-	changebg BG_IMPACT_OPPONENT
-	goto SetImpactBackgroundRet
-SetImpactPlayerBG:
-	changebg BG_IMPACT_PLAYER
-	goto SetImpactBackgroundRet
-SetImpactContestsBG:
-	changebg BG_IMPACT_CONTESTS
-	goto SetImpactBackgroundRet
 
 Move_MEGA_KICK:
 	loadspritegfx ANIM_TAG_IMPACT
@@ -11409,6 +11445,32 @@ Move_ROCK_TOMB:
 	createvisualtask sub_81162A4, 2, 2, 0, 10, 1
 	waitforvisualfinish
 	end
+	
+SetBugBg:
+	createvisualtask sub_8116664, 10, 1, 0, 0, 4, RGB_BLACK
+	createvisualtask AnimTask_GetAttackerSide, 2
+	jumprettrue SetBugBgPlayer
+	fadetobg BG_BUG_OPPONENT
+	waitbgfadeout
+	createvisualtask sub_8117660, 5, 1536, 0, 0, -1
+	goto SetBugBgFade
+SetBugBgPlayer:
+	fadetobg BG_BUG_PLAYER
+	waitbgfadeout
+	createvisualtask sub_8117660, 5, -1536, 0, 0, -1
+SetBugBgFade:
+	delay 0
+	createvisualtask sub_8116620, 10, 1, 0, 4, 4, RGB_BLACK
+	waitbgfadein
+	return
+	
+UnsetBugBg:
+	restorebg
+	waitbgfadeout
+	createvisualtask sub_8116664, 10, 1, 0, 4, 0, RGB_BLACK
+	setarg 7, -1
+	waitbgfadein
+	return
 
 Move_SILVER_WIND:
 	loadspritegfx ANIM_TAG_SPARKLE_6
@@ -11418,16 +11480,7 @@ Move_SILVER_WIND:
 	monbg ANIM_DEF_PARTNER
 	monbgprio_29
 	delay 0
-	createvisualtask sub_8116664, 10, 1, 0, 0, 4, RGB_BLACK
-	createvisualtask AnimTask_GetTargetSide, 2
-	jumprettrue SilverWindOnPlayer
-	fadetobg BG_BUG_OPPONENT
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, 1536, 0, 0, -1
-SilverWindContinue:
-	delay 0
-	createvisualtask sub_8116620, 10, 1, 0, 4, 4, RGB_BLACK
-	waitbgfadein
+	call SetBugBg
 	createsprite gUnknown_08592830, ANIM_TARGET, 66, -32, 16, 0, 6, 2, 3, 1
 	createsprite gUnknown_08592830, ANIM_TARGET, 66, -8, 18, 64, 3, 2, 2, 1
 	createsprite gUnknown_08592830, ANIM_ATTACKER, 120, -24, 18, 90, 5, 1, 2, 1
@@ -11455,17 +11508,8 @@ SilverWindContinue:
 	playsewithpan SE_W016B, SOUND_PAN_TARGET
 	clearmonbg ANIM_DEF_PARTNER
 	delay 0
-	restorebg
-	waitbgfadeout
-	createvisualtask sub_8116664, 10, 1, 0, 4, 0, RGB_BLACK
-	setarg 7, -1
-	waitbgfadein
+	call UnsetBugBg
 	end
-SilverWindOnPlayer:
-	fadetobg BG_BUG_PLAYER
-	waitbgfadeout
-	createvisualtask sub_8117660, 5, -1536, 0, 0, -1
-	goto SilverWindContinue
 
 Move_SNATCH:
 	playsewithpan SE_W036, SOUND_PAN_ATTACKER

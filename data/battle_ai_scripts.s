@@ -233,7 +233,6 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_BESTOW, AI_CBM_Bestow
 	if_effect EFFECT_PSYCHO_SHIFT, AI_CBM_PsychicShift
 	if_effect EFFECT_DEFOG, AI_CBM_Defog
-	if_effect EFFECT_SYNCHRONOISE, AI_CBM_Synchronoise
 	if_effect EFFECT_AUTOTOMIZE, AI_CBM_SpeedUp
 	if_effect EFFECT_TOXIC_THREAD, AI_CBM_ToxicThread
 	if_effect EFFECT_VENOM_DRENCH, AI_CBM_VenomDrench
@@ -243,6 +242,7 @@ AI_CheckBadMove_CheckEffect: @ 82DC045
 	if_effect EFFECT_SHELL_SMASH, AI_CBM_ShellSmash
 	if_effect EFFECT_LAST_RESORT, AI_CBM_LastResort
 	if_effect EFFECT_BELCH, AI_CBM_Belch
+	if_effect EFFECT_DO_NOTHING, Score_Minus8
 	end
 	
 AI_CBM_Belch:
@@ -279,10 +279,6 @@ AI_CBM_VenomDrench:
 AI_CBM_ToxicThread:
 	if_stat_level_not_equal AI_TARGET, STAT_SPEED, 12, AI_Ret
 	goto AI_CBM_Toxic
-	
-AI_CBM_Synchronoise:
-	if_share_type AI_USER, AI_TARGET AI_Ret
-	goto Score_Minus10
 	
 AI_CBM_Defog:
 	if_side_affecting AI_USER, SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB, AI_Ret
@@ -2043,7 +2039,7 @@ AI_CV_Encore_EncouragedMovesToEncore:
     .byte EFFECT_POISON
     .byte EFFECT_PARALYSE
     .byte EFFECT_LEECH_SEED
-    .byte EFFECT_SPLASH
+    .byte EFFECT_DO_NOTHING
     .byte EFFECT_ATTACK_UP_2
     .byte EFFECT_ENCORE
     .byte EFFECT_CONVERSION_2
