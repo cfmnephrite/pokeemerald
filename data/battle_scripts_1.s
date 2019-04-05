@@ -503,12 +503,13 @@ BattleScript_EffectPartingShot::
 	attackstring
 	ppreduce
 	jumpifstat BS_TARGET, CMP_GREATER_THAN, STAT_ATK, 0x0, BattleScript_EffectPartingShotTryAtk
-	jumpifstat BS_TARGET, CMP_EQUAL, STAT_SPATK, 0x0, BattleScript_CantLowerMultipleStats
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_SPATK, 0x0, BattleScript_EffectPartingShotSkipAnim
 BattleScript_EffectPartingShotTryAtk:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
 	setbyte sSTAT_ANIM_PLAYED, FALSE
+BattleScript_EffectPartingShotSkipAnim::
 	setbyte sSTAT_BOOST_TRACKER, 0x20
 	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_SPATK, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
 	playstatchangeanimation BS_TARGET, BIT_ATK, ATK48_STAT_NEGATIVE
@@ -1097,13 +1098,13 @@ BattleScript_ShiftGearDoMoveAnim:
 	setbyte sSTAT_ANIM_PLAYED, FALSE
 BattleScript_ShiftGearSkipMoveAnim:
 	setbyte sSTAT_BOOST_TRACKER, 0x20
-	playstatchangeanimation BS_ATTACKER, BIT_SPEED | BIT_ATK, ATK48_STAT_BY_TWO
-	setstatchanger STAT_SPEED, 2, FALSE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS, BattleScript_ShiftGearTryAtk
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPEED, ATK48_STAT_BY_TWO
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS, BattleScript_ShiftGearTrySpeed
 	printfromtable gStatUpStringIds
 	waitmessage 0x40
-BattleScript_ShiftGearTryAtk:
-	setstatchanger STAT_ATK, 1, FALSE
+BattleScript_ShiftGearTrySpeed:
+	setstatchanger STAT_SPEED, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_ShiftGearEnd
 	printfromtable gStatUpStringIds
 	waitmessage 0x40

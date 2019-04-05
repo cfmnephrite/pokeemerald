@@ -162,14 +162,14 @@
 #define ATK4F_DONT_CHECK_STATUSES   0x80
 
 // define stats in bit space
-#define BIT_HP                      0x1
-#define BIT_ATK                     0x2
-#define BIT_DEF                     0x4
-#define BIT_SPEED                   0x8
-#define BIT_SPATK                   0x10
-#define BIT_SPDEF                   0x20
-#define BIT_ACC                     0x40
-#define BIT_EVASION                 0x80
+#define BIT_HP                              0x1
+#define BIT_ATK                             0x2
+#define BIT_DEF                             0x4
+#define BIT_SPEED                           0x8
+#define BIT_SPATK                           0x10
+#define BIT_SPDEF                           0x20
+#define BIT_ACC                             0x40
+#define BIT_EVASION                         0x80
 
 // statchange defines
 #define STAT_CHANGE_BS_PTR                  0x100

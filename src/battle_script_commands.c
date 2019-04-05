@@ -8116,27 +8116,23 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     }
 
     // Check if different stats are going to be raised/lowered by different amounts, thus determining how many strings to use
-    if (flags & STAT_CHANGE_AFFECT_MULTIPLE_STATS && !(statValue == 1 || statValue == -1))
+    if (flags & STAT_CHANGE_AFFECT_MULTIPLE_STATS && (gCurrentMove == MOVE_SHIFT_GEAR || !(statValue == 1 || statValue == -1)))
     {
         u8 effect = 0;
         flags &= ~(STAT_CHANGE_AFFECT_MULTIPLE_STATS);
+        // Shift Gear has a special place as the only move that can always raise separate stats by different stages
         if (gCurrentMove == MOVE_SHIFT_GEAR)
         {
             switch (statValue)
             {
-            case 4:
-                if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, 3)
-                    || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, 2) == FALSE)
-                effect++;
-                break;
-            case -4:
-                if (CanChangeStat(gActiveBattler, STAT_SPEED, statValue) || CanChangeStat(gActiveBattler, STAT_SPEED, -3)
-                    || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, -2) == FALSE)
-                effect++;
-                break;
             case 2:
-            case -2:
-                if ((CanChangeStat(gActiveBattler, STAT_SPEED, statValue)))
+                if (CanChangeStat(gActiveBattler, STAT_SPEED, 4) || CanChangeStat(gActiveBattler, STAT_SPEED, 3)
+                    || MultiStatSameBoost(gActiveBattler, BIT_ATK | BIT_SPEED, statValue) == FALSE)
+                effect++;
+                break;
+            case 1:
+            case -1:
+                if (CanChangeStat(gActiveBattler, STAT_SPEED, 2 * statValue))
                 effect++;
                 break;
             }
@@ -8411,10 +8407,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     }
 
     if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings == 0)
-    {
-        gBattleScripting.statBoostFailure = 0;
         gBattleCommunication[MULTISTRING_CHOOSER] = 2;
-    }
     else
         gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
 
