@@ -164,6 +164,7 @@
 // statchange defines
 #define STAT_CHANGE_BS_PTR                  0x1
 #define STAT_CHANGE_NOT_PROTECT_AFFECTED    0x20
+#define STAT_CHANGE_RAISE_MULTIPLE_STATS    0x40
 
 // atk48
 #define ATK48_STAT_NEGATIVE         0x1

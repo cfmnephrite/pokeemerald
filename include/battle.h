@@ -656,8 +656,8 @@ struct BattleScripting
     u8 statBoostFailure:1;
     u8 statBoostCounter:3;
     u8 statBoostTracker:4;
-    u8 statBoostStringIndex:7;
     u8 statBoostSplitStrings:1;
+    u8 statBoostStringIndex:7;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;

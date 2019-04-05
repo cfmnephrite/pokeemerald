@@ -6763,6 +6763,35 @@ void UndoMegaEvolution(u8 monId)
     }
 }
 
+bool8 MultiStatSameBoost(u8 battlerId, u8 statBits, s8 amount)
+{
+    u8 stats, fails, i;
+    s8 increment = -1;
+    if (amount < 0)
+        increment = 1;
+
+    do
+    {
+        for (i = 1; i < 8; i++)
+        {
+            if (statBits & gBitTable[i])
+            {
+                stats++;
+                if (CanChangeStat(battlerId, i, amount) == FALSE)
+                    fails++;
+            }
+        }
+        if (stats == fails)
+            amount += increment;
+        else if (fails == 0)
+            return TRUE;
+        else
+            return FALSE;
+    } while (amount != 0);
+
+    return TRUE;
+}
+
 bool8 CanChangeStat(u8 battlerId, u8 statId, s8 amount)
 {
     if ((gBattleMons[battlerId].statStages[statId] + amount) < 0 || (gBattleMons[battlerId].statStages[statId] + amount) > 12)
