@@ -108,8 +108,8 @@ static const u8 sText_PkmnIsParalysed[] = _("{B_ATK_NAME_WITH_PREFIX} is paralys
 static const u8 sText_PkmnIsAlreadyParalysed[] = _("{B_DEF_NAME_WITH_PREFIX} is\nalready paralysed!");
 static const u8 sText_PkmnHealedParalysis[] = _("{B_DEF_NAME_WITH_PREFIX} was\nhealed of paralysis!");
 static const u8 sText_PkmnDreamEaten[] = _("{B_DEF_NAME_WITH_PREFIX}'s\ndream was eaten!");
-static const u8 sText_StatsWontIncrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}won't go higher!");
-static const u8 sText_StatsWontDecrease[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}won't go lower!");
+static const u8 sText_StatsWontIncrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}won't go higher!");
+static const u8 sText_StatsWontDecrease[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}won't go lower!");
 static const u8 sText_TeamStoppedWorking[] = _("Your team's {B_BUFF1}\nstopped working!");
 static const u8 sText_FoeStoppedWorking[] = _("The foe's {B_BUFF1}\nstopped working!");
 static const u8 sText_PkmnIsConfused[] = _("{B_ATK_NAME_WITH_PREFIX} is\nconfused!");
@@ -303,13 +303,13 @@ static const u8 sText_StatSharply[] = _("sharply ");
 const u8 gText_StatRose[] = _("rose!");
 static const u8 sText_StatHarshly[] = _("harshly ");
 static const u8 sText_StatFell[] = _("fell!");
-static const u8 sText_PkmnsStatChanged[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
-const u8 gText_PkmnsStatChanged2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
+static const u8 sText_PkmnsStatChanged[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}{B_BUFF2}");
+const u8 gText_PkmnsStatChanged2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}{B_BUFF2}");
 static const u8 sText_UsingXTheYOfZN[] = _("Using {B_LAST_ITEM}, the {B_BUFF1}\nof {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
-static const u8 sText_PkmnsStatChanged3[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
-static const u8 sText_PkmnsStatChanged4[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
-static const u8 sText_StatsWontIncrease2[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}won't go higher!");
-static const u8 sText_StatsWontDecrease2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}won't go lower!");
+static const u8 sText_PkmnsStatChanged3[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}{B_BUFF2}");
+static const u8 sText_PkmnsStatChanged4[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}{B_BUFF2}");
+static const u8 sText_StatsWontIncrease2[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}won't go higher!");
+static const u8 sText_StatsWontDecrease2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}won't go lower!");
 static const u8 sText_CriticalHit[] = _("A critical hit!");
 static const u8 sText_OneHitKO[] = _("It's a one-hit KO!");
 static const u8 sText_123Poof[] = _("{PAUSE 32}1, {PAUSE 15}2, and{PAUSE 15}… {PAUSE 15}… {PAUSE 15}… {PAUSE 15}{PLAY_SE 0x0038}Poof!\p");
@@ -438,7 +438,7 @@ static const u8 sText_AllStats[] = _("stats");
 static const u8 sText_CommaSpace[] = _(", ");
 static const u8 sText_CommaNewline[] = _(",\n");
 static const u8 sText_OxfordCommaAnd[] = _(", and ");
-static const u8 sText_SpaceAnd[] = _(" and ");
+static const u8 sText_CommaNewlineAnd[] = _(",\nand ");
 static const u8 sText_NewlineAnd[] = _("\nand ");
 static const u8 sText_Newline[] = _("\n");
 static const u8 sText_JustSpace[] = _(" ");
@@ -446,7 +446,7 @@ static const u8 sText_JustSpace[] = _(" ");
 const u8 * const gPunctuationTable[] =
 {
     sText_CommaSpace, sText_CommaNewline,
-    sText_OxfordCommaAnd, sText_SpaceAnd,
+    sText_OxfordCommaAnd, sText_CommaNewlineAnd,
     sText_NewlineAnd, sText_Newline,
     sText_JustSpace
 };
@@ -627,7 +627,7 @@ static const u8 sText_HealingWishHealed[] = _("{B_ATK_NAME_WITH_PREFIX} regained
 static const u8 sText_LunarDanceCameTrue[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin mystical moonlight!");
 static const u8 sText_CursedBodyDisabled[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} was disabled\nby {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!");
 static const u8 sText_AttackerAquiredAbility[] = _("{B_ATK_NAME_WITH_PREFIX} acquired {B_LAST_ABILITY}!");
-static const u8 sText_TargetStatWontGoHigher[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\nwon't go higher!");
+static const u8 sText_TargetStatWontGoHigher[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF3}\nwon't go higher!");
 static const u8 sText_PkmnMoveBouncedViaAbility[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was\nbounced back by {B_DEF_NAME_WITH_PREFIX}'s\l{B_DEF_ABILITY}!");
 static const u8 sText_ImposterTransform[] = _("{B_ATK_NAME_WITH_PREFIX} transformed into\n{B_DEF_NAME_WITH_PREFIX} using {B_LAST_ABILITY}!");
 static const u8 sText_NotDoneYet[] = _("This move effect is not done yet!\p");

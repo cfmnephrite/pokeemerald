@@ -85,7 +85,7 @@
 #define commaSpace                      0
 #define commaNewline                    1
 #define oxfordCommaAnd                  2
-#define spaceAnd                        3
+#define commaNewlineAnd                 3
 #define newlineAnd                      4
 #define newline                         5
 #define justSpace                       6
