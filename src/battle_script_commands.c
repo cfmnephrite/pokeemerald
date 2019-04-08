@@ -8582,7 +8582,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     }
 
     if (gBattleScripting.statBoostFailure && gBattleScripting.statBoostSplitStrings == 0)
+    {
         gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+        gBattleTextBuff2[1] = B_BUFF_PUNCTUATION;
+        gBattleTextBuff2[2] = (gBattleScripting.statBoostStringIndex == 3 ? newline : justSpace);
+        gBattleTextBuff2[3] = B_BUFF_EOS;
+    }
     else
         gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == gActiveBattler);
 
