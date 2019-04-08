@@ -119,8 +119,8 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSpite
 	.4byte BattleScript_EffectFalseSwipe
 	.4byte BattleScript_EffectHealBell
-	.4byte BattleScript_EffectUnused103
-	.4byte BattleScript_EffectUnused104
+	.4byte BattleScript_EffectAllStatsUp2
+	.4byte BattleScript_EffectPsychoBoost
 	.4byte BattleScript_EffectThief
 	.4byte BattleScript_EffectMeanLook
 	.4byte BattleScript_EffectNightmare
@@ -1726,11 +1726,11 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectAllStatsUp2:
+BattleScript_EffectPsychoBoost:
 BattleScript_EffectUnused38:
 BattleScript_EffectUnused66:
 BattleScript_EffectUnused67:
-BattleScript_EffectUnused103:
-BattleScript_EffectUnused104:
 BattleScript_EffectAcrobatics:
 BattleScript_EffectAeroblast:
 BattleScript_EffectAlwaysCrit:
@@ -5142,10 +5142,19 @@ BattleScript_AllStatsUp::
 	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPDEF, 0xC, BattleScript_AllStatsUpRet
 BattleScript_AllStatsUpAtk::
 	setbyte sSTAT_ANIM_PLAYED, FALSE
-    setbyte sSTAT_BOOST_TRACKER, 0x4
+	setbyte sSTAT_BOOST_TRACKER, 0x5
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_SPEED | BIT_SPATK | BIT_SPDEF, 0x0
 	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK | BIT_SPDEF | BIT_SPEED, BattleScript_AllStatsUpDef
+	setbyte sSTAT_BOOST_TRACKER, 0x4
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK | BIT_SPDEF, BattleScript_AllStatsUpDef
+	setbyte sSTAT_BOOST_TRACKER, 0x3
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK, BattleScript_AllStatsUpDef
+	setbyte sSTAT_BOOST_TRACKER, 0x2
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF, BattleScript_AllStatsUpDef
 	printfromtable gStatUpStringIds
 	waitmessage 0x40
 BattleScript_AllStatsUpDef::

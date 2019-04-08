@@ -89,6 +89,7 @@
 #define newlineAnd                      4
 #define newline                         5
 #define justSpace                       6
+#define newPara                         7
 
 #define PREPARE_FLAVOR_BUFFER(textVar, flavorId)                            \
 {                                                                           \
