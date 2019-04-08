@@ -107,8 +107,8 @@ static const u8 sText_PkmnIsParalysed[] = _("{B_ATK_NAME_WITH_PREFIX} is paralys
 static const u8 sText_PkmnIsAlreadyParalysed[] = _("{B_DEF_NAME_WITH_PREFIX} is\nalready paralysed!");
 static const u8 sText_PkmnHealedParalysis[] = _("{B_DEF_NAME_WITH_PREFIX} was\nhealed of paralysis!");
 static const u8 sText_PkmnDreamEaten[] = _("{B_DEF_NAME_WITH_PREFIX}'s\ndream was eaten!");
-static const u8 sText_StatsWontIncrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}won't go higher!");
-static const u8 sText_StatsWontDecrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}won't go lower!");
+static const u8 sText_StatsWontIncrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}won't go higher!");
+static const u8 sText_StatsWontDecrease[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}won't go lower!");
 static const u8 sText_TeamStoppedWorking[] = _("Your team's {B_BUFF1}\nstopped working!");
 static const u8 sText_FoeStoppedWorking[] = _("The foe's {B_BUFF1}\nstopped working!");
 static const u8 sText_PkmnIsConfused[] = _("{B_ATK_NAME_WITH_PREFIX} is\nconfused!");
@@ -307,8 +307,8 @@ const u8 gText_PkmnsStatChanged2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_B
 static const u8 sText_UsingXTheYOfZN[] = _("Using {B_LAST_ITEM}, the {B_BUFF1}\nof {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
 static const u8 sText_PkmnsStatChanged3[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
 static const u8 sText_PkmnsStatChanged4[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}");
-static const u8 sText_StatsWontIncrease2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}won't go higher!");
-static const u8 sText_StatsWontDecrease2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}won't go lower!");
+static const u8 sText_StatsWontIncrease2[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}won't go higher!");
+static const u8 sText_StatsWontDecrease2[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}{B_BUFF2}won't go lower!");
 static const u8 sText_CriticalHit[] = _("A critical hit!");
 static const u8 sText_OneHitKO[] = _("It's a one-hit KO!");
 static const u8 sText_123Poof[] = _("{PAUSE 32}1, {PAUSE 15}2, and{PAUSE 15}… {PAUSE 15}… {PAUSE 15}… {PAUSE 15}{PLAY_SE 0x0038}Poof!\p");
@@ -423,37 +423,40 @@ static const u8 sText_ExclamationMark2[] = _("!");
 static const u8 sText_ExclamationMark3[] = _("!");
 static const u8 sText_ExclamationMark4[] = _("!");
 static const u8 sText_ExclamationMark5[] = _("!");
-static const u8 sText_HP2[] = _("HP");
-static const u8 sText_Attack2[] = _("Attack");
-static const u8 sText_Defense2[] = _("Defence");
-const u8 gText_Speed[] = _("Speed");
-static const u8 sText_SpAtk2[] = _("Sp. Attack");
-static const u8 sText_SpDef2[] = _("Sp. Defence");
+static const u8 sText_HP[] = _("HP");
+static const u8 sText_Attack[] = _("Attack");
+static const u8 sText_Defence[] = _("Defence");
+static const u8 sText_Speed[] = _("Speed");
+static const u8 sText_SpAttack[] = _("Sp. Attack");
+static const u8 sText_SpDefence[] = _("Sp. Defence");
 static const u8 sText_Accuracy[] = _("Accuracy");
 static const u8 sText_Evasiveness[] = _("Evasiveness");
+static const u8 sText_AllStats[] = _("stats");
 
 // Stylish punctuation
 static const u8 sText_CommaSpace[] = _(", ");
 static const u8 sText_CommaNewline[] = _(",\n");
 static const u8 sText_OxfordCommaAnd[] = _(", and ");
-static const u8 sText_SpaceAnd[] = _(" and ");
+static const u8 sText_CommaNewlineAnd[] = _(",\nand ");
 static const u8 sText_NewlineAnd[] = _("\nand ");
 static const u8 sText_Newline[] = _("\n");
 static const u8 sText_JustSpace[] = _(" ");
+static const u8 sText_NewPara[] = _("\l");
 
 const u8 * const gPunctuationTable[] =
 {
     sText_CommaSpace, sText_CommaNewline,
-    sText_OxfordCommaAnd, sText_SpaceAnd,
+    sText_OxfordCommaAnd, sText_CommaNewlineAnd,
     sText_NewlineAnd, sText_Newline,
-    sText_JustSpace
+    sText_JustSpace, sText_NewPara
 };
 
 const u8 * const gStatNamesTable[] =
 {
-    sText_HP2, sText_Attack2, sText_Defense2,
-    gText_Speed, sText_SpAtk2, sText_SpDef2,
-    sText_Accuracy, sText_Evasiveness
+    sText_HP, sText_Attack, sText_Defence,
+    sText_Speed, sText_SpAttack, sText_SpDefence,
+    sText_Accuracy, sText_Evasiveness,
+    sText_AllStats
 };
 
 static const u8 sText_PokeblockWasTooSpicy[] = _("was too spicy!");
@@ -1534,19 +1537,6 @@ const u8 gText_BattleSwitchWhich2[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNA
 const u8 gText_BattleSwitchWhich3[] = _("{UP_ARROW}");
 const u8 gText_BattleSwitchWhich4[] = _("{ESCAPE 4}");
 const u8 gText_BattleSwitchWhich5[] = _("-");
-
-const u8 sText_HP[] = _("HP");
-const u8 gText_Attack[] = _("ATTACK");
-const u8 gText_Defense[] = _("DEFENSE");
-const u8 gText_SpAtk[] = _("SP. ATK");
-const u8 gText_SpDef[] = _("SP. DEF");
-
-const u8 * const gStatNamesTable2[] =
-{
-    sText_HP, gText_SpAtk, gText_Attack,
-    gText_SpDef, gText_Defense, gText_Speed
-};
-
 const u8 gText_SafariBalls[] = _("{HIGHLIGHT DARK_GREY}SAFARI BALLS");
 const u8 gText_SafariBallLeft[] = _("{HIGHLIGHT DARK_GREY}Left: $" "{HIGHLIGHT DARK_GREY}");
 const u8 gText_Sleep[] = _("sleep");

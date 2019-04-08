@@ -590,9 +590,9 @@ struct BattleScripting
     u8 effectChance:7;
     u8 abilityEffect:1;
     u8 atk49_state;
-    u8 statBoostFailure:1;
-    u8 statBoostCounter:3;
     u8 statBoostTracker:4;
+    u8 statBoostCounter:3;
+    u8 statBoostFailure:1;
     u8 statBoostStringIndex:7;
     u8 statBoostSplitStrings:1;
     u8 battler;
