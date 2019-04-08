@@ -8251,12 +8251,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                
+
                 if (gBattleScripting.statBoostStringIndex == 3)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
                 else
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
-                
+
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
@@ -8302,12 +8302,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else if (CanChangeStat(gActiveBattler, statId, statValue) || gBattleScripting.statBoostFailure)
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                
+
                 if (gBattleScripting.statBoostStringIndex == 3)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = commaNewline;
                 else
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = (gBattleTextBuff1[4] == commaSpace ? commaNewline : commaSpace);
-                
+
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
@@ -8331,14 +8331,14 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                
+
                 if (gBattleScripting.statBoostStringIndex == 3)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
                 else if (gBattleScripting.statBoostStringIndex == 7)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = (gBattleTextBuff1[4] == commaSpace ? commaNewlineAnd : oxfordCommaAnd);
                 else
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
-                
+
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
@@ -8384,12 +8384,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else if (CanChangeStat(gActiveBattler, statId, statValue) || gBattleScripting.statBoostFailure)
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                
+
                 if (gBattleScripting.statBoostStringIndex == 3)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = commaNewline;
                 else
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = (gBattleTextBuff1[4] == commaSpace ? commaNewline : commaSpace);
-                
+
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }
@@ -8413,14 +8413,14 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else
             {
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_PUNCTUATION;
-                
+
                 if (gBattleScripting.statBoostStringIndex == 3)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = newlineAnd;
                 else if (gBattleScripting.statBoostStringIndex == 7)
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = (gBattleTextBuff1[4] == commaSpace ? commaNewlineAnd : oxfordCommaAnd);
                 else
                     gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = oxfordCommaAnd;
-                
+
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = B_BUFF_STAT;
                 gBattleTextBuff1[++gBattleScripting.statBoostStringIndex] = statId;
             }

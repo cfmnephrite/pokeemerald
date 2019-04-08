@@ -2424,7 +2424,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_EXTREME_EVOBOOST] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_ALL_STATS_UP_2,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -6449,7 +6449,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_PSYCHO_BOOST] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_PSYCHO_BOOST,
         .power = 140,
         .type = TYPE_PSYCHIC,
         .accuracy = 90,
@@ -6909,15 +6909,15 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_ROAR_OF_TIME] = {
-        .effect = EFFECT_PLACEHOLDER,
-        .power = 150,
-        .type = TYPE_DRAGON,
-        .accuracy = 90,
-        .pp = 5,
+        .effect = EFFECT_ROAR_OF_TIME,
+        .power = 100,
+        .type = TYPE_STEEL,
+        .accuracy = 100,
+        .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGIC,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND | FLAG_MAGIC,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -7999,11 +7999,11 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_SPACIAL_REND] = {
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_SPACIAL_REND,
         .power = 100,
-        .type = TYPE_DRAGON,
-        .accuracy = 95,
-        .pp = 5,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 100,
+        .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,

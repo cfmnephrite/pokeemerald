@@ -82,8 +82,8 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAccuracyDown2
 	.4byte BattleScript_EffectEvasionDown2
 	.4byte BattleScript_EffectReflect
-	.4byte BattleScript_EffectUnused66
-	.4byte BattleScript_EffectUnused67
+	.4byte BattleScript_EffectRoarOfTime
+	.4byte BattleScript_EffectSpacialRend
 	.4byte BattleScript_EffectAttackDownHit
 	.4byte BattleScript_EffectDefenseDownHit
 	.4byte BattleScript_EffectSpeedDownHit
@@ -1719,6 +1719,9 @@ BattleScript_EffectHitEscape:
 BattleScript_HitEscapeEnd:
 	end
 
+BattleScript_EffectPsychoBoost:
+BattleScript_EffectRoarOfTime:
+BattleScript_EffectSpacialRend:
 BattleScript_EffectPlaceholder:
 	attackcanceler
 	attackstring
@@ -1727,11 +1730,7 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectAllStatsUp2:
-BattleScript_EffectPsychoBoost:
 BattleScript_EffectUnused38:
-BattleScript_EffectUnused66:
-BattleScript_EffectUnused67:
 BattleScript_EffectAcrobatics:
 BattleScript_EffectAeroblast:
 BattleScript_EffectAlwaysCrit:
@@ -5203,6 +5202,58 @@ BattleScript_AllStatsUpSpeed::
 	waitmessage 0x40
 BattleScript_AllStatsUpRet::
 	return
+
+BattleScript_EffectAllStatsUp2::
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_ATK, 0xC, BattleScript_AllStatsUp2DoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_DEF, 0xC, BattleScript_AllStatsUp2DoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPEED, 0xC, BattleScript_AllStatsUp2DoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPATK, 0xC, BattleScript_AllStatsUp2DoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPDEF, 0xC, BattleScript_AllStatsUp2SkipMoveAnim
+BattleScript_AllStatsUp2DoMoveAnim::
+	attackanimation
+	waitanimation
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+BattleScript_AllStatsUp2SkipMoveAnim::
+	setbyte sSTAT_BOOST_TRACKER, 0x5
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_SPEED | BIT_SPATK | BIT_SPDEF, 0x0
+	setstatchanger STAT_ATK, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK | BIT_SPDEF | BIT_SPEED, BattleScript_AllStatsUp2Def
+	setbyte sSTAT_BOOST_TRACKER, 0x4
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK | BIT_SPDEF, BattleScript_AllStatsUp2Def
+	setbyte sSTAT_BOOST_TRACKER, 0x3
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF | BIT_SPATK, BattleScript_AllStatsUp2Def
+	setbyte sSTAT_BOOST_TRACKER, 0x2
+	setbyte sSTAT_BOOST_STRING_INDEX, 0x0
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR | STAT_CHANGE_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF, BattleScript_AllStatsUp2Def
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AllStatsUp2Def::
+	setstatchanger STAT_DEF, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AllStatsUp2SpAtk
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AllStatsUp2SpAtk::
+	setstatchanger STAT_SPATK, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AllStatsUp2SpDef
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AllStatsUp2SpDef::
+	setstatchanger STAT_SPDEF, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AllStatsUp2Speed
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AllStatsUp2Speed::
+	setstatchanger STAT_SPEED, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AllStatsUp2End
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AllStatsUp2End::
+	goto BattleScript_MoveEnd
 
 BattleScript_RapidSpinAway::
 	rapidspinfree
