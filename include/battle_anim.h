@@ -57,6 +57,7 @@ void LaunchBattleAnimation(const u8 *const animsTable[], u16 tableId, bool8 isMo
 void DestroyAnimSprite(struct Sprite *sprite);
 void DestroyAnimVisualTask(u8 taskId);
 void DestroyAnimSoundTask(u8 taskId);
+u8 GetAnimBattlerId(u8 wantedBattler);
 bool8 IsBattlerSpriteVisible(u8 battlerId);
 void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible);
 bool8 IsContest(void);
@@ -223,12 +224,19 @@ void sub_8117854(u8 taskId, int unused, u16 arg2, u8 battler1, u8 arg4, u8 arg5,
 // battle_anim_effects_1.c
 void sub_810310C(u8 battler, struct Sprite* sprite);
 void AnimMoveTwisterParticle(struct Sprite* sprite);
+extern const union AnimCmd *const gUnknown_08592388[];
+void sub_8100898(struct Sprite *);
 
 // water.c
 void sub_8108C94(struct Sprite *sprite);
 
 // flying.c
 void sub_810E2C8(struct Sprite *sprite);
+extern const union AnimCmd *const gUnknown_085962D0[];
+void sub_810E044(struct Sprite *sprite);
+
+//poison.c
+extern const union AffineAnimCmd *const gUnknown_085961A0[];
 
 // smokescreen.c
 u8 sub_807521C(s16 x, s16 y, u8 a3);
