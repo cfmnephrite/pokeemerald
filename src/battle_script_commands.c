@@ -11275,6 +11275,7 @@ static void atkE5_pickup(void)
 
 static void atkE6_docastformchangeanimation(void)
 {
+    /*
     u16 castForms[4] = {SPECIES_CASTFORM, SPECIES_OLD_UNOWN_S, SPECIES_OLD_UNOWN_R, SPECIES_OLD_UNOWN_N};
     struct Pokemon *mon;
     gActiveBattler = gBattleScripting.battler;
@@ -11289,21 +11290,21 @@ static void atkE6_docastformchangeanimation(void)
     gBattleMons[gActiveBattler].species = castForms[gBattleStruct->formToChangeInto];
     SetMonData(mon, MON_DATA_SPECIES, &gBattleMons[gActiveBattler].species);
     CalculateMonStats(mon);
-    /*gBattleMons[gActiveBattler].level = GetMonData(mon, MON_DATA_LEVEL);
+    gBattleMons[gActiveBattler].level = GetMonData(mon, MON_DATA_LEVEL);
     gBattleMons[gActiveBattler].hp = GetMonData(mon, MON_DATA_HP);
     gBattleMons[gActiveBattler].maxHP = GetMonData(mon, MON_DATA_MAX_HP);
     gBattleMons[gActiveBattler].attack = GetMonData(mon, MON_DATA_ATK);
     gBattleMons[gActiveBattler].defense = GetMonData(mon, MON_DATA_DEF);
     gBattleMons[gActiveBattler].speed = GetMonData(mon, MON_DATA_SPEED);
     gBattleMons[gActiveBattler].spAttack = GetMonData(mon, MON_DATA_SPATK);
-    gBattleMons[gActiveBattler].spDefense = GetMonData(mon, MON_DATA_SPDEF);*/
+    gBattleMons[gActiveBattler].spDefense = GetMonData(mon, MON_DATA_SPDEF);
 
     UpdateHealthboxAttribute(gHealthboxSpriteIds[gActiveBattler], mon, HEALTHBOX_ALL);
 
     BtlController_EmitBattleAnimation(0, B_ANIM_CASTFORM_CHANGE, gBattleStruct->formToChangeInto);
     MarkBattlerForControllerExec(gActiveBattler);
 
-    gBattlescriptCurrInstr++;
+    gBattlescriptCurrInstr++; */
 }
 
 static void atkE7_trycastformdatachange(void)
