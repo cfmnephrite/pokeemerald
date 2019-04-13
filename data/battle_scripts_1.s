@@ -347,6 +347,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectSpectralThief
 	.4byte BattleScript_EffectTrapAndGroundCertain
 	.4byte BattleScript_EffectMatBlock
+	.4byte BattleScript_EffectStompingTantrum
 
 BattleScript_EffectHitSetTerrain:
 	setmoveeffect MOVE_EFFECT_SET_ARG_TERRAIN | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
@@ -1765,6 +1766,7 @@ BattleScript_EffectReturn:
 BattleScript_EffectRevenge:
 BattleScript_EffectRound:
 BattleScript_EffectSolarbeam:
+BattleScript_EffectStompingTantrum:
 BattleScript_EffectStoredPower:
 BattleScript_EffectTechnoBlast:
 BattleScript_EffectTrumpCard:

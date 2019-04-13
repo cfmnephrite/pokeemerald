@@ -5072,7 +5072,9 @@ u32 GetBattlerHoldEffect(u8 battlerId, bool32 checkNegating)
 
     gPotentialItemEffectBattler = battlerId;
 
-    if (gBattleMons[battlerId].item == ITEM_ENIGMA_BERRY)
+    if (USE_BATTLE_DEBUG && gBattleStruct->debugHoldEffects[battlerId] != 0)
+        return gBattleStruct->debugHoldEffects[battlerId];
+    else if (gBattleMons[battlerId].item == ITEM_ENIGMA_BERRY)
         return gEnigmaBerries[battlerId].holdEffect;
     else
         return ItemId_GetHoldEffect(gBattleMons[battlerId].item);
@@ -5701,6 +5703,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     case EFFECT_SOLARBEAM:
         if (!(WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY))
             MulModifier(&modifier, UQ_4_12(0.5));
+        break;
+    case EFFECT_STOMPING_TANTRUM:
+        if (gBattleStruct->lastMoveFailed & gBitTable[battlerAtk])
+            MulModifier(&modifier, UQ_4_12(2.0));
         break;
     case EFFECT_KNOCK_OFF:
         if (gBattleMons[battlerDef].item != ITEM_NONE && GetBattlerAbility(battlerDef) != ABILITY_STICKY_HOLD)

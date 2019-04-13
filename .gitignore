@@ -30,3 +30,4 @@ build/
 porymap.project.cfg
 *.ini
 *.bak
+.vscode/
