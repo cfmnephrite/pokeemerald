@@ -258,7 +258,6 @@ struct BoxPokemon
     //struct MovePlusPP moves[4]; //u16
     u16 moves[4];
     u8 ppBonuses;
-    u8 movePP[4];
     
     // EV's (6 bytes)
     u8 hpEV;
@@ -283,7 +282,7 @@ struct BoxPokemon
     u8 pokeball:5;
     u8 metLevel:7;
     u8 otGender:1;
-    u8 otName[7];
+    u8 otName[PLAYER_NAME_LENGTH];
     
     // Contest garbage (6 bytes)
     u8 cool;
@@ -324,6 +323,7 @@ struct MovePlusPP
 struct Pokemon
 {
     struct BoxPokemon box;
+    u8 movePP[4];
     u32 status;
     u8 level;
     u8 mail;

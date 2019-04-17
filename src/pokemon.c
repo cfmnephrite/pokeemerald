@@ -2265,11 +2265,10 @@ void ZeroEnemyPartyMons(void)
 
 void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
-    u32 arg;
+    u8 arg = 255;
     ZeroMonData(mon);
     CreateBoxMon(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
     SetMonData(mon, MON_DATA_LEVEL, &level);
-    arg = 255;
     SetMonData(mon, MON_DATA_MAIL, &arg);
     CalculateMonStats(mon);
 }
@@ -2867,6 +2866,7 @@ void CreateObedientEnemyMon(void)
 
 void CalculateMonStats(struct Pokemon *mon)
 {
+    u8 i, arg;
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
     s32 hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
@@ -2927,6 +2927,13 @@ void CalculateMonStats(struct Pokemon *mon)
     }
 
     SetMonData(mon, MON_DATA_HP, &currentHP);
+
+    // Set move PP
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        arg = gBattleMoves[GetMonData(mon, MON_DATA_MOVE1 + i, NULL)].pp;
+        SetMonData(mon, MON_DATA_PP1 + i, &arg);
+    }
 }
 
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
@@ -2967,7 +2974,21 @@ u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon)
 
 u16 GiveMoveToMon(struct Pokemon *mon, u16 move)
 {
-    return GiveMoveToBoxMon(&mon->box, move);
+    s32 i;
+    struct BoxPokemon *boxMon = &mon->box;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        u16 existingMove = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, NULL);
+        if (!existingMove)
+        {
+            SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &move);
+            SetMonData(mon, MON_DATA_PP1 + i, &gBattleMoves[move].pp);
+            return move;
+        }
+        if (existingMove == move)
+            return -2;
+    }
+    return 0xFFFF;
 }
 
 u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
@@ -2979,7 +3000,6 @@ u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
         if (!existingMove)
         {
             SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &move);
-            SetBoxMonData(boxMon, MON_DATA_PP1 + i, &gBattleMoves[move].pp);
             return move;
         }
         if (existingMove == move)
@@ -3141,10 +3161,7 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
     pp[3] = gBattleMoves[move].pp;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
-    {
         SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &moves[i]);
-        SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp[i]);
-    }
 
     SetBoxMonData(boxMon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
@@ -3377,6 +3394,12 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8* data)
     case MON_DATA_MAIL:
         ret = mon->mail;
         break;
+    case MON_DATA_PP1:
+    case MON_DATA_PP2:
+    case MON_DATA_PP3:
+    case MON_DATA_PP4:
+        ret = mon->movePP[field - MON_DATA_PP1];
+        break;
     default:
         ret = GetBoxMonData(&mon->box, field, data);
         break;
@@ -3395,12 +3418,6 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     case MON_DATA_OT_ID:
         retVal = boxMon->otId;
-        break;
-    case MON_DATA_PP1:
-    case MON_DATA_PP2:
-    case MON_DATA_PP3:
-    case MON_DATA_PP4:
-        retVal = boxMon->movePP[field - MON_DATA_PP1];
         break;
     case MON_DATA_NICKNAME:
     {
@@ -3734,6 +3751,12 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SPECIES2:
         break;
+    case MON_DATA_PP1:
+    case MON_DATA_PP2:
+    case MON_DATA_PP3:
+    case MON_DATA_PP4:
+        SET8(mon->movePP[field - MON_DATA_PP1]);
+        break;
     default:
         SetBoxMonData(&mon->box, field, data);
         break;
@@ -3748,12 +3771,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     {
     case MON_DATA_PERSONALITY:
         SET32(boxMon->personality);
-        break;
-    case MON_DATA_PP1:
-    case MON_DATA_PP2:
-    case MON_DATA_PP3:
-    case MON_DATA_PP4:
-        SET8(boxMon->movePP[field - MON_DATA_PP1]);
         break;
     case MON_DATA_OT_ID:
         SET32(boxMon->otId);
