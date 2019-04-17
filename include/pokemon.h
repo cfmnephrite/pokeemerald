@@ -214,7 +214,7 @@ union PokemonSubstruct
     u16 raw[6];
 };
 
-struct BoxPokemon
+struct BoxPokemonOld
 {
     u32 personality;
     u32 otId;
@@ -236,6 +236,91 @@ struct BoxPokemon
     } secure;
 };
 
+struct BoxPokemon
+{
+    // Identity (20 bytes)
+    u32 personality;
+    u32 otId;
+    u8 nickname[12]; // length 12
+    
+    // Info (8 bytes)
+    u32 species:11;
+    u32 experience:21;
+    u16 heldItem:10;
+    u16 formId:5;
+    u16 isEgg:1;
+    u8 friendship;
+    u8 hpType:4;
+    u8 pokerus:3;
+    u8 gender:1;
+    
+    // Moves + PP bonuses (8 bytes)
+    //struct MovePlusPP moves[4]; //u16
+    u16 moves[4];
+    u8 ppBonuses;
+    u8 movePP[4];
+    
+    // EV's (6 bytes)
+    u8 hpEV;
+    u8 attackEV;
+    u8 defenseEV;
+    u8 speedEV;
+    u8 spAttackEV;
+    u8 spDefenseEV;
+    
+    // IV's + Ability (4 bytes)
+    u32 hpIV:5;
+    u32 attackIV:5;
+    u32 defenseIV:5;
+    u32 speedIV:5;
+    u32 spAttackIV:5;
+    u32 spDefenseIV:5;
+    u32 altAbility:2;
+    
+    // Origin info (10 bytes)
+    u8 metLocation;
+    u8 metGame:3;
+    u8 pokeball:5;
+    u8 metLevel:7;
+    u8 otGender:1;
+    u8 otName[7];
+    
+    // Contest garbage (6 bytes)
+    u8 cool;
+    u8 beauty;
+    u8 cute;
+    u8 smart;
+    u8 tough;
+    u8 sheen;
+    
+    // R I B B O N S (4 bytes)
+    u32 coolRibbon:3;
+    u32 beautyRibbon:3;
+    u32 cuteRibbon:3;
+    u32 smartRibbon:3;
+    u32 toughRibbon:3;
+    u32 championRibbon:1;
+    u32 winningRibbon:1;
+    u32 victoryRibbon:1;
+    u32 artistRibbon:1;
+    u32 effortRibbon:1;
+    u32 giftRibbon1:1;
+    u32 giftRibbon2:1;
+    u32 giftRibbon3:1;
+    u32 giftRibbon4:1;
+    u32 giftRibbon5:1;
+    u32 giftRibbon6:1;
+    u32 giftRibbon7:1;
+    u32 fatefulEncounter:1;
+    u32 markings:4;
+};
+
+struct MovePlusPP
+{
+    u16 moveId:14;
+    u16 ppBonus:2;
+};
+
 struct Pokemon
 {
     struct BoxPokemon box;
@@ -250,7 +335,6 @@ struct Pokemon
     u16 spAttack;
     u16 spDefense;
 };
-
 struct Unknown_806F160_Struct
 {
     u8 field_0_0:4;
