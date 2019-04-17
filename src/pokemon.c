@@ -2934,6 +2934,7 @@ void CalculateMonStats(struct Pokemon *mon)
         arg = gBattleMoves[GetMonData(mon, MON_DATA_MOVE1 + i, NULL)].pp;
         SetMonData(mon, MON_DATA_PP1 + i, &arg);
     }
+    MonRestorePP(mon);
 }
 
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
@@ -6176,21 +6177,16 @@ bool8 IsOtherTrainer(u32 otId, u8 *otName)
 
 void MonRestorePP(struct Pokemon *mon)
 {
-    BoxMonRestorePP(&mon->box);
-}
-
-void BoxMonRestorePP(struct BoxPokemon *boxMon)
-{
     int i;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0))
+        if (GetMonData(mon, MON_DATA_MOVE1 + i, 0))
         {
-            u16 move = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0);
-            u16 bonus = GetBoxMonData(boxMon, MON_DATA_PP_BONUSES, 0);
+            u16 move = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
+            u16 bonus = GetMonData(mon, MON_DATA_PP_BONUSES, 0);
             u8 pp = CalculatePPWithBonus(move, bonus, i);
-            SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp);
+            SetMonData(mon, MON_DATA_PP1 + i, &pp);
         }
     }
 }
