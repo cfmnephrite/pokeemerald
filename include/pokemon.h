@@ -268,11 +268,8 @@ struct BoxPokemon
     
     // Moves + PP bonuses (8 bytes)
     //struct MovePlusPP moves[4]; //u16
-    u16 moves[4];
-    u8 ppBonuses;
-    u8 friendship;
-    u8 hpType:4;
-    u8 pokerus:4;
+    struct MovePlusPP moves[4];
+    //u8 hpType:4;
     
     // EV's (6 bytes)
     u8 hpEV;
@@ -332,6 +329,7 @@ struct BoxPokemon
 struct Pokemon
 {
     struct BoxPokemon box;
+    // 24 bytes
     u8 movePP[4];
     u32 status;
     u8 level;

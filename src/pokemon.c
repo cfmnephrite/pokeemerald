@@ -3488,16 +3488,21 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = boxMon->experience;
         break;
     case MON_DATA_PP_BONUSES:
-        retVal = boxMon->ppBonuses;
+    {
+        for (i = 0; i < MAX_MON_MOVES; i++)
+        {
+            retVal += (boxMon->moves[i].ppBonus << (2 * i));
+        }
         break;
+    }
     case MON_DATA_FRIENDSHIP:
-        retVal = boxMon->friendship;
+        retVal = boxMon->moves[2].field3 + (boxMon->moves[3].field3 << 0x4);
         break;
     case MON_DATA_MOVE1:
     case MON_DATA_MOVE2:
     case MON_DATA_MOVE3:
     case MON_DATA_MOVE4:
-        retVal = boxMon->moves[field - MON_DATA_MOVE1];
+        retVal = boxMon->moves[field - MON_DATA_MOVE1].moveId;
         break;
     case MON_DATA_HP_EV:
         retVal = boxMon->hpEV;
@@ -3536,7 +3541,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = boxMon->sheen;
         break;
     case MON_DATA_POKERUS:
-        retVal = boxMon->pokerus;
+        retVal = boxMon->moves[1].field3;
         break;
     case MON_DATA_MET_LOCATION:
         retVal = boxMon->metLocation;
@@ -3648,10 +3653,10 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
             while (moves[i] != MOVES_COUNT)
             {
                 u16 move = moves[i];
-                if (boxMon->moves[0] == move
-                    || boxMon->moves[1] == move
-                    || boxMon->moves[2] == move
-                    || boxMon->moves[3] == move)
+                if (boxMon->moves[0].moveId == move
+                    || boxMon->moves[1].moveId == move
+                    || boxMon->moves[2].moveId == move
+                    || boxMon->moves[3].moveId == move)
                     retVal |= gBitTable[i];
                 i++;
             }
@@ -3812,16 +3817,25 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         SET32(boxMon->experience);
         break;
     case MON_DATA_PP_BONUSES:
-        SET8(boxMon->ppBonuses);
+    {
+        s32 i;
+        for (i = 0; i < MAX_MON_MOVES; i++)
+        {
+            boxMon->moves[i].ppBonus = ((data[0] >> (2 * i)) & 0x3);
+        }
         break;
+    }
     case MON_DATA_FRIENDSHIP:
-        SET8(boxMon->friendship);
+    {
+        boxMon->moves[2].field3 = (data[0] & 0xF);
+        boxMon->moves[3].field3 = ((data[0] & 0xF0) >> 4);
         break;
+    }
     case MON_DATA_MOVE1:
     case MON_DATA_MOVE2:
     case MON_DATA_MOVE3:
     case MON_DATA_MOVE4:
-        SET16(boxMon->moves[field - MON_DATA_MOVE1]);
+        SET16(boxMon->moves[field - MON_DATA_MOVE1].moveId);
         break;
     case MON_DATA_HP_EV:
         SET8(boxMon->hpEV);
@@ -3860,7 +3874,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         SET8(boxMon->sheen);
         break;
     case MON_DATA_POKERUS:
-        SET8(boxMon->pokerus);
+        SET8(boxMon->moves[1].field3);
         break;
     case MON_DATA_MET_LOCATION:
         SET8(boxMon->metLocation);
