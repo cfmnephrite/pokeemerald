@@ -236,28 +236,43 @@ struct BoxPokemonOld
     } secure;
 };
 
+struct MovePlusPP
+{
+    u16 moveId:10;
+    u16 ppBonus:2;
+    u16 field3:4;
+};
+
+struct OriginInfo
+{
+    u8 otNameChar:7;
+    u8 field2:1;
+};
+
 struct BoxPokemon
 {
-    // Identity (20 bytes)
+    // Identity (18 bytes)
     u32 personality;
     u32 otId;
-    u8 nickname[12]; // length 12
+    u8 nickname[POKEMON_NAME_LENGTH]; // length 10
     
-    // Info (8 bytes)
+    //struct MonNickname nickname[12];
+    
+    // Info (6 bytes)
     u32 species:11;
     u32 experience:21;
     u16 heldItem:10;
-    u16 formId:5;
     u16 isEgg:1;
-    u8 friendship;
-    u8 hpType:4;
-    u8 pokerus:3;
-    u8 gender:1;
+    u16 gender:1;
+    u16 language:4;
     
     // Moves + PP bonuses (8 bytes)
     //struct MovePlusPP moves[4]; //u16
     u16 moves[4];
     u8 ppBonuses;
+    u8 friendship;
+    u8 hpType:4;
+    u8 pokerus:4;
     
     // EV's (6 bytes)
     u8 hpEV;
@@ -284,13 +299,13 @@ struct BoxPokemon
     u8 otGender:1;
     u8 otName[PLAYER_NAME_LENGTH];
     
-    // Contest garbage (6 bytes)
-    u8 cool;
-    u8 beauty;
-    u8 cute;
-    u8 smart;
-    u8 tough;
-    u8 sheen;
+    // Contest garbage (4 bytes)
+    u32 cool:5;
+    u32 beauty:5;
+    u32 cute:5;
+    u32 smart:5;
+    u32 tough:5;
+    u32 sheen:7;
     
     // R I B B O N S (4 bytes)
     u32 coolRibbon:3;
@@ -312,12 +327,6 @@ struct BoxPokemon
     u32 giftRibbon7:1;
     u32 fatefulEncounter:1;
     u32 markings:4;
-};
-
-struct MovePlusPP
-{
-    u16 moveId:14;
-    u16 ppBonus:2;
 };
 
 struct Pokemon
