@@ -136,12 +136,12 @@
 
 struct BoxPokemon
 {
-    // Info (28 bytes)
+    // Info (30 bytes)
     u32 personality;
     u32 otId;
     u32 species:11;
     u32 experience:21;
-    u8 nickname[POKEMON_NAME_LENGTH]; // length 10
+    u8 nickname[12]; // length 12
     u16 heldItem:10;
     u16 isEgg:1;
     u16 gender:1;
@@ -153,15 +153,18 @@ struct BoxPokemon
     u8 pokeball:5;
     u8 metLevel:7;
     u8 otGender:1;
-    u8 otName[PLAYER_NAME_LENGTH];
+    u8 otName[PLAYER_NAME_LENGTH]; // length 7
     
-    // EV's (6 bytes)
-    u8 hpEV;
-    u8 attackEV;
-    u8 defenseEV;
-    u8 speedEV;
-    u8 spAttackEV;
-    u8 spDefenseEV;
+    // Moves + PP bonuses (8 bytes)
+    u32 move1:10;
+    u32 move2:10;
+    u32 hpType:4;
+    u32 ppBonuses:8;
+    
+    u32 move3:10;
+    u32 move4:10;
+    u32 pokerus:4;
+    u32 friendship:8;
     
     // IV's + Ability (4 bytes)
     u32 hpIV:5;
@@ -172,24 +175,21 @@ struct BoxPokemon
     u32 spDefenseIV:5;
     u32 altAbility:2;
     
-    // Moves + PP bonuses (8 bytes)
-    u32 move1:10;
-    u32 move2:10;
-    u32 ppBonuses:8;
-    u32 hpType:4;
+    // EV's (6 bytes)
+    u8 hpEV;
+    u8 attackEV;
+    u8 defenseEV;
+    u8 speedEV;
+    u8 spAttackEV;
+    u8 spDefenseEV;
     
-    u32 move3:10;
-    u32 move4:10;
-    u32 friendship:8;
-    u32 pokerus:4;
-    
-    // Contest garbage (4 bytes)
-    u32 cool:5;
-    u32 beauty:5;
-    u32 cute:5;
-    u32 smart:5;
-    u32 tough:5;
-    u32 sheen:7;
+    // Contest garbage (6 bytes)
+    u8 cool;
+    u8 beauty;
+    u8 cute;
+    u8 smart;
+    u8 tough;
+    u8 sheen;
     
     // R I B B O N S (4 bytes)
     u32 coolRibbon:3;
