@@ -236,40 +236,26 @@ struct BoxPokemonOld
     } secure;
 };
 
-struct MovePlusPP
-{
-    u16 moveId:10;
-    u16 ppBonus:2;
-    u16 field3:4;
-};
-
-struct OriginInfo
-{
-    u8 otNameChar:7;
-    u8 field2:1;
-};
-
 struct BoxPokemon
 {
-    // Identity (18 bytes)
+    // Info (28 bytes)
     u32 personality;
     u32 otId;
-    u8 nickname[POKEMON_NAME_LENGTH]; // length 10
-    
-    //struct MonNickname nickname[12];
-    
-    // Info (6 bytes)
     u32 species:11;
     u32 experience:21;
+    u8 nickname[POKEMON_NAME_LENGTH]; // length 10
     u16 heldItem:10;
     u16 isEgg:1;
     u16 gender:1;
     u16 language:4;
     
-    // Moves + PP bonuses (8 bytes)
-    //struct MovePlusPP moves[4]; //u16
-    struct MovePlusPP moves[4];
-    //u8 hpType:4;
+    // Origin info (10 bytes)
+    u8 metLocation;
+    u8 metGame:3;
+    u8 pokeball:5;
+    u8 metLevel:7;
+    u8 otGender:1;
+    u8 otName[PLAYER_NAME_LENGTH];
     
     // EV's (6 bytes)
     u8 hpEV;
@@ -288,13 +274,16 @@ struct BoxPokemon
     u32 spDefenseIV:5;
     u32 altAbility:2;
     
-    // Origin info (10 bytes)
-    u8 metLocation;
-    u8 metGame:3;
-    u8 pokeball:5;
-    u8 metLevel:7;
-    u8 otGender:1;
-    u8 otName[PLAYER_NAME_LENGTH];
+    // Moves + PP bonuses (8 bytes)
+    u32 move1:10;
+    u32 move2:10;
+    u32 ppBonuses:8;
+    u32 hpType:4;
+    
+    u32 move3:10;
+    u32 move4:10;
+    u32 friendship:8;
+    u32 pokerus:4;
     
     // Contest garbage (4 bytes)
     u32 cool:5;
