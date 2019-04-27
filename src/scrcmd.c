@@ -2200,18 +2200,11 @@ bool8 ScrCmd_cmdD9(struct ScriptContext *ctx)
 // This command will force the Pokémon to be obedient, you don't get to make it disobedient.
 bool8 ScrCmd_setmonobedient(struct ScriptContext *ctx)
 {
-    bool8 obedient = TRUE;
-    u16 partyIndex = VarGet(ScriptReadHalfword(ctx));
-
-    SetMonData(&gPlayerParty[partyIndex], MON_DATA_OBEDIENCE, &obedient);
     return FALSE;
 }
 
 bool8 ScrCmd_checkmonobedience(struct ScriptContext *ctx)
 {
-    u16 partyIndex = VarGet(ScriptReadHalfword(ctx));
-
-    gSpecialVar_Result = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OBEDIENCE, NULL);
     return FALSE;
 }
 

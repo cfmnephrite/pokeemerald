@@ -2651,14 +2651,6 @@ static u8 sub_80790D4(u8 *a0, u8 a1, u8 a2, u8 a3)
     a3 %= PARTY_SIZE;
     species = GetMonData(&gEnemyParty[a3], MON_DATA_SPECIES);
 
-    if (species == SPECIES_DEOXYS || species == SPECIES_MEW)
-    {
-        if (!GetMonData(&gEnemyParty[a3], MON_DATA_OBEDIENCE))
-        {
-            return 2;
-        }
-    }
-
     if (!IsNationalPokedexEnabled())
     {
         if (gUnknown_0203229C->unk_51[1][a3] || !IsSpeciesInHoennDex(species))
@@ -3534,14 +3526,6 @@ static u32 sub_807A5F4(struct Pokemon *monList, int a1, int monIdx)
             {
                 return 4;
             }
-        }
-    }
-
-    if (species[monIdx] == SPECIES_DEOXYS || species[monIdx] == SPECIES_MEW)
-    {
-        if (!GetMonData(&monList[monIdx], MON_DATA_OBEDIENCE))
-        {
-            return 4;
         }
     }
 
