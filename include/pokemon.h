@@ -136,37 +136,97 @@
 
 struct BoxPokemon
 {
-    // Info (30 bytes)
+    // Words 1 & 2: PID + Trainer ID
     u32 personality;
     u32 otId;
+    
+    // Words 3-5: Pokémon nickname
+    u8 nickname[12]; // length 12
+    /*
+    u32 nnChar1:7;
+    u32 nnChar2:7;
+    u32 nnChar3:7;
+    u32 nnChar4:7;
+    u32 language:3;
+    u32 gender:1;
+    
+    u32 nnChar5:7;
+    u32 nnChar6:7;
+    u32 nnChar7:7;
+    u32 nnChar8:7;
+    u32 friendship1:4;
+    
+    u32 nnChar9:7;
+    u32 nnChar10:7;
+    u32 nnChar11:7;
+    u32 nnChar12:7;
+    u32 friendship2:4;
+    
+    u32 hpType:4;
+    u32 discipline:8;
+    */
+    
+    // Word 6: Species + Experience points (used to derive level)
     u32 species:11;
     u32 experience:21;
-    u8 nickname[12]; // length 12
-    u16 heldItem:10;
-    u16 isEgg:1;
-    u16 gender:1;
-    u16 language:4;
     
-    // Origin info (10 bytes)
-    u8 metLocation;
-    u8 metGame:3;
-    u8 pokeball:5;
-    u8 metLevel:7;
-    u8 otGender:1;
-    u8 otName[PLAYER_NAME_LENGTH]; // length 7
-    
-    // Moves + PP bonuses (8 bytes)
+    // Words 7 & 8: moves, language, gender, friendship, Pokérus, ppBonuses
     u32 move1:10;
     u32 move2:10;
-    u32 hpType:4;
-    u32 ppBonuses:8;
+    u32 language:3;
+    u32 gender:1;
+    u32 friendship:8;
     
     u32 move3:10;
     u32 move4:10;
     u32 pokerus:4;
-    u32 friendship:8;
+    u32 ppBonuses:8;
     
-    // IV's + Ability (4 bytes)
+    // Words 9 - 11: EV's + contest stats
+    u8 hpEV;
+    u8 attackEV;
+    u8 defenseEV;
+    u8 speedEV;
+    
+    u8 spAttackEV;
+    u8 spDefenseEV;
+    
+    // Contest garbage (6 bytes)
+    u8 cool;
+    u8 beauty;
+    
+    u8 cute;
+    u8 smart;
+    u8 tough;
+    u8 sheen;
+    
+    // Word 12: miscellaneous data; item, formId, Egg and origin data
+    u32 heldItem:10;
+    u32 formId:5;
+    u32 isEgg:1;
+    u32 metLevel:7;
+    u32 metGame:3;
+    u32 pokeball:5;
+    u32 otGender:1;
+    
+    // Words 13 & 14: Trainer name + met location
+    u8 metLocation;
+    u8 otName[PLAYER_NAME_LENGTH];
+    /*
+    u32 otChar1:7;
+    u32 otChar2:7;
+    u32 otChar3:7;
+    u32 otChar4:7;
+    u32 metLocation1:4;
+    
+    u32 otChar5:7;
+    u32 otChar6:7;
+    u32 otChar7:7;
+    u32 otChar8:7;
+    u32 metLocation2:4;
+    */
+    
+    // Word 15: IV's
     u32 hpIV:5;
     u32 attackIV:5;
     u32 defenseIV:5;
@@ -174,24 +234,8 @@ struct BoxPokemon
     u32 spAttackIV:5;
     u32 spDefenseIV:5;
     u32 altAbility:2;
-    
-    // EV's (6 bytes)
-    u8 hpEV;
-    u8 attackEV;
-    u8 defenseEV;
-    u8 speedEV;
-    u8 spAttackEV;
-    u8 spDefenseEV;
-    
-    // Contest garbage (6 bytes)
-    u8 cool;
-    u8 beauty;
-    u8 cute;
-    u8 smart;
-    u8 tough;
-    u8 sheen;
-    
-    // R I B B O N S (4 bytes)
+
+    // Word 16: ribbons and markings
     u32 coolRibbon:3;
     u32 beautyRibbon:3;
     u32 cuteRibbon:3;
@@ -216,8 +260,7 @@ struct BoxPokemon
 struct Pokemon
 {
     struct BoxPokemon box;
-    // 24 bytes
-    u8 movePP[4];
+    u8 pp[4];
     u32 status;
     u8 level;
     u8 mail;
@@ -228,6 +271,7 @@ struct Pokemon
     u16 speed;
     u16 spAttack;
     u16 spDefense;
+    u32 padding[3];
 };
 struct Unknown_806F160_Struct
 {

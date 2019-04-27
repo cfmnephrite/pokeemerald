@@ -464,6 +464,31 @@ struct SaveBlock2
     /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
     /*0x64C*/ struct BattleFrontier frontier;
 }; // sizeof=0xF2C
+/*
+
+    struct Pokedex pokedex; // Expanded by 152 bytes
+    u32 encryptionKey;
+    struct BerryCrush berryCrush;
+    struct PokemonJumpResults pokeJump;
+    struct BerryPickingResults berryPick;
+    struct Apprentice apprentices[4]; // From record mixing.
+    struct RankingHall1P hallRecords1P[HALL_FACILITIES_COUNT][2][3]; // From record mixing.
+    struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
+    u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
+    struct BattleFrontier frontier;
+
+    // Deleted (12 bytes)
+    u8 filler_90[0x8];
+    u32 field_A8; // Written to, but never read.
+    
+    // moved to gSaveBlock1Ptr (60 bytes)
+    struct Time localTimeOffset;
+    struct Time lastBerryTreeUpdate;
+    struct PlayersApprentice playerApprentice;
+    
+    +84 bytes leftover
+    TOTAL BYTES REMAINING: 4
+*/
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 
@@ -974,6 +999,38 @@ struct SaveBlock1
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
     // sizeof: 0x3D88
 };
+/*
+    u32 money;
+    u16 coins;
+    u16 registeredItem; @@ registered for use with SELECT button
+
+    // By keeping the ID of all these items below 512, they can also be made u16 by having ID take 9 bits, quantity take 7 (max: 128) (944 bytes)
+    struct ItemSlot pcItems[PC_ITEMS_COUNT]; // 50; Can be deleted and added to regular items (200 bytes)
+    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT]; // A paltry 30 base, can be expanded to 160
+    struct ItemSlot bagPocket_Medicines[BAG_ITEMS_COUNT]; // Split with regular items for now (joint 160)
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT]; // 16 base, expanded to 32 - hopefully 29 is possible
+    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT]; // 46 base (weird), can be expanded to 92, but we only need 67 (goes nicely with 29 balls)
+    
+    // Number not necessary, so these can be converted to u16's (376 bytes as word structs) 
+    u16 bagPocket_TMHM[BAG_TMHM_COUNT]; // 64 base, 128 if u16 (can be truncated to 108, however)
+    u16 bagPocket_KeyItems[BAG_KEYITEMS_COUNT]; // 30 base, 60 if u16 (+20 from unneeded TM's)
+    
+    
+    // Moved to gPokemonStorage (604 bytes)
+    u8 playerPartyCount;
+    struct Pokemon playerParty[PARTY_SIZE];
+    
+    // Can be deleted
+    u8 filler3D5A[0xA]; // 5 items
+    some other word // 2 items
+    
+    +leftover 120 bytes
+    Remainder from bag adjustment: 28 bytes (14 items)
+    Extra possible items: 74
+    Extra possible items from freed PokemonStorage space - stuff moved here from SaveBlock2: (604-60)/2 = 272
+    Total items with quantity: 160 + 96 + 7 + 74 + 272 = 609; or, 512 with 111 extra key items -> Perhaps instead, 400 u16 items, "200" u8 array of quantities -> 16 extra key items
+    Total number of key items/TM's: 108 + 80 + 111 = 299, or 184 Key Items / 96 Key Items with quantity array for regular items
+*/
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
 

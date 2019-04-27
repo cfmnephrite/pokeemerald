@@ -2866,7 +2866,7 @@ void CreateObedientEnemyMon(void)
 
 void CalculateMonStats(struct Pokemon *mon)
 {
-    u8 i, arg;
+    s32 arg, i;
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
     s32 hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
@@ -3399,7 +3399,7 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8* data)
     case MON_DATA_PP2:
     case MON_DATA_PP3:
     case MON_DATA_PP4:
-        ret = mon->movePP[field - MON_DATA_PP1];
+        ret = mon->pp[field - MON_DATA_PP1];
         break;
     default:
         ret = GetBoxMonData(&mon->box, field, data);
@@ -3457,7 +3457,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = 0;
         break;
     case MON_DATA_SANITY_HAS_SPECIES:
-        retVal = 1;
+        retVal = (boxMon->species);
         break;
     case MON_DATA_SANITY_IS_EGG:
         retVal = boxMon->isEgg;
@@ -3762,7 +3762,7 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
     case MON_DATA_PP2:
     case MON_DATA_PP3:
     case MON_DATA_PP4:
-        SET8(mon->movePP[field - MON_DATA_PP1]);
+        SET8(mon->pp[field - MON_DATA_PP1]);
         break;
     default:
         SetBoxMonData(&mon->box, field, data);
@@ -3790,10 +3790,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     }
     case MON_DATA_LANGUAGE:
-        break;
-    case MON_DATA_SANITY_IS_BAD_EGG:
-        break;
-    case MON_DATA_SANITY_HAS_SPECIES:
         break;
     case MON_DATA_SANITY_IS_EGG:
         SET8(boxMon->isEgg);
@@ -3915,10 +3911,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_IS_EGG:
         SET8(boxMon->isEgg);
-        if (boxMon->isEgg)
-            boxMon->isEgg = 1;
-        else
-            boxMon->isEgg = 0;
         break;
     case MON_DATA_ALT_ABILITY:
         SET8(boxMon->altAbility);
