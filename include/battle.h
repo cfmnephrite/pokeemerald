@@ -112,6 +112,7 @@ struct DisableStruct
     u8 telekinesisTimer;
     u8 healBlockTimer;
     u8 laserFocusTimer;
+    u8 throatChopTimer;
     u8 usedMoves:4;
     u8 wrapTurns;
 	u8 skyDrop;
@@ -150,6 +151,7 @@ struct ProtectStruct
     u32 usedHealBlockedMove:1;
     u32 usedGravityPreventedMove:1;
     u32 powderSelfDmg:1;
+    u32 usedThroatChopPreventedMove:1;
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -170,6 +172,11 @@ struct SpecialStatus
     u8 sturdied:1;
     u8 stormDrainRedirected:1;
     u8 switchInAbilityDone:1;
+    u8 instructedChosenTarget:3;
+    u8 berryReduced:1;
+    u8 gemBoost:1;
+    u8 gemParam;
+    u8 damagedMons:4; // Mons that have been damaged directly by using a move, includes substitute.
     s32 dmg;
     s32 physicalDmg;
     s32 specialDmg;
@@ -535,6 +542,7 @@ struct BattleStruct
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUM_BATTLE_STATS]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum
+    u8 lastMoveTarget[MAX_BATTLERS_COUNT]; // The last target on which each mon used a move, for the sake of Instruct
     u8 debugHoldEffects[MAX_BATTLERS_COUNT]; // These override actual items' hold effects.
 };
 

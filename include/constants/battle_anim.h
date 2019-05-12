@@ -276,7 +276,7 @@
 #define ANIM_TAG_GREEN_SPIKE                (ANIM_SPRITES_START + 266)
 #define ANIM_TAG_WHITE_CIRCLE_OF_LIGHT      (ANIM_SPRITES_START + 267)
 #define ANIM_TAG_GLOWY_BLUE_ORB             (ANIM_SPRITES_START + 268)
-#define ANIM_TAG_RED_BRICK                  (ANIM_SPRITES_START + 269)
+#define ANIM_TAG_POKEBLOCK                  (ANIM_SPRITES_START + 269)
 #define ANIM_TAG_WHITE_FEATHER              (ANIM_SPRITES_START + 270)
 #define ANIM_TAG_SPARKLE_6                  (ANIM_SPRITES_START + 271)
 #define ANIM_TAG_SPLASH                     (ANIM_SPRITES_START + 272)
@@ -300,6 +300,9 @@
 #define ANIM_TAG_PURPLE_JAB                 (ANIM_SPRITES_START + 290)
 #define ANIM_TAG_TOXIC_SPIKES               (ANIM_SPRITES_START + 291)
 #define ANIM_TAG_ENERGY_BALL                (ANIM_SPRITES_START + 292)
+#define ANIM_TAG_MEGA_STONE                 (ANIM_SPRITES_START + 293)
+#define ANIM_TAG_MEGA_SYMBOL                (ANIM_SPRITES_START + 294)
+#define ANIM_TAG_MEGA_PARTICLES             (ANIM_SPRITES_START + 295)
 
 // battlers
 #define ANIM_ATTACKER    0

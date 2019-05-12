@@ -2432,6 +2432,43 @@ Move_CIRCLE_THROW:
 	end
 	
 Move_INCINERATE:
+	loadspritegfx ANIM_TAG_SMALL_EMBER
+	monbg ANIM_TARGET
+	monbgprio_28 ANIM_TARGET
+	setalpha 12, 8
+	delay 1	
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	createvisualtask AnimTask_SwayMon, 5, 0, 3, 0xc00, 8, ANIM_TARGET	
+	createvisualtask AnimTask_SwayMon, 5, 0, 3, 0xc00, 8, ANIM_DEF_PARTNER	
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 3
+	createsprite gIncinerateSpriteTemplate, ANIM_TARGET, 2, 6, 20, 0, -16, 24, 20
+	delay 5
+	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 5, 0, 8, 1
+	createvisualtask AnimTask_ShakeMon, 2, ANIM_DEF_PARTNER, 5, 0, 8, 1
+	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_TARGET, RGB_RED, 12, 1, 1
+	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_DEF_PARTNER, RGB_RED, 12, 1, 1
+	playsewithpan SE_W172, SOUND_PAN_ATTACKER
+	delay 5
+	createsprite gSlideMonToOriginalPosSpriteTemplate,  ANIM_ATTACKER, 2, 3, 0, 0, 9
+	waitforvisualfinish
+	clearmonbg ANIM_TARGET
+	blendoff
 	end
 	
 Move_QUASH:
@@ -2838,9 +2875,6 @@ Move_POWDER:
 	end
 	
 Move_GEOMANCY:
-	end
-	
-Move_MAGNETIC_FLUX:
 	end
 	
 Move_HAPPY_HOUR:
@@ -6050,6 +6084,7 @@ Move_FOLLOW_ME:
 	loopsewithpan SE_W039, SOUND_PAN_ATTACKER, 22, 3
 	end
 
+Move_MAGNETIC_FLUX:
 Move_CHARGE:
 	loadspritegfx ANIM_TAG_ELECTRIC_ORBS
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
@@ -10751,7 +10786,7 @@ Move_TRANSFORM:
 	monbg ANIM_ATTACKER
 	playsewithpan SE_W100, SOUND_PAN_ATTACKER
 	waitplaysewithpan SE_W107, SOUND_PAN_ATTACKER, 48
-	createvisualtask sub_815B7D0, 2, 0
+	createvisualtask sub_815B7D0, 2, 0, 0
 	waitforvisualfinish
 	clearmonbg ANIM_ATTACKER
 	end
@@ -12789,7 +12824,7 @@ AnimScript_82D7EB2:
 	monbg ANIM_ATTACKER
 	playsewithpan SE_W100, SOUND_PAN_ATTACKER
 	waitplaysewithpan SE_W107, SOUND_PAN_ATTACKER, 48
-	createvisualtask sub_815B7D0, 2, 1
+	createvisualtask sub_815B7D0, 2, 1, 0
 	waitforvisualfinish
 	clearmonbg ANIM_ATTACKER
 	end
@@ -12821,15 +12856,15 @@ General_SubstituteAppear:
 
 General_PokeblockThrow:
 	createvisualtask sub_817345C, 2, 0
-	createvisualtask sub_81732B0, 2
+	createvisualtask AnimTask_LoadPokeblockGfx, 2
 	delay 0
 	waitplaysewithpan SE_W026, SOUND_PAN_ATTACKER, 22
-	createsprite gBattleAnimSpriteTemplate_85E5338, ANIM_TARGET, 3, -18, 12, 0, 32
+	createsprite gPokeblockSpriteTemplate, ANIM_TARGET, 3, -18, 12, 0, 32
 	delay 50
 	loopsewithpan SE_W039, SOUND_PAN_TARGET, 19, 2
 	createvisualtask AnimTask_SwayMon, 5, 1, 8, 1536, 2, ANIM_TARGET
 	waitforvisualfinish
-	createvisualtask sub_81732E4, 2
+	createvisualtask AnimTask_FreePokeblockGfx, 2
 	end
 
 General_ItemKnockoff:
@@ -13006,7 +13041,7 @@ General_Hail:
 	goto Move_HAIL
 
 General_LeechSeedDrain:
-	createvisualtask sub_817351C, 5
+	createvisualtask AnimTask_GetBattlersFromArg, 5
 	delay 0
 	goto Move_ABSORB
 
@@ -13025,7 +13060,7 @@ General_MonHit:
 General_ItemSteal:
 	loadspritegfx ANIM_TAG_ITEM_BAG
 	createvisualtask sub_8117F30, 2
-	createvisualtask sub_8172ED0, 2
+	createvisualtask AnimTask_TargetToEffectBattler, 2
 	delay 1
 	createsprite gItemStealSpriteTemplate, ANIM_ATTACKER, 2, 0, -5, 10, 2, -1
 	end
@@ -13154,31 +13189,48 @@ General_WishHeal:
 	end
 
 General_MegaEvolution:
-    loadspritegfx ANIM_TAG_ORBS
-    loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
-    loadspritegfx ANIM_TAG_METEOR
-    loadspritegfx ANIM_TAG_FLAT_ROCK
-    monbg ANIM_ATK_PARTNER
-    setalpha 12, 8
-    createvisualtask sub_8115A04, 2, 2, 1, 4, 0, 11, RGB(31, 31, 11)
-    playsewithpan SE_W025, -64
-    call SolarBeamSetUp1
-    waitforvisualfinish
-    createsprite gUnknown_08595FEC, ANIM_TARGET, 2, 0
-    playsewithpan SE_W025, -64
-    delay 15
-    createsprite gBattleAnimSpriteTemplate_85972D8, ANIM_ATTACKER, 2, 4, 1, 180, 1
-    createvisualtask sub_8159244, 5, 234, 0
-    delay 20
-    createvisualtask sub_815B7D0, 2, 0
-    delay 4
-    createvisualtask sub_8117494, 50
-    waitforvisualfinish
-    createvisualtask sub_8117494, 2
-    playsewithpan SE_W043, -64
-    blendoff
-    clearmonbg ANIM_ATTACKER
+    loadspritegfx ANIM_TAG_MEGA_STONE
+    loadspritegfx ANIM_TAG_MEGA_PARTICLES
+    loadspritegfx ANIM_TAG_MEGA_SYMBOL
+    monbg ANIM_ATTACKER
+	setalpha 12, 8
+	loopsewithpan SE_W025, SOUND_PAN_ATTACKER, 13, 3
+	createvisualtask sub_8115A04, 2, 2, 0, 6, 0, 11, RGB(31, 31, 11)
+	call MegaEvolutionParticles
+	call MegaEvolutionParticles
+	call MegaEvolutionParticles
+	waitforvisualfinish
+	playsewithpan SE_W076, SOUND_PAN_ATTACKER
+	createsprite gMegaStoneSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
+	delay 20
+	createvisualtask sub_8116664, 5, 5, 2, 0, 16, RGB_WHITEALPHA
+	waitforvisualfinish
+	createvisualtask sub_815B7D0, 2, 0, 1
+	createvisualtask sub_8116664, 5, 5, 2, 16, 0, RGB_WHITEALPHA
+	createvisualtask sub_81152DC, 5, 1, 5, 14
+	waitforvisualfinish
+	createsprite gMegaSymbolSpriteTemplate ANIM_ATTACKER, 2
+	waitforvisualfinish
+	clearmonbg ANIM_ATK_PARTNER
+	blendoff
     end
+	
+MegaEvolutionParticles:
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, 40, -10, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, -35, -10, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, 15, -40, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, -10, -32, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, 25, -20, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, -40, -20, 13
+	delay 3
+	createsprite gMegaParticlesSpriteTemplate, ANIM_ATTACKER, 2, 5, -40, 13
+	delay 3
+	return
 	
 General_TerrainMisty:
 	end
@@ -13193,8 +13245,8 @@ General_TerrainPsychic:
 	end
 
 AnimScript_82D85A3:
-	createvisualtask sub_8172E9C, 2
-	jumpreteq 1, AnimScript_82D85B4
+	createvisualtask AnimTask_IsAttackerBehindSubstitute, 2
+	jumprettrue AnimScript_82D85B4
 AnimScript_82D85B2:
 	waitforvisualfinish
 	return
@@ -13204,8 +13256,8 @@ AnimScript_82D85B4:
 	goto AnimScript_82D85B2
 
 AnimScript_82D85C3:
-	createvisualtask sub_8172E9C, 2
-	jumpreteq 1, AnimScript_82D85D4
+	createvisualtask AnimTask_IsAttackerBehindSubstitute, 2
+	jumprettrue AnimScript_82D85D4
 AnimScript_82D85D2:
 	waitforvisualfinish
 	return

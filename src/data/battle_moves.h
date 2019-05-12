@@ -3206,7 +3206,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_GEAR_UP] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_GEAR_UP,
         .power = 0,
         .type = TYPE_STEEL,
         .accuracy = 0,
@@ -4483,7 +4483,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_INSTRUCT] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_INSTRUCT,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -4645,7 +4645,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_LASER_FOCUS] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_LASER_FOCUS,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -5061,7 +5061,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_MAGNETIC_FLUX] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_MAGNETIC_FLUX,
         .power = 0,
         .type = TYPE_ELECTRIC,
         .accuracy = 0,
@@ -8958,7 +8958,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_THROAT_CHOP] = {
-        .effect = EFFECT_PLACEHOLDER,
+        .effect = EFFECT_THROAT_CHOP,
         .power = 80,
         .type = TYPE_DARK,
         .accuracy = 100,

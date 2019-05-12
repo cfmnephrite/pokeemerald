@@ -149,6 +149,7 @@
 #define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS   83
 #define VARIOUS_CHECK_FLOWER_VEIL               84
 #define VARIOUS_JUMP_IF_ROAR_FAILS              85
+#define VARIOUS_TRY_INSTRUCT                    86
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
@@ -197,13 +198,24 @@
 #define ATK49_ATTACKER_INVISIBLE 10
 #define ATK49_ATTACKER_VISIBLE 11
 #define ATK49_TARGET_VISIBLE 12
-#define ATK49_ITEM_EFFECTS_ALL 13
-#define ATK49_KINGSROCK_SHELLBELL 14
-#define ATK49_SUBSTITUTE 15
-#define ATK49_UPDATE_LAST_MOVES 16
-#define ATK49_MIRROR_MOVE 17
-#define ATK49_NEXT_TARGET 18
-#define ATK49_CLEAR_BITS 19
-#define ATK49_COUNT 20
+#define ATK49_ITEM_EFFECTS_TARGET 13
+#define ATK49_ITEM_EFFECTS_ALL 14
+#define ATK49_KINGSROCK_SHELLBELL 15
+#define ATK49_SUBSTITUTE 16
+#define ATK49_UPDATE_LAST_MOVES 17
+#define ATK49_MIRROR_MOVE 18
+#define ATK49_NEXT_TARGET 19
+#define ATK49_LIFE_ORB 20
+#define ATK49_CLEAR_BITS 21
+#define ATK49_COUNT 22
+
+#define BIT_HP                      0x1
+#define BIT_ATK                     0x2
+#define BIT_DEF                     0x4
+#define BIT_SPEED                   0x8
+#define BIT_SPATK                   0x10
+#define BIT_SPDEF                   0x20
+#define BIT_ACC                     0x40
+#define BIT_EVASION                 0x80
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

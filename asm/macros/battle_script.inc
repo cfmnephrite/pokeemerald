@@ -1530,8 +1530,9 @@
 	.4byte \ptr
 	.endm
 	
-	.macro handlemegaevo battler:req
+	.macro handlemegaevo battler:req, case:req
 	various \battler, VARIOUS_HANDLE_MEGA_EVO
+	.byte \case
 	.endm
 	
 	.macro jumpifcantuselastresort battler:req, ptr:req
@@ -1677,6 +1678,11 @@
 	.4byte \ptr
 	.endm
 
+	.macro tryinstruct ptr:req
+	various BS_ATTACKER, VARIOUS_TRY_INSTRUCT
+	.4byte \ptr
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7
@@ -1775,5 +1781,14 @@
 	jumpifnottype BS_TARGET, TYPE_GRASS, 1f
 	jumpifability BS_TARGET_SIDE, ABILITY_FLOWER_VEIL, \jumpptr
 	1:
+	.endm
+
+	.macro setallytonexttarget jumpptr:req
+	jumpifbyte CMP_GREATER_THAN, gBattlerTarget, 0x1, 1f
+	addbyte gBattlerTarget, 0x2
+	goto \jumpptr
+	1:
+	subbyte gBattlerTarget, 0x2
+	goto \jumpptr
 	.endm
 
