@@ -31,3 +31,4 @@ porymap.project.cfg
 *.ini
 *.bak
 .vscode/
+samples/

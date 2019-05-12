@@ -36,7 +36,7 @@
 #define ITEM_BURN_HEAL 30
 #define ITEM_ICE_HEAL 31
 #define ITEM_AWAKENING 32
-#define ITEM_PARALYZE_HEAL 33
+#define ITEM_PARALYSE_HEAL 33
 #define ITEM_FULL_RESTORE 34
 #define ITEM_MAX_POTION 35
 #define ITEM_HYPER_POTION 36
@@ -704,7 +704,5 @@
 
 // Check if the item is one that can be used on a Pokemon.
 #define ITEM_HAS_EFFECT(item) ((item) >= ITEM_POTION && (item) <= LAST_BERRY_INDEX)
-
-#define ITEM_GRISEOUS_ORB 0
 
 #endif  // GUARD_CONSTANTS_ITEMS_H
