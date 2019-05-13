@@ -48,6 +48,9 @@ gUnknown_02022CFC: @ 2022CFC
 gUnknown_02022D00: @ 2022D00
 	.space 0x4
 
+gSoundInfo:
+    .space 0xFB0
+
 	.include "src/main_menu.o"
 	.include "src/battle_controllers.o"
 	.include "src/rom_8034C54.o"
@@ -174,6 +177,3 @@ gUnknown_02022D00: @ 2022D00
 	.include "src/faraway_island.o"
 	.include "src/trainer_hill.o"
 	.include "src/rayquaza_scene.o"
-
-gSoundInfo:
-    .space 0xFB0
