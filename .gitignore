@@ -27,6 +27,7 @@ Thumbs.db
 build/
 .DS_Store
 *.ddump
+.idea/
 porymap.project.cfg
 *.ini
 *.bak

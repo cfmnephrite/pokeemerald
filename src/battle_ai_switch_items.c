@@ -192,7 +192,7 @@ static bool8 FindMonThatAbsorbsOpponentsMove(void)
             continue;
 
         species = GetMonData(&party[i], MON_DATA_SPECIES);
-        if (GetMonData(&party[i], MON_DATA_ALT_ABILITY) != 0)
+        if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
             monAbility = gBaseStats[species].ability2;
         else
             monAbility = gBaseStats[species].ability1;
@@ -373,7 +373,7 @@ static bool8 FindMonWithFlagsAndSuperEffective(u16 flags, u8 moduloPercent)
             continue;
 
         species = GetMonData(&party[i], MON_DATA_SPECIES);
-        if (GetMonData(&party[i], MON_DATA_ALT_ABILITY) != 0)
+        if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
             monAbility = gBaseStats[species].ability2;
         else
             monAbility = gBaseStats[species].ability1;

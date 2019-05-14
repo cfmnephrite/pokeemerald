@@ -63,7 +63,7 @@
 
 #define PARTY_SIZE 6
 
-#define POKEMON_SLOTS_NUMBER 412
+#define POKEMON_SLOTS_NUMBER 808
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) >= (b) ? (a) : (b))
@@ -91,6 +91,11 @@
 #define T2_READ_16(ptr) ((ptr)[0] + ((ptr)[1] << 8))
 #define T2_READ_32(ptr) ((ptr)[0] + ((ptr)[1] << 8) + ((ptr)[2] << 16) + ((ptr)[3] << 24))
 #define T2_READ_PTR(ptr) (void*) T2_READ_32(ptr)
+
+// Macros for checking the joypad
+#define TEST_BUTTON(field, button) ({(field) & (button);})
+#define JOY_NEW(button) TEST_BUTTON(gMain.newKeys,  button)
+#define JOY_HELD(button)  TEST_BUTTON(gMain.heldKeys, button)
 
 #define S16TOPOSFLOAT(val)   \
 ({                           \
@@ -155,8 +160,7 @@ struct Pokedex
     /*0x04*/ u32 unownPersonality; // set when you first see Unown
     /*0x08*/ u32 spindaPersonality; // set when you first see Spinda
     /*0x0C*/ u32 unknown3;
-    /*0x10*/ u8 owned[DEX_FLAGS_NO];
-    /*0x44*/ u8 seen[DEX_FLAGS_NO];
+    /*0x10*/ u8 filler[0x68]; // Previously Dex Flags, feel free to remove.
 };
 
 struct PokemonJumpResults // possibly used in the game itself?
@@ -241,7 +245,7 @@ struct BattleTowerPokemon
     u32 spAttackIV:5;
     u32 spDefenseIV:5;
     u32 gap:1;
-    u32 altAbility:1;
+    u32 abilityNum:1;
     u32 personality;
     u8 nickname[POKEMON_NAME_LENGTH + 1];
     u8 friendship;
@@ -910,7 +914,7 @@ struct SaveBlock1
     /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
     /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
-    /*0x988*/ u8 seen1[DEX_FLAGS_NO];
+    /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
     /*0x9BC*/ u16 berryBlenderRecords[3];
     /*0x9C2*/ u8 field_9C2[6];
     /*0x9C8*/ u16 trainerRematchStepCounter;
@@ -961,18 +965,17 @@ struct SaveBlock1
     /*0x31DC*/ struct Roamer roamer;
     /*0x31F8*/ struct EnigmaBerry enigmaBerry;
     /*0x322C*/ struct MEventBuffers unk_322C;
-    /*0x3598*/ u8 field_3598[0x180];
-    /*0x3718*/ u32 trainerHillTimes[4];
-    /*0x3728*/ struct RamScript ramScript;
-    /*0x3B14*/ struct RecordMixingGift recordMixingGift;
-    /*0x3B24*/ u8 seen2[DEX_FLAGS_NO];
-    /*0x3B58*/ LilycoveLady lilycoveLady;
-    /*0x3B98*/ struct TrainerNameRecord trainerNameRecords[20];
-    /*0x3C88*/ u8 unk3C88[10][21];
-    /*0x3D5A*/ u8 filler3D5A[0xA];
-    /*0x3D64*/ struct SaveTrainerHill trainerHill;
-    /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    // sizeof: 0x3D88
+    /*0x3???*/ u8 dexSeen[DEX_FLAGS_NO];
+    /*0x3???*/ u8 dexCaught[DEX_FLAGS_NO];
+    /*0x3???*/ u32 trainerHillTimes[4];
+    /*0x3???*/ struct RamScript ramScript;
+    /*0x3???*/ struct RecordMixingGift recordMixingGift;
+    /*0x3???*/ LilycoveLady lilycoveLady;
+    /*0x3???*/ struct TrainerNameRecord trainerNameRecords[20];
+    /*0x3???*/ u8 unk3C88[10][21];
+    /*0x3???*/ struct SaveTrainerHill trainerHill;
+    /*0x3???*/ struct WaldaPhrase waldaPhrase;
+    // sizeof: 0x3???
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
