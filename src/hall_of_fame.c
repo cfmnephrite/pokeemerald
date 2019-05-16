@@ -43,6 +43,21 @@ struct HallofFameMon
     u16 species;
     u8 lvl;
     u8 nick[POKEMON_NAME_LENGTH];
+    
+    /*
+    u16 tId;
+    
+    u8 formId:5;
+    u8 shiny:1;
+    u8 gender:2;
+    u8 jpName:1;
+    u8 level:7;
+    
+    u8 nick[12];
+    species fits into nick by making chars all 7 bits. Can't be arsed rn, lel.
+    
+    16 bytes
+    */
 };
 
 struct HallofFameTeam

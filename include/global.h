@@ -160,7 +160,6 @@ struct Pokedex
     /*0x04*/ u32 unownPersonality; // set when you first see Unown
     /*0x08*/ u32 spindaPersonality; // set when you first see Spinda
     /*0x0C*/ u32 unknown3;
-    /*0x10*/ u8 filler[0x68]; // Previously Dex Flags, feel free to remove.
 };
 
 struct PokemonJumpResults // possibly used in the game itself?
@@ -878,7 +877,6 @@ struct SaveBlock
     /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
     /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
-    /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
     /*0x9BC*/ u16 berryBlenderRecords[3];
     /*0x9C2*/ u8 field_9C2[6];
     /*0x9C8*/ u16 trainerRematchStepCounter;
@@ -929,21 +927,18 @@ struct SaveBlock
     /*0x31DC*/ struct Roamer roamer;
     /*0x31F8*/ struct EnigmaBerry enigmaBerry;
     /*0x322C*/ struct MEventBuffers unk_322C;
-               u8 filler2[0x8];
     /*0x18*/ struct Pokedex pokedex;
     /*0x3???*/ u8 dexSeen[DEX_FLAGS_NO];
     /*0x3???*/ u8 dexCaught[DEX_FLAGS_NO];
     /*0x3???*/ u32 trainerHillTimes[4];
     /*0x3???*/ struct RamScript ramScript;
     /*0x3???*/ struct RecordMixingGift recordMixingGift;
-    /*0x988*/ u8 filler3[0x34]; // Previously Dex Flags, feel free to remove.
     /*0x3???*/ LilycoveLady lilycoveLady;
     /*0x3???*/ struct TrainerNameRecord trainerNameRecords[20];
     /*0x3???*/ u8 unk3C88[10][21];
     /*0x3???*/ struct SaveTrainerHill trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
-               u8 filler4[120];
-    // sizeof: 0x3D88
+    // sizeof: 0x3D88 -> 3CA6// Without filler, 346 bytes (An extra 0x68 from Pokedex struct)
 
     /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
     /*0x08*/ u8 playerGender; // MALE, FEMALE
@@ -960,10 +955,8 @@ struct SaveBlock
              u16 optionsBattleStyle:1; // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
              u16 optionsBattleSceneOff:1; // whether battle animations are disabled
              u16 regionMapZoom:1; // whether the map is zoomed in
-    /*0x90*/ u8 filler_90[0x80];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
-    /*0xA8*/ u32 field_A8; // Written to, but never read.
     /*0xAC*/ u32 encryptionKey;
     /*0xB0*/ struct PlayersApprentice playerApprentice;
     /*0xDC*/ struct Apprentice apprentices[4]; // From record mixing.
@@ -974,7 +967,7 @@ struct SaveBlock
     /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
     /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
     /*0x64C*/ struct BattleFrontier frontier;
-    // sizeof: 0xF2C
+    // sizeof: 0xF2C -> 0xEA8 // Without filler, 216 bytes
 };
 
 extern struct SaveBlock* gSaveBlockPtr;

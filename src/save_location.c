@@ -118,17 +118,6 @@ void TrySetMapSaveWarpStatus(void)
     sub_81AFD5C();
 }
 
-void sub_81AFDA0(void)
-{
-    gSaveBlockPtr->field_A8 |= 0x8000;
-    gSaveBlockPtr->field_A8 |= 0x1;
-    gSaveBlockPtr->field_A8 |= 0x2;
-    gSaveBlockPtr->field_A8 |= 0x4;
-    gSaveBlockPtr->field_A8 |= 0x10;
-    gSaveBlockPtr->field_A8 |= 0x20;
-    gSaveBlockPtr->field_A8 |= 0x8;
-}
-
 void sub_81AFDD0(void)
 {
     gSaveBlockPtr->specialSaveWarpFlags |= 0x80;

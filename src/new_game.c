@@ -160,10 +160,8 @@ void NewGameInitData(void)
     ZeroEnemyPartyMons();
     ResetPokedex();
     ClearFrontierRecord();
-    ClearSav();
     ClearMailData();
     gSaveBlockPtr->specialSaveWarpFlags = 0;
-    gSaveBlockPtr->field_A8 = 0;
     InitPlayerTrainerId();
     PlayTimeCounter_Reset();
     ClearPokedexFlags();
