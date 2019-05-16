@@ -705,14 +705,14 @@ bool8 load_bag_menu_graphics(void)
             }
             break;
         case 2:
-            if (!IsWallysBag() && gSaveBlock2Ptr->playerGender != MALE)
+            if (!IsWallysBag() && gSaveBlockPtr->playerGender != MALE)
                 LoadCompressedPalette(gBagScreenFemale_Pal, 0, 0x40);
             else
                 LoadCompressedPalette(gBagScreenMale_Pal, 0, 0x40);
             gUnknown_0203CE54->unk834++;
             break;
         case 3:
-            if (IsWallysBag() == TRUE || gSaveBlock2Ptr->playerGender == MALE)
+            if (IsWallysBag() == TRUE || gSaveBlockPtr->playerGender == MALE)
                 LoadCompressedSpriteSheet(&gUnknown_0857FB34);
             else
                 LoadCompressedSpriteSheet(&gUnknown_0857FB3C);
@@ -865,7 +865,7 @@ void sub_81AB520(u8 rboxId, int item_index_in_pocket, u8 a)
         }
         else
         {
-            if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId)
+            if (gSaveBlockPtr->registeredItem && gSaveBlockPtr->registeredItem == itemId)
                 BlitBitmapToWindow(rboxId, gUnknown_086140A4, 0x60, a - 1, 0x18, 16);
         }
     }
@@ -1470,7 +1470,7 @@ void sub_81AC644(u8 unused)
                         gUnknown_0203CE54->unk820 = &gUnknown_0203CE54->unk824;
                         gUnknown_0203CE54->unk828 = 4;
                         memcpy(&gUnknown_0203CE54->unk824, &gUnknown_08614030, 4);
-                        if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                        if (gSaveBlockPtr->registeredItem == gSpecialVar_ItemId)
                             gUnknown_0203CE54->unk825 = 8;
                         if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
                         {
@@ -1758,10 +1758,10 @@ void ItemMenu_Register(u8 taskId)
     u16* scrollPos = &gUnknown_0203CE58.scrollPosition[gUnknown_0203CE58.pocket];
     u16* cursorPos = &gUnknown_0203CE58.cursorPosition[gUnknown_0203CE58.pocket];
 
-    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
-        gSaveBlock1Ptr->registeredItem = 0;
+    if (gSaveBlockPtr->registeredItem == gSpecialVar_ItemId)
+        gSaveBlockPtr->registeredItem = 0;
     else
-        gSaveBlock1Ptr->registeredItem = gSpecialVar_ItemId;
+        gSaveBlockPtr->registeredItem = gSpecialVar_ItemId;
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
     load_bag_item_list_buffers(gUnknown_0203CE58.pocket);
     data[0] = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
@@ -1885,21 +1885,21 @@ bool8 UseRegisteredKeyItemOnField(void)
         return FALSE;
     HideMapNamePopUpWindow();
     ChangeBgY_ScreenOff(0, 0, 0);
-    if (gSaveBlock1Ptr->registeredItem != ITEM_NONE)
+    if (gSaveBlockPtr->registeredItem != ITEM_NONE)
     {
-        if (CheckBagHasItem(gSaveBlock1Ptr->registeredItem, 1) == TRUE)
+        if (CheckBagHasItem(gSaveBlockPtr->registeredItem, 1) == TRUE)
         {
             ScriptContext2_Enable();
             FreezeEventObjects();
             sub_808B864();
             sub_808BCF4();
-            gSpecialVar_ItemId = gSaveBlock1Ptr->registeredItem;
-            taskId = CreateTask(ItemId_GetFieldFunc(gSaveBlock1Ptr->registeredItem), 8);
+            gSpecialVar_ItemId = gSaveBlockPtr->registeredItem;
+            taskId = CreateTask(ItemId_GetFieldFunc(gSaveBlockPtr->registeredItem), 8);
             gTasks[taskId].data[3] = 1;
             return TRUE;
         }
         else
-            gSaveBlock1Ptr->registeredItem = ITEM_NONE;
+            gSaveBlockPtr->registeredItem = ITEM_NONE;
     }
     ScriptContext1_SetupScript(EventScript_SelectWithoutRegisteredItem);
     return TRUE;
@@ -2009,14 +2009,14 @@ void sub_81AD8C8(u8 taskId)
 
     PlaySE(SE_REGI);
     RemoveBagItem(gSpecialVar_ItemId, data[8]);
-    AddMoney(&gSaveBlock1Ptr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
+    AddMoney(&gSaveBlockPtr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
     sub_81AB9A8(gUnknown_0203CE58.pocket);
     SetInitialScrollAndCursorPositions(gUnknown_0203CE58.pocket);
     load_bag_item_list_buffers(gUnknown_0203CE58.pocket);
     data[0] = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
     bag_menu_print_cursor_(data[0], 2);
-    PrintMoneyAmountInMoneyBox(gUnknown_0203CE54->unk819, GetMoney(&gSaveBlock1Ptr->money), 0);
+    PrintMoneyAmountInMoneyBox(gUnknown_0203CE54->unk819, GetMoney(&gSaveBlockPtr->money), 0);
     gTasks[taskId].func = sub_81AD9C0;
 }
 
@@ -2124,16 +2124,16 @@ void PrepareBagForWallyTutorial(void)
     u32 i;
 
     gUnknown_0203CE80 = AllocZeroed(sizeof(struct TempWallyStruct));
-    memcpy(gUnknown_0203CE80->bagPocket_Items, gSaveBlock1Ptr->bagPocket_Items, sizeof(gSaveBlock1Ptr->bagPocket_Items));
-    memcpy(gUnknown_0203CE80->bagPocket_PokeBalls, gSaveBlock1Ptr->bagPocket_PokeBalls, sizeof(gSaveBlock1Ptr->bagPocket_PokeBalls));
+    memcpy(gUnknown_0203CE80->bagPocket_Items, gSaveBlockPtr->bagPocket_Items, sizeof(gSaveBlockPtr->bagPocket_Items));
+    memcpy(gUnknown_0203CE80->bagPocket_PokeBalls, gSaveBlockPtr->bagPocket_PokeBalls, sizeof(gSaveBlockPtr->bagPocket_PokeBalls));
     gUnknown_0203CE80->pocket = gUnknown_0203CE58.pocket;
     for (i = 0; i <= 4; i++)
     {
         gUnknown_0203CE80->cursorPosition[i] = gUnknown_0203CE58.cursorPosition[i];
         gUnknown_0203CE80->scrollPosition[i] = gUnknown_0203CE58.scrollPosition[i];
     }
-    ClearItemSlots(gSaveBlock1Ptr->bagPocket_Items, 30);
-    ClearItemSlots(gSaveBlock1Ptr->bagPocket_PokeBalls, 16);
+    ClearItemSlots(gSaveBlockPtr->bagPocket_Items, 30);
+    ClearItemSlots(gSaveBlockPtr->bagPocket_PokeBalls, 16);
     ResetBagScrollPositions();
 }
 
@@ -2141,8 +2141,8 @@ void RestoreBagAfterWallyTutorial(void)
 {
     u32 i;
 
-    memcpy(gSaveBlock1Ptr->bagPocket_Items, gUnknown_0203CE80->bagPocket_Items, sizeof(gUnknown_0203CE80->bagPocket_Items));
-    memcpy(gSaveBlock1Ptr->bagPocket_PokeBalls, gUnknown_0203CE80->bagPocket_PokeBalls, sizeof(gUnknown_0203CE80->bagPocket_PokeBalls));
+    memcpy(gSaveBlockPtr->bagPocket_Items, gUnknown_0203CE80->bagPocket_Items, sizeof(gUnknown_0203CE80->bagPocket_Items));
+    memcpy(gSaveBlockPtr->bagPocket_PokeBalls, gUnknown_0203CE80->bagPocket_PokeBalls, sizeof(gUnknown_0203CE80->bagPocket_PokeBalls));
     gUnknown_0203CE58.pocket = gUnknown_0203CE80->pocket;
     for (i = 0; i <= 4; i++)
     {
@@ -2355,7 +2355,7 @@ void bag_menu_yes_no(u8 a, u8 b, const struct YesNoFuncTable *funcTable)
 void bag_menu_AddMoney_window(void)
 {
     u8 windowId = bag_menu_add_window(9);
-    PrintMoneyAmountInMoneyBoxWithBorder(windowId, 1, 14, GetMoney(&gSaveBlock1Ptr->money));
+    PrintMoneyAmountInMoneyBoxWithBorder(windowId, 1, 14, GetMoney(&gSaveBlockPtr->money));
     AddMoneyLabelObject(19, 11);
 }
 

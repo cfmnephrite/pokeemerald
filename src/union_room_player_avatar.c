@@ -125,19 +125,19 @@ static void SetUnionRoomPlayerGfx(u32 playerIdx, u32 gfxId)
 
 static void CreateUnionRoomPlayerEventObject(u32 playerIdx)
 {
-    TrySpawnEventObject(gUnknown_082F0774[playerIdx], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    TrySpawnEventObject(gUnknown_082F0774[playerIdx], gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
 }
 
 static void RemoveUnionRoomPlayerEventObject(u32 playerIdx)
 {
-    RemoveEventObjectByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    RemoveEventObjectByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
 }
 
 static bool32 SetUnionRoomPlayerEnterExitMovement(u32 playerIdx, const u8 * movement)
 {
     u8 objectId;
     struct EventObject * object;
-    if (TryGetEventObjectIdByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &objectId))
+    if (TryGetEventObjectIdByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, &objectId))
     {
         return FALSE;
     }
@@ -157,7 +157,7 @@ static bool32 sub_8019B3C(u32 playerIdx)
 {
     u8 objectId;
     struct EventObject * object;
-    if (TryGetEventObjectIdByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &objectId))
+    if (TryGetEventObjectIdByLocalIdAndMap(gUnknown_082F0774[playerIdx], gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, &objectId))
     {
         return TRUE;
     }

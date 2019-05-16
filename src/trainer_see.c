@@ -773,14 +773,14 @@ void sub_80B4808(void)
         trainerObj = &gEventObjects[gApproachingTrainers[gUnknown_03006080].eventObjectId];
         gUnknown_03006084[0] = GetFaceDirectionMovementAction(GetOppositeDirection(trainerObj->facingDirection));
         gUnknown_03006084[1] = 0xFE;
-        ScriptMovement_StartObjectMovementScript(0xFF, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, gUnknown_03006084);
+        ScriptMovement_StartObjectMovementScript(0xFF, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gUnknown_03006084);
     }
     else
     {
         trainerObj = &gEventObjects[gPlayerAvatar.eventObjectId];
         gUnknown_03006084[0] = GetFaceDirectionMovementAction(trainerObj->facingDirection);
         gUnknown_03006084[1] = 0xFE;
-        ScriptMovement_StartObjectMovementScript(0xFF, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, gUnknown_03006084);
+        ScriptMovement_StartObjectMovementScript(0xFF, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gUnknown_03006084);
     }
 
     sub_809BE48(0xFF);

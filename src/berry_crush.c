@@ -271,31 +271,31 @@ void sub_8020E58(void)
     switch (gUnknown_02022C90->unk9)
     {
     case 2:
-        if (gUnknown_02022C90->unk16 > gSaveBlock2Ptr->berryCrush.berryCrushResults[0])
+        if (gUnknown_02022C90->unk16 > gSaveBlockPtr->berryCrush.berryCrushResults[0])
         {
             gUnknown_02022C90->unk25_1 = 1;
-            gSaveBlock2Ptr->berryCrush.berryCrushResults[0] = gUnknown_02022C90->unk16;
+            gSaveBlockPtr->berryCrush.berryCrushResults[0] = gUnknown_02022C90->unk16;
         }
         break;
     case 3:
-        if (gUnknown_02022C90->unk16 > gSaveBlock2Ptr->berryCrush.berryCrushResults[1])
+        if (gUnknown_02022C90->unk16 > gSaveBlockPtr->berryCrush.berryCrushResults[1])
         {
             gUnknown_02022C90->unk25_1 = 1;
-            gSaveBlock2Ptr->berryCrush.berryCrushResults[1] = gUnknown_02022C90->unk16;
+            gSaveBlockPtr->berryCrush.berryCrushResults[1] = gUnknown_02022C90->unk16;
         }
         break;
     case 4:
-        if (gUnknown_02022C90->unk16 > gSaveBlock2Ptr->berryCrush.berryCrushResults[2])
+        if (gUnknown_02022C90->unk16 > gSaveBlockPtr->berryCrush.berryCrushResults[2])
         {
             gUnknown_02022C90->unk25_1 = 1;
-            gSaveBlock2Ptr->berryCrush.berryCrushResults[2] = gUnknown_02022C90->unk16;
+            gSaveBlockPtr->berryCrush.berryCrushResults[2] = gUnknown_02022C90->unk16;
         }
         break;
     case 5:
-        if (gUnknown_02022C90->unk16 > gSaveBlock2Ptr->berryCrush.berryCrushResults[3])
+        if (gUnknown_02022C90->unk16 > gSaveBlockPtr->berryCrush.berryCrushResults[3])
         {
             gUnknown_02022C90->unk25_1 = 1;
-            gSaveBlock2Ptr->berryCrush.berryCrushResults[3] = gUnknown_02022C90->unk16;
+            gSaveBlockPtr->berryCrush.berryCrushResults[3] = gUnknown_02022C90->unk16;
         }
         break;
     }
@@ -344,7 +344,7 @@ void sub_8020FC4(struct BerryCrushGame *arg0)
         arg0->unk84.players[i].unk14[PLAYER_NAME_LENGTH] = EOS;
     }
 
-    switch (gSaveBlock2Ptr->optionsTextSpeed)
+    switch (gSaveBlockPtr->optionsTextSpeed)
     {
     case OPTIONS_TEXT_SPEED_SLOW:
         arg0->unkB = 8;
@@ -403,7 +403,7 @@ _08020FF0:\n\
     cmp r5, 0x4\n\
     bls _08020FF0\n\
 _08021012:\n\
-    ldr r0, =gSaveBlock2Ptr\n\
+    ldr r0, =gSaveBlockPtr\n\
     ldr r0, [r0]\n\
     ldrb r0, [r0, 0x14]\n\
     lsls r0, 29\n\

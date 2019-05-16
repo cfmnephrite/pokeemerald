@@ -1244,7 +1244,7 @@ static void Select_InitMonsData(void)
     for (i = 0; i < SELECTABLE_MONS_COUNT; i++)
         sFactorySelectScreen->mons[i].selectedId = 0;
 
-    if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_TENT)
+    if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_TENT)
         CreateFrontierFactorySelectableMons(0);
     else
         CreateTentFactorySelectableMons(0);
@@ -1663,22 +1663,22 @@ static void CreateFrontierFactorySelectableMons(u8 firstMonId)
     u8 happiness = 0;
     u32 otId = 0;
     u8 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-    u8 challengeNum = gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode] / 7;
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
+    u8 challengeNum = gSaveBlockPtr->frontier.factoryWinStreaks[battleMode][lvlMode] / 7;
     u8 var_28 = 0;
 
     gFacilityTrainerMons = gBattleFrontierMons;
-    if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
+    if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_50)
         level = 100;
     else
         level = 50;
 
     var_28 = GetNumPastRentalsRank(battleMode, lvlMode);
-    otId = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
+    otId = T1_READ_32(gSaveBlockPtr->playerTrainerId);
 
     for (i = 0; i < SELECTABLE_MONS_COUNT; i++)
     {
-        u16 monSetId = gSaveBlock2Ptr->frontier.rentalMons[i].monId;
+        u16 monSetId = gSaveBlockPtr->frontier.rentalMons[i].monId;
         sFactorySelectScreen->mons[i + firstMonId].monSetId = monSetId;
         if (i < var_28)
             ivs = GetFactoryMonFixedIV(challengeNum + 1, 0);
@@ -1708,11 +1708,11 @@ static void CreateTentFactorySelectableMons(u8 firstMonId)
     u32 otId = 0;
 
     gFacilityTrainerMons = gSlateportBattleTentMons;
-    otId = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
+    otId = T1_READ_32(gSaveBlockPtr->playerTrainerId);
 
     for (i = 0; i < SELECTABLE_MONS_COUNT; i++)
     {
-        u16 monSetId = gSaveBlock2Ptr->frontier.rentalMons[i].monId;
+        u16 monSetId = gSaveBlockPtr->frontier.rentalMons[i].monId;
         sFactorySelectScreen->mons[i + firstMonId].monSetId = monSetId;
         CreateMonWithEVSpreadNatureOTID(&sFactorySelectScreen->mons[i + firstMonId].monData,
                                              gFacilityTrainerMons[monSetId].species,
@@ -1740,10 +1740,10 @@ static void Select_CopyMonsToPlayerParty(void)
             if (sFactorySelectScreen->mons[j].selectedId == i + 1)
             {
                 gPlayerParty[i] = sFactorySelectScreen->mons[j].monData;
-                gSaveBlock2Ptr->frontier.rentalMons[i].monId = sFactorySelectScreen->mons[j].monSetId;
-                gSaveBlock2Ptr->frontier.rentalMons[i].personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY, NULL);
-                gSaveBlock2Ptr->frontier.rentalMons[i].abilityBit = GetBoxMonData(&gPlayerParty[i].box, MON_DATA_ABILITY_NUM, NULL);
-                gSaveBlock2Ptr->frontier.rentalMons[i].ivs = GetBoxMonData(&gPlayerParty[i].box, MON_DATA_ATK_IV, NULL);
+                gSaveBlockPtr->frontier.rentalMons[i].monId = sFactorySelectScreen->mons[j].monSetId;
+                gSaveBlockPtr->frontier.rentalMons[i].personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY, NULL);
+                gSaveBlockPtr->frontier.rentalMons[i].abilityBit = GetBoxMonData(&gPlayerParty[i].box, MON_DATA_ABILITY_NUM, NULL);
+                gSaveBlockPtr->frontier.rentalMons[i].ivs = GetBoxMonData(&gPlayerParty[i].box, MON_DATA_ATK_IV, NULL);
                 break;
             }
         }
@@ -2263,10 +2263,10 @@ static void CopySwappedMonData(void)
     gPlayerParty[sFactorySwapScreen->playerMonId] = gEnemyParty[sFactorySwapScreen->enemyMonId];
     happiness = 0;
     SetMonData(&gPlayerParty[sFactorySwapScreen->playerMonId], MON_DATA_FRIENDSHIP, &happiness);
-    gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->playerMonId].monId = gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->enemyMonId + 3].monId;
-    gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->playerMonId].ivs = gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->enemyMonId + 3].ivs;
-    gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->playerMonId].personality = GetMonData(&gEnemyParty[sFactorySwapScreen->enemyMonId], MON_DATA_PERSONALITY, NULL);
-    gSaveBlock2Ptr->frontier.rentalMons[sFactorySwapScreen->playerMonId].abilityBit = GetBoxMonData(&gEnemyParty[sFactorySwapScreen->enemyMonId].box, MON_DATA_ABILITY_NUM, NULL);
+    gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->playerMonId].monId = gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->enemyMonId + 3].monId;
+    gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->playerMonId].ivs = gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->enemyMonId + 3].ivs;
+    gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->playerMonId].personality = GetMonData(&gEnemyParty[sFactorySwapScreen->enemyMonId], MON_DATA_PERSONALITY, NULL);
+    gSaveBlockPtr->frontier.rentalMons[sFactorySwapScreen->playerMonId].abilityBit = GetBoxMonData(&gEnemyParty[sFactorySwapScreen->enemyMonId].box, MON_DATA_ABILITY_NUM, NULL);
 }
 
 static void Task_FromSwapScreenToSummaryScreen(u8 taskId)

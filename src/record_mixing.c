@@ -178,16 +178,16 @@ void RecordMixingPlayerSpotTriggered(void)
 // these variables were const in R/S, but had to become changeable because of saveblocks changing RAM position
 static void SetSrcLookupPointers(void)
 {
-    sSecretBasesSave = gSaveBlock1Ptr->secretBases;
-    sTvShowsSave = gSaveBlock1Ptr->tvShows;
-    sPokeNewsSave = gSaveBlock1Ptr->pokeNews;
-    sOldManSave = &gSaveBlock1Ptr->oldMan;
-    sEasyChatPairsSave = gSaveBlock1Ptr->easyChatPairs;
+    sSecretBasesSave = gSaveBlockPtr->secretBases;
+    sTvShowsSave = gSaveBlockPtr->tvShows;
+    sPokeNewsSave = gSaveBlockPtr->pokeNews;
+    sOldManSave = &gSaveBlockPtr->oldMan;
+    sEasyChatPairsSave = gSaveBlockPtr->easyChatPairs;
     gUnknown_03001148 = &gUnknown_02039F9C;
-    sBattleTowerSave = &gSaveBlock2Ptr->frontier.towerPlayer;
-    sLilycoveLadySave = &gSaveBlock1Ptr->lilycoveLady;
-    sApprenticesSave = gSaveBlock2Ptr->apprentices;
-    sBattleTowerSave_Duplicate = &gSaveBlock2Ptr->frontier.towerPlayer;
+    sBattleTowerSave = &gSaveBlockPtr->frontier.towerPlayer;
+    sLilycoveLadySave = &gSaveBlockPtr->lilycoveLady;
+    sApprenticesSave = gSaveBlockPtr->apprentices;
+    sBattleTowerSave_Duplicate = &gSaveBlockPtr->frontier.towerPlayer;
 }
 
 static void PrepareUnknownExchangePacket(struct PlayerRecordsRS *dest)
@@ -917,8 +917,8 @@ static void ReceiveDaycareMailData(struct RecordMixingDayCareMail *src, size_t r
     }
 
     _src = (void *)src + which * recordSize;
-    memcpy(&gSaveBlock1Ptr->daycare.mons[0].mail, &_src->mail[0], sizeof(struct DayCareMail));
-    memcpy(&gSaveBlock1Ptr->daycare.mons[1].mail, &_src->mail[1], sizeof(struct DayCareMail));
+    memcpy(&gSaveBlockPtr->daycare.mons[0].mail, &_src->mail[0], sizeof(struct DayCareMail));
+    memcpy(&gSaveBlockPtr->daycare.mons[1].mail, &_src->mail[1], sizeof(struct DayCareMail));
     SeedRng(oldSeed);
 }
 
@@ -1034,15 +1034,15 @@ static void sub_80E8110(struct Apprentice *dst, struct Apprentice *src)
     r8 = 0;
     for (i = 0; i < 2; i++)
     {
-        id = ((i + gSaveBlock2Ptr->playerApprentice.field_B2_1) % 3) + 1;
+        id = ((i + gSaveBlockPtr->playerApprentice.field_B2_1) % 3) + 1;
         if (src[id].playerName[0] != EOS)
         {
-            if (GetTrainerId(src[id].playerId) != GetTrainerId(gSaveBlock2Ptr->playerTrainerId))
+            if (GetTrainerId(src[id].playerId) != GetTrainerId(gSaveBlockPtr->playerTrainerId))
             {
                 r8++;
                 var_2C = id;
             }
-            if (GetTrainerId(src[id].playerId) == GetTrainerId(gSaveBlock2Ptr->playerTrainerId))
+            if (GetTrainerId(src[id].playerId) == GetTrainerId(gSaveBlockPtr->playerTrainerId))
             {
                 var_24++;
                 var_28 = id;
@@ -1064,11 +1064,11 @@ static void sub_80E8110(struct Apprentice *dst, struct Apprentice *src)
     case 2:
         if (Random2() > 0x3333)
         {
-            dst[1] = src[gSaveBlock2Ptr->playerApprentice.field_B2_1 + 1];
+            dst[1] = src[gSaveBlockPtr->playerApprentice.field_B2_1 + 1];
         }
         else
         {
-            dst[1] = src[((gSaveBlock2Ptr->playerApprentice.field_B2_1 + 1) % 3 + 1)];
+            dst[1] = src[((gSaveBlockPtr->playerApprentice.field_B2_1 + 1) % 3 + 1)];
         }
         break;
     }
@@ -1082,34 +1082,34 @@ void GetPlayerHallRecords(struct PlayerHallRecords *dst)
     {
         for (j = 0; j < 2; j++)
         {
-            CopyTrainerId(dst->onePlayer[i][j].id, gSaveBlock2Ptr->playerTrainerId);
+            CopyTrainerId(dst->onePlayer[i][j].id, gSaveBlockPtr->playerTrainerId);
             dst->onePlayer[i][j].language = GAME_LANGUAGE;
-            StringCopy(dst->onePlayer[i][j].name, gSaveBlock2Ptr->playerName);
+            StringCopy(dst->onePlayer[i][j].name, gSaveBlockPtr->playerName);
         }
     }
 
     for (j = 0; j < 2; j++)
     {
         dst->twoPlayers[j].language = GAME_LANGUAGE;
-        CopyTrainerId(dst->twoPlayers[j].id1, gSaveBlock2Ptr->playerTrainerId);
-        CopyTrainerId(dst->twoPlayers[j].id2, gSaveBlock2Ptr->frontier.field_EF1[j]);
-        StringCopy(dst->twoPlayers[j].name1, gSaveBlock2Ptr->playerName);
-        StringCopy(dst->twoPlayers[j].name2, gSaveBlock2Ptr->frontier.opponentName[j]);
+        CopyTrainerId(dst->twoPlayers[j].id1, gSaveBlockPtr->playerTrainerId);
+        CopyTrainerId(dst->twoPlayers[j].id2, gSaveBlockPtr->frontier.field_EF1[j]);
+        StringCopy(dst->twoPlayers[j].name1, gSaveBlockPtr->playerName);
+        StringCopy(dst->twoPlayers[j].name2, gSaveBlockPtr->frontier.opponentName[j]);
     }
 
     for (i = 0; i < 2; i++)
     {
-        dst->onePlayer[0][i].winStreak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
-        dst->onePlayer[1][i].winStreak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[FRONTIER_MODE_DOUBLES][i];
-        dst->onePlayer[2][i].winStreak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[FRONTIER_MODE_MULTIS][i];
-        dst->onePlayer[3][i].winStreak = gSaveBlock2Ptr->frontier.domeRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
-        dst->onePlayer[4][i].winStreak = gSaveBlock2Ptr->frontier.palaceRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
-        dst->onePlayer[5][i].winStreak = gSaveBlock2Ptr->frontier.arenaRecordStreaks[i];
-        dst->onePlayer[6][i].winStreak = gSaveBlock2Ptr->frontier.factoryRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
-        dst->onePlayer[7][i].winStreak = gSaveBlock2Ptr->frontier.pikeRecordStreaks[i];
-        dst->onePlayer[8][i].winStreak = gSaveBlock2Ptr->frontier.pyramidRecordStreaks[i];
+        dst->onePlayer[0][i].winStreak = gSaveBlockPtr->frontier.towerRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
+        dst->onePlayer[1][i].winStreak = gSaveBlockPtr->frontier.towerRecordWinStreaks[FRONTIER_MODE_DOUBLES][i];
+        dst->onePlayer[2][i].winStreak = gSaveBlockPtr->frontier.towerRecordWinStreaks[FRONTIER_MODE_MULTIS][i];
+        dst->onePlayer[3][i].winStreak = gSaveBlockPtr->frontier.domeRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
+        dst->onePlayer[4][i].winStreak = gSaveBlockPtr->frontier.palaceRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
+        dst->onePlayer[5][i].winStreak = gSaveBlockPtr->frontier.arenaRecordStreaks[i];
+        dst->onePlayer[6][i].winStreak = gSaveBlockPtr->frontier.factoryRecordWinStreaks[FRONTIER_MODE_SINGLES][i];
+        dst->onePlayer[7][i].winStreak = gSaveBlockPtr->frontier.pikeRecordStreaks[i];
+        dst->onePlayer[8][i].winStreak = gSaveBlockPtr->frontier.pyramidRecordStreaks[i];
 
-        dst->twoPlayers[i].winStreak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[FRONTIER_MODE_LINK_MULTIS][i];
+        dst->twoPlayers[i].winStreak = gSaveBlockPtr->frontier.towerRecordWinStreaks[FRONTIER_MODE_LINK_MULTIS][i];
     }
 }
 
@@ -1142,7 +1142,7 @@ static void ReceiveApprenticeData(struct Apprentice *arg0, size_t arg1, u32 arg2
     r8 = 0;
     for (i = 0; i < 2; i++)
     {
-        if (structPtr[i].playerName[0] != EOS && !sub_80E841C(&structPtr[i], &gSaveBlock2Ptr->apprentices[0]))
+        if (structPtr[i].playerName[0] != EOS && !sub_80E841C(&structPtr[i], &gSaveBlockPtr->apprentices[0]))
         {
             r7++;
             r8 = i;
@@ -1152,17 +1152,17 @@ static void ReceiveApprenticeData(struct Apprentice *arg0, size_t arg1, u32 arg2
     switch (r7)
     {
     case 1:
-        structId = gSaveBlock2Ptr->playerApprentice.field_B2_1 + 1;
-        gSaveBlock2Ptr->apprentices[structId] = structPtr[r8];
-        gSaveBlock2Ptr->playerApprentice.field_B2_1 = (gSaveBlock2Ptr->playerApprentice.field_B2_1 + 1) % 3;
+        structId = gSaveBlockPtr->playerApprentice.field_B2_1 + 1;
+        gSaveBlockPtr->apprentices[structId] = structPtr[r8];
+        gSaveBlockPtr->playerApprentice.field_B2_1 = (gSaveBlockPtr->playerApprentice.field_B2_1 + 1) % 3;
         break;
     case 2:
         for (i = 0; i < 2; i++)
         {
-            structId = ((i ^ 1) + gSaveBlock2Ptr->playerApprentice.field_B2_1) % 3 + 1;
-            gSaveBlock2Ptr->apprentices[structId] = structPtr[i];
+            structId = ((i ^ 1) + gSaveBlockPtr->playerApprentice.field_B2_1) % 3 + 1;
+            gSaveBlockPtr->apprentices[structId] = structPtr[i];
         }
-        gSaveBlock2Ptr->playerApprentice.field_B2_1 = (gSaveBlock2Ptr->playerApprentice.field_B2_1 + 2) % 3;
+        gSaveBlockPtr->playerApprentice.field_B2_1 = (gSaveBlockPtr->playerApprentice.field_B2_1 + 2) % 3;
         break;
     }
 }
@@ -1192,7 +1192,7 @@ static void sub_80E8578(struct RecordMixingHallRecords *dst, void *hallRecords, 
         for (j = 0; j < 2; j++)
         {
             for (k = 0; k < 3; k++)
-                dst->hallRecords1P[i][j][k] = gSaveBlock2Ptr->hallRecords1P[i][j][k];
+                dst->hallRecords1P[i][j][k] = gSaveBlockPtr->hallRecords1P[i][j][k];
 
             for (k = 0; k < linkPlayerCount - 1; k++)
             {
@@ -1215,7 +1215,7 @@ static void sub_80E8578(struct RecordMixingHallRecords *dst, void *hallRecords, 
     for (j = 0; j < 2; j++)
     {
         for (k = 0; k < 3; k++)
-            dst->hallRecords2P[j][k] = gSaveBlock2Ptr->hallRecords2P[j][k];
+            dst->hallRecords2P[j][k] = gSaveBlockPtr->hallRecords2P[j][k];
 
         for (k = 0; k < linkPlayerCount - 1; k++)
         {
@@ -1293,10 +1293,10 @@ static void sub_80E8924(struct RecordMixingHallRecords *arg0)
     for (i = 0; i < HALL_FACILITIES_COUNT; i++)
     {
         for (j = 0; j < 2; j++)
-            sub_80E8880(gSaveBlock2Ptr->hallRecords1P[i][j], arg0->hallRecords1P[i][j]);
+            sub_80E8880(gSaveBlockPtr->hallRecords1P[i][j], arg0->hallRecords1P[i][j]);
     }
     for (j = 0; j < 2; j++)
-        sub_80E88CC(gSaveBlock2Ptr->hallRecords2P[j], arg0->hallRecords2P[j]);
+        sub_80E88CC(gSaveBlockPtr->hallRecords2P[j], arg0->hallRecords2P[j]);
 }
 
 static void ReceiveRankingHallRecords(struct PlayerHallRecords *hallRecords, size_t recordSize, u32 arg2)
@@ -1312,9 +1312,9 @@ static void ReceiveRankingHallRecords(struct PlayerHallRecords *hallRecords, siz
 
 static void sub_80E89F8(struct RecordMixingDayCareMail *dst)
 {
-    gUnknown_02039F9C.mail[0] = gSaveBlock1Ptr->daycare.mons[0].mail;
-    gUnknown_02039F9C.mail[1] = gSaveBlock1Ptr->daycare.mons[1].mail;
-    InitDaycareMailRecordMixing(&gSaveBlock1Ptr->daycare, &gUnknown_02039F9C);
+    gUnknown_02039F9C.mail[0] = gSaveBlockPtr->daycare.mons[0].mail;
+    gUnknown_02039F9C.mail[1] = gSaveBlockPtr->daycare.mons[1].mail;
+    InitDaycareMailRecordMixing(&gSaveBlockPtr->daycare, &gUnknown_02039F9C);
     *dst = *gUnknown_03001148;
 }
 

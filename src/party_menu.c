@@ -4218,7 +4218,7 @@ static void sub_81B452C(void)
 
     DoEasyChatScreen(
     	EASY_CHAT_TYPE_MAIL,
-    	gSaveBlock1Ptr->mail[mail].words,
+    	gSaveBlockPtr->mail[mail].words,
     	sub_81B4578,
     	EASY_CHAT_PERSON_DISPLAY_NONE);
 }
@@ -4388,7 +4388,7 @@ static void CursorCb_Read(u8 taskId)
 
 static void sub_81B4A98(void)
 {
-    ReadMail(&gSaveBlock1Ptr->mail[GetMonData(&gPlayerParty[gUnknown_0203CEC8.unk9], MON_DATA_MAIL)], sub_81B4AE0, 1);
+    ReadMail(&gSaveBlockPtr->mail[GetMonData(&gPlayerParty[gUnknown_0203CEC8.unk9], MON_DATA_MAIL)], sub_81B4AE0, 1);
 }
 
 static void sub_81B4AE0(void)
@@ -4729,14 +4729,14 @@ static void CursorCb_FieldMove(u8 taskId)
                 sub_8161560(taskId);
                 break;
             case FIELD_MOVE_TELEPORT:
-                mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->lastHealLocation.mapGroup, gSaveBlock1Ptr->lastHealLocation.mapNum);
+                mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->lastHealLocation.mapGroup, gSaveBlockPtr->lastHealLocation.mapNum);
                 sub_81245DC(gStringVar1, mapHeader->regionMapSectionId);
                 StringExpandPlaceholders(gStringVar4, gText_ReturnToHealingSpot);
                 sub_81B5674(taskId);
                 gUnknown_0203CEC4->data[0] = fieldMove;
                 break;
             case FIELD_MOVE_DIG:
-                mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->escapeWarp.mapGroup, gSaveBlock1Ptr->escapeWarp.mapNum);
+                mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->escapeWarp.mapGroup, gSaveBlockPtr->escapeWarp.mapNum);
                 sub_81245DC(gStringVar1, mapHeader->regionMapSectionId);
                 StringExpandPlaceholders(gStringVar4, gText_EscapeFromHere);
                 sub_81B5674(taskId);
@@ -5281,7 +5281,7 @@ static bool8 IsHPRecoveryItem(u16 item)
     const u8 *effect;
 
     if (item == ITEM_ENIGMA_BERRY)
-        effect = gSaveBlock1Ptr->enigmaBerry.itemEffect;
+        effect = gSaveBlockPtr->enigmaBerry.itemEffect;
     else
         effect = gItemEffectTable[item - ITEM_POTION];
 
@@ -5595,7 +5595,7 @@ void dp05_ether(u8 taskId, TaskFunc task)
     u16 item = gSpecialVar_ItemId;
 
     if (item == ITEM_ENIGMA_BERRY)
-        effect = gSaveBlock1Ptr->enigmaBerry.itemEffect;
+        effect = gSaveBlockPtr->enigmaBerry.itemEffect;
     else
         effect = gItemEffectTable[item - ITEM_POTION];
 
@@ -6227,7 +6227,7 @@ u8 GetItemEffectType(u16 item)
 
     // Read the item's effect properties.
     if (item == ITEM_ENIGMA_BERRY)
-        itemEffect = gSaveBlock1Ptr->enigmaBerry.itemEffect;
+        itemEffect = gSaveBlockPtr->enigmaBerry.itemEffect;
     else
         itemEffect = gItemEffectTable[item - ITEM_POTION];
 
@@ -6396,7 +6396,7 @@ static void sub_81B814C(void)
     mail = GetMonData(&gPlayerParty[gUnknown_0203CEC8.unk9], MON_DATA_MAIL);
     DoEasyChatScreen(
     	EASY_CHAT_TYPE_MAIL,
-    	gSaveBlock1Ptr->mail[mail].words,
+    	gSaveBlockPtr->mail[mail].words,
     	sub_81B81A8,
     	EASY_CHAT_PERSON_DISPLAY_NONE);
 }
@@ -6511,7 +6511,7 @@ static void sub_81B8474(u8 taskId)
     struct MailStruct *mail;
 
     gUnknown_0203CEE8 = 0;
-    mail = &gSaveBlock1Ptr->mail[playerPCItemPageInfo.itemsAbove + 6 + playerPCItemPageInfo.cursorPos];
+    mail = &gSaveBlockPtr->mail[playerPCItemPageInfo.itemsAbove + 6 + playerPCItemPageInfo.cursorPos];
     if (GetMonData(mon, MON_DATA_HELD_ITEM) != ITEM_NONE)
     {
         sub_81B1B5C(gText_PkmnHoldingItemCantHoldMail, 1);
@@ -6554,8 +6554,8 @@ static bool8 GetBattleEntryEligibility(struct Pokemon *mon)
 
     if (GetMonData(mon, MON_DATA_IS_EGG)
         || GetMonData(mon, MON_DATA_LEVEL) > sub_81B8888()
-        || (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_PYRAMID_LOBBY)
-            && gSaveBlock1Ptr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PYRAMID_LOBBY)
+        || (gSaveBlockPtr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_PYRAMID_LOBBY)
+            && gSaveBlockPtr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PYRAMID_LOBBY)
             && GetMonData(mon, MON_DATA_HELD_ITEM) != ITEM_NONE))
     {
         return FALSE;

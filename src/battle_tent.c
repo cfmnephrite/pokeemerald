@@ -98,20 +98,20 @@ void sub_81B99B4(void)
 
 static void sub_81B99D4(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = 0;
-    gSaveBlock2Ptr->frontier.curChallengeBattleNum = 0;
-    gSaveBlock2Ptr->frontier.field_CA9_a = FALSE;
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    gSaveBlockPtr->frontier.field_CA8 = 0;
+    gSaveBlockPtr->frontier.curChallengeBattleNum = 0;
+    gSaveBlockPtr->frontier.field_CA9_a = FALSE;
+    SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
 }
 
 static void sub_81B9A28(void)
 {
-    gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_E6A;
+    gSpecialVar_Result = gSaveBlockPtr->frontier.field_E6A;
 }
 
 static void sub_81B9A44(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6A = gSpecialVar_0x8006;
+    gSaveBlockPtr->frontier.field_E6A = gSpecialVar_0x8006;
 }
 
 static void sub_81B9A60(void)
@@ -128,23 +128,23 @@ static void sub_81B9A90(void)
 
 static void sub_81B9ABC(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = gSpecialVar_0x8005;
+    gSaveBlockPtr->frontier.field_CA8 = gSpecialVar_0x8005;
     VarSet(VAR_TEMP_0, 0);
-    gSaveBlock2Ptr->frontier.field_CA9_a = TRUE;
+    gSaveBlockPtr->frontier.field_CA9_a = TRUE;
     sub_81A4C30();
 }
 
 static void sub_81B9B00(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6A = sVerdanturfTentRewards[Random() % ARRAY_COUNT(sVerdanturfTentRewards)];
+    gSaveBlockPtr->frontier.field_E6A = sVerdanturfTentRewards[Random() % ARRAY_COUNT(sVerdanturfTentRewards)];
 }
 
 static void sub_81B9B28(void)
 {
-    if (AddBagItem(gSaveBlock2Ptr->frontier.field_E6A, 1) == TRUE)
+    if (AddBagItem(gSaveBlockPtr->frontier.field_E6A, 1) == TRUE)
     {
-        CopyItemName(gSaveBlock2Ptr->frontier.field_E6A, gStringVar1);
-        gSaveBlock2Ptr->frontier.field_E6A = ITEM_NONE;
+        CopyItemName(gSaveBlockPtr->frontier.field_E6A, gStringVar1);
+        gSaveBlockPtr->frontier.field_E6A = ITEM_NONE;
         gSpecialVar_Result = TRUE;
     }
     else
@@ -160,41 +160,41 @@ void sub_81B9B80(void)
 
 static void sub_81B9BA0(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = 0;
-    gSaveBlock2Ptr->frontier.curChallengeBattleNum = 0;
-    gSaveBlock2Ptr->frontier.field_CA9_a = FALSE;
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    gSaveBlockPtr->frontier.field_CA8 = 0;
+    gSaveBlockPtr->frontier.curChallengeBattleNum = 0;
+    gSaveBlockPtr->frontier.field_CA9_a = FALSE;
+    SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
 }
 
 static void sub_81B9BF4(void)
 {
-    gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_E6C;
+    gSpecialVar_Result = gSaveBlockPtr->frontier.field_E6C;
 }
 
 static void sub_81B9C10(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6C = gSpecialVar_0x8006;
+    gSaveBlockPtr->frontier.field_E6C = gSpecialVar_0x8006;
 }
 
 static void sub_81B9C2C(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = gSpecialVar_0x8005;
+    gSaveBlockPtr->frontier.field_CA8 = gSpecialVar_0x8005;
     VarSet(VAR_TEMP_0, 0);
-    gSaveBlock2Ptr->frontier.field_CA9_a = TRUE;
+    gSaveBlockPtr->frontier.field_CA9_a = TRUE;
     sub_81A4C30();
 }
 
 static void sub_81B9C70(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6C = sFallarborTentRewards[Random() % ARRAY_COUNT(sFallarborTentRewards)];
+    gSaveBlockPtr->frontier.field_E6C = sFallarborTentRewards[Random() % ARRAY_COUNT(sFallarborTentRewards)];
 }
 
 static void sub_81B9C98(void)
 {
-    if (AddBagItem(gSaveBlock2Ptr->frontier.field_E6C, 1) == TRUE)
+    if (AddBagItem(gSaveBlockPtr->frontier.field_E6C, 1) == TRUE)
     {
-        CopyItemName(gSaveBlock2Ptr->frontier.field_E6C, gStringVar1);
-        gSaveBlock2Ptr->frontier.field_E6C = ITEM_NONE;
+        CopyItemName(gSaveBlockPtr->frontier.field_E6C, gStringVar1);
+        gSaveBlockPtr->frontier.field_E6C = ITEM_NONE;
         gSpecialVar_Result = TRUE;
     }
     else
@@ -215,41 +215,41 @@ void sub_81B9D08(void)
 
 static void sub_81B9D28(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = 0;
-    gSaveBlock2Ptr->frontier.curChallengeBattleNum = 0;
-    gSaveBlock2Ptr->frontier.field_CA9_a = FALSE;
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    gSaveBlockPtr->frontier.field_CA8 = 0;
+    gSaveBlockPtr->frontier.curChallengeBattleNum = 0;
+    gSaveBlockPtr->frontier.field_CA9_a = FALSE;
+    SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
 }
 
 static void sub_81B9D7C(void)
 {
-    gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_E6E;
+    gSpecialVar_Result = gSaveBlockPtr->frontier.field_E6E;
 }
 
 static void sub_81B9D98(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6E = gSpecialVar_0x8006;
+    gSaveBlockPtr->frontier.field_E6E = gSpecialVar_0x8006;
 }
 
 static void sub_81B9DB4(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = gSpecialVar_0x8005;
+    gSaveBlockPtr->frontier.field_CA8 = gSpecialVar_0x8005;
     VarSet(VAR_TEMP_0, 0);
-    gSaveBlock2Ptr->frontier.field_CA9_a = TRUE;
+    gSaveBlockPtr->frontier.field_CA9_a = TRUE;
     sub_81A4C30();
 }
 
 static void sub_81B9DF8(void)
 {
-    gSaveBlock2Ptr->frontier.field_E6E = sSlateportTentRewards[Random() % ARRAY_COUNT(sSlateportTentRewards)];
+    gSaveBlockPtr->frontier.field_E6E = sSlateportTentRewards[Random() % ARRAY_COUNT(sSlateportTentRewards)];
 }
 
 static void sub_81B9E20(void)
 {
-    if (AddBagItem(gSaveBlock2Ptr->frontier.field_E6E, 1) == TRUE)
+    if (AddBagItem(gSaveBlockPtr->frontier.field_E6E, 1) == TRUE)
     {
-        CopyItemName(gSaveBlock2Ptr->frontier.field_E6E, gStringVar1);
-        gSaveBlock2Ptr->frontier.field_E6E = ITEM_NONE;
+        CopyItemName(gSaveBlockPtr->frontier.field_E6E, gStringVar1);
+        gSaveBlockPtr->frontier.field_E6E = ITEM_NONE;
         gSpecialVar_Result = TRUE;
     }
     else
@@ -329,7 +329,7 @@ static void sub_81B9EC0(void)
         if (j != i + firstMonId)
             continue;
 
-        gSaveBlock2Ptr->frontier.rentalMons[i].monId = monSetId;
+        gSaveBlockPtr->frontier.rentalMons[i].monId = monSetId;
         species[i] = gFacilityTrainerMons[monSetId].species;
         heldItems[i] = gBattleFrontierHeldItems[gFacilityTrainerMons[monSetId].itemTableId];
         monIds[i] = monSetId;
@@ -354,12 +354,12 @@ static void sub_81BA040(void)
         do
         {
             trainerId = Random() % 30;
-            for (i = 0; i < gSaveBlock2Ptr->frontier.curChallengeBattleNum; i++)
+            for (i = 0; i < gSaveBlockPtr->frontier.curChallengeBattleNum; i++)
             {
-                if (gSaveBlock2Ptr->frontier.trainerIds[i] == trainerId)
+                if (gSaveBlockPtr->frontier.trainerIds[i] == trainerId)
                     break;
             }
-        } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum);
+        } while (i != gSaveBlockPtr->frontier.curChallengeBattleNum);
 
         gTrainerBattleOpponent_A = trainerId;
         while (gFacilityTrainers[gTrainerBattleOpponent_A].monSets[setsCount] != 0xFFFF)
@@ -369,8 +369,8 @@ static void sub_81BA040(void)
         setsCount = 0;
     }
 
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < 2)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum] = gTrainerBattleOpponent_A;
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum < 2)
+        gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum] = gTrainerBattleOpponent_A;
 
     monSets = gFacilityTrainers[gTrainerBattleOpponent_A].monSets;
     i = 0;
@@ -379,7 +379,7 @@ static void sub_81BA040(void)
         sRandMonSetId = monSets[Random() % setsCount];
         for (j = 0; j < 6; j++)
         {
-            if (gFacilityTrainerMons[sRandMonSetId].species == gFacilityTrainerMons[gSaveBlock2Ptr->frontier.rentalMons[j].monId].species)
+            if (gFacilityTrainerMons[sRandMonSetId].species == gFacilityTrainerMons[gSaveBlockPtr->frontier.rentalMons[j].monId].species)
                 break;
         }
         if (j != 6)

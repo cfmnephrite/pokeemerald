@@ -97,9 +97,9 @@ static int CalcRecordMixingGiftChecksum(void)
 {
     unsigned int i;
     int sum = 0;
-    u8 *data = (u8*)(&gSaveBlock1Ptr->recordMixingGift.data);
+    u8 *data = (u8*)(&gSaveBlockPtr->recordMixingGift.data);
 
-    for (i = 0; i < sizeof(gSaveBlock1Ptr->recordMixingGift.data); i++)
+    for (i = 0; i < sizeof(gSaveBlockPtr->recordMixingGift.data); i++)
         sum += data[i];
 
     return sum;
@@ -107,14 +107,14 @@ static int CalcRecordMixingGiftChecksum(void)
 
 static bool32 IsRecordMixingGiftValid(void)
 {
-    struct RecordMixingGiftData *data = &gSaveBlock1Ptr->recordMixingGift.data;
+    struct RecordMixingGiftData *data = &gSaveBlockPtr->recordMixingGift.data;
     int checksum = CalcRecordMixingGiftChecksum();
 
     if (data->unk0 == 0
         || data->quantity == 0
         || data->itemId == 0
         || checksum == 0
-        || checksum != gSaveBlock1Ptr->recordMixingGift.checksum)
+        || checksum != gSaveBlockPtr->recordMixingGift.checksum)
         return FALSE;
     else
         return TRUE;
@@ -122,7 +122,7 @@ static bool32 IsRecordMixingGiftValid(void)
 
 static void ClearRecordMixingGift(void)
 {
-    CpuFill16(0, &gSaveBlock1Ptr->recordMixingGift, sizeof(gSaveBlock1Ptr->recordMixingGift));
+    CpuFill16(0, &gSaveBlockPtr->recordMixingGift, sizeof(gSaveBlockPtr->recordMixingGift));
 }
 
 static void SetRecordMixingGift(u8 unk, u8 quantity, u16 itemId)
@@ -133,16 +133,16 @@ static void SetRecordMixingGift(u8 unk, u8 quantity, u16 itemId)
     }
     else
     {
-        gSaveBlock1Ptr->recordMixingGift.data.unk0 = unk;
-        gSaveBlock1Ptr->recordMixingGift.data.quantity = quantity;
-        gSaveBlock1Ptr->recordMixingGift.data.itemId = itemId;
-        gSaveBlock1Ptr->recordMixingGift.checksum = CalcRecordMixingGiftChecksum();
+        gSaveBlockPtr->recordMixingGift.data.unk0 = unk;
+        gSaveBlockPtr->recordMixingGift.data.quantity = quantity;
+        gSaveBlockPtr->recordMixingGift.data.itemId = itemId;
+        gSaveBlockPtr->recordMixingGift.checksum = CalcRecordMixingGiftChecksum();
     }
 }
 
 u16 GetRecordMixingGift(void)
 {
-    struct RecordMixingGiftData *data = &gSaveBlock1Ptr->recordMixingGift.data;
+    struct RecordMixingGiftData *data = &gSaveBlockPtr->recordMixingGift.data;
 
     if (!IsRecordMixingGiftValid())
     {
@@ -156,7 +156,7 @@ u16 GetRecordMixingGift(void)
         if (data->quantity == 0)
             ClearRecordMixingGift();
         else
-            gSaveBlock1Ptr->recordMixingGift.checksum = CalcRecordMixingGiftChecksum();
+            gSaveBlockPtr->recordMixingGift.checksum = CalcRecordMixingGiftChecksum();
 
         return itemId;
     }
@@ -223,9 +223,9 @@ bool8 MEScrCmd_setenigmaberry(struct ScriptContext *ctx)
     const u8 *message;
     bool32 haveBerry = IsEnigmaBerryValid();
     u8 *berry = (u8 *)(ScriptReadWord(ctx) - ctx->data[1] + ctx->data[0]);
-    StringCopyN(gStringVar1, gSaveBlock1Ptr->enigmaBerry.berry.name, BERRY_NAME_LENGTH + 1);
+    StringCopyN(gStringVar1, gSaveBlockPtr->enigmaBerry.berry.name, BERRY_NAME_LENGTH + 1);
     SetEnigmaBerry(berry);
-    StringCopyN(gStringVar2, gSaveBlock1Ptr->enigmaBerry.berry.name, BERRY_NAME_LENGTH + 1);
+    StringCopyN(gStringVar2, gSaveBlockPtr->enigmaBerry.berry.name, BERRY_NAME_LENGTH + 1);
 
     if (!haveBerry)
     {
@@ -351,7 +351,7 @@ bool8 MEScrCmd_givepokemon(struct ScriptContext *ctx)
 bool8 MEScrCmd_addtrainer(struct ScriptContext *ctx)
 {
     u32 data = ScriptReadWord(ctx) - ctx->data[1] + ctx->data[0];
-    memcpy((void*)(gSaveBlock2Ptr) + 0xBEC, (void *)data, 0xBC);
+    memcpy((void*)(gSaveBlockPtr) + 0xBEC, (void *)data, 0xBC);
     ValidateEReaderTrainer();
     StringExpandPlaceholders(gStringVar4, gText_MysteryGiftNewTrainer);
     ctx->data[2] = 2;

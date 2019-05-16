@@ -2461,21 +2461,21 @@ static void UpdateRainCounter(u8, u8);
 
 void SetSav1Weather(u32 weather)
 {
-    u8 oldWeather = gSaveBlock1Ptr->weather;
-    gSaveBlock1Ptr->weather = TranslateWeatherNum(weather);
-    UpdateRainCounter(gSaveBlock1Ptr->weather, oldWeather);
+    u8 oldWeather = gSaveBlockPtr->weather;
+    gSaveBlockPtr->weather = TranslateWeatherNum(weather);
+    UpdateRainCounter(gSaveBlockPtr->weather, oldWeather);
 }
 
 u8 GetSav1Weather(void)
 {
-    return gSaveBlock1Ptr->weather;
+    return gSaveBlockPtr->weather;
 }
 
 void SetSav1WeatherFromCurrMapHeader(void)
 {
-    u8 oldWeather = gSaveBlock1Ptr->weather;
-    gSaveBlock1Ptr->weather = TranslateWeatherNum(gMapHeader.weather);
-    UpdateRainCounter(gSaveBlock1Ptr->weather, oldWeather);
+    u8 oldWeather = gSaveBlockPtr->weather;
+    gSaveBlockPtr->weather = TranslateWeatherNum(gMapHeader.weather);
+    UpdateRainCounter(gSaveBlockPtr->weather, oldWeather);
 }
 
 void SetWeather(u32 weather)
@@ -2563,17 +2563,17 @@ static u8 TranslateWeatherNum(u8 weather)
     case WEATHER_RAIN_HEAVY:     return WEATHER_RAIN_HEAVY;
     case WEATHER_BUBBLES:        return WEATHER_BUBBLES;
     case WEATHER_ALTERNATING:    return WEATHER_ALTERNATING;
-    case WEATHER_ROUTE119_CYCLE: return sWeatherCycleRoute119[gSaveBlock1Ptr->weatherCycleStage];
-    case WEATHER_ROUTE123_CYCLE: return sWeatherCycleRoute123[gSaveBlock1Ptr->weatherCycleStage];
+    case WEATHER_ROUTE119_CYCLE: return sWeatherCycleRoute119[gSaveBlockPtr->weatherCycleStage];
+    case WEATHER_ROUTE123_CYCLE: return sWeatherCycleRoute123[gSaveBlockPtr->weatherCycleStage];
     default:                     return WEATHER_NONE;
     }
 }
 
 void UpdateWeatherPerDay(u16 increment)
 {
-    u16 weatherStage = gSaveBlock1Ptr->weatherCycleStage + increment;
+    u16 weatherStage = gSaveBlockPtr->weatherCycleStage + increment;
     weatherStage %= 4;
-    gSaveBlock1Ptr->weatherCycleStage = weatherStage;
+    gSaveBlockPtr->weatherCycleStage = weatherStage;
 }
 
 static void UpdateRainCounter(u8 newWeather, u8 oldWeather)

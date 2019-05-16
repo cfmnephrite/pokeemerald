@@ -216,7 +216,7 @@ void ClearSecretBases(void)
 {
     u16 i;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
-        ClearSecretBase(&gSaveBlock1Ptr->secretBases[i]);
+        ClearSecretBase(&gSaveBlockPtr->secretBases[i]);
 }
 
 static void SetCurSecretBaseId(void)
@@ -231,7 +231,7 @@ void TrySetCurSecretBaseIndex(void)
     gSpecialVar_Result = FALSE;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
     {
-        if (sCurSecretBaseId == gSaveBlock1Ptr->secretBases[i].secretBaseId)
+        if (sCurSecretBaseId == gSaveBlockPtr->secretBases[i].secretBaseId)
         {
             gSpecialVar_Result = TRUE;
             VarSet(VAR_CURRENT_SECRET_BASE, i);
@@ -243,7 +243,7 @@ void TrySetCurSecretBaseIndex(void)
 void CheckPlayerHasSecretBase(void)
 {
     // The player's secret base is always the first in the array.
-    if (gSaveBlock1Ptr->secretBases[0].secretBaseId)
+    if (gSaveBlockPtr->secretBases[0].secretBaseId)
         gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
@@ -348,14 +348,14 @@ void SetPlayerSecretBase(void)
 {
     u16 i;
 
-    gSaveBlock1Ptr->secretBases[0].secretBaseId = sCurSecretBaseId;
+    gSaveBlockPtr->secretBases[0].secretBaseId = sCurSecretBaseId;
     for (i = 0; i < 4; i++)
-        gSaveBlock1Ptr->secretBases[0].trainerId[i] = gSaveBlock2Ptr->playerTrainerId[i];
+        gSaveBlockPtr->secretBases[0].trainerId[i] = gSaveBlockPtr->playerTrainerId[i];
 
     VarSet(VAR_CURRENT_SECRET_BASE, 0);
-    StringCopyN(gSaveBlock1Ptr->secretBases[0].trainerName, gSaveBlock2Ptr->playerName, GetNameLength(gSaveBlock2Ptr->playerName));
-    gSaveBlock1Ptr->secretBases[0].gender = gSaveBlock2Ptr->playerGender;
-    gSaveBlock1Ptr->secretBases[0].language = GAME_LANGUAGE;
+    StringCopyN(gSaveBlockPtr->secretBases[0].trainerName, gSaveBlockPtr->playerName, GetNameLength(gSaveBlockPtr->playerName));
+    gSaveBlockPtr->secretBases[0].gender = gSaveBlockPtr->playerGender;
+    gSaveBlockPtr->secretBases[0].language = GAME_LANGUAGE;
     VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
 }
 
@@ -370,7 +370,7 @@ void SetOccupiedSecretBaseEntranceMetatiles(struct MapEvents const *events)
         {
             for (j = 0; j < SECRET_BASES_COUNT; j++)
             {
-                if (gSaveBlock1Ptr->secretBases[j].secretBaseId == events->bgEvents[bgId].bgUnion.secretBaseId)
+                if (gSaveBlockPtr->secretBases[j].secretBaseId == events->bgEvents[bgId].bgUnion.secretBaseId)
                 {
                     s16 x = events->bgEvents[bgId].x + 7;
                     s16 y = events->bgEvents[bgId].y + 7;
@@ -408,8 +408,8 @@ static void Task_EnterSecretBase(u8 taskId)
         break;
     case 1:
         secretBaseId = VarGet(VAR_CURRENT_SECRET_BASE);
-        if (gSaveBlock1Ptr->secretBases[secretBaseId].numTimesEntered < 255)
-            gSaveBlock1Ptr->secretBases[secretBaseId].numTimesEntered++;
+        if (gSaveBlockPtr->secretBases[secretBaseId].numTimesEntered < 255)
+            gSaveBlockPtr->secretBases[secretBaseId].numTimesEntered++;
 
         SetSecretBaseWarpDestination();
         WarpIntoMap();
@@ -424,7 +424,7 @@ void EnterSecretBase(void)
 {
     CreateTask(Task_EnterSecretBase, 0);
     FadeScreen(1, 0);
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
 }
 
 bool8 SecretBaseMapPopupEnabled(void)
@@ -466,8 +466,8 @@ static void Task_EnterNewlyCreatedSecretBase(u8 taskId)
     {
         s8 offset = sCurSecretBaseId / 10 * 4;
         SetWarpDestination(
-            gSaveBlock1Ptr->location.mapGroup,
-            gSaveBlock1Ptr->location.mapNum,
+            gSaveBlockPtr->location.mapGroup,
+            gSaveBlockPtr->location.mapNum,
             -1,
             sSecretBaseEntrancePositions[offset + 2],
             sSecretBaseEntrancePositions[offset + 3]);
@@ -486,8 +486,8 @@ void EnterNewlyCreatedSecretBase(void)
 
 bool8 CurMapIsSecretBase(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SECRET_BASE_RED_CAVE1)
-     && (u8)gSaveBlock1Ptr->location.mapNum <= MAP_NUM(SECRET_BASE_SHRUB4))
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(SECRET_BASE_RED_CAVE1)
+     && (u8)gSaveBlockPtr->location.mapNum <= MAP_NUM(SECRET_BASE_SHRUB4))
         return TRUE;
     else
         return FALSE;
@@ -503,8 +503,8 @@ void InitSecretBaseAppearance(bool8 hidePC)
     if (CurMapIsSecretBase())
     {
         secretBaseId = VarGet(VAR_CURRENT_SECRET_BASE);
-        decorations = gSaveBlock1Ptr->secretBases[secretBaseId].decorations;
-        decorPos = gSaveBlock1Ptr->secretBases[secretBaseId].decorationPositions;
+        decorations = gSaveBlockPtr->secretBases[secretBaseId].decorations;
+        decorPos = gSaveBlockPtr->secretBases[secretBaseId].decorationPositions;
         for (x = 0; x < 16; x++)
         {
             if (decorations[x] > 0 && decorations[x] <= NUM_DECORATIONS && gDecorations[decorations[x]].permission != DECORPERM_SPRITE)
@@ -540,15 +540,15 @@ void InitSecretBaseDecorationSprites(void)
     eventObjectId = 0;
     if (!CurMapIsSecretBase())
     {
-        decorations = gSaveBlock1Ptr->playerRoomDecor;
-        decorationPositions = gSaveBlock1Ptr->playerRoomDecorPos;
+        decorations = gSaveBlockPtr->playerRoomDecor;
+        decorationPositions = gSaveBlockPtr->playerRoomDecorPos;
         numDecorations = 12;
     }
     else
     {
         u16 secretBaseId = VarGet(VAR_CURRENT_SECRET_BASE);
-        decorations = gSaveBlock1Ptr->secretBases[secretBaseId].decorations;
-        decorationPositions = gSaveBlock1Ptr->secretBases[secretBaseId].decorationPositions;
+        decorations = gSaveBlockPtr->secretBases[secretBaseId].decorations;
+        decorationPositions = gSaveBlockPtr->secretBases[secretBaseId].decorationPositions;
         numDecorations = 16;
     }
 
@@ -580,25 +580,25 @@ void InitSecretBaseDecorationSprites(void)
                 VarSet(gSpecialVar_Result, gDecorations[decorations[i]].tiles[0]);
                 gSpecialVar_Result = gMapHeader.events->eventObjects[eventObjectId].localId;
                 FlagClear(FLAG_DECORATION_1 + gSpecialVar_0x8004);
-                TrySpawnEventObject(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-                TryMoveEventObjectToMapCoords(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, gSpecialVar_0x8006, gSpecialVar_0x8007);
-                TryOverrideEventObjectTemplateCoords(gSpecialVar_Result, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+                TrySpawnEventObject(gSpecialVar_Result, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
+                TryMoveEventObjectToMapCoords(gSpecialVar_Result, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gSpecialVar_0x8006, gSpecialVar_0x8007);
+                TryOverrideEventObjectTemplateCoords(gSpecialVar_Result, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
                 if (CurMapIsSecretBase() == TRUE && VarGet(VAR_CURRENT_SECRET_BASE) != 0)
                 {
                     if (category == DECORCAT_DOLL)
                     {
                         OverrideSecretBaseDecorationSpriteScript(
                             gSpecialVar_Result,
-                            gSaveBlock1Ptr->location.mapNum,
-                            gSaveBlock1Ptr->location.mapGroup,
+                            gSaveBlockPtr->location.mapNum,
+                            gSaveBlockPtr->location.mapGroup,
                             DECORCAT_DOLL);
                     }
                     else if (category == DECORCAT_CUSHION)
                     {
                         OverrideSecretBaseDecorationSpriteScript(
                             gSpecialVar_Result,
-                            gSaveBlock1Ptr->location.mapNum,
-                            gSaveBlock1Ptr->location.mapGroup,
+                            gSaveBlockPtr->location.mapNum,
+                            gSaveBlockPtr->location.mapGroup,
                             DECORCAT_CUSHION);
                     }
                 }
@@ -621,8 +621,8 @@ void HideSecretBaseDecorationSprites(void)
         {
             RemoveEventObjectByLocalIdAndMap(
                 gMapHeader.events->eventObjects[eventObjectId].localId,
-                gSaveBlock1Ptr->location.mapNum,
-                gSaveBlock1Ptr->location.mapGroup);
+                gSaveBlockPtr->location.mapNum,
+                gSaveBlockPtr->location.mapGroup);
             FlagSet(flag);
         }
     }
@@ -694,7 +694,7 @@ static void WarpOutOfSecretBase(void)
 
 void IsCurSecretBaseOwnedByAnotherPlayer(void)
 {
-    if (gSaveBlock1Ptr->secretBases[0].secretBaseId != sCurSecretBaseId)
+    if (gSaveBlockPtr->secretBases[0].secretBaseId != sCurSecretBaseId)
         gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
@@ -702,8 +702,8 @@ void IsCurSecretBaseOwnedByAnotherPlayer(void)
 
 static u8 *GetSecretBaseName(u8 *dest, u8 secretBaseId)
 {
-    *StringCopyN(dest, gSaveBlock1Ptr->secretBases[secretBaseId].trainerName, GetNameLength(gSaveBlock1Ptr->secretBases[secretBaseId].trainerName)) = EOS;
-    ConvertInternationalString(dest, gSaveBlock1Ptr->secretBases[secretBaseId].language);
+    *StringCopyN(dest, gSaveBlockPtr->secretBases[secretBaseId].trainerName, GetNameLength(gSaveBlockPtr->secretBases[secretBaseId].trainerName)) = EOS;
+    ConvertInternationalString(dest, gSaveBlockPtr->secretBases[secretBaseId].language);
     return StringAppend(dest, gText_ApostropheSBase);
 }
 
@@ -718,14 +718,14 @@ void CopyCurSecretBaseOwnerName_StrVar1(void)
     const u8 *name;
 
     secretBaseId = VarGet(VAR_CURRENT_SECRET_BASE);
-    name = gSaveBlock1Ptr->secretBases[secretBaseId].trainerName;
+    name = gSaveBlockPtr->secretBases[secretBaseId].trainerName;
     *StringCopyN(gStringVar1, name, GetNameLength(name)) = EOS;
-    ConvertInternationalString(gStringVar1, gSaveBlock1Ptr->secretBases[secretBaseId].language);
+    ConvertInternationalString(gStringVar1, gSaveBlockPtr->secretBases[secretBaseId].language);
 }
 
 static bool8 IsSecretBaseRegistered(u8 secretBaseId)
 {
-    if (gSaveBlock1Ptr->secretBases[secretBaseId].registryStatus)
+    if (gSaveBlockPtr->secretBases[secretBaseId].registryStatus)
         return TRUE;
 
     return FALSE;
@@ -751,8 +751,8 @@ void SetPlayerSecretBaseParty(void)
     struct SecretBaseParty *party;
 
     partyId = 0;
-    party = &gSaveBlock1Ptr->secretBases[0].party;
-    if (gSaveBlock1Ptr->secretBases[0].secretBaseId)
+    party = &gSaveBlockPtr->secretBases[0].party;
+    if (gSaveBlockPtr->secretBases[0].secretBaseId)
     {
         for (i = 0; i < PARTY_SIZE; i++)
         {
@@ -784,9 +784,9 @@ void SetPlayerSecretBaseParty(void)
 
 void ClearAndLeaveSecretBase(void)
 {
-    u16 temp = gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived;
-    ClearSecretBase(&gSaveBlock1Ptr->secretBases[0]);
-    gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived = temp;
+    u16 temp = gSaveBlockPtr->secretBases[0].numSecretBasesReceived;
+    ClearSecretBase(&gSaveBlockPtr->secretBases[0]);
+    gSaveBlockPtr->secretBases[0].numSecretBasesReceived = temp;
     WarpOutOfSecretBase();
 }
 
@@ -806,7 +806,7 @@ static void ClosePlayerSecretBaseEntrance(void)
     for (i = 0; i < events->bgEventCount; i++)
     {
         if (events->bgEvents[i].kind == BG_EVENT_SECRET_BASE
-         && gSaveBlock1Ptr->secretBases[0].secretBaseId == events->bgEvents[i].bgUnion.secretBaseId)
+         && gSaveBlockPtr->secretBases[0].secretBaseId == events->bgEvents[i].bgUnion.secretBaseId)
         {
             metatileId = MapGridGetMetatileIdAt(events->bgEvents[i].x + 7, events->bgEvents[i].y + 7);
             for (j = 0; j < 7; j++)
@@ -832,9 +832,9 @@ void MoveOutOfSecretBaseFromOutside(void)
 
     ClosePlayerSecretBaseEntrance();
     IncrementGameStat(GAME_STAT_MOVED_SECRET_BASE);
-    temp = gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived;
-    ClearSecretBase(&gSaveBlock1Ptr->secretBases[0]);
-    gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived = temp;
+    temp = gSaveBlockPtr->secretBases[0].numSecretBasesReceived;
+    ClearSecretBase(&gSaveBlockPtr->secretBases[0]);
+    gSaveBlockPtr->secretBases[0].numSecretBasesReceived = temp;
 }
 
 static u8 GetNumRegisteredSecretBases(void)
@@ -862,7 +862,7 @@ void GetCurSecretBaseRegistrationValidity(void)
 
 void ToggleCurSecretBaseRegistry(void)
 {
-    gSaveBlock1Ptr->secretBases[VarGet(VAR_CURRENT_SECRET_BASE)].registryStatus ^= 1;
+    gSaveBlockPtr->secretBases[VarGet(VAR_CURRENT_SECRET_BASE)].registryStatus ^= 1;
     FlagSet(FLAG_SECRET_BASE_REGISTRY_ENABLED);
 }
 
@@ -1042,7 +1042,7 @@ void DeleteRegistry_Yes_Callback(u8 taskId)
     s16 *data = gTasks[taskId].data;
     ClearDialogWindowAndFrame(0, 0);
     DestroyListMenuTask(data[5], &data[2], &data[1]);
-    gSaveBlock1Ptr->secretBases[data[4]].registryStatus = 0;
+    gSaveBlockPtr->secretBases[data[4]].registryStatus = 0;
     BuildRegistryMenuItems(taskId);
     sub_812225C(&data[2], &data[1], data[3], data[0]);
     FinalizeRegistryMenu(taskId);
@@ -1086,8 +1086,8 @@ static void GoToSecretBasePCMainMenu(u8 taskId)
 
 static u8 GetSecretBaseOwnerType(u8 secretBaseId)
 {
-    return (gSaveBlock1Ptr->secretBases[secretBaseId].trainerId[0] % 5)
-         + (gSaveBlock1Ptr->secretBases[secretBaseId].gender * 5);
+    return (gSaveBlockPtr->secretBases[secretBaseId].trainerId[0] % 5)
+         + (gSaveBlockPtr->secretBases[secretBaseId].gender * 5);
 }
 
 const u8 *GetSecretBaseTrainerLoseText(void)
@@ -1124,7 +1124,7 @@ void PrepSecretBaseBattleFlags(void)
 
 void sub_80EA30C(void)
 {
-    gSaveBlock1Ptr->secretBases[VarGet(VAR_CURRENT_SECRET_BASE)].battledOwnerToday = gSpecialVar_Result;
+    gSaveBlockPtr->secretBases[VarGet(VAR_CURRENT_SECRET_BASE)].battledOwnerToday = gSpecialVar_Result;
 }
 
 void GetSecretBaseOwnerInteractionState(void)
@@ -1136,12 +1136,12 @@ void GetSecretBaseOwnerInteractionState(void)
     if (!FlagGet(FLAG_DAILY_SECRET_BASE))
     {
         for (i = 0; i < SECRET_BASES_COUNT; i++)
-            gSaveBlock1Ptr->secretBases[i].battledOwnerToday = FALSE;
+            gSaveBlockPtr->secretBases[i].battledOwnerToday = FALSE;
 
         FlagSet(FLAG_DAILY_SECRET_BASE);
     }
     gSpecialVar_0x8004 = GetSecretBaseOwnerType(secretBaseId);
-    gSpecialVar_Result = gSaveBlock1Ptr->secretBases[secretBaseId].battledOwnerToday;
+    gSpecialVar_Result = gSaveBlockPtr->secretBases[secretBaseId].battledOwnerToday;
 }
 
 void SecretBasePerStepCallback(u8 taskId)
@@ -1269,14 +1269,14 @@ static void SetSecretBaseDataAndLanguage(u8 secretBaseId, struct SecretBase *sec
     int stringLength;
     u8 *name;
 
-    gSaveBlock1Ptr->secretBases[secretBaseId] = *secretBase;
-    gSaveBlock1Ptr->secretBases[secretBaseId].registryStatus = 2;
+    gSaveBlockPtr->secretBases[secretBaseId] = *secretBase;
+    gSaveBlockPtr->secretBases[secretBaseId].registryStatus = 2;
     if (version == VERSION_SAPPHIRE || version == VERSION_RUBY)
-        gSaveBlock1Ptr->secretBases[secretBaseId].language = LANGUAGE_ENGLISH;
+        gSaveBlockPtr->secretBases[secretBaseId].language = LANGUAGE_ENGLISH;
 
     if (version == VERSION_EMERALD && language == LANGUAGE_JAPANESE)
     {
-        name = gSaveBlock1Ptr->secretBases[secretBaseId].trainerName;
+        name = gSaveBlockPtr->secretBases[secretBaseId].trainerName;
         for (stringLength = 0; stringLength < 7; stringLength++)
         {
             if (name[stringLength] == EOS)
@@ -1284,7 +1284,7 @@ static void SetSecretBaseDataAndLanguage(u8 secretBaseId, struct SecretBase *sec
         }
 
         if (stringLength > 5)
-            gSaveBlock1Ptr->secretBases[secretBaseId].language = LANGUAGE_ENGLISH;
+            gSaveBlockPtr->secretBases[secretBaseId].language = LANGUAGE_ENGLISH;
     }
 }
 
@@ -1329,7 +1329,7 @@ static s16 GetSecretBaseIndexFromId(u8 secretBaseId)
     s16 i;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
     {
-        if (gSaveBlock1Ptr->secretBases[i].secretBaseId == secretBaseId)
+        if (gSaveBlockPtr->secretBases[i].secretBaseId == secretBaseId)
             return i;
     }
 
@@ -1341,7 +1341,7 @@ static u8 FindAvailableSecretBaseIndex(void)
     s16 i;
     for (i = 1; i < SECRET_BASES_COUNT; i++)
     {
-        if (gSaveBlock1Ptr->secretBases[i].secretBaseId == 0)
+        if (gSaveBlockPtr->secretBases[i].secretBaseId == 0)
             return i;
     }
 
@@ -1353,7 +1353,7 @@ static u8 sub_80EAA18(void)
     s16 i;
     for (i = 1; i < SECRET_BASES_COUNT; i++)
     {
-        if (gSaveBlock1Ptr->secretBases[i].registryStatus == 0 && gSaveBlock1Ptr->secretBases[i].sbr_field_1_0 == 0)
+        if (gSaveBlockPtr->secretBases[i].registryStatus == 0 && gSaveBlockPtr->secretBases[i].sbr_field_1_0 == 0)
             return i;
     }
 
@@ -1372,10 +1372,10 @@ static u8 sub_80EAA64(struct SecretBase *secretBase, u32 version, u32 language)
     {
         if (index != -1)
         {
-            if (gSaveBlock1Ptr->secretBases[index].sbr_field_1_0 == 1)
+            if (gSaveBlockPtr->secretBases[index].sbr_field_1_0 == 1)
                 return 0;
 
-            if (gSaveBlock1Ptr->secretBases[index].registryStatus != 2 || secretBase->sbr_field_1_0 == 1)
+            if (gSaveBlockPtr->secretBases[index].registryStatus != 2 || secretBase->sbr_field_1_0 == 1)
             {
                 SetSecretBaseDataAndLanguage(index, secretBase, version, language);
                 return index;
@@ -1409,7 +1409,7 @@ static void SortSecretBasesByRegistryStatus(void)
     u8 j;
     struct SecretBase *secretBases;
 
-    secretBases = gSaveBlock1Ptr->secretBases;
+    secretBases = gSaveBlockPtr->secretBases;
     for (i = 1; i < 19; i++)
     {
         for (j = i + 1; j < SECRET_BASES_COUNT; j++)
@@ -1441,19 +1441,19 @@ bool8 SecretBaseBelongsToPlayer(struct SecretBase *secretBase)
     if (secretBase->secretBaseId == 0)
         return FALSE;
 
-    if (secretBase->secretBaseId && secretBase->gender != gSaveBlock2Ptr->playerGender)
+    if (secretBase->secretBaseId && secretBase->gender != gSaveBlockPtr->playerGender)
         return FALSE;
 
     // Check if the player's trainer Id matches the secret base's id.
     for (i = 0; i < 4; i++)
     {
-        if (secretBase->trainerId[i] != gSaveBlock2Ptr->playerTrainerId[i])
+        if (secretBase->trainerId[i] != gSaveBlockPtr->playerTrainerId[i])
             return FALSE;
     }
 
-    for (i = 0; i < PLAYER_NAME_LENGTH && (secretBase->trainerName[i] != EOS || gSaveBlock2Ptr->playerName[i] != EOS); i++)
+    for (i = 0; i < PLAYER_NAME_LENGTH && (secretBase->trainerName[i] != EOS || gSaveBlockPtr->playerName[i] != EOS); i++)
     {
-        if (secretBase->trainerName[i] != gSaveBlock2Ptr->playerName[i])
+        if (secretBase->trainerName[i] != gSaveBlockPtr->playerName[i])
             return FALSE;
     }
 
@@ -1603,7 +1603,7 @@ void sub_80EAEB4(struct SecretBaseRecordMixer *mixers)
 void sub_80EAEF4(struct SecretBaseRecordMixer *mixers)
 {
     DeleteFirstOldBaseFromPlayerInRecordMixingFriendsRecords(mixers[0].secretBases, mixers[1].secretBases, mixers[2].secretBases);
-    sub_80EAD94(gSaveBlock1Ptr->secretBases, mixers[0].secretBases, mixers[1].secretBases, mixers[2].secretBases);
+    sub_80EAD94(gSaveBlockPtr->secretBases, mixers[0].secretBases, mixers[1].secretBases, mixers[2].secretBases);
     sub_80EAEB4(mixers);
     sub_80EAA64(mixers[0].secretBases, mixers[0].version, mixers[0].language);
     sub_80EAA64(mixers[1].secretBases, mixers[1].version, mixers[1].language);
@@ -1685,26 +1685,26 @@ void ReceiveSecretBasesData(void *secretBases, size_t recordSize, u8 linkIdx)
         sub_80EAEF4(mixers);
         for (i = 1; i < SECRET_BASES_COUNT; i++)
         {
-            if (gSaveBlock1Ptr->secretBases[i].sbr_field_1_0 == 1)
+            if (gSaveBlockPtr->secretBases[i].sbr_field_1_0 == 1)
             {
-                gSaveBlock1Ptr->secretBases[i].registryStatus = 1;
-                gSaveBlock1Ptr->secretBases[i].sbr_field_1_0 = 0;
+                gSaveBlockPtr->secretBases[i].registryStatus = 1;
+                gSaveBlockPtr->secretBases[i].sbr_field_1_0 = 0;
             }
         }
 
         SortSecretBasesByRegistryStatus();
         for (i = 1; i < SECRET_BASES_COUNT; i++)
         {
-            if (gSaveBlock1Ptr->secretBases[i].registryStatus == 2)
+            if (gSaveBlockPtr->secretBases[i].registryStatus == 2)
             {
-                gSaveBlock1Ptr->secretBases[i].registryStatus = 0;
+                gSaveBlockPtr->secretBases[i].registryStatus = 0;
             }
         }
 
-        if (gSaveBlock1Ptr->secretBases[0].secretBaseId != 0
-         && gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived != 0xFFFF)
+        if (gSaveBlockPtr->secretBases[0].secretBaseId != 0
+         && gSaveBlockPtr->secretBases[0].numSecretBasesReceived != 0xFFFF)
         {
-            gSaveBlock1Ptr->secretBases[0].numSecretBasesReceived++;
+            gSaveBlockPtr->secretBases[0].numSecretBasesReceived++;
         }
     }
 }

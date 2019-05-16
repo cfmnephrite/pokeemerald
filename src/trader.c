@@ -34,7 +34,7 @@ static const u8 sDefaultTraderDecorations[] =
 void TraderSetup(void)
 {
     u8 i;
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
 
     trader->id = MAUVILLE_MAN_TRADER;
     trader->alreadyTraded = FALSE;
@@ -49,7 +49,7 @@ void TraderSetup(void)
 
 void Trader_ResetFlag(void)
 {
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
     trader->alreadyTraded = FALSE;
 }
 
@@ -57,7 +57,7 @@ void CreateAvailableDecorationsMenu(u8 taskId)
 {
     u8 i;
     s16 * data = gTasks[taskId].data;
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
     struct WindowTemplate windowTemplate = {0, 1, 1, 10, 10, 15, 1};
     s32 windowWidth = GetStringWidth(1, gText_Exit, 0);
     s32 fiveMarksWidth = GetStringWidth(1, gText_FiveMarks, 0);
@@ -108,7 +108,7 @@ void sub_8133BE4(u8 taskId, u8 decorationId)
 
 void Task_HandleGetDecorationMenuInput(u8 taskId)
 {
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
     s8 input = Menu_ProcessInput();
 
     switch (input)
@@ -132,7 +132,7 @@ void Task_HandleGetDecorationMenuInput(u8 taskId)
 
 void ScrSpecial_GetTraderTradedFlag(void)
 {
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
     gSpecialVar_Result = trader->alreadyTraded;
 }
 
@@ -192,11 +192,11 @@ void ExitTraderMenu(u8 taskId)
 
 void ScrSpecial_TraderDoDecorationTrade(void)
 {
-    struct MauvilleOldManTrader *trader = &gSaveBlock1Ptr->oldMan.trader;
+    struct MauvilleOldManTrader *trader = &gSaveBlockPtr->oldMan.trader;
 
     DecorationRemove(gSpecialVar_0x8006);
     DecorationAdd(gSpecialVar_0x8004);
-    StringCopy(trader->playerNames[gSpecialVar_0x8005], gSaveBlock2Ptr->playerName);
+    StringCopy(trader->playerNames[gSpecialVar_0x8005], gSaveBlockPtr->playerName);
     trader->decorIds[gSpecialVar_0x8005] = gSpecialVar_0x8006;
     trader->language[gSpecialVar_0x8005] = GAME_LANGUAGE;
     trader->alreadyTraded = TRUE;

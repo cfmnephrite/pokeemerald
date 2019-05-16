@@ -55,12 +55,11 @@ static u8 HandleWriteSector(u16 a1, const struct SaveSectionLocation *location);
 
 const struct SaveSectionOffsets gSaveSectionOffsets[] =
 {
-    SAVEBLOCK_CHUNK(gSaveblock2, 0),
-
-    SAVEBLOCK_CHUNK(gSaveblock1, 0),
-    SAVEBLOCK_CHUNK(gSaveblock1, 1),
-    SAVEBLOCK_CHUNK(gSaveblock1, 2),
-    SAVEBLOCK_CHUNK(gSaveblock1, 3),
+    SAVEBLOCK_CHUNK(gSaveblock, 0),
+    SAVEBLOCK_CHUNK(gSaveblock, 1),
+    SAVEBLOCK_CHUNK(gSaveblock, 2),
+    SAVEBLOCK_CHUNK(gSaveblock, 3),
+    SAVEBLOCK_CHUNK(gSaveblock, 4),
 
     SAVEBLOCK_CHUNK(gPokemonStorage, 0),
     SAVEBLOCK_CHUNK(gPokemonStorage, 1),
@@ -635,12 +634,9 @@ static void UpdateSaveAddresses(void)
 {
     int i = 0;
 
-    gRamSaveSectionLocations[i].data = (void*)(gSaveBlock2Ptr) + gSaveSectionOffsets[i].toAdd;
-    gRamSaveSectionLocations[i].size = gSaveSectionOffsets[i].size;
-
-    for (i = 1; i < 5; i++)
+    for (i = 0; i < 5; i++)
     {
-        gRamSaveSectionLocations[i].data = (void*)(gSaveBlock1Ptr) + gSaveSectionOffsets[i].toAdd;
+        gRamSaveSectionLocations[i].data = (void*)(gSaveBlockPtr) + gSaveSectionOffsets[i].toAdd;
         gRamSaveSectionLocations[i].size = gSaveSectionOffsets[i].size;
     }
 

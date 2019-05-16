@@ -1670,7 +1670,7 @@ sub_80224D0: @ 80224D0
 	adds r1, r0
 	lsls r1, 3
 	adds r1, r2
-	ldr r0, =gSaveBlock2Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r2, [r0]
 	movs r3, 0xF6
 	lsls r3, 1

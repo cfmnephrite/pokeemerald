@@ -1372,7 +1372,7 @@ static void sub_8196694(u8 taskId)
 
 static bool32 TrainerIsEligibleForRematch(int matchCallId)
 {
-    return gSaveBlock1Ptr->trainerRematches[matchCallId] > 0;
+    return gSaveBlockPtr->trainerRematches[matchCallId] > 0;
 }
 
 static u16 GetRematchTrainerLocation(int matchCallId)
@@ -1783,9 +1783,9 @@ static bool32 sub_8196D74(int matchCallId)
         return FALSE;
 
     dayCount = RtcGetLocalDayCount();
-    otId = GetTrainerId(gSaveBlock2Ptr->playerTrainerId) & 0xFFFF;
+    otId = GetTrainerId(gSaveBlockPtr->playerTrainerId) & 0xFFFF;
 
-    easyChatWord = gSaveBlock1Ptr->easyChatPairs[0].unk2;
+    easyChatWord = gSaveBlockPtr->easyChatPairs[0].unk2;
     numRematchTrainersFought = GetNumRematchTrainersFought();
     var0 = (numRematchTrainersFought * 13) / 10;
     var1 = ((dayCount ^ easyChatWord) + (easyChatWord ^ GetGameStat(GAME_STAT_TRAINER_BATTLES))) ^ otId;
@@ -1812,8 +1812,8 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
         {
             for (j = 0; j < 2; j++)
             {
-                if (streak < gSaveBlock2Ptr->frontier.domeRecordWinStreaks[i][j])
-                    streak = gSaveBlock2Ptr->frontier.domeRecordWinStreaks[i][j];
+                if (streak < gSaveBlockPtr->frontier.domeRecordWinStreaks[i][j])
+                    streak = gSaveBlockPtr->frontier.domeRecordWinStreaks[i][j];
             }
         }
         *topicTextId = 3;
@@ -1822,8 +1822,8 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
         for (i = 0; i < 2; i++)
         {
             // BUG: should be looking at battle factory records.
-            if (streak < gSaveBlock2Ptr->frontier.pikeRecordStreaks[i])
-                streak = gSaveBlock2Ptr->frontier.pikeRecordStreaks[i];
+            if (streak < gSaveBlockPtr->frontier.pikeRecordStreaks[i])
+                streak = gSaveBlockPtr->frontier.pikeRecordStreaks[i];
         }
         *topicTextId = 4;
         break;
@@ -1832,8 +1832,8 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
         {
             for (j = 0; j < 2; j++)
             {
-                if (streak < gSaveBlock2Ptr->frontier.towerRecordWinStreaks[i][j])
-                    streak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[i][j];
+                if (streak < gSaveBlockPtr->frontier.towerRecordWinStreaks[i][j])
+                    streak = gSaveBlockPtr->frontier.towerRecordWinStreaks[i][j];
             }
         }
         *topicTextId = 2;
@@ -1843,8 +1843,8 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
         {
             for (j = 0; j < 2; j++)
             {
-                if (streak < gSaveBlock2Ptr->frontier.palaceRecordWinStreaks[i][j])
-                    streak = gSaveBlock2Ptr->frontier.palaceRecordWinStreaks[i][j];
+                if (streak < gSaveBlockPtr->frontier.palaceRecordWinStreaks[i][j])
+                    streak = gSaveBlockPtr->frontier.palaceRecordWinStreaks[i][j];
             }
         }
         *topicTextId = 2;
@@ -1855,8 +1855,8 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
             for (j = 0; j < 2; j++)
             {
                 // BUG: should be looking at battle pike records.
-                if (streak < gSaveBlock2Ptr->frontier.factoryRecordWinStreaks[i][j])
-                    streak = gSaveBlock2Ptr->frontier.factoryRecordWinStreaks[i][j];
+                if (streak < gSaveBlockPtr->frontier.factoryRecordWinStreaks[i][j])
+                    streak = gSaveBlockPtr->frontier.factoryRecordWinStreaks[i][j];
             }
         }
         *topicTextId = 2;
@@ -1864,16 +1864,16 @@ static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
     case FRONTIER_FACILITY_ARENA:
         for (i = 0; i < 2; i++)
         {
-            if (streak < gSaveBlock2Ptr->frontier.arenaRecordStreaks[i])
-                streak = gSaveBlock2Ptr->frontier.arenaRecordStreaks[i];
+            if (streak < gSaveBlockPtr->frontier.arenaRecordStreaks[i])
+                streak = gSaveBlockPtr->frontier.arenaRecordStreaks[i];
         }
         *topicTextId = 2;
         break;
     case FRONTIER_FACILITY_PYRAMID:
         for (i = 0; i < 2; i++)
         {
-            if (streak < gSaveBlock2Ptr->frontier.pyramidRecordStreaks[i])
-                streak = gSaveBlock2Ptr->frontier.pyramidRecordStreaks[i];
+            if (streak < gSaveBlockPtr->frontier.pyramidRecordStreaks[i])
+                streak = gSaveBlockPtr->frontier.pyramidRecordStreaks[i];
         }
         *topicTextId = 5;
         break;

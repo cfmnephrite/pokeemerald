@@ -1071,7 +1071,7 @@ static u16 sub_80E1EB8(const u8 *str)
             str++;
             if (*str == 1)
             {
-                length += StringLength(gSaveBlock2Ptr->playerName);
+                length += StringLength(gSaveBlockPtr->playerName);
                 str++;
             }
         }
@@ -1711,7 +1711,7 @@ static void CreateStartMenu(void)
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionPokemon, 8, 25, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionBag, 8, 41, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionPokenav, 8, 57, TEXT_SPEED_FF, NULL);
-    AddTextPrinterParameterized(windowId, 1, gSaveBlock2Ptr->playerName, 8, 73, TEXT_SPEED_FF, NULL);
+    AddTextPrinterParameterized(windowId, 1, gSaveBlockPtr->playerName, 8, 73, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionSave, 8, 89, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionOption, 8, 105, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionExit, 8, 121, TEXT_SPEED_FF, NULL);

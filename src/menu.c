@@ -470,14 +470,14 @@ u32 GetPlayerTextSpeed(void)
 {
     if (gTextFlags.forceMidTextSpeed)
         return OPTIONS_TEXT_SPEED_MID;
-    return gSaveBlock2Ptr->optionsTextSpeed;
+    return gSaveBlockPtr->optionsTextSpeed;
 }
 
 u8 GetPlayerTextSpeedDelay(void)
 {
     u32 speed;
-    if (gSaveBlock2Ptr->optionsTextSpeed > OPTIONS_TEXT_SPEED_FAST)
-        gSaveBlock2Ptr->optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
+    if (gSaveBlockPtr->optionsTextSpeed > OPTIONS_TEXT_SPEED_FAST)
+        gSaveBlockPtr->optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
     speed = GetPlayerTextSpeed();
     return gUnknown_0860F094[speed];
 }
@@ -2005,7 +2005,7 @@ void AddTextPrinterParameterized5(u8 windowId, u8 fontId, const u8 *str, u8 left
 void PrintPlayerNameOnWindow(u8 windowId, const u8 *src, u16 x, u16 y)
 {
     int count = 0;
-    while (gSaveBlock2Ptr->playerName[count] != EOS)
+    while (gSaveBlockPtr->playerName[count] != EOS)
         count++;
 
     StringExpandPlaceholders(gStringVar4, src);
@@ -2398,7 +2398,7 @@ void sub_819A344(u8 a0, u8 *dest, u8 color)
     switch (a0)
     {
         case 0:
-            StringCopy(string, gSaveBlock2Ptr->playerName);
+            StringCopy(string, gSaveBlockPtr->playerName);
             break;
         case 1:
             if (IsNationalPokedexEnabled())
@@ -2408,9 +2408,9 @@ void sub_819A344(u8 a0, u8 *dest, u8 color)
             *string = EOS;
             break;
         case 2:
-            string = ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeHours, 0, 3);
+            string = ConvertIntToDecimalStringN(string, gSaveBlockPtr->playTimeHours, 0, 3);
             *(string++) = CHAR_COLON;
-            ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeMinutes, 2, 2);
+            ConvertIntToDecimalStringN(string, gSaveBlockPtr->playTimeMinutes, 2, 2);
             break;
         case 3:
             sub_81245DC(string, gMapHeader.regionMapSectionId);

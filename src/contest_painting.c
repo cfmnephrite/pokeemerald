@@ -168,7 +168,7 @@ void sub_812FDA8(int contestWinner)
     // probably fakematching
     u8 *ptr1 = &gUnknown_02039F5D;
     u8 *ptr2 = &gUnknown_02039F5C;
-	gUnknown_02039F3C = gSaveBlock1Ptr->contestWinners[contestWinner - 1];
+	gUnknown_02039F3C = gSaveBlockPtr->contestWinners[contestWinner - 1];
 	*ptr1 = contestWinner - 1;
 	*ptr2 = 0;
 }

@@ -621,14 +621,14 @@ static EWRAM_DATA u8 gRotatingGate_PuzzleCount = 0;
 // text
 static s32 GetCurrentMapRotatingGatePuzzleType(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(FORTREE_CITY_GYM) &&
-        gSaveBlock1Ptr->location.mapNum == MAP_NUM(FORTREE_CITY_GYM))
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(FORTREE_CITY_GYM) &&
+        gSaveBlockPtr->location.mapNum == MAP_NUM(FORTREE_CITY_GYM))
     {
         return PUZZLE_FORTREE_CITY_GYM;
     }
 
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE110_TRICK_HOUSE_PUZZLE6) &&
-        gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE110_TRICK_HOUSE_PUZZLE6))
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(ROUTE110_TRICK_HOUSE_PUZZLE6) &&
+        gSaveBlockPtr->location.mapNum == MAP_NUM(ROUTE110_TRICK_HOUSE_PUZZLE6))
     {
         return PUZZLE_ROUTE110_TRICK_HOUSE_PUZZLE6;
     }
@@ -709,10 +709,10 @@ static void RotatingGate_CreateGatesWithinViewport(s16 deltaX, s16 deltaY)
 
     // Calculate the bounding box of the camera
     // Same as RotatingGate_DestroyGatesOutsideViewport
-    s16 x = gSaveBlock1Ptr->pos.x - 2;
-    s16 x2 = gSaveBlock1Ptr->pos.x + 0x11;
-    s16 y = gSaveBlock1Ptr->pos.y - 2;
-    s16 y2 = gSaveBlock1Ptr->pos.y + 0xe;
+    s16 x = gSaveBlockPtr->pos.x - 2;
+    s16 x2 = gSaveBlockPtr->pos.x + 0x11;
+    s16 y = gSaveBlockPtr->pos.y - 2;
+    s16 y2 = gSaveBlockPtr->pos.y + 0xe;
 
     for (i = 0; i < gRotatingGate_PuzzleCount; i++)
     {
@@ -826,10 +826,10 @@ static void RotatingGate_DestroyGatesOutsideViewport(void)
     s32 i;
 
     // Same as RotatingGate_CreateGatesWithinViewport
-    s16 x = gSaveBlock1Ptr->pos.x - 2;
-    s16 x2 = gSaveBlock1Ptr->pos.x + 0x11;
-    s16 y = gSaveBlock1Ptr->pos.y - 2;
-    s16 y2 = gSaveBlock1Ptr->pos.y + 0xe;
+    s16 x = gSaveBlockPtr->pos.x - 2;
+    s16 x2 = gSaveBlockPtr->pos.x + 0x11;
+    s16 y = gSaveBlockPtr->pos.y - 2;
+    s16 y2 = gSaveBlockPtr->pos.y + 0xe;
 
     for (i = 0; i < gRotatingGate_PuzzleCount; i++)
     {

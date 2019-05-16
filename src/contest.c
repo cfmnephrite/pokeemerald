@@ -2631,13 +2631,13 @@ void sub_80DA8C8(u8 partyIndex)
     s16 smart;
     s16 tough;
 
-    StringCopy(name, gSaveBlock2Ptr->playerName);
+    StringCopy(name, gSaveBlockPtr->playerName);
     if (gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
     {
         sub_80DF9D4(name);
     }
     memcpy(gContestMons[gContestPlayerMonIndex].trainerName, name, 8);
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         gContestMons[gContestPlayerMonIndex].trainerGfxId = EVENT_OBJ_GFX_LINK_BRENDAN;
     else
         gContestMons[gContestPlayerMonIndex].trainerGfxId = EVENT_OBJ_GFX_LINK_MAY;
@@ -3475,9 +3475,9 @@ void SaveLinkContestResults(void)
 {
     if ((gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK))
     {
-        gSaveBlock2Ptr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] =
-        ((gSaveBlock2Ptr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] + 1) > 9999) ? 9999 :
-        (gSaveBlock2Ptr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] + 1);
+        gSaveBlockPtr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] =
+        ((gSaveBlockPtr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] + 1) > 9999) ? 9999 :
+        (gSaveBlockPtr->contestLinkResults[gSpecialVar_ContestCategory][gContestFinalStandings[gContestPlayerMonIndex]] + 1);
 
     }
 }
@@ -5302,7 +5302,7 @@ void ResetContestLinkResults(void)
 
     for(i = 0; i < CONTEST_CATEGORIES_COUNT; i++)
         for(j = 0; j < 4; j++)
-            gSaveBlock2Ptr->contestLinkResults[i][j] = 0;
+            gSaveBlockPtr->contestLinkResults[i][j] = 0;
 }
 
 bool8 sub_80DEDA8(u8 a)
@@ -5339,20 +5339,20 @@ bool8 sub_80DEDA8(u8 a)
     {
         u8 r4 = sub_80DEFA8(a, 1);
 
-        gSaveBlock1Ptr->contestWinners[r4].personality = gContestMons[i].personality;
-        gSaveBlock1Ptr->contestWinners[r4].species = gContestMons[i].species;
-        gSaveBlock1Ptr->contestWinners[r4].trainerId = gContestMons[i].otId;
-        StringCopy(gSaveBlock1Ptr->contestWinners[r4].monName, gContestMons[i].nickname);
-        StringCopy(gSaveBlock1Ptr->contestWinners[r4].trainerName, gContestMons[i].trainerName);
+        gSaveBlockPtr->contestWinners[r4].personality = gContestMons[i].personality;
+        gSaveBlockPtr->contestWinners[r4].species = gContestMons[i].species;
+        gSaveBlockPtr->contestWinners[r4].trainerId = gContestMons[i].otId;
+        StringCopy(gSaveBlockPtr->contestWinners[r4].monName, gContestMons[i].nickname);
+        StringCopy(gSaveBlockPtr->contestWinners[r4].trainerName, gContestMons[i].trainerName);
         if(gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK)
-            gSaveBlock1Ptr->contestWinners[r4].contestRank = 4;
+            gSaveBlockPtr->contestWinners[r4].contestRank = 4;
         else
-            gSaveBlock1Ptr->contestWinners[r4].contestRank = gSpecialVar_ContestRank;
+            gSaveBlockPtr->contestWinners[r4].contestRank = gSpecialVar_ContestRank;
 
         if (a != 0xFF)
-            gSaveBlock1Ptr->contestWinners[r4].contestCategory = gSpecialVar_ContestCategory;
+            gSaveBlockPtr->contestWinners[r4].contestCategory = gSpecialVar_ContestCategory;
         else
-            gSaveBlock1Ptr->contestWinners[r4].contestCategory = r7;
+            gSaveBlockPtr->contestWinners[r4].contestCategory = r7;
     }
     else
     {
@@ -5379,7 +5379,7 @@ u8 sub_80DEFA8(u8 a, u8 b)
         if (b != 0)
         {
             for (i = 5; i >= 1; i--)
-                memcpy(&gSaveBlock1Ptr->contestWinners[i], &gSaveBlock1Ptr->contestWinners[i - 1], sizeof(struct ContestWinner));
+                memcpy(&gSaveBlockPtr->contestWinners[i], &gSaveBlockPtr->contestWinners[i - 1], sizeof(struct ContestWinner));
         }
         return 0;
     default:
@@ -5405,7 +5405,7 @@ void ClearContestWinnerPicsInContestHall(void)
     s32 i;
 
     for (i = 0; i < 8; i++)
-        gSaveBlock1Ptr->contestWinners[i] = gUnknown_08587FA4[i];
+        gSaveBlockPtr->contestWinners[i] = gUnknown_08587FA4[i];
 }
 
 // The functions below are probably related to Contests in TV.

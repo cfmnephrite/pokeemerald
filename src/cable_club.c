@@ -572,7 +572,7 @@ void sub_80B2DA4(u8 arg0)
         break;
     case 9:
         r3 = 2;
-        if (gSaveBlock2Ptr->frontier.lvlMode == 0)
+        if (gSaveBlockPtr->frontier.lvlMode == 0)
         {
             gLinkType = 0x2266;
         }
@@ -717,7 +717,7 @@ u8 sub_80B3050(void)
         gLinkType = 0x2255;
         break;
     case 9:
-        if (gSaveBlock2Ptr->frontier.lvlMode == 0)
+        if (gSaveBlockPtr->frontier.lvlMode == 0)
         {
             gLinkType = 0x2266;
         }

@@ -25,17 +25,17 @@ void InitDewfordTrend(void)
 
     for (i = 0; i < 5; i++)
     {
-        gSaveBlock1Ptr->easyChatPairs[i].words[0] = sub_811EE38(EC_GROUP_CONDITIONS);
+        gSaveBlockPtr->easyChatPairs[i].words[0] = sub_811EE38(EC_GROUP_CONDITIONS);
 
         if (Random() & 1)
-            gSaveBlock1Ptr->easyChatPairs[i].words[1] = sub_811EE38(EC_GROUP_LIFESTYLE);
+            gSaveBlockPtr->easyChatPairs[i].words[1] = sub_811EE38(EC_GROUP_LIFESTYLE);
         else
-            gSaveBlock1Ptr->easyChatPairs[i].words[1] = sub_811EE38(EC_GROUP_HOBBIES);
+            gSaveBlockPtr->easyChatPairs[i].words[1] = sub_811EE38(EC_GROUP_HOBBIES);
 
-        gSaveBlock1Ptr->easyChatPairs[i].unk1_6 = Random() & 1;
-        sub_8122B28(&(gSaveBlock1Ptr->easyChatPairs[i]));
+        gSaveBlockPtr->easyChatPairs[i].unk1_6 = Random() & 1;
+        sub_8122B28(&(gSaveBlockPtr->easyChatPairs[i]));
     }
-    sub_8122804(gSaveBlock1Ptr->easyChatPairs, 5, 0);
+    sub_8122804(gSaveBlockPtr->easyChatPairs, 5, 0);
 }
 
 void UpdateDewfordTrendPerDay(u16 a)
@@ -50,7 +50,7 @@ void UpdateDewfordTrendPerDay(u16 a)
         {
             u32 r4;
             u32 r2 = sp0;
-            struct EasyChatPair *r5 = &(gSaveBlock1Ptr->easyChatPairs[i]);
+            struct EasyChatPair *r5 = &(gSaveBlockPtr->easyChatPairs[i]);
 
             if (r5->unk1_6 == 0)
             {
@@ -85,7 +85,7 @@ void UpdateDewfordTrendPerDay(u16 a)
                     r5->unk1_6 = 0;
             }
         }
-        sub_8122804(gSaveBlock1Ptr->easyChatPairs, 5, 0);
+        sub_8122804(gSaveBlockPtr->easyChatPairs, 5, 0);
     }
 }
 
@@ -102,8 +102,8 @@ bool8 sub_81226D8(u16 *a)
             FlagSet(FLAG_SYS_POPWORD_INPUT);
             if (!FlagGet(FLAG_SYS_MIX_RECORD))
             {
-                gSaveBlock1Ptr->easyChatPairs[0].words[0] = a[0];
-                gSaveBlock1Ptr->easyChatPairs[0].words[1] = a[1];
+                gSaveBlockPtr->easyChatPairs[0].words[0] = a[0];
+                gSaveBlockPtr->easyChatPairs[0].words[1] = a[1];
                 return TRUE;
             }
         }
@@ -115,22 +115,22 @@ bool8 sub_81226D8(u16 *a)
 
         for (i = 0; i < 5; i++)
         {
-            if (sub_8122A58(&s, &(gSaveBlock1Ptr->easyChatPairs[i]), 0))
+            if (sub_8122A58(&s, &(gSaveBlockPtr->easyChatPairs[i]), 0))
             {
                 u16 r3 = 4;
 
                 while (r3 > i)
                 {
-                    gSaveBlock1Ptr->easyChatPairs[r3] = gSaveBlock1Ptr->easyChatPairs[r3 - 1];
+                    gSaveBlockPtr->easyChatPairs[r3] = gSaveBlockPtr->easyChatPairs[r3 - 1];
                     r3--;
                 }
-                gSaveBlock1Ptr->easyChatPairs[i] = s;
+                gSaveBlockPtr->easyChatPairs[i] = s;
                 if(i == 4)
                     sub_80EDC60(a);
                 return (i == 0);
             }
         }
-        gSaveBlock1Ptr->easyChatPairs[4] = s;
+        gSaveBlockPtr->easyChatPairs[4] = s;
         sub_80EDC60(a);
     }
     return FALSE;
@@ -203,7 +203,7 @@ void ReceiveEasyChatPairsData(struct EasyChatPair *a, size_t size, u8 unused)
             }
             sub_8122804(buffer2, r3, 2);
             src = buffer2;
-            dst = gSaveBlock1Ptr->easyChatPairs;
+            dst = gSaveBlockPtr->easyChatPairs;
             for (i = 0; i < 5; i++)
                 *(dst++) = *(src++);
             Free(buffer1);
@@ -214,7 +214,7 @@ void ReceiveEasyChatPairsData(struct EasyChatPair *a, size_t size, u8 unused)
 
 void BufferTrendyPhraseString(void)
 {
-    struct EasyChatPair *s = &gSaveBlock1Ptr->easyChatPairs[gSpecialVar_0x8004];
+    struct EasyChatPair *s = &gSaveBlockPtr->easyChatPairs[gSpecialVar_0x8004];
 
     ConvertEasyChatWordsToString(gStringVar1, s->words, 2, 1);
 }
@@ -223,10 +223,10 @@ void TrendyPhraseIsOld(void)
 {
     u16 result = 0;
 
-    if (gSaveBlock1Ptr->easyChatPairs[0].unk0_0 - gSaveBlock1Ptr->easyChatPairs[1].unk0_0 < 2)
+    if (gSaveBlockPtr->easyChatPairs[0].unk0_0 - gSaveBlockPtr->easyChatPairs[1].unk0_0 < 2)
     {
         asm("":::"r2"); //Force the compiler to store address of gSaveBlock1 in r3 instead of r2
-        if (!gSaveBlock1Ptr->easyChatPairs[0].unk1_6 && gSaveBlock1Ptr->easyChatPairs[1].unk1_6)
+        if (!gSaveBlockPtr->easyChatPairs[0].unk1_6 && gSaveBlockPtr->easyChatPairs[1].unk1_6)
             result = 1;
     }
     gSpecialVar_Result = result;
@@ -234,7 +234,7 @@ void TrendyPhraseIsOld(void)
 
 void GetDewfordHallPaintingNameIndex(void)
 {
-    gSpecialVar_Result = (gSaveBlock1Ptr->easyChatPairs[0].words[0] + gSaveBlock1Ptr->easyChatPairs[0].words[1]) & 7;
+    gSpecialVar_Result = (gSaveBlockPtr->easyChatPairs[0].words[0] + gSaveBlockPtr->easyChatPairs[0].words[1]) & 7;
 }
 
 static bool8 sub_8122A58(struct EasyChatPair *a, struct EasyChatPair *b, u8 c)
@@ -309,7 +309,7 @@ static bool8 SB1ContainsWords(u16 *a)
 
     for (i = 0; i < 5; i++)
     {
-        if (IsEasyChatPairEqual(a, gSaveBlock1Ptr->easyChatPairs[i].words) != 0)
+        if (IsEasyChatPairEqual(a, gSaveBlockPtr->easyChatPairs[i].words) != 0)
             return TRUE;
     }
     return FALSE;

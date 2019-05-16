@@ -60,11 +60,11 @@ void Task_Truck1(u8 taskId)
     s16 box1, box2, box3;
 
     box1 = GetTruckBoxMovement(data[0] + 30) * 4; // top box.
-    sub_808E82C(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, 3 - cameraXpan, box1 + 3);
+    sub_808E82C(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, 3 - cameraXpan, box1 + 3);
     box2 = GetTruckBoxMovement(data[0]) * 2; // bottom left box.
-    sub_808E82C(2, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -cameraXpan, box2 - 3);
+    sub_808E82C(2, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -cameraXpan, box2 - 3);
     box3 = GetTruckBoxMovement(data[0]) * 4; // bottom right box.
-    sub_808E82C(3, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -3 - cameraXpan, box3);
+    sub_808E82C(3, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -3 - cameraXpan, box3);
 
     if (++data[0] == SECONDS(500)) // this will never run
         data[0] = 0; // reset the timer if it gets stuck.
@@ -103,11 +103,11 @@ void Task_Truck2(u8 taskId)
         cameraYpan = GetTruckCameraBobbingY(data[2]);
         SetCameraPanning(cameraXpan, cameraYpan);
         box1 = GetTruckBoxMovement(data[2] + 30) * 4;
-        sub_808E82C(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, 3 - cameraXpan, box1 + 3);
+        sub_808E82C(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, 3 - cameraXpan, box1 + 3);
         box2 = GetTruckBoxMovement(data[2]) * 2;
-        sub_808E82C(2, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -cameraXpan, box2 - 3);
+        sub_808E82C(2, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -cameraXpan, box2 - 3);
         box3 = GetTruckBoxMovement(data[2]) * 4;
-        sub_808E82C(3, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -3 - cameraXpan, box3);
+        sub_808E82C(3, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -3 - cameraXpan, box3);
     }
 }
 
@@ -134,9 +134,9 @@ static void Task_Truck3(u8 taskId)
        cameraXpan = gTruckCamera_HorizontalTable[data[1]];
        cameraYpan = 0;
        SetCameraPanning(cameraXpan, 0);
-       sub_808E82C(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, 3 - cameraXpan, cameraYpan + 3);
-       sub_808E82C(2, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -cameraXpan, cameraYpan - 3);
-       sub_808E82C(3, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -3 - cameraXpan, cameraYpan);
+       sub_808E82C(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, 3 - cameraXpan, cameraYpan + 3);
+       sub_808E82C(2, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -cameraXpan, cameraYpan - 3);
+       sub_808E82C(3, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -3 - cameraXpan, cameraYpan);
    }
 }
 
@@ -229,9 +229,9 @@ void EndTruckSequence(u8 taskId)
 {
     if (!FuncIsActiveTask(Task_HandleTruckSequence))
     {
-        sub_808E82C(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, 3, 3);
-        sub_808E82C(2, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, 0, -3);
-        sub_808E82C(3, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, -3, 0);
+        sub_808E82C(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, 3, 3);
+        sub_808E82C(2, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, 0, -3);
+        sub_808E82C(3, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, -3, 0);
     }
 }
 
@@ -255,7 +255,7 @@ void Task_HandlePorthole(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     u16 *var = GetVarPointer(VAR_PORTHOLE_STATE);
-    struct WarpData *location = &gSaveBlock1Ptr->location;
+    struct WarpData *location = &gSaveBlockPtr->location;
 
     switch (data[0])
     {
@@ -339,7 +339,7 @@ void sub_80FB7A4(void)
     FlagSet(FLAG_SYS_CRUISE_MODE);
     FlagSet(FLAG_SPECIAL_FLAG_0x4001);
     FlagSet(FLAG_HIDE_MAP_NAME_POPUP);
-    SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+    SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
     sub_80FB59C();
     sub_80AF8B8();
 }

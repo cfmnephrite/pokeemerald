@@ -1680,7 +1680,7 @@ static void sub_80773D0(void)
         gMain.state++;
         break;
     case 10:
-        sub_80C6D80(gSaveBlock2Ptr->playerName, gUnknown_02032188[0], 0, 0, 3);
+        sub_80C6D80(gSaveBlockPtr->playerName, gUnknown_02032188[0], 0, 0, 3);
         id = GetMultiplayerId();
         sub_80C6D80(gLinkPlayers[id ^ 1].name, gUnknown_02032188[3], 0, 0, 3);
         sub_80C6D80(gUnknown_0832DE94[0], gUnknown_02032188[6], 0, 0, 2);
@@ -1693,7 +1693,7 @@ static void sub_80773D0(void)
             gMain.state++;
         break;
     case 12:
-        xPos = GetStringCenterAlignXOffset(1, gSaveBlock2Ptr->playerName, 120);
+        xPos = GetStringCenterAlignXOffset(1, gSaveBlockPtr->playerName, 120);
         for (i = 0; i < 3; i++)
         {
             temp = gSpriteTemplate_832DCAC;
@@ -1867,7 +1867,7 @@ static void sub_8077B74(void)
         gMain.state++;
         break;
     case 10:
-        sub_80C6D80(gSaveBlock2Ptr->playerName, gUnknown_02032188[0], 0, 0, 3);
+        sub_80C6D80(gSaveBlockPtr->playerName, gUnknown_02032188[0], 0, 0, 3);
         id = GetMultiplayerId();
         sub_80C6D80(gLinkPlayers[id ^ 1].name, gUnknown_02032188[3], 0, 0, 3);
         sub_80C6D80(gUnknown_0832DE94[0], gUnknown_02032188[6], 0, 0, 2);
@@ -1880,7 +1880,7 @@ static void sub_8077B74(void)
             gMain.state++;
         break;
     case 12:
-        xPos = GetStringCenterAlignXOffset(1, gSaveBlock2Ptr->playerName, 120);
+        xPos = GetStringCenterAlignXOffset(1, gSaveBlockPtr->playerName, 120);
         for (i = 0; i < 3; i++)
         {
             temp = gSpriteTemplate_832DCAC;
@@ -2201,7 +2201,7 @@ static bool8 shedinja_maker_maybe(void)
         }
         break;
     case 13:
-        Trade_Memcpy(gBlockSendBuffer, gSaveBlock1Ptr->mail, 220);
+        Trade_Memcpy(gBlockSendBuffer, gSaveBlockPtr->mail, 220);
         gUnknown_0203229C->unk_69++;
         break;
     case 15:
@@ -2220,7 +2220,7 @@ static bool8 shedinja_maker_maybe(void)
         }
         break;
     case 17:
-        Trade_Memcpy(gBlockSendBuffer, gSaveBlock1Ptr->giftRibbons, 11);
+        Trade_Memcpy(gBlockSendBuffer, gSaveBlockPtr->giftRibbons, 11);
         gUnknown_0203229C->unk_69++;
         break;
     case 19:
@@ -3485,10 +3485,10 @@ static void sub_807A5B0(void)
 
     for (i = 0; i < 11; i++)
     {
-        if (gSaveBlock1Ptr->giftRibbons[i] == 0 && gUnknown_0203229C->unk_A9[i] != 0)
+        if (gSaveBlockPtr->giftRibbons[i] == 0 && gUnknown_0203229C->unk_A9[i] != 0)
         {
             if (gUnknown_0203229C->unk_A9[i] < 64)
-                gSaveBlock1Ptr->giftRibbons[i] = gUnknown_0203229C->unk_A9[i];
+                gSaveBlockPtr->giftRibbons[i] = gUnknown_0203229C->unk_A9[i];
         }
     }
 }
@@ -4301,7 +4301,7 @@ static void sub_807B270(void)
         case 0:
             gUnknown_02032298[0] = gSpecialVar_0x8005;
             gUnknown_02032298[1] = 6;
-            StringCopy(gLinkPlayers[0].name, gSaveBlock2Ptr->playerName);
+            StringCopy(gLinkPlayers[0].name, gSaveBlockPtr->playerName);
             GetMonData(&gEnemyParty[0], MON_DATA_OT_NAME, otName);
             StringCopy(gLinkPlayers[1].name, otName);
             gLinkPlayers[0].language = LANGUAGE_ENGLISH;
@@ -4408,7 +4408,7 @@ static void sub_807B4D0(u8 a0, u8 a1)
     u16 partnerMail = GetMonData(partnerMon, MON_DATA_MAIL);
 
     if (playerMail != 0xFF)
-        ClearMailStruct(&gSaveBlock1Ptr->mail[playerMail]);
+        ClearMailStruct(&gSaveBlockPtr->mail[playerMail]);
 
     // This is where the actual trade happens!!
     gUnknown_020322A0->mon = *playerMon;

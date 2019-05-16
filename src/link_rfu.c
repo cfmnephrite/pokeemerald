@@ -2148,14 +2148,14 @@ void sub_800DD94(struct UnkLinkRfuStruct_02022B14 *data, u8 r9, bool32 r2, s32 r
 
     for (i = 0; i < 2; i++)
     {
-        data->unk_00.playerTrainerId[i] = gSaveBlock2Ptr->playerTrainerId[i];
+        data->unk_00.playerTrainerId[i] = gSaveBlockPtr->playerTrainerId[i];
     }
     for (i = 0; i < 4; i++)
     {
         data->unk_04[i] = r3;
         r3 >>= 8;
     }
-    data->playerGender = gSaveBlock2Ptr->playerGender;
+    data->playerGender = gSaveBlockPtr->playerGender;
     data->unk_0a_0 = r9;
     data->unk_0a_7 = r2;
     data->unk_00.unk_00_0 = 2;
@@ -2407,7 +2407,7 @@ void RecordMixTrainerNames(void)
             connectedTrainerRecordIndices[i] = -1;
             for (j = 0; j < 20; j++)
             {
-                if ((u16)gLinkPlayers[i].trainerId ==  gSaveBlock1Ptr->trainerNameRecords[j].trainerId && StringCompare(gLinkPlayers[i].name, gSaveBlock1Ptr->trainerNameRecords[j].trainerName) == 0)
+                if ((u16)gLinkPlayers[i].trainerId ==  gSaveBlockPtr->trainerNameRecords[j].trainerId && StringCompare(gLinkPlayers[i].name, gSaveBlockPtr->trainerNameRecords[j].trainerName) == 0)
                 {
                     connectedTrainerRecordIndices[i] = j;
                 }
@@ -2425,7 +2425,7 @@ void RecordMixTrainerNames(void)
                 // If we already had a record for this trainer, wipe it so that the next step doesn't duplicate it.
                 if (connectedTrainerRecordIndices[i] >= 0)
                 {
-                    memset(gSaveBlock1Ptr->trainerNameRecords[connectedTrainerRecordIndices[i]].trainerName, 0, 8);
+                    memset(gSaveBlockPtr->trainerNameRecords[connectedTrainerRecordIndices[i]].trainerName, 0, 8);
                 }
                 nextSpace++;
             }
@@ -2435,9 +2435,9 @@ void RecordMixTrainerNames(void)
         // the last (oldest) records will be dropped.
         for (i = 0; i < 20; i++)
         {
-            if (NameIsNotEmpty(gSaveBlock1Ptr->trainerNameRecords[i].trainerName))
+            if (NameIsNotEmpty(gSaveBlockPtr->trainerNameRecords[i].trainerName))
             {
-                CopyTrainerRecord(&newRecords[nextSpace], gSaveBlock1Ptr->trainerNameRecords[i].trainerId, gSaveBlock1Ptr->trainerNameRecords[i].trainerName);
+                CopyTrainerRecord(&newRecords[nextSpace], gSaveBlockPtr->trainerNameRecords[i].trainerId, gSaveBlockPtr->trainerNameRecords[i].trainerName);
                 if (++nextSpace >= 20)
                 {
                     break;
@@ -2446,7 +2446,7 @@ void RecordMixTrainerNames(void)
         }
         
         // Finalize the new list, and clean up.
-        memcpy(gSaveBlock1Ptr->trainerNameRecords, newRecords, 20 * sizeof(struct TrainerNameRecord));
+        memcpy(gSaveBlockPtr->trainerNameRecords, newRecords, 20 * sizeof(struct TrainerNameRecord));
         free(newRecords);
     }
 }
@@ -2457,11 +2457,11 @@ bool32 sub_800E540(u16 id, u8 *name)
 
     for (i = 0; i < 20; i++)
     {
-        if (StringCompare(gSaveBlock1Ptr->trainerNameRecords[i].trainerName, name) == 0 && gSaveBlock1Ptr->trainerNameRecords[i].trainerId == id)
+        if (StringCompare(gSaveBlockPtr->trainerNameRecords[i].trainerName, name) == 0 && gSaveBlockPtr->trainerNameRecords[i].trainerId == id)
         {
             return TRUE;
         }
-        if (!NameIsNotEmpty(gSaveBlock1Ptr->trainerNameRecords[i].trainerName))
+        if (!NameIsNotEmpty(gSaveBlockPtr->trainerNameRecords[i].trainerName))
         {
             return FALSE;
         }
@@ -2475,8 +2475,8 @@ void WipeTrainerNameRecords(void)
 
     for (i = 0; i < 20; i++)
     {
-        gSaveBlock1Ptr->trainerNameRecords[i].trainerId = 0;
-        CpuFill16(0, gSaveBlock1Ptr->trainerNameRecords[i].trainerName, 8);
+        gSaveBlockPtr->trainerNameRecords[i].trainerId = 0;
+        CpuFill16(0, gSaveBlockPtr->trainerNameRecords[i].trainerName, 8);
     }
 }
 
@@ -4282,7 +4282,7 @@ bool32 sub_8010F1C(void)
 
 void sub_8010F48(void)
 {
-    StringCopy(gUnknown_02022B22, gSaveBlock2Ptr->playerName);
+    StringCopy(gUnknown_02022B22, gSaveBlockPtr->playerName);
 }
 
 void sub_8010F60(void)
@@ -4793,7 +4793,7 @@ void sub_8011AFC(void)
         OpenLink();
         SeedRng(gMain.vblankCounter2);
         for (i = 0; i < 4; i++)
-            gSaveBlock2Ptr->playerTrainerId[i] = Random() % 256;
+            gSaveBlockPtr->playerTrainerId[i] = Random() % 256;
 
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP);
         RunTasks();

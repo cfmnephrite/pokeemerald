@@ -575,7 +575,7 @@ static void CB2_InitBattleInternal(void)
     }
 
     gMain.inBattle = TRUE;
-    gSaveBlock2Ptr->frontier.field_CA9_b = 0;
+    gSaveBlockPtr->frontier.field_CA9_b = 0;
 
     for (i = 0; i < PARTY_SIZE; i++)
         AdjustFriendship(&gPlayerParty[i], 3);
@@ -627,14 +627,14 @@ static void SetPlayerBerryDataInBattleStruct(void)
     if (IsEnigmaBerryValid() == TRUE)
     {
         for (i = 0; i < BERRY_NAME_LENGTH; i++)
-            battleBerry->name[i] = gSaveBlock1Ptr->enigmaBerry.berry.name[i];
+            battleBerry->name[i] = gSaveBlockPtr->enigmaBerry.berry.name[i];
         battleBerry->name[i] = EOS;
 
         for (i = 0; i < BERRY_ITEM_EFFECT_COUNT; i++)
-            battleBerry->itemEffect[i] = gSaveBlock1Ptr->enigmaBerry.itemEffect[i];
+            battleBerry->itemEffect[i] = gSaveBlockPtr->enigmaBerry.itemEffect[i];
 
-        battleBerry->holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
-        battleBerry->holdEffectParam = gSaveBlock1Ptr->enigmaBerry.holdEffectParam;
+        battleBerry->holdEffect = gSaveBlockPtr->enigmaBerry.holdEffect;
+        battleBerry->holdEffectParam = gSaveBlockPtr->enigmaBerry.holdEffectParam;
     }
     else
     {
@@ -663,22 +663,22 @@ static void SetAllPlayersBerryData(void)
         {
             for (i = 0; i < BERRY_NAME_LENGTH; i++)
             {
-                gEnigmaBerries[0].name[i] = gSaveBlock1Ptr->enigmaBerry.berry.name[i];
-                gEnigmaBerries[2].name[i] = gSaveBlock1Ptr->enigmaBerry.berry.name[i];
+                gEnigmaBerries[0].name[i] = gSaveBlockPtr->enigmaBerry.berry.name[i];
+                gEnigmaBerries[2].name[i] = gSaveBlockPtr->enigmaBerry.berry.name[i];
             }
             gEnigmaBerries[0].name[i] = EOS;
             gEnigmaBerries[2].name[i] = EOS;
 
             for (i = 0; i < BERRY_ITEM_EFFECT_COUNT; i++)
             {
-                gEnigmaBerries[0].itemEffect[i] = gSaveBlock1Ptr->enigmaBerry.itemEffect[i];
-                gEnigmaBerries[2].itemEffect[i] = gSaveBlock1Ptr->enigmaBerry.itemEffect[i];
+                gEnigmaBerries[0].itemEffect[i] = gSaveBlockPtr->enigmaBerry.itemEffect[i];
+                gEnigmaBerries[2].itemEffect[i] = gSaveBlockPtr->enigmaBerry.itemEffect[i];
             }
 
-            gEnigmaBerries[0].holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
-            gEnigmaBerries[2].holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
-            gEnigmaBerries[0].holdEffectParam = gSaveBlock1Ptr->enigmaBerry.holdEffectParam;
-            gEnigmaBerries[2].holdEffectParam = gSaveBlock1Ptr->enigmaBerry.holdEffectParam;
+            gEnigmaBerries[0].holdEffect = gSaveBlockPtr->enigmaBerry.holdEffect;
+            gEnigmaBerries[2].holdEffect = gSaveBlockPtr->enigmaBerry.holdEffect;
+            gEnigmaBerries[0].holdEffectParam = gSaveBlockPtr->enigmaBerry.holdEffectParam;
+            gEnigmaBerries[2].holdEffectParam = gSaveBlockPtr->enigmaBerry.holdEffectParam;
         }
         else
         {
@@ -2169,7 +2169,7 @@ static void sub_8038F34(void)
 
             for (i = 0; i < monsCount && (gLinkPlayers[i].version & 0xFF) == VERSION_EMERALD; i++);
 
-            if (!gSaveBlock2Ptr->frontier.field_CA9_b && i == monsCount)
+            if (!gSaveBlockPtr->frontier.field_CA9_b && i == monsCount)
             {
                 if (FlagGet(FLAG_SYS_FRONTIER_PASS))
                 {
@@ -2906,7 +2906,7 @@ static void BattleStartClearSetData(void)
 
     if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
     {
-        if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && gSaveBlock2Ptr->optionsBattleSceneOff == TRUE)
+        if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && gSaveBlockPtr->optionsBattleSceneOff == TRUE)
             gHitMarker |= HITMARKER_NO_ANIMATIONS;
     }
     else if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_x2000000)) && GetBattleSceneInRecordedBattle())
@@ -2914,7 +2914,7 @@ static void BattleStartClearSetData(void)
         gHitMarker |= HITMARKER_NO_ANIMATIONS;
     }
 
-    gBattleScripting.battleStyle = gSaveBlock2Ptr->optionsBattleStyle;
+    gBattleScripting.battleStyle = gSaveBlockPtr->optionsBattleStyle;
 	gBattleScripting.expOnCatch = (B_EXP_CATCH >= GEN_6);
 	gBattleScripting.monCaught = FALSE;
 
@@ -4807,7 +4807,7 @@ static void HandleEndTurn_BattleLost(void)
             {
                 gBattlescriptCurrInstr = BattleScript_PrintPlayerForfeitedLinkBattle;
                 gBattleOutcome &= ~(B_OUTCOME_LINK_BATTLE_RAN);
-                gSaveBlock2Ptr->frontier.field_CA9_b = 1;
+                gSaveBlockPtr->frontier.field_CA9_b = 1;
             }
             else
             {
@@ -4839,7 +4839,7 @@ static void HandleEndTurn_RanFromBattle(void)
     {
         gBattlescriptCurrInstr = BattleScript_PrintPlayerForfeited;
         gBattleOutcome = B_OUTCOME_FORFEITED;
-        gSaveBlock2Ptr->frontier.field_CA9_b = 1;
+        gSaveBlockPtr->frontier.field_CA9_b = 1;
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL)
     {
@@ -5612,7 +5612,7 @@ static void HandleAction_Run(void)
         }
 
         gBattleOutcome |= B_OUTCOME_LINK_BATTLE_RAN;
-        gSaveBlock2Ptr->frontier.field_CA9_b = 1;
+        gSaveBlockPtr->frontier.field_CA9_b = 1;
     }
     else
     {

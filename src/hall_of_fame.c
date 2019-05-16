@@ -673,9 +673,9 @@ static void sub_8173EE4(u8 taskId)
     ShowBg(0);
     ShowBg(1);
     ShowBg(3);
-    gTasks[taskId].tPlayerSpriteID = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId_Debug(gSaveBlock2Ptr->playerGender, TRUE), 1, 120, 72, 6, 0xFFFF);
+    gTasks[taskId].tPlayerSpriteID = CreateTrainerPicSprite(PlayerGenderToFrontTrainerPicId_Debug(gSaveBlockPtr->playerGender, TRUE), 1, 120, 72, 6, 0xFFFF);
     AddWindow(&sHof_WindowTemplate);
-    LoadWindowGfx(1, gSaveBlock2Ptr->optionsWindowFrameType, 0x21D, 0xD0);
+    LoadWindowGfx(1, gSaveBlockPtr->optionsWindowFrameType, 0x21D, 0xD0);
     LoadPalette(stdpal_get(1), 0xE0, 0x20);
     gTasks[taskId].tFrameCount = 120;
     gTasks[taskId].func = Task_Hof_WaitAndPrintPlayerInfo;
@@ -1183,10 +1183,10 @@ static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
     DrawStdFrameWithCustomTileAndPalette(1, FALSE, 0x21D, 0xD);
     AddTextPrinterParameterized3(1, 1, 0, 1, sUnknown_085E538C, -1, gText_Name);
 
-    width = GetStringRightAlignXOffset(1, gSaveBlock2Ptr->playerName, 0x70);
-    AddTextPrinterParameterized3(1, 1, width, 1, sUnknown_085E538C, -1, gSaveBlock2Ptr->playerName);
+    width = GetStringRightAlignXOffset(1, gSaveBlockPtr->playerName, 0x70);
+    AddTextPrinterParameterized3(1, 1, width, 1, sUnknown_085E538C, -1, gSaveBlockPtr->playerName);
 
-    trainerId = (gSaveBlock2Ptr->playerTrainerId[0]) | (gSaveBlock2Ptr->playerTrainerId[1] << 8);
+    trainerId = (gSaveBlockPtr->playerTrainerId[0]) | (gSaveBlockPtr->playerTrainerId[1] << 8);
     AddTextPrinterParameterized3(1, 1, 0, 0x11, sUnknown_085E538C, 0, gText_IDNumber);
     text[0] = (trainerId % 100000) / 10000 + CHAR_0;
     text[1] = (trainerId % 10000) / 1000 + CHAR_0;
@@ -1198,9 +1198,9 @@ static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
     AddTextPrinterParameterized3(1, 1, width, 0x11, sUnknown_085E538C, -1, text);
 
     AddTextPrinterParameterized3(1, 1, 0, 0x21, sUnknown_085E538C, -1, gText_MainMenuTime);
-    text[0] = (gSaveBlock2Ptr->playTimeHours / 100) + CHAR_0;
-    text[1] = (gSaveBlock2Ptr->playTimeHours % 100) / 10 + CHAR_0;
-    text[2] = (gSaveBlock2Ptr->playTimeHours % 10) + CHAR_0;
+    text[0] = (gSaveBlockPtr->playTimeHours / 100) + CHAR_0;
+    text[1] = (gSaveBlockPtr->playTimeHours % 100) / 10 + CHAR_0;
+    text[2] = (gSaveBlockPtr->playTimeHours % 10) + CHAR_0;
 
     if (text[0] == CHAR_0)
         text[0] = CHAR_SPACE;
@@ -1208,8 +1208,8 @@ static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
         text[8] = CHAR_SPACE;
 
     text[3] = CHAR_COLON;
-    text[4] = (gSaveBlock2Ptr->playTimeMinutes % 100) / 10 + CHAR_0;
-    text[5] = (gSaveBlock2Ptr->playTimeMinutes % 10) + CHAR_0;
+    text[4] = (gSaveBlockPtr->playTimeMinutes % 100) / 10 + CHAR_0;
+    text[5] = (gSaveBlockPtr->playTimeMinutes % 10) + CHAR_0;
     text[6] = EOS;
 
     width = GetStringRightAlignXOffset(1, text, 0x70);

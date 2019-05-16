@@ -430,7 +430,7 @@ static const u8 *ExpandPlaceholder_UnknownStringVar(void)
 
 static const u8 *ExpandPlaceholder_PlayerName(void)
 {
-    return gSaveBlock2Ptr->playerName;
+    return gSaveBlockPtr->playerName;
 }
 
 static const u8 *ExpandPlaceholder_StringVar1(void)
@@ -450,7 +450,7 @@ static const u8 *ExpandPlaceholder_StringVar3(void)
 
 static const u8 *ExpandPlaceholder_KunChan(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         return gExpandedPlaceholder_Kun;
     else
         return gExpandedPlaceholder_Chan;
@@ -458,7 +458,7 @@ static const u8 *ExpandPlaceholder_KunChan(void)
 
 static const u8 *ExpandPlaceholder_RivalName(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         return gExpandedPlaceholder_May;
     else
         return gExpandedPlaceholder_Brendan;

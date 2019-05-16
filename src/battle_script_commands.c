@@ -3364,7 +3364,7 @@ static void atk23_getexp(void)
                 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
                 if (item == ITEM_ENIGMA_BERRY)
-                    holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
+                    holdEffect = gSaveBlockPtr->enigmaBerry.holdEffect;
                 else
                     holdEffect = ItemId_GetHoldEffect(item);
 
@@ -3403,7 +3403,7 @@ static void atk23_getexp(void)
             item = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HELD_ITEM);
 
             if (item == ITEM_ENIGMA_BERRY)
-                holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
+                holdEffect = gSaveBlockPtr->enigmaBerry.holdEffect;
             else
                 holdEffect = ItemId_GetHoldEffect(item);
 
@@ -5845,7 +5845,7 @@ static void atk5D_getmoneyreward(void)
     if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
         moneyReward += GetTrainerMoneyToGive(gTrainerBattleOpponent_B);
 
-    AddMoney(&gSaveBlock1Ptr->money, moneyReward);
+    AddMoney(&gSaveBlockPtr->money, moneyReward);
     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff1, 5, moneyReward);
 
     gBattlescriptCurrInstr++;
@@ -9098,7 +9098,7 @@ static void atk91_givepaydaymoney(void)
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_x2000000)) && gPaydayMoney != 0)
     {
         u32 bonusMoney = gPaydayMoney * gBattleStruct->moneyMultiplier;
-        AddMoney(&gSaveBlock1Ptr->money, bonusMoney);
+        AddMoney(&gSaveBlockPtr->money, bonusMoney);
 
         PREPARE_HWORD_NUMBER_BUFFER(gBattleTextBuff1, 5, bonusMoney)
 

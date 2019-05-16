@@ -704,7 +704,7 @@ static void BuyMenuDrawGraphics(void)
     BuyMenuDrawMapGraphics();
     BuyMenuCopyMenuBgToBg1TilemapBuffer();
     AddMoneyLabelObject(19, 11);
-    PrintMoneyAmountInMoneyBoxWithBorder(0, 1, 13, GetMoney(&gSaveBlock1Ptr->money));
+    PrintMoneyAmountInMoneyBoxWithBorder(0, 1, 13, GetMoney(&gSaveBlockPtr->money));
     schedule_bg_copy_tilemap_to_vram(0);
     schedule_bg_copy_tilemap_to_vram(1);
     schedule_bg_copy_tilemap_to_vram(2);
@@ -939,7 +939,7 @@ static void Task_BuyMenu(u8 taskId)
                 gShopDataPtr->totalCost = gDecorations[itemId].price;
             }
 
-            if (!IsEnoughMoney(&gSaveBlock1Ptr->money, gShopDataPtr->totalCost))
+            if (!IsEnoughMoney(&gSaveBlockPtr->money, gShopDataPtr->totalCost))
             {
                 BuyMenuDisplayMessage(taskId, gText_YouDontHaveMoney, BuyMenuReturnToItemList);
             }
@@ -991,7 +991,7 @@ static void Task_BuyHowManyDialogueInit(u8 taskId)
     BuyMenuPrintItemQuantityAndPrice(taskId);
     schedule_bg_copy_tilemap_to_vram(0);
 
-    maxQuantity = GetMoney(&gSaveBlock1Ptr->money) / gShopDataPtr->totalCost;
+    maxQuantity = GetMoney(&gSaveBlockPtr->money) / gShopDataPtr->totalCost;
 
     if (maxQuantity > 99)
     {
@@ -1087,9 +1087,9 @@ static void BuyMenuTryMakePurchase(u8 taskId)
 static void BuyMenuSubtractMoney(u8 taskId)
 {
     IncrementGameStat(GAME_STAT_SHOPPED);
-    RemoveMoney(&gSaveBlock1Ptr->money, gShopDataPtr->totalCost);
+    RemoveMoney(&gSaveBlockPtr->money, gShopDataPtr->totalCost);
     PlaySE(SE_REGI);
-    PrintMoneyAmountInMoneyBox(0, GetMoney(&gSaveBlock1Ptr->money), 0);
+    PrintMoneyAmountInMoneyBox(0, GetMoney(&gSaveBlockPtr->money), 0);
 
     if (gMartInfo.martType == MART_TYPE_NORMAL)
     {

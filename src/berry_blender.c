@@ -1106,7 +1106,7 @@ static void Blender_SetPlayerNamesLocal(u8 opponentsNum)
     case 1:
         gInGameOpponentsNo = 1;
         sBerryBlenderData->playersNo = 2;
-        StringCopy(gLinkPlayers[0].name, gSaveBlock2Ptr->playerName);
+        StringCopy(gLinkPlayers[0].name, gSaveBlockPtr->playerName);
 
         if (!FlagGet(FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER_ONLOOKERS))
             StringCopy(gLinkPlayers[1].name, sBlenderOpponentsNames[BLENDER_MASTER]);
@@ -1119,7 +1119,7 @@ static void Blender_SetPlayerNamesLocal(u8 opponentsNum)
     case 2:
         gInGameOpponentsNo = 2;
         sBerryBlenderData->playersNo = 3;
-        StringCopy(gLinkPlayers[0].name, gSaveBlock2Ptr->playerName);
+        StringCopy(gLinkPlayers[0].name, gSaveBlockPtr->playerName);
         StringCopy(gLinkPlayers[1].name, sBlenderOpponentsNames[BLENDER_DUDE]);
         StringCopy(gLinkPlayers[2].name, sBlenderOpponentsNames[BLENDER_LASSIE]);
 
@@ -1130,7 +1130,7 @@ static void Blender_SetPlayerNamesLocal(u8 opponentsNum)
     case 3:
         gInGameOpponentsNo = 3;
         sBerryBlenderData->playersNo = 4;
-        StringCopy(gLinkPlayers[0].name, gSaveBlock2Ptr->playerName);
+        StringCopy(gLinkPlayers[0].name, gSaveBlockPtr->playerName);
         StringCopy(gLinkPlayers[1].name, sBlenderOpponentsNames[BLENDER_MISS]);
         StringCopy(gLinkPlayers[2].name, sBlenderOpponentsNames[BLENDER_LADDIE]);
         StringCopy(gLinkPlayers[3].name, sBlenderOpponentsNames[BLENDER_LASSIE]);
@@ -2008,7 +2008,7 @@ static void sub_8081744(void)
 
     if (sBerryBlenderData->gameEndState == 0)
     {
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A && gMain.newKeys & A_BUTTON)
+        if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A && gMain.newKeys & A_BUTTON)
         {
             if ((gMain.heldKeysRaw & (A_BUTTON | L_BUTTON)) != (A_BUTTON | L_BUTTON))
                 A_pressed = TRUE;
@@ -3216,8 +3216,8 @@ static void sub_80833F8(struct Sprite* sprite)
 
 static void TryUpdateBerryBlenderRecord(void)
 {
-    if (gSaveBlock1Ptr->berryBlenderRecords[sBerryBlenderData->playersNo - 2] < sBerryBlenderData->max_RPM)
-        gSaveBlock1Ptr->berryBlenderRecords[sBerryBlenderData->playersNo - 2] = sBerryBlenderData->max_RPM;
+    if (gSaveBlockPtr->berryBlenderRecords[sBerryBlenderData->playersNo - 2] < sBerryBlenderData->max_RPM)
+        gSaveBlockPtr->berryBlenderRecords[sBerryBlenderData->playersNo - 2] = sBerryBlenderData->max_RPM;
 }
 
 static bool8 Blender_PrintBlendingResults(void)
@@ -3542,7 +3542,7 @@ void ShowBerryBlenderRecordWindow(void)
         u8 *txtPtr;
         u32 record;
 
-        record = gSaveBlock1Ptr->berryBlenderRecords[i];
+        record = gSaveBlockPtr->berryBlenderRecords[i];
 
         txtPtr = ConvertIntToDecimalStringN(text, record / 100, STR_CONV_MODE_RIGHT_ALIGN, 3);
         txtPtr = StringAppend(txtPtr, sText_Dot);

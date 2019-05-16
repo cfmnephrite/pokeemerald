@@ -1417,7 +1417,7 @@ _081D0F2E:
 	b _081D0FAA
 	.pool
 _081D0F60:
-	ldr r0, =gSaveBlock1Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r0, [r0]
 	adds r0, r5
 	ldr r1, =0x0000318f

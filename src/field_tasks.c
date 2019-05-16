@@ -696,7 +696,7 @@ static void Task_MuddySlope(u8 taskId)
     u16 mapId;
     s16 *data = gTasks[taskId].data;
     PlayerGetDestCoords(&x, &y);
-    mapId = (gSaveBlock1Ptr->location.mapGroup << 8) | gSaveBlock1Ptr->location.mapNum;
+    mapId = (gSaveBlockPtr->location.mapGroup << 8) | gSaveBlockPtr->location.mapNum;
     switch (data[1])
     {
         case 0:

@@ -889,7 +889,7 @@ bool8 sub_808A964(void)
 {
     if (FlagGet(FLAG_SPECIAL_FLAG_0x4002))
     {
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_CORRIDOR2) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_CORRIDOR2))
+        if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_CORRIDOR2) && gSaveBlockPtr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_CORRIDOR2))
         {
             return TRUE;
         }

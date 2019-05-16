@@ -1678,7 +1678,7 @@ static void LinkPartnerHandleCmd55(void)
 {
     sub_81851A8(&gBattleResources->bufferA[gActiveBattler][4]);
     gBattleOutcome = gBattleResources->bufferA[gActiveBattler][1];
-    gSaveBlock2Ptr->frontier.field_CA9_b = gBattleResources->bufferA[gActiveBattler][2];
+    gSaveBlockPtr->frontier.field_CA9_b = gBattleResources->bufferA[gActiveBattler][2];
     FadeOutMapMusic(5);
     BeginFastPaletteFade(3);
     LinkPartnerBufferExecCompleted();

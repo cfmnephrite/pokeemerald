@@ -253,7 +253,7 @@ bool8 AdjustQuantityAccordingToDPadInput(s16 *arg0, u16 arg1)
 
 u8 GetLRKeysState(void)
 {
-    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+    if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
     {
         if (gMain.newKeys & L_BUTTON)
             return 1;
@@ -266,7 +266,7 @@ u8 GetLRKeysState(void)
 
 u8 sub_812210C(void)
 {
-    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+    if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
     {
         if (gMain.newAndRepeatedKeys & L_BUTTON)
             return 1;
@@ -281,7 +281,7 @@ bool8 sub_8122148(u16 itemId)
 {
     if (itemId != ITEM_ENIGMA_BERRY)
         return TRUE;
-    else if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(TRADE_CENTER) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(TRADE_CENTER))
+    else if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(TRADE_CENTER) && gSaveBlockPtr->location.mapNum == MAP_NUM(TRADE_CENTER))
         return FALSE;
     else if (InUnionRoom() != TRUE)
         return TRUE;

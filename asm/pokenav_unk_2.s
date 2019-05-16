@@ -22,7 +22,7 @@ _081C98D8:
 	bl sub_81CAE08
 	cmp r0, 0
 	beq _081C9914
-	ldr r0, =gSaveBlock1Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r0, [r0]
 	ldr r1, =0x000009ca
 	adds r0, r1
