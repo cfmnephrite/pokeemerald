@@ -19,7 +19,6 @@
 #include "load_save.h"
 #include "mail.h"
 #include "main.h"
-#include "mevent2.h"
 #include "mystery_gift.h"
 #include "overworld.h"
 #include "palette.h"
@@ -5984,10 +5983,6 @@ static void sub_807EB50(void)
         case 50:
             if (!InUnionRoom())
                 IncrementGameStat(GAME_STAT_POKEMON_TRADES);
-            if (gWirelessCommType)
-            {
-                sub_801B990(2, gLinkPlayers[GetMultiplayerId() ^ 1].trainerId);
-            }
             SetContinueGameWarpStatusToDynamicWarp();
             sub_8153380();
             gMain.state++;

@@ -18,7 +18,6 @@
 #include "overworld.h"
 #include "palette.h"
 #include "union_room.h"
-#include "mevent2.h"
 #include "script.h"
 #include "script_pokemon_util_80F87D8.h"
 #include "sound.h"
@@ -974,21 +973,7 @@ void sub_80B360C(void)
     sub_813BF10();
 
     if (gSpecialVar_0x8004 == 1 || gSpecialVar_0x8004 == 2)
-    {
         UpdatePlayerLinkBattleRecords(gLocalLinkPlayerId ^ 1);
-        if (gWirelessCommType)
-        {
-            switch (gBattleOutcome)
-            {
-                case B_OUTCOME_WON:
-                    sub_801B990(0, gLinkPlayers[GetMultiplayerId() ^ 1].trainerId);
-                    break;
-                case B_OUTCOME_LOST:
-                    sub_801B990(1, gLinkPlayers[GetMultiplayerId() ^ 1].trainerId);
-                    break;
-            }
-        }
-    }
 
     if (InUnionRoom() == TRUE)
     {
