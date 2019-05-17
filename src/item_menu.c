@@ -486,11 +486,6 @@ void CB2_GoToSellMenu(void)
     GoToBagMenu(RETURN_LOCATION_SHOP, POCKETS_COUNT, CB2_ExitSellMenu);
 }
 
-void sub_81AAC14(void)
-{
-    GoToBagMenu(RETURN_LOCATION_PC, POCKETS_COUNT, sub_816B31C);
-}
-
 void sub_81AAC28(void)
 {
     GoToBagMenu(RETURN_LOCATION_FIELD_6, POCKETS_COUNT, bag_menu_leave_maybe_3);
