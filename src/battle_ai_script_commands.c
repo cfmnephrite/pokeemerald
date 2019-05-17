@@ -713,10 +713,10 @@ static void SetBattlerData(u8 battlerId)
         if (BATTLE_HISTORY->abilities[battlerId] != ABILITY_NONE)
             gBattleMons[battlerId].ability = BATTLE_HISTORY->abilities[battlerId];
         // Check if mon can only have one ability.
-        else if (gBaseStats[gBattleMons[battlerId].species].ability2 == ABILITY_NONE)
-            gBattleMons[battlerId].ability = gBaseStats[gBattleMons[battlerId].species].ability1;
-        else
+        else if (gBaseStats[gBattleMons[battlerId].species].abilities[1] == ABILITY_NONE)
+            gBattleMons[battlerId].ability = gBaseStats[gBattleMons[battlerId].species].abilities[0];
         // The ability is unknown.
+        else
             gBattleMons[battlerId].ability = ABILITY_NONE;
 
         if (BATTLE_HISTORY->itemEffects[battlerId] == 0)
