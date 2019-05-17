@@ -22,6 +22,7 @@
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/vars.h"
+#include "pokemon_storage_system.h"
 
 #define AREA_SCREEN_WIDTH 32
 #define AREA_SCREEN_HEIGHT 20
@@ -341,7 +342,7 @@ static void FindMapsWithMon(u16 species)
     if (sPokedexAreaScreen->unk6E4 > 8)
         sPokedexAreaScreen->unk6E4 = 0;
 
-    roamer = &gSaveBlockPtr->roamer;
+    roamer = &gPokemonStoragePtr->roamer;
     if (species != roamer->species)
     {
         sPokedexAreaScreen->numOverworldAreas = 0;

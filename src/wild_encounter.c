@@ -23,6 +23,7 @@
 #include "constants/layouts.h"
 #include "constants/maps.h"
 #include "constants/species.h"
+#include "pokemon_storage_system.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -577,7 +578,7 @@ bool8 StandardWildEncounter(u16 currMetaTileBehavior, u16 previousMetaTileBehavi
 
             if (TryStartRoamerEncounter() == TRUE)
             {
-                roamer = &gSaveBlockPtr->roamer;
+                roamer = &gPokemonStoragePtr->roamer;
                 if (!IsWildLevelAllowedByRepel(roamer->level))
                     return FALSE;
 
@@ -626,7 +627,7 @@ bool8 StandardWildEncounter(u16 currMetaTileBehavior, u16 previousMetaTileBehavi
 
             if (TryStartRoamerEncounter() == TRUE)
             {
-                roamer = &gSaveBlockPtr->roamer;
+                roamer = &gPokemonStoragePtr->roamer;
                 if (!IsWildLevelAllowedByRepel(roamer->level))
                     return FALSE;
 

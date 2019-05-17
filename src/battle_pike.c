@@ -22,6 +22,7 @@
 #include "constants/trainers.h"
 #include "constants/species.h"
 #include "constants/moves.h"
+#include "pokemon_storage_system.h"
 
 #define PIKE_ROOM_SINGLE_BATTLE 0
 #define PIKE_ROOM_HEAL_FULL 1
@@ -1603,7 +1604,7 @@ static void BackupMonHeldItems(void)
 
     for (i = 0; i < 3; i++)
     {
-        int heldItem = GetMonData(&gSaveBlockPtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[i] - 1],
+        int heldItem = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[i] - 1],
                                   MON_DATA_HELD_ITEM);
         gSaveBlockPtr->frontier.pikeHeldItemsBackup[i] = heldItem;
     }

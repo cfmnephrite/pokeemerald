@@ -18,6 +18,7 @@
 #include "frontier_util.h"
 #include "constants/trainers.h"
 #include "constants/rgb.h"
+#include "pokemon_storage_system.h"
 
 #define BATTLER_RECORD_SIZE 664
 #define ILLEGAL_BATTLE_TYPES ((BATTLE_TYPE_LINK | BATTLE_TYPE_SAFARI | BATTLE_TYPE_FIRST_BATTLE                  \

@@ -7,6 +7,7 @@
 #include "string_util.h"
 #include "text.h"
 #include "constants/species.h"
+#include "pokemon_storage_system.h"
 
 #define DEFAULT_MAX_SIZE 0x8000 // was 0x8100 in Ruby/Sapphire
 
@@ -203,7 +204,7 @@ void GiveGiftRibbonToParty(u8 index, u8 ribbonId)
 
     if (index < 11 && ribbonId < 65)
     {
-        gSaveBlockPtr->giftRibbons[index] = ribbonId;
+        gPokemonStoragePtr->giftRibbons[index] = ribbonId;
         for (i = 0; i < PARTY_SIZE; i++)
         {
             struct Pokemon *mon = &gPlayerParty[i];

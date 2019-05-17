@@ -35,6 +35,7 @@
 #include "international_string_util.h"
 #include "constants/battle_frontier.h"
 #include "dewford_trend.h"
+#include "pokemon_storage_system.h"
 
 
 // Static type declarations
@@ -917,8 +918,8 @@ static void ReceiveDaycareMailData(struct RecordMixingDayCareMail *src, size_t r
     }
 
     _src = (void *)src + which * recordSize;
-    memcpy(&gSaveBlockPtr->daycare.mons[0].mail, &_src->mail[0], sizeof(struct DayCareMail));
-    memcpy(&gSaveBlockPtr->daycare.mons[1].mail, &_src->mail[1], sizeof(struct DayCareMail));
+    memcpy(&gPokemonStoragePtr->daycare.mons[0].mail, &_src->mail[0], sizeof(struct DayCareMail));
+    memcpy(&gPokemonStoragePtr->daycare.mons[1].mail, &_src->mail[1], sizeof(struct DayCareMail));
     SeedRng(oldSeed);
 }
 
@@ -1312,9 +1313,9 @@ static void ReceiveRankingHallRecords(struct PlayerHallRecords *hallRecords, siz
 
 static void sub_80E89F8(struct RecordMixingDayCareMail *dst)
 {
-    gUnknown_02039F9C.mail[0] = gSaveBlockPtr->daycare.mons[0].mail;
-    gUnknown_02039F9C.mail[1] = gSaveBlockPtr->daycare.mons[1].mail;
-    InitDaycareMailRecordMixing(&gSaveBlockPtr->daycare, &gUnknown_02039F9C);
+    gUnknown_02039F9C.mail[0] = gPokemonStoragePtr->daycare.mons[0].mail;
+    gUnknown_02039F9C.mail[1] = gPokemonStoragePtr->daycare.mons[1].mail;
+    InitDaycareMailRecordMixing(&gPokemonStoragePtr->daycare, &gUnknown_02039F9C);
     *dst = *gUnknown_03001148;
 }
 

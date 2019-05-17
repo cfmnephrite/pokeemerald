@@ -408,7 +408,7 @@ static bool8 sub_807158C(struct DayCare *daycare, u8 daycareId)
 
 bool8 sub_8071614(void)
 {
-    return sub_807158C(&gSaveBlockPtr->daycare, gSpecialVar_0x8004);
+    return sub_807158C(&gPokemonStoragePtr->daycare, gSpecialVar_0x8004);
 }
 
 static u8 EggHatchCreateMonSprite(u8 a0, u8 switchID, u8 pokeID, u16* speciesLoc)

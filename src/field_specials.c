@@ -4090,7 +4090,7 @@ void BufferStreakTrainerText(void)
         case 15:
             break;
     }
-    sub_813BE30(&gSaveBlockPtr->linkBattleRecords, a, b);
+    sub_813BE30(&gPokemonStoragePtr->linkBattleRecords, a, b);
 }
 
 static void sub_813BE30(struct LinkBattleRecords *linkRecords, u8 a, u8 b)

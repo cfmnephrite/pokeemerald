@@ -30,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/species.h"
 #include "constants/easy_chat.h"
+#include "pokemon_storage_system.h"
 
 extern const u8 MossdeepCity_SpaceCenter_2F_EventScript_224157[];
 extern const u8 MossdeepCity_SpaceCenter_2F_EventScript_224166[];
@@ -2217,7 +2218,7 @@ static void HandleSpecialTrainerBattleEnd(void)
     case SPECIAL_BATTLE_SECRET_BASE:
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            u16 itemBefore = GetMonData(&gSaveBlockPtr->playerParty[i], MON_DATA_HELD_ITEM);
+            u16 itemBefore = GetMonData(&gPokemonStoragePtr->playerParty[i], MON_DATA_HELD_ITEM);
             SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &itemBefore);
         }
         break;
@@ -2228,7 +2229,7 @@ static void HandleSpecialTrainerBattleEnd(void)
         for (i = 0; i < 3; i++)
         {
             if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
-                gSaveBlockPtr->playerParty[i] = gPlayerParty[i];
+                gPokemonStoragePtr->playerParty[i] = gPlayerParty[i];
         }
         break;
     }
@@ -2283,7 +2284,7 @@ void DoSpecialTrainerBattle(void)
         for (i = 0; i < PARTY_SIZE; i++)
         {
             u16 itemBefore = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-            SetMonData(&gSaveBlockPtr->playerParty[i], MON_DATA_HELD_ITEM, &itemBefore);
+            SetMonData(&gPokemonStoragePtr->playerParty[i], MON_DATA_HELD_ITEM, &itemBefore);
         }
         CreateTask(Task_StartBattleAfterTransition, 1);
         PlayMapChosenOrBattleBGM(0);
@@ -3049,11 +3050,11 @@ static void AwardBattleTowerRibbons(void)
             partyIndex = gSaveBlockPtr->frontier.selectedPartyMons[i] - 1;
             ribbons[i].partyIndex = partyIndex;
             ribbons[i].count = 0;
-            if (!GetMonData(&gSaveBlockPtr->playerParty[partyIndex], ribbonType))
+            if (!GetMonData(&gPokemonStoragePtr->playerParty[partyIndex], ribbonType))
             {
                 gSpecialVar_Result = TRUE;
-                SetMonData(&gSaveBlockPtr->playerParty[partyIndex], ribbonType, &gSpecialVar_Result);
-                ribbons[i].count = GetRibbonCount(&gSaveBlockPtr->playerParty[partyIndex]);
+                SetMonData(&gPokemonStoragePtr->playerParty[partyIndex], ribbonType, &gSpecialVar_Result);
+                ribbons[i].count = GetRibbonCount(&gPokemonStoragePtr->playerParty[partyIndex]);
             }
         }
     }
@@ -3072,7 +3073,7 @@ static void AwardBattleTowerRibbons(void)
         }
         if (ribbons[0].count > 4)
         {
-            sub_80EE4DC(&gSaveBlockPtr->playerParty[ribbons[0].partyIndex], ribbonType);
+            sub_80EE4DC(&gPokemonStoragePtr->playerParty[ribbons[0].partyIndex], ribbonType);
         }
     }
 }

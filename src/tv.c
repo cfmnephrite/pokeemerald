@@ -1383,13 +1383,13 @@ void PutFanClubSpecialOnTheAir(void)
     StringCopy(show->fanClubSpecial.idolName, name);
     tv_store_id_2x(show);
     show->fanClubSpecial.language = gGameLanguage;
-    if (show->fanClubSpecial.language == LANGUAGE_JAPANESE || gSaveBlockPtr->linkBattleRecords.languages[0] == LANGUAGE_JAPANESE)
+    if (show->fanClubSpecial.language == LANGUAGE_JAPANESE || gPokemonStoragePtr->linkBattleRecords.languages[0] == LANGUAGE_JAPANESE)
     {
         show->fanClubSpecial.idolNameLanguage = LANGUAGE_JAPANESE;
     }
     else
     {
-        show->fanClubSpecial.idolNameLanguage = gSaveBlockPtr->linkBattleRecords.languages[0];
+        show->fanClubSpecial.idolNameLanguage = gPokemonStoragePtr->linkBattleRecords.languages[0];
     }
 }
 
@@ -2468,7 +2468,7 @@ bool8 sub_80EE7C0(void)
     {
         return TRUE;
     }
-    if (gSaveBlockPtr->linkBattleRecords.entries[0].name[0] == EOS)
+    if (gPokemonStoragePtr->linkBattleRecords.entries[0].name[0] == EOS)
     {
         return TRUE;
     }
@@ -2543,8 +2543,8 @@ void sub_80EE8C8(u16 winStreak, u8 facilityAndMode)
                 show->frontier.species2 = GetMonData(&gPlayerParty[1], MON_DATA_SPECIES, NULL);
                 break;
             case 4:
-                show->frontier.species1 = GetMonData(&gSaveBlockPtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[0] - 1], MON_DATA_SPECIES, NULL);
-                show->frontier.species2 = GetMonData(&gSaveBlockPtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[1] - 1], MON_DATA_SPECIES, NULL);
+                show->frontier.species1 = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[0] - 1], MON_DATA_SPECIES, NULL);
+                show->frontier.species2 = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[1] - 1], MON_DATA_SPECIES, NULL);
                 break;
         }
         tv_store_id_3x(show);

@@ -23,6 +23,7 @@
 #include "constants/game_stat.h"
 #include "trainer_hill.h"
 #include "constants/rgb.h"
+#include "pokemon_storage_system.h"
 
 // this file's functions
 static void Task_CloseTrainerHillRecordsOnButton(u8 taskId);
@@ -225,7 +226,7 @@ static void UpdateLinkBattleRecords(struct LinkBattleRecords *records, const u8 
 
 void ClearPlayerLinkBattleRecords(void)
 {
-    ClearLinkBattleRecords(gSaveBlockPtr->linkBattleRecords.entries);
+    ClearLinkBattleRecords(gPokemonStoragePtr->linkBattleRecords.entries);
 }
 
 static void IncTrainerCardWins(s32 battlerId)
@@ -265,7 +266,7 @@ void UpdatePlayerLinkBattleRecords(s32 battlerId)
     {
         UpdateTrainerCardWinsLosses(battlerId);
         UpdateLinkBattleRecords(
-            &gSaveBlockPtr->linkBattleRecords,
+            &gPokemonStoragePtr->linkBattleRecords,
             gTrainerCards[battlerId].playerName,
             gTrainerCards[battlerId].trainerId,
             gBattleOutcome,
@@ -326,14 +327,14 @@ void ShowLinkBattleRecords(void)
 
     x = GetStringCenterAlignXOffset(1, gStringVar4, 208);
     AddTextPrinterParameterized(gRecordsWindowId, 1, gStringVar4, x, 1, 0, NULL);
-    PrintLinkBattleWinsLossesDraws(gSaveBlockPtr->linkBattleRecords.entries);
+    PrintLinkBattleWinsLossesDraws(gPokemonStoragePtr->linkBattleRecords.entries);
 
     StringExpandPlaceholders(gStringVar4, gText_WinLoseDraw);
     AddTextPrinterParameterized(gRecordsWindowId, 1, gStringVar4, 0, 41, 0, NULL);
 
     for (i = 0; i < LINK_B_RECORDS_COUNT; i++)
     {
-        PrintLinkBattleRecord(&gSaveBlockPtr->linkBattleRecords.entries[i], 7 + (i * 2), gSaveBlockPtr->linkBattleRecords.languages[i]);
+        PrintLinkBattleRecord(&gPokemonStoragePtr->linkBattleRecords.entries[i], 7 + (i * 2), gPokemonStoragePtr->linkBattleRecords.languages[i]);
     }
 
     PutWindowTilemap(gRecordsWindowId);

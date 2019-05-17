@@ -5,6 +5,7 @@
 #include "roamer.h"
 #include "constants/maps.h"
 #include "constants/species.h"
+#include "pokemon_storage_system.h"
 
 enum
 {
@@ -42,8 +43,8 @@ static const u8 sRoamerLocations[][6] =
 
 void ClearRoamerData(void)
 {
-    memset(&gSaveBlockPtr->roamer, 0, sizeof(struct Roamer));
-    (&gSaveBlockPtr->roamer)->species = SPECIES_LATIAS;
+    memset(&gPokemonStoragePtr->roamer, 0, sizeof(struct Roamer));
+    (&gPokemonStoragePtr->roamer)->species = SPECIES_LATIAS;
 }
 
 void ClearRoamerLocationData(void)
@@ -63,22 +64,22 @@ void ClearRoamerLocationData(void)
 static void CreateInitialRoamerMon(bool16 createLatios)
 {
     if (!createLatios)
-        (&gSaveBlockPtr->roamer)->species = SPECIES_LATIAS;
+        (&gPokemonStoragePtr->roamer)->species = SPECIES_LATIAS;
     else
-        (&gSaveBlockPtr->roamer)->species = SPECIES_LATIOS;
+        (&gPokemonStoragePtr->roamer)->species = SPECIES_LATIOS;
 
-    CreateMon(&gEnemyParty[0], (&gSaveBlockPtr->roamer)->species, 40, 0x20, 0, 0, 0, 0);
-    (&gSaveBlockPtr->roamer)->level = 40;
-    (&gSaveBlockPtr->roamer)->status = 0;
-    (&gSaveBlockPtr->roamer)->active = TRUE;
-    (&gSaveBlockPtr->roamer)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
-    (&gSaveBlockPtr->roamer)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
-    (&gSaveBlockPtr->roamer)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
-    (&gSaveBlockPtr->roamer)->cool = GetMonData(&gEnemyParty[0], MON_DATA_COOL);
-    (&gSaveBlockPtr->roamer)->beauty = GetMonData(&gEnemyParty[0], MON_DATA_BEAUTY);
-    (&gSaveBlockPtr->roamer)->cute = GetMonData(&gEnemyParty[0], MON_DATA_CUTE);
-    (&gSaveBlockPtr->roamer)->smart = GetMonData(&gEnemyParty[0], MON_DATA_SMART);
-    (&gSaveBlockPtr->roamer)->tough = GetMonData(&gEnemyParty[0], MON_DATA_TOUGH);
+    CreateMon(&gEnemyParty[0], (&gPokemonStoragePtr->roamer)->species, 40, 0x20, 0, 0, 0, 0);
+    (&gPokemonStoragePtr->roamer)->level = 40;
+    (&gPokemonStoragePtr->roamer)->status = 0;
+    (&gPokemonStoragePtr->roamer)->active = TRUE;
+    (&gPokemonStoragePtr->roamer)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
+    (&gPokemonStoragePtr->roamer)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
+    (&gPokemonStoragePtr->roamer)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
+    (&gPokemonStoragePtr->roamer)->cool = GetMonData(&gEnemyParty[0], MON_DATA_COOL);
+    (&gPokemonStoragePtr->roamer)->beauty = GetMonData(&gEnemyParty[0], MON_DATA_BEAUTY);
+    (&gPokemonStoragePtr->roamer)->cute = GetMonData(&gEnemyParty[0], MON_DATA_CUTE);
+    (&gPokemonStoragePtr->roamer)->smart = GetMonData(&gEnemyParty[0], MON_DATA_SMART);
+    (&gPokemonStoragePtr->roamer)->tough = GetMonData(&gEnemyParty[0], MON_DATA_TOUGH);
     sRoamerLocation[MAP_GRP] = 0;
     sRoamerLocation[MAP_NUM] = sRoamerLocations[Random() % (ARRAY_COUNT(sRoamerLocations) - 1)][0];
 }
@@ -105,7 +106,7 @@ void UpdateLocationHistoryForRoamer(void)
 void RoamerMoveToOtherLocationSet(void)
 {
     u8 mapNum = 0;
-    struct Roamer *roamer = &gSaveBlockPtr->roamer;
+    struct Roamer *roamer = &gPokemonStoragePtr->roamer;
 
     if (!roamer->active)
         return;
@@ -133,7 +134,7 @@ void RoamerMove(void)
     }
     else
     {
-        struct Roamer *roamer = &gSaveBlockPtr->roamer;
+        struct Roamer *roamer = &gPokemonStoragePtr->roamer;
 
         if (!roamer->active)
             return;
@@ -159,7 +160,7 @@ void RoamerMove(void)
 
 bool8 IsRoamerAt(u8 mapGroup, u8 mapNum)
 {
-    struct Roamer *roamer = &gSaveBlockPtr->roamer;
+    struct Roamer *roamer = &gPokemonStoragePtr->roamer;
 
     if (roamer->active && mapGroup == sRoamerLocation[MAP_GRP] && mapNum == sRoamerLocation[MAP_NUM])
         return TRUE;
@@ -174,15 +175,15 @@ void CreateRoamerMonInstance(void)
 
     mon = &gEnemyParty[0];
     ZeroEnemyPartyMons();
-    roamer = &gSaveBlockPtr->roamer;
+    roamer = &gPokemonStoragePtr->roamer;
     CreateMonWithIVsPersonality(mon, roamer->species, roamer->level, roamer->ivs, roamer->personality);
-    SetMonData(mon, MON_DATA_STATUS, &gSaveBlockPtr->roamer.status);
-    SetMonData(mon, MON_DATA_HP, &gSaveBlockPtr->roamer.hp);
-    SetMonData(mon, MON_DATA_COOL, &gSaveBlockPtr->roamer.cool);
-    SetMonData(mon, MON_DATA_BEAUTY, &gSaveBlockPtr->roamer.beauty);
-    SetMonData(mon, MON_DATA_CUTE, &gSaveBlockPtr->roamer.cute);
-    SetMonData(mon, MON_DATA_SMART, &gSaveBlockPtr->roamer.smart);
-    SetMonData(mon, MON_DATA_TOUGH, &gSaveBlockPtr->roamer.tough);
+    SetMonData(mon, MON_DATA_STATUS, &gPokemonStoragePtr->roamer.status);
+    SetMonData(mon, MON_DATA_HP, &gPokemonStoragePtr->roamer.hp);
+    SetMonData(mon, MON_DATA_COOL, &gPokemonStoragePtr->roamer.cool);
+    SetMonData(mon, MON_DATA_BEAUTY, &gPokemonStoragePtr->roamer.beauty);
+    SetMonData(mon, MON_DATA_CUTE, &gPokemonStoragePtr->roamer.cute);
+    SetMonData(mon, MON_DATA_SMART, &gPokemonStoragePtr->roamer.smart);
+    SetMonData(mon, MON_DATA_TOUGH, &gPokemonStoragePtr->roamer.tough);
 }
 
 bool8 TryStartRoamerEncounter(void)
@@ -200,15 +201,15 @@ bool8 TryStartRoamerEncounter(void)
 
 void UpdateRoamerHPStatus(struct Pokemon *mon)
 {
-    (&gSaveBlockPtr->roamer)->hp = GetMonData(mon, MON_DATA_HP);
-    (&gSaveBlockPtr->roamer)->status = GetMonData(mon, MON_DATA_STATUS);
+    (&gPokemonStoragePtr->roamer)->hp = GetMonData(mon, MON_DATA_HP);
+    (&gPokemonStoragePtr->roamer)->status = GetMonData(mon, MON_DATA_STATUS);
 
     RoamerMoveToOtherLocationSet();
 }
 
 void SetRoamerInactive(void)
 {
-    struct Roamer *roamer = &gSaveBlockPtr->roamer;
+    struct Roamer *roamer = &gPokemonStoragePtr->roamer;
     roamer->active = FALSE;
 }
 
