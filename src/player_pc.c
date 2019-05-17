@@ -138,7 +138,6 @@ static const u8 *const gPCText_OptionDescList[] =
 
 static const struct MenuAction sPlayerPCMenuActions[] =
 {
-    { gText_ItemStorage, PlayerPC_ItemStorage },
     { gText_Mailbox, PlayerPC_Mailbox },
     { gText_Decoration, PlayerPC_Decoration },
     { gText_TurnOff, PlayerPC_TurnOff }
@@ -146,7 +145,6 @@ static const struct MenuAction sPlayerPCMenuActions[] =
 
 static const u8 gBedroomPC_OptionOrder[] =
 {
-    PLAYERPC_MENU_ITEMSTORAGE,
     PLAYERPC_MENU_MAILBOX,
     PLAYERPC_MENU_DECORATION,
     PLAYERPC_MENU_TURNOFF
@@ -154,7 +152,6 @@ static const u8 gBedroomPC_OptionOrder[] =
 
 static const u8 gPlayerPC_OptionOrder[] =
 {
-    PLAYERPC_MENU_ITEMSTORAGE,
     PLAYERPC_MENU_MAILBOX,
     PLAYERPC_MENU_TURNOFF
 };
@@ -188,7 +185,7 @@ static const struct WindowTemplate gUnknown_085DFF24[3] =
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 9,
-        .height = 6,
+        .height = 4,
         .paletteNum = 15,
         .baseBlock = 1
     },
@@ -197,7 +194,7 @@ static const struct WindowTemplate gUnknown_085DFF24[3] =
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 9,
-        .height = 8,
+        .height = 6,
         .paletteNum = 15,
         .baseBlock = 1
     },
@@ -206,7 +203,7 @@ static const struct WindowTemplate gUnknown_085DFF24[3] =
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 10,
-        .height = 8,
+        .height = 6,
         .paletteNum = 15,
         .baseBlock = 1
     }
@@ -314,14 +311,14 @@ void NewGameInitPCItems(void)
 void BedroomPC(void)
 {
     gPcItemMenuOptionOrder = gBedroomPC_OptionOrder;
-    gPcItemMenuOptionsNum = 4;
+    gPcItemMenuOptionsNum = 3;
     DisplayItemMessageOnField(CreateTask(TaskDummy, 0), gText_WhatWouldYouLike, InitPlayerPCMenu);
 }
 
 void PlayerPC(void)
 {
     gPcItemMenuOptionOrder = gPlayerPC_OptionOrder;
-    gPcItemMenuOptionsNum = 3;
+    gPcItemMenuOptionsNum = 2;
     DisplayItemMessageOnField(CreateTask(TaskDummy, 0), gText_WhatWouldYouLike, InitPlayerPCMenu);
 }
 
@@ -331,7 +328,7 @@ static void InitPlayerPCMenu(u8 taskId)
     struct WindowTemplate windowTemplate;
 
     data = gTasks[taskId].data;
-    if (gPcItemMenuOptionsNum == 3)
+    if (gPcItemMenuOptionsNum == 2)
         windowTemplate = gUnknown_085DFF24[0];
     else
         windowTemplate = gUnknown_085DFF24[1];
@@ -350,10 +347,7 @@ static void PlayerPCProcessMenuInput(u8 taskId)
     s8 inputOptionId;
 
     data = gTasks[taskId].data;
-    if (gPcItemMenuOptionsNum > 3)
-        inputOptionId = Menu_ProcessInput();
-    else
-        inputOptionId = Menu_ProcessInputNoWrap();
+    inputOptionId = Menu_ProcessInputNoWrap();
 
     switch (inputOptionId)
     {
@@ -419,7 +413,7 @@ static void PlayerPC_Decoration(u8 taskId)
 
 static void PlayerPC_TurnOff(u8 taskId)
 {
-    if (gPcItemMenuOptionsNum == 4) // if the option count is 4, we are at the bedroom PC and not player PC, so do gender specific handling.
+    if (gPcItemMenuOptionsNum == 3) // if the option count is 4, we are at the bedroom PC and not player PC, so do gender specific handling.
     {
         if (gSaveBlockPtr->playerGender == MALE)
             ScriptContext1_SetupScript(LittlerootTown_BrendansHouse_2F_EventScript_1F863F);
@@ -492,7 +486,6 @@ static void Task_ItemStorage_Deposit(u8 taskId)
     if (!gPaletteFade.active)
     {
         CleanupOverworldWindowsAndTilemaps();
-        sub_81AAC14();
         DestroyTask(taskId);
     }
 }

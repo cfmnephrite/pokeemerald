@@ -613,7 +613,7 @@ static s32 FindFreePCItemSlot(void)
 {
     s8 i;
 
-    for (i = 0; i < PC_ITEMS_COUNT; i++)
+    for (i = 0; i < 2; i++)
     {
         if (gSaveBlockPtr->pcItems[i].itemId == ITEM_NONE)
             return i;
@@ -626,7 +626,7 @@ u8 CountUsedPCItemSlots(void)
     u8 usedSlots = 0;
     u8 i;
 
-    for (i = 0; i < PC_ITEMS_COUNT; i++)
+    for (i = 0; i < 2; i++)
     {
         if (gSaveBlockPtr->pcItems[i].itemId != ITEM_NONE)
             usedSlots++;
@@ -638,7 +638,7 @@ bool8 CheckPCHasItem(u16 itemId, u16 count)
 {
     u8 i;
 
-    for (i = 0; i < PC_ITEMS_COUNT; i++)
+    for (i = 0; i < 2; i++)
     {
         if (gSaveBlockPtr->pcItems[i].itemId == itemId && GetPCItemQuantity(&gSaveBlockPtr->pcItems[i].quantity) >= count)
             return TRUE;
@@ -658,7 +658,7 @@ bool8 AddPCItem(u16 itemId, u16 count)
     memcpy(newItems, gSaveBlockPtr->pcItems, sizeof(gSaveBlockPtr->pcItems));
 
     // Use any item slots that already contain this item
-    for (i = 0; i < PC_ITEMS_COUNT; i++)
+    for (i = 0; i < 2; i++)
     {
         if (newItems[i].itemId == itemId)
         {
@@ -719,9 +719,9 @@ void CompactPCItems(void)
     u16 i;
     u16 j;
 
-    for (i = 0; i < PC_ITEMS_COUNT - 1; i++)
+    for (i = 0; i < 2 - 1; i++)
     {
-        for (j = i + 1; j < PC_ITEMS_COUNT; j++)
+        for (j = i + 1; j < 2; j++)
         {
             if (gSaveBlockPtr->pcItems[i].itemId == 0)
             {
