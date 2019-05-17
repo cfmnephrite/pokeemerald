@@ -95,9 +95,9 @@ static void InitPlayerTrainerId(void)
 // L=A isnt set here for some reason.
 static void SetDefaultOptions(void)
 {
-    gSaveBlockPtr->optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
+    gSaveBlockPtr->optionsTextSpeed = OPTIONS_TEXT_SPEED_FAST;
     gSaveBlockPtr->optionsWindowFrameType = 0;
-    gSaveBlockPtr->optionsSound = OPTIONS_SOUND_MONO;
+    gSaveBlockPtr->optionsSound = OPTIONS_SOUND_STEREO;
     gSaveBlockPtr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlockPtr->optionsBattleSceneOff = FALSE;
     gSaveBlockPtr->regionMapZoom = FALSE;
@@ -133,7 +133,7 @@ static void WarpToTruck(void)
     WarpIntoMap();
 }
 
-void Sav2_ClearSetDefault(void)
+void Sav_ClearSetDefault(void)
 {
     ClearSav();
     SetDefaultOptions();

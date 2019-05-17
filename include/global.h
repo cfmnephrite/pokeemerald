@@ -842,6 +842,36 @@ struct MysteryEventStruct
 
 struct SaveBlock
 {
+    /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
+    /*0x08*/ u8 playerGender; // MALE, FEMALE
+    /*0x09*/ u8 specialSaveWarpFlags;
+    /*0x0A*/ u8 playerTrainerId[4];
+    /*0x0E*/ u16 playTimeHours;
+    /*0x10*/ u8 playTimeMinutes;
+    /*0x11*/ u8 playTimeSeconds;
+    /*0x12*/ u8 playTimeVBlanks;
+    /*0x13*/ u8 optionsButtonMode;  // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A]
+    /*0x14*/ u16 optionsTextSpeed:3; // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
+             u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
+             u16 optionsSound:1; // OPTIONS_SOUND_[MONO/STEREO]
+             u16 optionsBattleStyle:1; // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
+             u16 optionsBattleSceneOff:1; // whether battle animations are disabled
+             u16 regionMapZoom:1; // whether the map is zoomed in
+    /*0x98*/ struct Time localTimeOffset;
+    /*0xA0*/ struct Time lastBerryTreeUpdate;
+    /*0xAC*/ u32 encryptionKey;
+    /*0xB0*/ struct PlayersApprentice playerApprentice;
+    /*0xDC*/ struct Apprentice apprentices[4]; // From record mixing.
+    /*0x1EC*/ struct BerryCrush berryCrush;
+    /*0x1FC*/ struct PokemonJumpResults pokeJump;
+    /*0x20C*/ struct BerryPickingResults berryPick;
+    /*0x21C*/ struct RankingHall1P hallRecords1P[HALL_FACILITIES_COUNT][2][3]; // From record mixing.
+    /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
+    /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
+    /*0x64C*/ struct BattleFrontier frontier;
+    // sizeof: 0xF2C -> 0xEA8 // Without filler, 216 bytes
+    
+             u8 hallOfFame[0x960];
     /*0x00*/ struct Coords16 pos;
     /*0x04*/ struct WarpData location;
     /*0x0C*/ struct WarpData continueGameWarp;
@@ -863,6 +893,7 @@ struct SaveBlock
     /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
     /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
     /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+              u8 moreItems[112];
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
     /*0x9BC*/ u16 berryBlenderRecords[3];
     /*0x9C8*/ u16 trainerRematchStepCounter;
@@ -919,42 +950,13 @@ struct SaveBlock
     /*0x3???*/ u8 unk3C88[10][21];
     /*0x3???*/ struct SaveTrainerHill trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
-    // sizeof: 0x3D88 -> 3CA6// Without filler, 356 bytes (An extra 0x68 from Pokedex struct)
+    // sizeof: 0x3D88 -> 3CA6// Without filler, 360 bytes (An extra 0x68 from Pokedex struct)
                              // +876 from deleting Mystery Event
                              // +604 from moving team
                              // +288 from moving daycare
                              // +28 from moving the roamer
                              // +88 from moving linkBattleRecords
                              // +52 from moving giftRibbons
-
-    /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x08*/ u8 playerGender; // MALE, FEMALE
-    /*0x09*/ u8 specialSaveWarpFlags;
-    /*0x0A*/ u8 playerTrainerId[4];
-    /*0x0E*/ u16 playTimeHours;
-    /*0x10*/ u8 playTimeMinutes;
-    /*0x11*/ u8 playTimeSeconds;
-    /*0x12*/ u8 playTimeVBlanks;
-    /*0x13*/ u8 optionsButtonMode;  // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A]
-    /*0x14*/ u16 optionsTextSpeed:3; // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
-             u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
-             u16 optionsSound:1; // OPTIONS_SOUND_[MONO/STEREO]
-             u16 optionsBattleStyle:1; // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
-             u16 optionsBattleSceneOff:1; // whether battle animations are disabled
-             u16 regionMapZoom:1; // whether the map is zoomed in
-    /*0x98*/ struct Time localTimeOffset;
-    /*0xA0*/ struct Time lastBerryTreeUpdate;
-    /*0xAC*/ u32 encryptionKey;
-    /*0xB0*/ struct PlayersApprentice playerApprentice;
-    /*0xDC*/ struct Apprentice apprentices[4]; // From record mixing.
-    /*0x1EC*/ struct BerryCrush berryCrush;
-    /*0x1FC*/ struct PokemonJumpResults pokeJump;
-    /*0x20C*/ struct BerryPickingResults berryPick;
-    /*0x21C*/ struct RankingHall1P hallRecords1P[HALL_FACILITIES_COUNT][2][3]; // From record mixing.
-    /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
-    /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
-    /*0x64C*/ struct BattleFrontier frontier;
-    // sizeof: 0xF2C -> 0xEA8 // Without filler, 216 bytes
 };
 
 extern struct SaveBlock* gSaveBlockPtr;

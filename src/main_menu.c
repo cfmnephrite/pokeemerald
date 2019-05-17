@@ -40,6 +40,7 @@
 #include "window.h"
 #include "mystery_gift.h"
 #include "load_save.h"
+#include "new_game.h"
 
 /*
  * Main menu state machine
@@ -1297,7 +1298,7 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
     PlayBGM(MUS_DOORO_X4);
     ShowBg(0);
     ShowBg(1);
-    ClearSav();
+    Sav_ClearSetDefault();
 }
 
 static void Task_NewGameBirchSpeech_WaitToShowBirch(u8 taskId)
