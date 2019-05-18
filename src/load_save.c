@@ -255,7 +255,6 @@ void SavePlayerBag(void)
 
     encryptionKeyBackup = gSaveBlockPtr->encryptionKey;
     gSaveBlockPtr->encryptionKey = gLastEncryptionKey;
-    ApplyNewEncryptionKeyToBagItems(encryptionKeyBackup);
     gSaveBlockPtr->encryptionKey = encryptionKeyBackup; // updated twice?
 }
 
@@ -274,7 +273,6 @@ void ApplyNewEncryptionKeyToWord(u32 *word, u32 newKey)
 static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey)
 {
     ApplyNewEncryptionKeyToGameStats(encryptionKey);
-    ApplyNewEncryptionKeyToBagItems_(encryptionKey);
     ApplyNewEncryptionKeyToBerryPowder(encryptionKey);
     ApplyNewEncryptionKeyToWord(&gSaveBlockPtr->money, encryptionKey);
     ApplyNewEncryptionKeyToHword(&gSaveBlockPtr->coins, encryptionKey);

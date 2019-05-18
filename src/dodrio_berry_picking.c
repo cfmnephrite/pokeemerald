@@ -1510,7 +1510,7 @@ void sub_8026324(void)
                             r6 = r7_2;
                         }
                     }
-                    gUnknown_02022C98->unk_32CC.unk_1F[r5] = 7;
+                    gUnknown_02022C98->unk_32CC.unk_00[r5] = 7;
                     gUnknown_02022C98->unk_00C4[r5] = 2;
                     gUnknown_02022C98->unk_00A8[r4] = 3;
                     gUnknown_02022C98->unk_00B8[r5] = r4;

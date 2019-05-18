@@ -894,6 +894,16 @@ struct SaveBlock
     /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
     /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
               u8 moreItems[112];
+              /*
+              Room for 528 items:
+              Berries: 63 (126 bytes)
+              Pokéballs: 32 (64 bytes)
+              Stones + Crystals: 75 (150 bytes)
+              Medicines: 60 (160 bytes)
+              Items: 120 (200 bytes)
+              TMs/HMs: 125 (250 bytes)
+              Key Items: 53 (106 bytes)
+              */
     /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
     /*0x9BC*/ u16 berryBlenderRecords[3];
     /*0x9C8*/ u16 trainerRematchStepCounter;

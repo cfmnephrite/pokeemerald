@@ -31,12 +31,12 @@ EWRAM_DATA struct BagPocket gBagPockets[POCKETS_COUNT] = {0};
 // code
 static u16 GetBagItemQuantity(u16 *quantity)
 {
-    return gSaveBlockPtr->encryptionKey ^ *quantity;
+    return *quantity;
 }
 
 static void SetBagItemQuantity(u16 *quantity, u16 newValue)
 {
-    *quantity =  newValue ^ gSaveBlockPtr->encryptionKey;
+    *quantity =  newValue;
 }
 
 static u16 GetPCItemQuantity(u16 *quantity)
@@ -47,21 +47,6 @@ static u16 GetPCItemQuantity(u16 *quantity)
 static void SetPCItemQuantity(u16 *quantity, u16 newValue)
 {
     *quantity = newValue;
-}
-
-void ApplyNewEncryptionKeyToBagItems(u32 newKey)
-{
-    u32 pocket, item;
-    for (pocket = 0; pocket < POCKETS_COUNT; pocket++)
-    {
-        for (item = 0; item < gBagPockets[pocket].capacity; item++)
-            ApplyNewEncryptionKeyToHword(&(gBagPockets[pocket].itemSlots[item].quantity), newKey);
-    }
-}
-
-void ApplyNewEncryptionKeyToBagItems_(u32 newKey) // really GF?
-{
-    ApplyNewEncryptionKeyToBagItems(newKey);
 }
 
 void SetBagItemsPointers(void)
@@ -165,7 +150,7 @@ bool8 HasAtLeastOneBerry(void)
 {
     u16 i;
 
-    for (i = FIRST_BERRY_INDEX; i < ITEM_BRIGHT_POWDER; i++)
+    for (i = FIRST_BERRY_INDEX; i < LAST_BERRY_INDEX; i++)
     {
         if (CheckBagHasItem(i, 1) == TRUE)
         {
@@ -193,15 +178,10 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count)
     else
     {
         u8 pocket;
-        u16 slotCapacity;
+        u16 slotCapacity = 99;
         u16 ownedCount;
 
         pocket = ItemId_GetPocket(itemId) - 1;
-        if (pocket != BERRIES_POCKET)
-            slotCapacity = 99;
-        else
-            slotCapacity = 999;
-
         // Check space in any existing item slots that already contain this item
         for (i = 0; i < gBagPockets[pocket].capacity; i++)
         {
@@ -409,18 +389,13 @@ bool8 AddBagItem(u16 itemId, u16 count)
     {
         struct BagPocket *itemPocket;
         struct ItemSlot *newItems;
-        u16 slotCapacity;
+        u16 slotCapacity = 99;
         u16 ownedCount;
         u8 pocket = ItemId_GetPocket(itemId) - 1;
 
         itemPocket = &gBagPockets[pocket];
         newItems = AllocZeroed(itemPocket->capacity * sizeof(struct ItemSlot));
         memcpy(newItems, itemPocket->itemSlots, itemPocket->capacity * sizeof(struct ItemSlot));
-
-        if (pocket != BERRIES_POCKET)
-            slotCapacity = 99;
-        else
-            slotCapacity = 999;
 
         for (i = 0; i < itemPocket->capacity; i++)
         {
