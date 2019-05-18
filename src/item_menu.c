@@ -423,16 +423,16 @@ const struct WindowTemplate gUnknown_086141AC[] =
 // .text
 
 struct ListBuffer1 {
-    struct ListMenuItem subBuffers[65];
+    struct ListMenuItem subBuffers[125];
 };
 
 struct ListBuffer2 {
-    s8 name[65][24];
+    s8 name[125][24];
 };
 
 struct TempWallyStruct {
-    struct ItemSlot bagPocket_Items[30];
-    struct ItemSlot bagPocket_PokeBalls[16];
+    u16 bagPocket_Items[30];
+    u16 bagPocket_PokeBalls[16];
     u16 cursorPosition[POCKETS_COUNT];
     u16 scrollPosition[POCKETS_COUNT];
     u8 filler[0x2];
@@ -751,7 +751,7 @@ void load_bag_item_list_buffers(u8 pocketId)
     {
         for (i = 0; i < gUnknown_0203CE54->numItemStacks[pocketId] - 1; i++)
         {
-            get_name(sListBuffer2->name[i], pocket->itemSlots[i].itemId);
+            get_name(sListBuffer2->name[i], GetBagItemID(pocket->itemSlots[i], pocketId));
             subBuffer = sListBuffer1->subBuffers;
             subBuffer[i].name = sListBuffer2->name[i];
             subBuffer[i].id = i;
@@ -765,7 +765,7 @@ void load_bag_item_list_buffers(u8 pocketId)
     {
         for (i = 0; i < gUnknown_0203CE54->numItemStacks[pocketId]; i++)
         {
-            get_name(sListBuffer2->name[i], pocket->itemSlots[i].itemId);
+            get_name(sListBuffer2->name[i], GetBagItemID(pocket->itemSlots[i], pocketId));
             subBuffer = sListBuffer1->subBuffers;
             subBuffer[i].name = sListBuffer2->name[i];
             subBuffer[i].id = i;
@@ -968,14 +968,14 @@ void sub_81AB9A8(u8 pocketId)
     {
         case TMHM_POCKET:
         case BERRIES_POCKET:
-            SortBerriesOrTMHMs(pocket);
+            SortBerriesOrTMHMs(pocket, pocketId);
             break;
         default:
-            CompactItemsInBagPocket(pocket);
+            CompactItemsInBagPocket(pocket, pocketId);
             break;
     }
     gUnknown_0203CE54->numItemStacks[pocketId] = 0;
-    for (i = 0; i < pocket->capacity && pocket->itemSlots[i].itemId; i++)
+    for (i = 0; i < pocket->capacity && GetBagItemID(pocket->itemSlots[i], pocketId); i++)
         gUnknown_0203CE54->numItemStacks[pocketId]++;
 
     if (!gUnknown_0203CE54->hideCloseBagText)
@@ -1904,7 +1904,7 @@ void display_sell_item_ask_str(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    if (ItemId_GetPrice(gSpecialVar_ItemId) == 0)
+    if (ItemId_GetPrice(gSpecialVar_ItemId) == 0 || ItemId_GetPocket(gSpecialVar_ItemId) == POCKET_TM_HM)
     {
         CopyItemName(gSpecialVar_ItemId, gStringVar2);
         StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);

@@ -301,11 +301,6 @@ static const u8 gUnknown_085DFF8C[] = {0x01, 0x03, 0x02, 0x00};
 // text
 void NewGameInitPCItems(void)
 {
-    u8 i;
-
-    // because Game Freak don't know how to use a struct or a 2d array
-    for(i = 0, ClearItemSlots(gSaveBlockPtr->pcItems, ARRAY_COUNT(gSaveBlockPtr->pcItems)); NEW_GAME_PC_ITEMS(i, PC_ITEM_ID) && NEW_GAME_PC_ITEMS(i, PC_QUANTITY) &&
-        AddPCItem(NEW_GAME_PC_ITEMS(i, PC_ITEM_ID), NEW_GAME_PC_ITEMS(i, PC_QUANTITY)) == TRUE; i++);
 }
 
 void BedroomPC(void)
@@ -512,31 +507,12 @@ static void ItemStorage_HandleReturnToProcessInput(u8 taskId)
 
 static void ItemStorage_Withdraw(u8 taskId)
 {
-    s16 *data = gTasks[taskId].data;
-
-    NUM_ITEMS = CountUsedPCItemSlots();
-    if (NUM_ITEMS != 0)
-        ItemStorage_WithdrawToss_Helper(taskId, FALSE);
-    else
-    {
-        sub_816B4DC(taskId);
-        DisplayItemMessageOnField(taskId, gText_NoItems, PlayerPC_ItemStorage);
-    }
 
 }
 
 static void ItemStorage_Toss(u8 taskId)
 {
-    s16 *data = gTasks[taskId].data;
 
-    NUM_ITEMS = CountUsedPCItemSlots();
-    if (NUM_ITEMS != 0)
-        ItemStorage_WithdrawToss_Helper(taskId, TRUE);
-    else
-    {
-        sub_816B4DC(taskId);
-        DisplayItemMessageOnField(taskId, gText_NoItems, PlayerPC_ItemStorage);
-    }
 }
 
 static void ItemStorage_WithdrawToss_Helper(u8 taskId, bool8 toss)
@@ -1237,36 +1213,6 @@ static void sub_816C4FC(u8 taskId)
 
 static void ItemStorage_DoItemSwap(u8 taskId, bool8 a)
 {
-    s16 *data;
-    u16 b;
-    u8 c;
-
-    data = gTasks[taskId].data;
-    b = (playerPCItemPageInfo.itemsAbove + playerPCItemPageInfo.cursorPos);
-    PlaySE(SE_SELECT);
-    DestroyListMenuTask(data[5], &(playerPCItemPageInfo.itemsAbove), &(playerPCItemPageInfo.cursorPos));
-    if (!a)
-    {
-        c = gUnknown_0203BCC4->unk666;
-        if (c != b)
-        {
-            if (c != b - 1)
-            {
-                MoveItemSlotInList(gSaveBlockPtr->pcItems, c, b);
-                ItemStorage_RefreshListMenu();
-            }
-        }
-        else
-            goto LABEL_SKIP_CURSOR_DECREMENT;
-    }
-    if (gUnknown_0203BCC4->unk666 < b)
-        playerPCItemPageInfo.cursorPos--;
-    LABEL_SKIP_CURSOR_DECREMENT:
-    sub_81223FC(gUnknown_0203BCC4->spriteIds, 7, 1);
-    gUnknown_0203BCC4->unk666 = 0xFF;
-    data[5] = ListMenuInit(&gMultiuseListMenuTemplate, playerPCItemPageInfo.itemsAbove, playerPCItemPageInfo.cursorPos);
-    schedule_bg_copy_tilemap_to_vram(0);
-    gTasks[taskId].func = ItemStorage_ProcessInput;
 }
 
 static void sub_816C690(u8 a)

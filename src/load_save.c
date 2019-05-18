@@ -20,11 +20,11 @@ static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey);
 
 struct LoadedSaveData
 {
- /*0x0000*/ struct ItemSlot items[BAG_ITEMS_COUNT];
- /*0x0078*/ struct ItemSlot keyItems[BAG_KEYITEMS_COUNT];
- /*0x00F0*/ struct ItemSlot pokeBalls[BAG_POKEBALLS_COUNT];
- /*0x0130*/ struct ItemSlot TMsHMs[BAG_TMHM_COUNT];
- /*0x0230*/ struct ItemSlot berries[BAG_BERRIES_COUNT];
+ /*0x0000*/ u16 items[BAG_ITEMS_COUNT];
+ /*0x0078*/ u16 keyItems[BAG_KEYITEMS_COUNT];
+ /*0x00F0*/ u16 pokeBalls[BAG_POKEBALLS_COUNT];
+ /*0x0130*/ u16 TMsHMs[BAG_TMHM_COUNT];
+ /*0x0230*/ u16 berries[BAG_BERRIES_COUNT];
  /*0x02E8*/ struct MailStruct mail[MAIL_COUNT];
 };
 

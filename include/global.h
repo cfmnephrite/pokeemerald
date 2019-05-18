@@ -888,11 +888,11 @@ struct SaveBlock
     /*0x494*/ u16 coins;
     /*0x496*/ u16 registeredItem; // registered for use with SELECT button
     /*0x498*/ struct ItemSlot pcItems[16];
-    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
-    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
-    /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    /*0x560*/ u16 bagPocket_Items[BAG_ITEMS_COUNT];
+    /*0x650*/ u16 bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    /*0x790*/ u16 bagPocket_Berries[BAG_BERRIES_COUNT];
+    /*0x690*/ u16 bagPocket_TMHM[BAG_TMHM_COUNT];
+    /*0x5D8*/ u16 bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
               u8 moreItems[112];
               /*
               Room for 528 items:

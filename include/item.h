@@ -44,12 +44,15 @@ struct Item
 
 struct BagPocket
 {
-    struct ItemSlot *itemSlots;
+    u16 *itemSlots;
     u8 capacity;
 };
 
 extern struct BagPocket gBagPockets[];
-
+u16 GetBagItemQuantity(u16 itemSlot, u8 pocket);
+void SetBagItemQuantity(u16 *itemSlot, u8 newValue, u8 pocket);
+u16 GetBagItemID(u16 itemSlot, u8 pocket);
+void SetBagItemID(u16 *itemSlot, u16 newItem, u8 pocket);
 void SetBagItemsPointers(void);
 void CopyItemName(u16 itemId, u8 *dst);
 void CopyItemNameHandlePlural(u16 itemId, u8 *dst, u32 quantity);
@@ -61,7 +64,7 @@ bool8 CheckBagHasSpace(u16 itemId, u16 count);
 bool8 AddBagItem(u16 itemId, u16 count);
 bool8 RemoveBagItem(u16 itemId, u16 count);
 u8 GetPocketByItemId(u16 itemId);
-void ClearItemSlots(struct ItemSlot *itemSlots, u8 itemCount);
+void ClearItemSlots(u16 *itemSlots, u8 itemCount);
 u8 CountUsedPCItemSlots(void);
 bool8 CheckPCHasItem(u16 itemId, u16 count);
 bool8 AddPCItem(u16 itemId, u16 count);
@@ -70,9 +73,9 @@ void CompactPCItems(void);
 void SwapRegisteredBike(void);
 u16 BagGetItemIdByPocketPosition(u8 pocketId, u16 pocketPos);
 u16 BagGetQuantityByPocketPosition(u8 pocketId, u16 pocketPos);
-void CompactItemsInBagPocket(struct BagPocket *bagPocket);
-void SortBerriesOrTMHMs(struct BagPocket *bagPocket);
-void MoveItemSlotInList(struct ItemSlot* itemSlots_, u32 from, u32 to_);
+void CompactItemsInBagPocket(struct BagPocket *bagPocket, u8 pocketId);
+void SortBerriesOrTMHMs(struct BagPocket *bagPocket, u8 pocketId);
+void MoveItemSlotInList(u16 *itemSlots_, u32 from, u32 to_);
 void ClearBag(void);
 u16 CountTotalItemQuantityInBag(u16 itemId);
 bool8 AddPyramidBagItem(u16 itemId, u16 count);
