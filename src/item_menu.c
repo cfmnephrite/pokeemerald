@@ -1050,16 +1050,14 @@ void sub_81ABC3C(u8 a)
 
 void sub_81ABC54(u8 a, s16 b)
 {
-    u8 r3 = (gUnknown_0203CE58.pocket == BERRIES_POCKET) ? 3 : 2;
-    ConvertIntToDecimalStringN(gStringVar1, b, 2, r3);
+    ConvertIntToDecimalStringN(gStringVar1, b, 2, 2);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(a, 1, gStringVar4, GetStringCenterAlignXOffset(1, gStringVar4, 0x28), 2, 0, 0);
 }
 
 void sub_81ABCC0(int a, int b, int c)
 {
-    u8 r3 = (gUnknown_0203CE58.pocket == BERRIES_POCKET) ? 3 : 2;
-    ConvertIntToDecimalStringN(gStringVar1, b, 2, r3);
+    ConvertIntToDecimalStringN(gStringVar1, b, 2, 2);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(a, 1, gStringVar4, 0, 1, -1, 0);
     PrintMoneyAmount(a, 0x26, 1, c, 0);
