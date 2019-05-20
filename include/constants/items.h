@@ -3,7 +3,6 @@
 
 #define ITEM_NONE 0
 // Monster Balls 
-// Monster Balls	
 #define ITEM_MASTER_BALL	1
 #define ITEM_PREMIER_BALL	2
 #define ITEM_POKE_BALL	3
@@ -80,7 +79,7 @@
 #define ITEM_PP_UP	73
 #define ITEM_PP_MAX	74
 #define ITEM_RARE_CANDY	75
-// General Items	1
+// General Items
 #define ITEM_REPEL	76
 #define ITEM_SUPER_REPEL	77
 #define ITEM_MAX_REPEL	78
