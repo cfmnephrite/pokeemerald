@@ -70,6 +70,7 @@ const struct SaveSectionOffsets gSaveSectionOffsets[] =
     SAVEBLOCK_CHUNK(gPokemonStorage, 6),
     SAVEBLOCK_CHUNK(gPokemonStorage, 7),
     SAVEBLOCK_CHUNK(gPokemonStorage, 8),
+    SAVEBLOCK_CHUNK(gPokemonStorage, 9),
 };
 
 // iwram common
@@ -500,7 +501,7 @@ static u8 GetSaveValidStatus(const struct SaveSectionLocation *location)
 
     if (securityPassed)
     {
-        if (slotCheckField == 0x3FFF)
+        if (slotCheckField == 0x7FFF)
             saveSlot1Status = 1;
         else
             saveSlot1Status = 255;
@@ -531,7 +532,7 @@ static u8 GetSaveValidStatus(const struct SaveSectionLocation *location)
 
     if (securityPassed)
     {
-        if (slotCheckField == 0x3FFF)
+        if (slotCheckField == 0x7FFF)
             saveSlot2Status = 1;
         else
             saveSlot2Status = 255;
@@ -640,7 +641,7 @@ static void UpdateSaveAddresses(void)
         gRamSaveSectionLocations[i].size = gSaveSectionOffsets[i].size;
     }
 
-    for (i = 5; i < 14; i++)
+    for (i = 5; i < SECTOR_SAVE_SLOT_LENGTH; i++)
     {
         gRamSaveSectionLocations[i].data = (void*)(gPokemonStoragePtr) + gSaveSectionOffsets[i].toAdd;
         gRamSaveSectionLocations[i].size = gSaveSectionOffsets[i].size;
@@ -659,9 +660,6 @@ u8 HandleSavingData(u8 saveType)
     UpdateSaveAddresses();
     switch (saveType)
     {
-    case SAVE_HALL_OF_FAME_ERASE_BEFORE: // deletes HOF before overwriting HOF completely. unused
-        for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)
-            EraseFlashSector(i);
     case SAVE_HALL_OF_FAME: // hall of fame.
         if (GetGameStat(GAME_STAT_ENTERED_HOF) < 999)
             IncrementGameStat(GAME_STAT_ENTERED_HOF);
@@ -686,8 +684,6 @@ u8 HandleSavingData(u8 saveType)
         break;
     */
     case SAVE_OVERWRITE_DIFFERENT_FILE:
-        for (i = SECTOR_ID_HOF_1; i < SECTORS_COUNT; i++)
-            EraseFlashSector(i); // erase HOF.
         SaveSerializedGame();
         save_write_to_flash(0xFFFF, gRamSaveSectionLocations);
         break;
