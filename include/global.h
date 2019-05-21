@@ -5,6 +5,7 @@
 #include "config.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
 #include "gba/gba.h"
 #include "constants/global.h"
+#include "hall_of_fame.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -870,8 +871,7 @@ struct SaveBlock
     /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
     /*0x64C*/ struct BattleFrontier frontier;
     // sizeof: 0xF2C -> 0xEA8 // Without filler, 216 bytes
-    
-             u8 hallOfFame[0x960];
+             struct HallofFameTeam hallOfFameData[20];
     /*0x00*/ struct Coords16 pos;
     /*0x04*/ struct WarpData location;
     /*0x0C*/ struct WarpData continueGameWarp;

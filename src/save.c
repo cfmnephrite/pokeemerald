@@ -665,12 +665,6 @@ u8 HandleSavingData(u8 saveType)
     case SAVE_HALL_OF_FAME: // hall of fame.
         if (GetGameStat(GAME_STAT_ENTERED_HOF) < 999)
             IncrementGameStat(GAME_STAT_ENTERED_HOF);
-        SaveSerializedGame();
-        save_write_to_flash(0xFFFF, gRamSaveSectionLocations);
-        tempAddr = gDecompressionBuffer;
-        HandleWriteSectorNBytes(SECTOR_ID_HOF_1, tempAddr, 0xF80);
-        HandleWriteSectorNBytes(SECTOR_ID_HOF_2, tempAddr + 0xF80, 0xF80);
-        break;
     case SAVE_NORMAL: // normal save. also called by overwriting your own save.
     default:
         SaveSerializedGame();
