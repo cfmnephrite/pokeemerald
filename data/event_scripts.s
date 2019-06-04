@@ -1383,74 +1383,47 @@ OldaleTown_PokemonCenter_1F_Movement_271AD0: @ 8271AD0
 Std_ObtainItem:: @ 8271AD3
 	giveitem VAR_0x8000, VAR_0x8001
 	copyvar VAR_0x8007, VAR_RESULT
-	call EventScript_271AE3
+	call EvenScript_TryReceiveItem
 	return
 
-EventScript_271AE3:: @ 8271AE3
+EvenScript_TryReceiveItem:: @ 8271AE3
 	bufferitemnameplural 1, VAR_0x8000, VAR_0x8001
 	checkitemtype VAR_0x8000
 	call EventScript_271B08
 	compare VAR_0x8007, 1
-	call_if_eq EventScript_271B95
+	call_if_eq EventScript_ObtainedItemMessage
 	compare VAR_0x8007, 0
-	call_if_eq EventScript_271BA9
+	call_if_eq EventScript_ItemNotObtained
 	return
 
 EventScript_271B08:: @ 8271B08
-	switch VAR_RESULT
-	case 1, EventScript_271B45
-	case 5, EventScript_271B55
-	case 2, EventScript_271B65
-	case 3, EventScript_271B75
-	case 4, EventScript_271B85
-	end
-
-EventScript_271B45:: @ 8271B45
-	bufferstdstring 2, 14
 	compare VAR_0x8007, 1
-	call_if_eq EventScript_271BAF
+	goto_if_ne EventScript_CannotReceive
+	addvar VAR_RESULT, 29
+	bufferstdstring 2, VAR_RESULT
+	compare VAR_RESULT, 34
+	call_if_eq EventScript_ReceiveTMHMFanfare
+	compare VAR_RESULT, 34
+	call_if_ne EventScript_ReceiveItemFanfare
+EventScript_CannotReceive:
 	return
 
-EventScript_271B55:: @ 8271B55
-	bufferstdstring 2, 15
-	compare VAR_0x8007, 1
-	call_if_eq EventScript_271BAF
-	return
-
-EventScript_271B65:: @ 8271B65
-	bufferstdstring 2, 16
-	compare VAR_0x8007, 1
-	call_if_eq EventScript_271BAF
-	return
-
-EventScript_271B75:: @ 8271B75
-	bufferstdstring 2, 17
-	compare VAR_0x8007, 1
-	call_if_eq EventScript_271BB3
-	return
-
-EventScript_271B85:: @ 8271B85
-	bufferstdstring 2, 18
-	compare VAR_0x8007, 1
-	call_if_eq EventScript_271BAF
-	return
-
-EventScript_271B95:: @ 8271B95
+EventScript_ObtainedItemMessage:: @ 8271B95
 	message gUnknown_08272A78
 	waitfanfare
 	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
 	setvar VAR_RESULT, 1
 	return
 
-EventScript_271BA9:: @ 8271BA9
+EventScript_ItemNotObtained:: @ 8271BA9
 	setvar VAR_RESULT, 0
 	return
 
-EventScript_271BAF:: @ 8271BAF
+EventScript_ReceiveItemFanfare:: @ 8271BAF
 	playfanfare MUS_FANFA4
 	return
 
-EventScript_271BB3:: @ 8271BB3
+EventScript_ReceiveTMHMFanfare:: @ 8271BB3
 	playfanfare MUS_ME_WAZA
 	return
 
