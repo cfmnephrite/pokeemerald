@@ -1401,9 +1401,9 @@ EventScript_271B08:: @ 8271B08
 	goto_if_ne EventScript_CannotReceive
 	addvar VAR_RESULT, 29
 	bufferstdstring 2, VAR_RESULT
-	compare VAR_RESULT, 34
+	compare VAR_RESULT, 35
 	call_if_eq EventScript_ReceiveTMHMFanfare
-	compare VAR_RESULT, 34
+	compare VAR_RESULT, 35
 	call_if_ne EventScript_ReceiveItemFanfare
 EventScript_CannotReceive:
 	return

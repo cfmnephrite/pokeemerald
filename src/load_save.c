@@ -21,6 +21,7 @@ static void ApplyNewEncryptionKeyToAllEncryptedData(u32 encryptionKey);
 struct LoadedSaveData
 {
  /*0x0000*/ u16 items[BAG_ITEMS_COUNT];
+ /*0x0000*/ u16 holdItems[BAG_HOLD_ITEMS_COUNT];
  /*0x0000*/ u16 medicine[BAG_MEDICINE_COUNT];
  /*0x0078*/ u16 keyItems[BAG_KEYITEMS_COUNT];
  /*0x00F0*/ u16 pokeBalls[BAG_POKEBALLS_COUNT];
@@ -201,6 +202,10 @@ void LoadPlayerBag(void)
     // load player items.
     for (i = 0; i < BAG_ITEMS_COUNT; i++)
         gLoadedSaveData.items[i] = gSaveBlockPtr->bagPocket_Items[i];
+    
+    // save player hold items.
+    for (i = 0; i < BAG_HOLD_ITEMS_COUNT; i++)
+        gLoadedSaveData.holdItems[i] = gSaveBlockPtr->bagPocket_HoldItems[i];
 
     // save player medicine.
     for (i = 0; i < BAG_MEDICINE_COUNT; i++)
@@ -237,6 +242,10 @@ void SavePlayerBag(void)
     // save player items.
     for (i = 0; i < BAG_ITEMS_COUNT; i++)
         gSaveBlockPtr->bagPocket_Items[i] = gLoadedSaveData.items[i];
+    
+    // save player hold items.
+    for (i = 0; i < BAG_HOLD_ITEMS_COUNT; i++)
+        gSaveBlockPtr->bagPocket_HoldItems[i] = gLoadedSaveData.holdItems[i];
 
     // save player medicine.
     for (i = 0; i < BAG_MEDICINE_COUNT; i++)

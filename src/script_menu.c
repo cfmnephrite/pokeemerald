@@ -951,6 +951,7 @@ const u8 *const gUnknown_0858BAF0[] =
     gText_BattlePike,
     gText_BattlePyramid,
     gText_ItemsPocket,
+    gText_HoldItemsPocket,
     gText_MedicinePocket,
     gText_PokeBallsPocket,
     gText_BerriesPocket,

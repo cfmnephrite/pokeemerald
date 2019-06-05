@@ -33,6 +33,7 @@ extern const u8 gText_Smart2[];
 extern const u8 gText_Tough2[];
 
 extern const u8 gText_ItemsPocket[];
+extern const u8 gText_HoldItemsPocket[];
 extern const u8 gText_MedicinePocket[];
 extern const u8 gText_PokeBallsPocket[];
 extern const u8 gText_BerriesPocket[];

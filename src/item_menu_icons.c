@@ -86,6 +86,7 @@ static const union AnimCmd *const sSpriteAnimTable_857FADC[] =
 {
     sSpriteAnim_857FAAC,
     sSpriteAnim_857FAB4,
+    sSpriteAnim_857FAC4,
     sSpriteAnim_857FACC,
     sSpriteAnim_857FAC4,
     sSpriteAnim_857FAD4,
