@@ -150,6 +150,7 @@
 #define VARIOUS_CHECK_FLOWER_VEIL               84
 #define VARIOUS_JUMP_IF_ROAR_FAILS              85
 #define VARIOUS_TRY_INSTRUCT                    86
+#define VARIOUS_JUMP_IF_NOT_BERRY               87
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

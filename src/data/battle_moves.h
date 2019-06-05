@@ -953,7 +953,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_BUG_BITE] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect (Bug Bite and Pluck should have the same move effect)
+        .effect = EFFECT_BUG_BITE,
         .power = 60,
         .type = TYPE_BUG,
         .accuracy = 100,

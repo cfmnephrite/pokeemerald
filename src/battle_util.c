@@ -2416,6 +2416,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                     gProtectStructs[gBattlerAttacker].powderSelfDmg = 1;
                     gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
                     gBattlescriptCurrInstr = BattleScript_MoveUsedPowder;
+                    effect = 1;
                 }
             }
             gBattleStruct->atkCancellerTracker++;
@@ -3665,6 +3666,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_COMATOSE
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_OVERCOAT
              && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_SAFETY_GOOGLES
+             && !IsFlowerVeilProtected(gBattlerAttacker)
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = (2 * (Random() % 3)) + 1;
@@ -3693,11 +3695,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+        POISON_POINT:
         case ABILITY_POISON_POINT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
+             && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_POISON)
+             && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_STEEL)
+             && GetBattlerAbility(gBattlerAttacker) != ABILITY_IMMUNITY
+             && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY)
+             && !IsFlowerVeilProtected(gBattlerAttacker)
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY)
              && !(IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_POISON) || IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_STEEL))
@@ -3705,18 +3713,23 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_POISON;
-                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, ABILITY_POISON_POINT);
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
             break;
+        STATIC:
         case ABILITY_STATIC:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
+             && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_ELECTRIC)
+             && GetBattlerAbility(gBattlerAttacker) != ABILITY_LIMBER
+             && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY)
+             && !IsFlowerVeilProtected(gBattlerAttacker)
              && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
              && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
              && !IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_ELECTRIC)
@@ -3743,6 +3756,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_HEATPROOF
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_WATER_BUBBLE
+             && !IsFlowerVeilProtected(gBattlerAttacker)
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_BURN;
@@ -4250,35 +4264,40 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
     switch (caseID)
     {
     case ITEMEFFECT_ON_SWITCH_IN:
-        switch (battlerHoldEffect)
+        if (!gSpecialStatuses[battlerId].switchInItemDone)
         {
-        case HOLD_EFFECT_DOUBLE_PRIZE:
-            if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-                gBattleStruct->moneyMultiplier *= 2;
-            break;
-        case HOLD_EFFECT_RESTORE_STATS:
-            for (i = 0; i < NUM_BATTLE_STATS; i++)
+            switch (battlerHoldEffect)
             {
-                if (gBattleMons[battlerId].statStages[i] < 6)
+            case HOLD_EFFECT_DOUBLE_PRIZE:
+                if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
+                    gBattleStruct->moneyMultiplier *= 2;
+                break;
+            case HOLD_EFFECT_RESTORE_STATS:
+                for (i = 0; i < NUM_BATTLE_STATS; i++)
                 {
-                    gBattleMons[battlerId].statStages[i] = 6;
-                    effect = ITEM_STATS_CHANGE;
+                    if (gBattleMons[battlerId].statStages[i] < 6)
+                    {
+                        gBattleMons[battlerId].statStages[i] = 6;
+                        effect = ITEM_STATS_CHANGE;
+                    }
                 }
+                if (effect)
+                {
+                    gBattleScripting.battler = battlerId;
+                    gPotentialItemEffectBattler = battlerId;
+                    gActiveBattler = gBattlerAttacker = battlerId;
+                    BattleScriptExecute(BattleScript_WhiteHerbEnd2);
+                }
+                break;
+            case HOLD_EFFECT_AIR_BALLOON:
+                effect = ITEM_EFFECT_OTHER;
+                gBattleScripting.battler = battlerId;
+                BattleScriptPushCursorAndCallback(BattleScript_AirBaloonMsgIn);
+                RecordItemEffectBattle(battlerId, HOLD_EFFECT_AIR_BALLOON);
+                break;
             }
             if (effect)
-            {
-                gBattleScripting.battler = battlerId;
-                gPotentialItemEffectBattler = battlerId;
-                gActiveBattler = gBattlerAttacker = battlerId;
-                BattleScriptExecute(BattleScript_WhiteHerbEnd2);
-            }
-            break;
-        case HOLD_EFFECT_AIR_BALLOON:
-            effect = ITEM_EFFECT_OTHER;
-            gBattleScripting.battler = battlerId;
-            BattleScriptExecute(BattleScript_AirBaloonMsgIn);
-            RecordItemEffectBattle(battlerId, HOLD_EFFECT_AIR_BALLOON);
-            break;
+                gSpecialStatuses[battlerId].switchInItemDone = 1;
         }
         break;
     case 1:
@@ -5449,6 +5468,77 @@ static const u8 sSpeedDiffPowerTable[] = {40, 60, 80, 120, 150};
 static const u8 sHeatCrushPowerTable[] = {40, 40, 60, 80, 100, 120};
 static const u8 sTrumpCardPowerTable[] = {200, 80, 60, 50, 40};
 
+const struct TypePower gNaturalGiftTable[] =
+{
+    [ITEM_TO_BERRY(ITEM_CHERI_BERRY)] = {TYPE_FIRE, 80},
+    [ITEM_TO_BERRY(ITEM_CHESTO_BERRY)] = {TYPE_WATER, 80},
+    [ITEM_TO_BERRY(ITEM_PECHA_BERRY)] = {TYPE_ELECTRIC, 80},
+    [ITEM_TO_BERRY(ITEM_RAWST_BERRY)] = {TYPE_GRASS, 80},
+    [ITEM_TO_BERRY(ITEM_ASPEAR_BERRY)] = {TYPE_ICE, 80},
+    [ITEM_TO_BERRY(ITEM_LEPPA_BERRY)] = {TYPE_FIGHTING, 80},
+    [ITEM_TO_BERRY(ITEM_ORAN_BERRY)] = {TYPE_POISON, 80},
+    [ITEM_TO_BERRY(ITEM_PERSIM_BERRY)] = {TYPE_GROUND, 80},
+    [ITEM_TO_BERRY(ITEM_LUM_BERRY)] = {TYPE_FLYING, 80},
+    [ITEM_TO_BERRY(ITEM_SITRUS_BERRY)] = {TYPE_PSYCHIC, 80},
+    [ITEM_TO_BERRY(ITEM_FIGY_BERRY)] = {TYPE_BUG, 80},
+    [ITEM_TO_BERRY(ITEM_WIKI_BERRY)] = {TYPE_ROCK, 80},
+    [ITEM_TO_BERRY(ITEM_MAGO_BERRY)] = {TYPE_GHOST, 80},
+    [ITEM_TO_BERRY(ITEM_AGUAV_BERRY)] = {TYPE_DRAGON, 80},
+    [ITEM_TO_BERRY(ITEM_IAPAPA_BERRY)] = {TYPE_DARK, 80},
+    [ITEM_TO_BERRY(ITEM_RAZZ_BERRY)] = {TYPE_STEEL, 80},
+    [ITEM_TO_BERRY(ITEM_OCCA_BERRY)] = {TYPE_FIRE, 80},
+    [ITEM_TO_BERRY(ITEM_PASSHO_BERRY)] = {TYPE_WATER, 80},
+    [ITEM_TO_BERRY(ITEM_WACAN_BERRY)] = {TYPE_ELECTRIC, 80},
+    [ITEM_TO_BERRY(ITEM_RINDO_BERRY)] = {TYPE_GRASS, 80},
+    [ITEM_TO_BERRY(ITEM_YACHE_BERRY)] = {TYPE_ICE, 80},
+    [ITEM_TO_BERRY(ITEM_CHOPLE_BERRY)] = {TYPE_FIGHTING, 80},
+    [ITEM_TO_BERRY(ITEM_KEBIA_BERRY)] = {TYPE_POISON, 80},
+    [ITEM_TO_BERRY(ITEM_SHUCA_BERRY)] = {TYPE_GROUND, 80},
+    [ITEM_TO_BERRY(ITEM_COBA_BERRY)] = {TYPE_FLYING, 80},
+    [ITEM_TO_BERRY(ITEM_PAYAPA_BERRY)] = {TYPE_PSYCHIC, 80},
+    [ITEM_TO_BERRY(ITEM_TANGA_BERRY)] = {TYPE_BUG, 80},
+    [ITEM_TO_BERRY(ITEM_CHARTI_BERRY)] = {TYPE_ROCK, 80},
+    [ITEM_TO_BERRY(ITEM_KASIB_BERRY)] = {TYPE_GHOST, 80},
+    [ITEM_TO_BERRY(ITEM_HABAN_BERRY)] = {TYPE_DRAGON, 80},
+    [ITEM_TO_BERRY(ITEM_COLBUR_BERRY)] = {TYPE_DARK, 80},
+    [ITEM_TO_BERRY(ITEM_BABIRI_BERRY)] = {TYPE_STEEL, 80},
+    [ITEM_TO_BERRY(ITEM_CHILAN_BERRY)] = {TYPE_NORMAL, 80},
+    [ITEM_TO_BERRY(ITEM_ROSELI_BERRY)] = {TYPE_FAIRY, 80},
+    [ITEM_TO_BERRY(ITEM_BLUK_BERRY)] = {TYPE_FIRE, 90},
+    [ITEM_TO_BERRY(ITEM_NANAB_BERRY)] = {TYPE_WATER, 90},
+    [ITEM_TO_BERRY(ITEM_WEPEAR_BERRY)] = {TYPE_ELECTRIC, 90},
+    [ITEM_TO_BERRY(ITEM_PINAP_BERRY)] = {TYPE_GRASS, 90},
+    [ITEM_TO_BERRY(ITEM_POMEG_BERRY)] = {TYPE_ICE, 90},
+    [ITEM_TO_BERRY(ITEM_KELPSY_BERRY)] = {TYPE_FIGHTING, 90},
+    [ITEM_TO_BERRY(ITEM_QUALOT_BERRY)] = {TYPE_POISON, 90},
+    [ITEM_TO_BERRY(ITEM_HONDEW_BERRY)] = {TYPE_GROUND, 90},
+    [ITEM_TO_BERRY(ITEM_GREPA_BERRY)] = {TYPE_FLYING, 90},
+    [ITEM_TO_BERRY(ITEM_TAMATO_BERRY)] = {TYPE_PSYCHIC, 90},
+    [ITEM_TO_BERRY(ITEM_CORNN_BERRY)] = {TYPE_BUG, 90},
+    [ITEM_TO_BERRY(ITEM_MAGOST_BERRY)] = {TYPE_ROCK, 90},
+    [ITEM_TO_BERRY(ITEM_RABUTA_BERRY)] = {TYPE_GHOST, 90},
+    [ITEM_TO_BERRY(ITEM_NOMEL_BERRY)] = {TYPE_DRAGON, 90},
+    [ITEM_TO_BERRY(ITEM_SPELON_BERRY)] = {TYPE_DARK, 90},
+    [ITEM_TO_BERRY(ITEM_PAMTRE_BERRY)] = {TYPE_STEEL, 90},
+    [ITEM_TO_BERRY(ITEM_WATMEL_BERRY)] = {TYPE_FIRE, 100},
+    [ITEM_TO_BERRY(ITEM_DURIN_BERRY)] = {TYPE_WATER, 100},
+    [ITEM_TO_BERRY(ITEM_BELUE_BERRY)] = {TYPE_ELECTRIC, 100},
+    [ITEM_TO_BERRY(ITEM_LIECHI_BERRY)] = {TYPE_GRASS, 100},
+    [ITEM_TO_BERRY(ITEM_GANLON_BERRY)] = {TYPE_ICE, 100},
+    [ITEM_TO_BERRY(ITEM_SALAC_BERRY)] = {TYPE_FIGHTING, 100},
+    [ITEM_TO_BERRY(ITEM_PETAYA_BERRY)] = {TYPE_POISON, 100},
+    [ITEM_TO_BERRY(ITEM_APICOT_BERRY)] = {TYPE_GROUND, 100},
+    [ITEM_TO_BERRY(ITEM_LANSAT_BERRY)] = {TYPE_FLYING, 100},
+    [ITEM_TO_BERRY(ITEM_STARF_BERRY)] = {TYPE_PSYCHIC, 100},
+    [ITEM_TO_BERRY(ITEM_ENIGMA_BERRY)] = {TYPE_BUG, 100},
+    [ITEM_TO_BERRY(ITEM_MICLE_BERRY)] = {TYPE_ROCK, 100},
+    [ITEM_TO_BERRY(ITEM_CUSTAP_BERRY)] = {TYPE_GHOST, 100},
+    [ITEM_TO_BERRY(ITEM_JABOCA_BERRY)] = {TYPE_DRAGON, 100},
+    [ITEM_TO_BERRY(ITEM_ROWAP_BERRY)] = {TYPE_DARK, 100},
+    [ITEM_TO_BERRY(ITEM_KEE_BERRY)] = {TYPE_FAIRY, 100},
+    [ITEM_TO_BERRY(ITEM_MARANGA_BERRY)] = {TYPE_DARK, 100},
+};
+
 static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
 {
     u32 i;
@@ -5516,7 +5606,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_NATURAL_GIFT:
-        // todo
+        basePower = gNaturalGiftTable[ITEM_TO_BERRY(gBattleMons[battlerAtk].item)].power;
         break;
     case EFFECT_WAKE_UP_SLAP:
         if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)

@@ -1615,6 +1615,7 @@ END:
     {
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_BerryReduceDmg;
+        gLastUsedItem = gBattleMons[gBattlerTarget].item;
     }
     if (gSpecialStatuses[gBattlerAttacker].gemBoost
         && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
@@ -1622,6 +1623,7 @@ END:
     {
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_GemActivates;
+        gLastUsedItem = gBattleMons[gBattlerAttacker].item;
     }
 }
 
@@ -2811,7 +2813,6 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     gBattleMoveDamage = gBattleMons[BATTLE_PARTNER(gBattlerTarget)].hp / 16;
                     if (gBattleMoveDamage == 0)
                         gBattleMoveDamage = 1;
-                    BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_MoveEffectFlameBurst;
                 }
                 break;
@@ -2928,6 +2929,19 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
             case MOVE_EFFECT_THROAT_CHOP:
                 gDisableStructs[gEffectBattler].throatChopTimer = 2;
                 gBattlescriptCurrInstr++;
+                break;
+            case MOVE_EFFECT_BUG_BITE:
+                if ((gBattleMons[gEffectBattler].item >= FIRST_BERRY_INDEX && gBattleMons[gEffectBattler].item <= LAST_BERRY_INDEX)
+                    && GetBattlerAbility(gEffectBattler) != ABILITY_STICKY_HOLD)
+                {
+                    gLastUsedItem = gBattleMons[gEffectBattler].item;
+                    gBattleMons[gEffectBattler].item = 0;
+                    gActiveBattler = gEffectBattler;
+                    BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gEffectBattler].item);
+                    MarkBattlerForControllerExec(gActiveBattler);
+                    BattleScriptPush(gBattlescriptCurrInstr + 1);
+                    gBattlescriptCurrInstr = BattleScript_MoveEffectBugBite;
+                }
                 break;
             }
         }
@@ -4697,6 +4711,7 @@ static void atk49_moveend(void)
                 effect = TRUE;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_ItemHurtRet;
+                gLastUsedItem = gBattleMons[gBattlerAttacker].item;
             }
             gBattleScripting.atk49_state++;
             break;
@@ -6619,6 +6634,12 @@ static void atk76_various(void)
 
     switch (gBattlescriptCurrInstr[2])
     {
+    case VARIOUS_JUMP_IF_NOT_BERRY:
+        if (ItemId_GetPocket(gBattleMons[gActiveBattler].item) == POCKET_BERRIES)
+            gBattlescriptCurrInstr += 7;
+        else
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        return;
     case VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS:
         if ((gStatuses3[gActiveBattler] & (STATUS3_SEMI_INVULNERABLE))
             || BATTLER_MAX_HP(gActiveBattler) || !(IsBattlerGrounded(gActiveBattler)
@@ -8158,7 +8179,7 @@ static void atk84_jumpifcantmakeasleep(void)
 
 static void atk85_stockpile(void)
 {
-    if (gDisableStructs[gBattlerAttacker].stockpileCounter == 3)
+    if (gDisableStructs[gBattlerAttacker].stockpileCounter >= 3)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
@@ -8166,9 +8187,7 @@ static void atk85_stockpile(void)
     else
     {
         gDisableStructs[gBattlerAttacker].stockpileCounter++;
-
-        PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gDisableStructs[gBattlerAttacker].stockpileCounter)
-
+        PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gDisableStructs[gBattlerAttacker].stockpileCounter);
         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
     }
     gBattlescriptCurrInstr++;

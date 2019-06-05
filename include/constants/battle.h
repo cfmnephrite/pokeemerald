@@ -341,6 +341,7 @@
 #define MOVE_EFFECT_HAPPY_HOUR          0x41
 #define MOVE_EFFECT_CORE_ENFORCER       0x42
 #define MOVE_EFFECT_THROAT_CHOP         0x43
+#define MOVE_EFFECT_BUG_BITE            0x44
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000
 

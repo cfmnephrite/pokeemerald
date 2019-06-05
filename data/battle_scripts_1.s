@@ -354,7 +354,17 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectLaserFocus
 	.4byte BattleScript_EffectMagneticFlux
 	.4byte BattleScript_EffectGearUp
-    
+	.4byte BattleScript_EffectBugBite
+	
+BattleScript_EffectBugBite:
+	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHit
+	
+BattleScript_MoveEffectBugBite::
+	printstring STRINGID_BUGBITE
+	waitmessage 0x40
+	return
+
 BattleScript_EffectCoreEnforcer:
 	setmoveeffect MOVE_EFFECT_CORE_ENFORCER | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
@@ -803,6 +813,7 @@ BattleScript_EffectFlameBurst:
 	goto BattleScript_EffectHit
 
 BattleScript_MoveEffectFlameBurst::
+	tryfaintmon BS_TARGET, FALSE, NULL
 	printstring STRINGID_BURSTINGFLAMESHIT
 	waitmessage 0x40
 	healthbarupdate BS_SCRIPTING
@@ -1881,7 +1892,6 @@ BattleScript_EffectHex:
 BattleScript_EffectHiddenPower:
 BattleScript_EffectJudgment:
 BattleScript_EffectLowKick:
-BattleScript_EffectNaturalGift:
 BattleScript_EffectPayback:
 BattleScript_EffectPledge:
 BattleScript_EffectPunishment:
@@ -1932,6 +1942,36 @@ BattleScript_HitFromAtkAnimation::
 BattleScript_MoveEnd::
 	moveendall
 	end
+	
+BattleScript_EffectNaturalGift:
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifnotberry BS_ATTACKER, BattleScript_ButItFailed
+	jumpifword CMP_COMMON_BITS, gFieldStatuses, STATUS_FIELD_MAGIC_ROOM, BattleScript_ButItFailed
+	jumpifability BS_ATTACKER, ABILITY_KLUTZ, BattleScript_ButItFailed
+	jumpifstatus3 BS_ATTACKER, STATUS3_EMBARGO, BattleScript_ButItFailed
+	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
+	critcalc
+	damagecalc
+	adjustdamage
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage 0x40
+	resultmessage
+	waitmessage 0x40
+	seteffectwithchance
+	jumpifmovehadnoeffect BattleScript_EffectNaturalGiftEnd
+	consumeitem BS_ATTACKER
+BattleScript_EffectNaturalGiftEnd:
+	tryfaintmon BS_TARGET, FALSE, NULL
+	goto BattleScript_MoveEnd
 
 BattleScript_MakeMoveMissed::
 	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED
@@ -6890,7 +6930,7 @@ BattleScript_ItemHealHP_End2::
 BattleScript_AirBaloonMsgIn::
 	printstring STRINGID_AIRBALLOONFLOAT
 	waitmessage 0x40
-	end2
+	end3
 	
 BattleScript_AirBaloonMsgPop::
 	printstring STRINGID_AIRBALLOONPOP
