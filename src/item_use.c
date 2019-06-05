@@ -925,7 +925,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         u8 textCantThrowPokeBall[] = _("Cannot throw a ball!\nThere are two pokemon out there!\p");
 
         if (!InBattlePyramid())
-            DisplayItemMessage(taskId, 1, textCantThrowPokeBall, bag_menu_inits_lists_menu);
+            DisplayItemMessage(taskId, 1, textCantThrowPokeBall, BagMenu_InitListsMenu);
         else
             DisplayItemMessageInBattlePyramid(taskId, textCantThrowPokeBall, sub_81C6714);
     }
@@ -934,7 +934,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         u8 textCantThrowPokeBall[] = _("Cannot throw a ball!\p");
 
         if (!InBattlePyramid())
-            DisplayItemMessage(taskId, 1, textCantThrowPokeBall, bag_menu_inits_lists_menu);
+            DisplayItemMessage(taskId, 1, textCantThrowPokeBall, BagMenu_InitListsMenu);
         else
             DisplayItemMessageInBattlePyramid(taskId, textCantThrowPokeBall, sub_81C6714);
     }

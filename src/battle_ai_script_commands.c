@@ -2603,7 +2603,7 @@ static void BattleAICmd_if_has_move_with_type(void)
         if (moves[i] == MOVE_NONE)
             continue;
 
-        SetTypeBeforeUsingMove(moves[i], battler);
+        SetTypeAndSplitBeforeUsingMove(moves[i], battler);
         GET_MOVE_TYPE(moves[i], moveType);
         if (moveType == gAIScriptPtr[2])
             break;
