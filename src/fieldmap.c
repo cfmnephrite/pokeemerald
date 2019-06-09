@@ -515,10 +515,10 @@ void save_serialize_map(void)
     int x, y;
     u16 *mapView;
     int width;
-    mapView = gSaveBlock1Ptr->mapView;
+    mapView = gSaveBlockPtr->mapView;
     width = gBackupMapLayout.width;
-    x = gSaveBlock1Ptr->pos.x;
-    y = gSaveBlock1Ptr->pos.y;
+    x = gSaveBlockPtr->pos.x;
+    y = gSaveBlockPtr->pos.y;
     for (i = y; i < y + 14; i++)
     {
         for (j = x; j < x + 15; j++)
@@ -535,7 +535,7 @@ static bool32 SavedMapViewIsEmpty(void)
 
     // BUG: This loop extends past the bounds of the mapView array. Its size is only 0x100.
     for (i = 0; i < 0x200; i++)
-        marker |= gSaveBlock1Ptr->mapView[i];
+        marker |= gSaveBlockPtr->mapView[i];
 
     if (marker == 0)
         return TRUE;
@@ -545,7 +545,7 @@ static bool32 SavedMapViewIsEmpty(void)
 
 static void ClearSavedMapView(void)
 {
-    CpuFill16(0, gSaveBlock1Ptr->mapView, sizeof(gSaveBlock1Ptr->mapView));
+    CpuFill16(0, gSaveBlockPtr->mapView, sizeof(gSaveBlockPtr->mapView));
 }
 
 static void LoadSavedMapView(void)
@@ -555,12 +555,12 @@ static void LoadSavedMapView(void)
     int x, y;
     u16 *mapView;
     int width;
-    mapView = gSaveBlock1Ptr->mapView;
+    mapView = gSaveBlockPtr->mapView;
     if (!SavedMapViewIsEmpty())
     {
         width = gBackupMapLayout.width;
-        x = gSaveBlock1Ptr->pos.x;
-        y = gSaveBlock1Ptr->pos.y;
+        x = gSaveBlockPtr->pos.x;
+        y = gSaveBlockPtr->pos.y;
         for (i = y; i < y + 14; i++)
         {
             if (i == y && i != 0)
@@ -599,12 +599,12 @@ void sub_80885C4(u8 a1)
     int r9, r8;
     int x, y;
     int i, j;
-    mapView = gSaveBlock1Ptr->mapView;
+    mapView = gSaveBlockPtr->mapView;
     width = gBackupMapLayout.width;
     r9 = 0;
     r8 = 0;
-    x0 = gSaveBlock1Ptr->pos.x;
-    y0 = gSaveBlock1Ptr->pos.y;
+    x0 = gSaveBlockPtr->pos.x;
+    y0 = gSaveBlockPtr->pos.y;
     x2 = 15;
     y2 = 14;
     switch (a1)
@@ -716,14 +716,14 @@ success:
 
 int GetPostCameraMoveMapBorderId(int x, int y)
 {
-    return GetMapBorderIdAt(gSaveBlock1Ptr->pos.x + 7 + x, gSaveBlock1Ptr->pos.y + 7 + y);
+    return GetMapBorderIdAt(gSaveBlockPtr->pos.x + 7 + x, gSaveBlockPtr->pos.y + 7 + y);
 }
 
 int CanCameraMoveInDirection(int direction)
 {
     int x, y;
-    x = gSaveBlock1Ptr->pos.x + 7 + gDirectionToVectors[direction].x;
-    y = gSaveBlock1Ptr->pos.y + 7 + gDirectionToVectors[direction].y;
+    x = gSaveBlockPtr->pos.x + 7 + gDirectionToVectors[direction].x;
+    y = gSaveBlockPtr->pos.y + 7 + gDirectionToVectors[direction].y;
     if (GetMapBorderIdAt(x, y) == -1)
     {
         return 0;
@@ -738,20 +738,20 @@ void sub_80887F8(struct MapConnection *connection, int direction, int x, int y)
     switch (direction)
     {
     case CONNECTION_EAST:
-        gSaveBlock1Ptr->pos.x = -x;
-        gSaveBlock1Ptr->pos.y -= connection->offset;
+        gSaveBlockPtr->pos.x = -x;
+        gSaveBlockPtr->pos.y -= connection->offset;
         break;
     case CONNECTION_WEST:
-        gSaveBlock1Ptr->pos.x = mapHeader->mapLayout->width;
-        gSaveBlock1Ptr->pos.y -= connection->offset;
+        gSaveBlockPtr->pos.x = mapHeader->mapLayout->width;
+        gSaveBlockPtr->pos.y -= connection->offset;
         break;
     case CONNECTION_SOUTH:
-        gSaveBlock1Ptr->pos.x -= connection->offset;
-        gSaveBlock1Ptr->pos.y = -y;
+        gSaveBlockPtr->pos.x -= connection->offset;
+        gSaveBlockPtr->pos.y = -y;
         break;
     case CONNECTION_NORTH:
-        gSaveBlock1Ptr->pos.x -= connection->offset;
-        gSaveBlock1Ptr->pos.y = mapHeader->mapLayout->height;
+        gSaveBlockPtr->pos.x -= connection->offset;
+        gSaveBlockPtr->pos.y = mapHeader->mapLayout->height;
         break;
     }
 }
@@ -765,23 +765,23 @@ bool8 CameraMove(int x, int y)
     direction = GetPostCameraMoveMapBorderId(x, y);
     if (direction + 1 <= 1)
     {
-        gSaveBlock1Ptr->pos.x += x;
-        gSaveBlock1Ptr->pos.y += y;
+        gSaveBlockPtr->pos.x += x;
+        gSaveBlockPtr->pos.y += y;
     }
     else
     {
         save_serialize_map();
         ClearMirageTowerPulseBlendEffect();
-        old_x = gSaveBlock1Ptr->pos.x;
-        old_y = gSaveBlock1Ptr->pos.y;
-        connection = sub_8088950(direction, gSaveBlock1Ptr->pos.x, gSaveBlock1Ptr->pos.y);
+        old_x = gSaveBlockPtr->pos.x;
+        old_y = gSaveBlockPtr->pos.y;
+        connection = sub_8088950(direction, gSaveBlockPtr->pos.x, gSaveBlockPtr->pos.y);
         sub_80887F8(connection, direction, x, y);
         LoadMapFromCameraTransition(connection->mapGroup, connection->mapNum);
         gCamera.active = TRUE;
-        gCamera.x = old_x - gSaveBlock1Ptr->pos.x;
-        gCamera.y = old_y - gSaveBlock1Ptr->pos.y;
-        gSaveBlock1Ptr->pos.x += x;
-        gSaveBlock1Ptr->pos.y += y;
+        gCamera.x = old_x - gSaveBlockPtr->pos.x;
+        gCamera.y = old_y - gSaveBlockPtr->pos.y;
+        gSaveBlockPtr->pos.x += x;
+        gSaveBlockPtr->pos.y += y;
         sub_80885C4(direction);
     }
     return gCamera.active;
@@ -895,26 +895,26 @@ struct MapConnection *sub_8088A8C(s16 x, s16 y)
 
 void sub_8088B3C(u16 x, u16 y)
 {
-    gSaveBlock1Ptr->pos.x = x - 7;
-    gSaveBlock1Ptr->pos.y = y - 7;
+    gSaveBlockPtr->pos.x = x - 7;
+    gSaveBlockPtr->pos.y = y - 7;
 }
 
 void GetCameraFocusCoords(u16 *x, u16 *y)
 {
-    *x = gSaveBlock1Ptr->pos.x + 7;
-    *y = gSaveBlock1Ptr->pos.y + 7;
+    *x = gSaveBlockPtr->pos.x + 7;
+    *y = gSaveBlockPtr->pos.y + 7;
 }
 
 void SetPlayerCoords(u16 x, u16 y)
 {
-    gSaveBlock1Ptr->pos.x = x;
-    gSaveBlock1Ptr->pos.y = y;
+    gSaveBlockPtr->pos.x = x;
+    gSaveBlockPtr->pos.y = y;
 }
 
 void GetCameraCoords(u16 *x, u16 *y)
 {
-    *x = gSaveBlock1Ptr->pos.x;
-    *y = gSaveBlock1Ptr->pos.y;
+    *x = gSaveBlockPtr->pos.x;
+    *y = gSaveBlockPtr->pos.y;
 }
 
 void sub_8088B94(int x, int y, int a2)

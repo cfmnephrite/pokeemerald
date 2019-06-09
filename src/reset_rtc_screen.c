@@ -523,10 +523,10 @@ static void Task_ShowResetRtcPrompt(u8 taskId)
             0,
             0,
             49,
-            gSaveBlock2Ptr->lastBerryTreeUpdate.days,
-            gSaveBlock2Ptr->lastBerryTreeUpdate.hours,
-            gSaveBlock2Ptr->lastBerryTreeUpdate.minutes,
-            gSaveBlock2Ptr->lastBerryTreeUpdate.seconds);
+            gSaveBlockPtr->lastBerryTreeUpdate.days,
+            gSaveBlockPtr->lastBerryTreeUpdate.hours,
+            gSaveBlockPtr->lastBerryTreeUpdate.minutes,
+            gSaveBlockPtr->lastBerryTreeUpdate.seconds);
         ShowMessage(gText_ResetRTCConfirmCancel);
         CopyWindowToVram(0, 2);
         schedule_bg_copy_tilemap_to_vram(0);
@@ -577,7 +577,7 @@ static void Task_ResetRtcScreen(u8 taskId)
         {
             ClearStdWindowAndFrameToTransparent(0, FALSE);
             ShowMessage(gText_PleaseResetTime);
-            gLocalTime = gSaveBlock2Ptr->lastBerryTreeUpdate;
+            gLocalTime = gSaveBlockPtr->lastBerryTreeUpdate;
             data[1] = CreateTask(Task_ResetRtc_0, 80);
             data[0] = 3;
         }
@@ -599,7 +599,7 @@ static void Task_ResetRtcScreen(u8 taskId)
                     gLocalTime.hours,
                     gLocalTime.minutes,
                     gLocalTime.seconds);
-                gSaveBlock2Ptr->lastBerryTreeUpdate = gLocalTime;
+                gSaveBlockPtr->lastBerryTreeUpdate = gLocalTime;
                 VarSet(VAR_DAYS, gLocalTime.days);
                 DisableResetRTC();
                 ShowMessage(gText_ClockHasBeenReset);

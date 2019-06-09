@@ -46,9 +46,9 @@ static void sub_80F94B8(void);
 
 void SetContestTrainerGfxIds(void)
 {
-    gSaveBlock1Ptr->vars[VAR_OBJ_GFX_ID_0 - VARS_START] = gContestMons[0].trainerGfxId;
-    gSaveBlock1Ptr->vars[VAR_OBJ_GFX_ID_1 - VARS_START] = gContestMons[1].trainerGfxId;
-    gSaveBlock1Ptr->vars[VAR_OBJ_GFX_ID_2 - VARS_START] = gContestMons[2].trainerGfxId;
+    gSaveBlockPtr->vars[VAR_OBJ_GFX_ID_0 - VARS_START] = gContestMons[0].trainerGfxId;
+    gSaveBlockPtr->vars[VAR_OBJ_GFX_ID_1 - VARS_START] = gContestMons[1].trainerGfxId;
+    gSaveBlockPtr->vars[VAR_OBJ_GFX_ID_2 - VARS_START] = gContestMons[2].trainerGfxId;
 }
 
 void sub_80F8814(void)
@@ -104,7 +104,7 @@ void sub_80F8864(void)
         break;
     }
 
-    if (!gSaveBlock1Ptr->contestWinners[contestWinner].species)
+    if (!gSaveBlockPtr->contestWinners[contestWinner].species)
         gSpecialVar_0x8004 = 0;
     else
         gSpecialVar_0x8004 = 1;
@@ -136,7 +136,7 @@ u8 CountPlayerContestPaintings(void)
 
     for (i = 0; i < 5; i++)
     {
-        if (gSaveBlock1Ptr->contestWinners[8 + i].species)
+        if (gSaveBlockPtr->contestWinners[8 + i].species)
             count++;
     }
 
@@ -260,7 +260,7 @@ void sub_80F8B94(void)
     {
         for (i = 0; i < gNumLinkContestPlayers; i++)
         {
-            eventObjectId = GetEventObjectIdByLocalIdAndMap(gUnknown_0858D8EC[i], gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+            eventObjectId = GetEventObjectIdByLocalIdAndMap(gUnknown_0858D8EC[i], gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
             sprite = &gSprites[gEventObjects[eventObjectId].spriteId];
             sprite->oam.paletteNum = 6 + i;
             version = (u8)gLinkPlayers[i].version;

@@ -396,7 +396,7 @@ static bool8 sub_807158C(struct DayCare *daycare, u8 daycareId)
     GetBoxMonNick(&daycareMon->mon, nick);
     if (daycareMon->mail.message.itemId != 0
         && (StringCompareWithoutExtCtrlCodes(nick, daycareMon->mail.monName) != 0
-            || StringCompareWithoutExtCtrlCodes(gSaveBlock2Ptr->playerName, daycareMon->mail.OT_name) != 0))
+            || StringCompareWithoutExtCtrlCodes(gSaveBlockPtr->playerName, daycareMon->mail.OT_name) != 0))
     {
         StringCopy(gStringVar1, nick);
         TVShowConvertInternationalString(gStringVar2, daycareMon->mail.OT_name, daycareMon->mail.gameLanguage);
@@ -408,7 +408,7 @@ static bool8 sub_807158C(struct DayCare *daycare, u8 daycareId)
 
 bool8 sub_8071614(void)
 {
-    return sub_807158C(&gSaveBlock1Ptr->daycare, gSpecialVar_0x8004);
+    return sub_807158C(&gPokemonStoragePtr->daycare, gSpecialVar_0x8004);
 }
 
 static u8 EggHatchCreateMonSprite(u8 a0, u8 switchID, u8 pokeID, u16* speciesLoc)

@@ -39,7 +39,7 @@ static const s16 sFarawayIslandRockCoords[4][2] =
 static u8 GetMewEventObjectId(void)
 {
     u8 eventObjectId;
-    TryGetEventObjectIdByLocalIdAndMap(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &eventObjectId);
+    TryGetEventObjectIdByLocalIdAndMap(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, &eventObjectId);
     return eventObjectId;
 }
 
@@ -307,8 +307,8 @@ static u8 sub_81D4890(u8 ignoredDir)
 void UpdateFarawayIslandStepCounter(void)
 {
     u16 steps = VarGet(VAR_FARAWAY_ISLAND_STEP_COUNTER);
-    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
-     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
+    if (gSaveBlockPtr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
+     && gSaveBlockPtr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
     {
         steps++;
         if (steps >= 9999)
@@ -320,8 +320,8 @@ void UpdateFarawayIslandStepCounter(void)
 
 bool8 EventObjectIsFarawayIslandMew(struct EventObject *eventObject)
 {
-    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
-     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
+    if (gSaveBlockPtr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
+     && gSaveBlockPtr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
     {
         if (eventObject->graphicsId == EVENT_OBJ_GFX_MEW)
             return TRUE;
@@ -332,8 +332,8 @@ bool8 EventObjectIsFarawayIslandMew(struct EventObject *eventObject)
 
 bool8 IsMewPlayingHideAndSeek(void)
 {
-    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
-     && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
+    if (gSaveBlockPtr->location.mapNum == MAP_NUM(FARAWAY_ISLAND_INTERIOR)
+     && gSaveBlockPtr->location.mapGroup == MAP_GROUP(FARAWAY_ISLAND_INTERIOR))
     {
         if (FlagGet(FLAG_CAUGHT_MEW) != TRUE && FlagGet(FLAG_HIDE_MEW) != TRUE)
             return TRUE;

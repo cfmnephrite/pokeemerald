@@ -2824,7 +2824,7 @@ void sub_80F8714(u8 taskId)
             StringGetEnd10(gContestMons[i].nickname);
 
         DestroyTask(taskId);
-        SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
+        SetDynamicWarp(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1);
         ScriptContext2_Disable();
         EnableBothScriptContexts();
     }

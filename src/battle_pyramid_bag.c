@@ -566,7 +566,7 @@ static bool8 sub_81C5238(void)
 static void SetBagItemsListTemplate(void)
 {
     u16 i;
-    u16 *pyramidItems = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode];
+    u16 *pyramidItems = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode];
 
     for (i = 0; i < gPyramidBagResources->listMenuCount - 1; i++)
     {
@@ -608,7 +608,7 @@ static void PyramidBagMoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMen
     {
         sub_81C6FF8(gPyramidBagResources->unk815 ^ 1);
         if (itemIndex != LIST_CANCEL)
-            ShowItemImage(gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode][itemIndex], gPyramidBagResources->unk815);
+            ShowItemImage(gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode][itemIndex], gPyramidBagResources->unk815);
         else
             ShowItemImage(0xFFFF, gPyramidBagResources->unk815);
         gPyramidBagResources->unk815 ^= 1;
@@ -630,7 +630,7 @@ static void PrintItemQuantity(u8 windowId, s32 itemIndex, u8 y)
             sub_81C5AB8(y, 0xFF);
     }
     ConvertIntToDecimalStringN(gStringVar1,
-                               gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode][itemIndex],
+                               gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode][itemIndex],
                                STR_CONV_MODE_RIGHT_ALIGN,
                                2);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
@@ -643,7 +643,7 @@ static void PrintItemDescription(s32 listMenuId)
     const u8 *desc;
     if (listMenuId != LIST_CANCEL)
     {
-        desc = ItemId_GetDescription(gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode][listMenuId]);
+        desc = ItemId_GetDescription(gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode][listMenuId]);
     }
     else
     {
@@ -680,8 +680,8 @@ static void sub_81C56F8(void)
 static void SwapItems(u8 id1, u8 id2)
 {
     u16 temp;
-    u16 *itemIds = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode];
-    u8 *quantities = gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode];
+    u16 *itemIds = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode];
+    u8 *quantities = gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode];
 
     SWAP(itemIds[id1], itemIds[id2], temp);
     SWAP(quantities[id1], quantities[id2], temp);
@@ -689,8 +689,8 @@ static void SwapItems(u8 id1, u8 id2)
 
 static void MovePyramidBagItemSlotInList(u8 from, u8 to)
 {
-    u16 *itemIds = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode];
-    u8 *quantities = gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode];
+    u16 *itemIds = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode];
+    u8 *quantities = gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode];
 
     if (from != to)
     {
@@ -723,8 +723,8 @@ static void MovePyramidBagItemSlotInList(u8 from, u8 to)
 static void CompactItems(void)
 {
     u8 i, j;
-    u16 *itemIds = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode];
-    u8 *quantities = gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode];
+    u16 *itemIds = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode];
+    u8 *quantities = gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode];
 
     for (i = 0; i < PYRAMID_BAG_ITEMS_COUNT; i++)
     {
@@ -747,7 +747,7 @@ static void CompactItems(void)
 void sub_81C5924(void)
 {
     u16 i;
-    u16 *itemIds = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode];
+    u16 *itemIds = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode];
 
     CompactItems();
     gPyramidBagResources->listMenuCount = 0;
@@ -866,9 +866,9 @@ static void Task_HandlePyramidBagInput(u8 taskId)
                 break;
             default:
                 PlaySE(SE_SELECT);
-                gSpecialVar_ItemId = gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode][listId];
+                gSpecialVar_ItemId = gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode][listId];
                 data[1] = listId;
-                data[2] = gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode][listId];
+                data[2] = gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode][listId];
                 if (gPyramidBagCursorData.unk4 == 2)
                     sub_81C674C(taskId);
                 else
@@ -1263,7 +1263,7 @@ static void Task_BeginItemSwap(u8 taskId)
     data[1] = gPyramidBagCursorData.scrollPosition + gPyramidBagCursorData.cursorPosition;
     gPyramidBagResources->unk814 = data[1];
     ListMenuSetUnkIndicatorsStructField(data[0], 0x10, 1);
-    CopyItemName(gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode][data[1]], gStringVar1);
+    CopyItemName(gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode][data[1]], gStringVar1);
     StringExpandPlaceholders(gStringVar4, gText_MoveVar1Where);
     FillWindowPixelBuffer(1, PIXEL_FILL(0));
     PrintOnWindow_Font1(1, gStringVar4, 3, 0, 0, 1, 0, 0);
@@ -1358,15 +1358,15 @@ void sub_81C6A94(void)
     u8 *newQuantities = Alloc(PYRAMID_BAG_ITEMS_COUNT * sizeof(u8));
     u16 heldItem;
 
-    memcpy(newItems, gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode], PYRAMID_BAG_ITEMS_COUNT * sizeof(u16));
-    memcpy(newQuantities, gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode], PYRAMID_BAG_ITEMS_COUNT * sizeof(u8));
+    memcpy(newItems, gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode], PYRAMID_BAG_ITEMS_COUNT * sizeof(u16));
+    memcpy(newQuantities, gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode], PYRAMID_BAG_ITEMS_COUNT * sizeof(u8));
     for (i = 0; i < 3; i++)
     {
         heldItem = GetMonData(&party[i], MON_DATA_HELD_ITEM);
         if (heldItem != 0 && !AddBagItem(heldItem, 1))
         {
-            memcpy(gSaveBlock2Ptr->frontier.pyramidBag.itemId[gSaveBlock2Ptr->frontier.lvlMode], newItems, PYRAMID_BAG_ITEMS_COUNT * sizeof(u16));
-            memcpy(gSaveBlock2Ptr->frontier.pyramidBag.quantity[gSaveBlock2Ptr->frontier.lvlMode], newQuantities, PYRAMID_BAG_ITEMS_COUNT * sizeof(u8));
+            memcpy(gSaveBlockPtr->frontier.pyramidBag.itemId[gSaveBlockPtr->frontier.lvlMode], newItems, PYRAMID_BAG_ITEMS_COUNT * sizeof(u16));
+            memcpy(gSaveBlockPtr->frontier.pyramidBag.quantity[gSaveBlockPtr->frontier.lvlMode], newQuantities, PYRAMID_BAG_ITEMS_COUNT * sizeof(u8));
             Free(newItems);
             Free(newQuantities);
             gSpecialVar_Result = 1;
@@ -1490,7 +1490,7 @@ static void sub_81C6E98(void)
     u16 *palPtr = Alloc(0x40);
 
     LZDecompressWram(gBattleFrontierGfx_PyramidBag_Pal, palPtr);
-    spritePalette.data = palPtr + (gSaveBlock2Ptr->frontier.lvlMode * 16);
+    spritePalette.data = palPtr + (gSaveBlockPtr->frontier.lvlMode * 16);
     spritePalette.tag = ITEM_IMAGE_TAG;
     LoadSpritePalette(&spritePalette);
     Free(palPtr);

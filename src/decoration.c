@@ -471,14 +471,14 @@ void InitDecorationContextItems(void)
 
     if (gDecorationContext.isPlayerRoom == FALSE)
     {
-        gDecorationContext.items = gSaveBlock1Ptr->secretBases[0].decorations;
-        gDecorationContext.pos = gSaveBlock1Ptr->secretBases[0].decorationPositions;
+        gDecorationContext.items = gSaveBlockPtr->secretBases[0].decorations;
+        gDecorationContext.pos = gSaveBlockPtr->secretBases[0].decorationPositions;
     }
 
     if (gDecorationContext.isPlayerRoom == TRUE)
     {
-        gDecorationContext.items = gSaveBlock1Ptr->playerRoomDecor;
-        gDecorationContext.pos = gSaveBlock1Ptr->playerRoomDecorPos;
+        gDecorationContext.items = gSaveBlockPtr->playerRoomDecor;
+        gDecorationContext.pos = gSaveBlockPtr->playerRoomDecorPos;
     }
 }
 
@@ -533,9 +533,9 @@ static void InitDecorationActionsWindow(void)
 void DoSecretBaseDecorationMenu(u8 taskId)
 {
     InitDecorationActionsWindow();
-    gDecorationContext.items = gSaveBlock1Ptr->secretBases[0].decorations;
-    gDecorationContext.pos = gSaveBlock1Ptr->secretBases[0].decorationPositions;
-    gDecorationContext.size = sizeof(gSaveBlock1Ptr->secretBases[0].decorations);
+    gDecorationContext.items = gSaveBlockPtr->secretBases[0].decorations;
+    gDecorationContext.pos = gSaveBlockPtr->secretBases[0].decorationPositions;
+    gDecorationContext.size = sizeof(gSaveBlockPtr->secretBases[0].decorations);
     gDecorationContext.isPlayerRoom = FALSE;
     gTasks[taskId].func = HandleDecorationActionsMenuInput;
 }
@@ -543,9 +543,9 @@ void DoSecretBaseDecorationMenu(u8 taskId)
 void DoPlayerRoomDecorationMenu(u8 taskId)
 {
     InitDecorationActionsWindow();
-    gDecorationContext.items = gSaveBlock1Ptr->playerRoomDecor;
-    gDecorationContext.pos = gSaveBlock1Ptr->playerRoomDecorPos;
-    gDecorationContext.size = sizeof(gSaveBlock1Ptr->playerRoomDecor);
+    gDecorationContext.items = gSaveBlockPtr->playerRoomDecor;
+    gDecorationContext.pos = gSaveBlockPtr->playerRoomDecorPos;
+    gDecorationContext.size = sizeof(gSaveBlockPtr->playerRoomDecor);
     gDecorationContext.isPlayerRoom = TRUE;
     gTasks[taskId].func = HandleDecorationActionsMenuInput;
 }
@@ -1035,11 +1035,11 @@ static void IdentifyOwnedDecorationsCurrentlyInUseInternal(u8 taskId)
 
     for (i = 0; i < ARRAY_COUNT(sSecretBaseItemsIndicesBuffer); i++)
     {
-        if (gSaveBlock1Ptr->secretBases[0].decorations[i] != DECOR_NONE)
+        if (gSaveBlockPtr->secretBases[0].decorations[i] != DECOR_NONE)
         {
             for (j = 0; j < gDecorationInventories[sCurDecorationCategory].size; j++)
             {
-                if (gCurDecorationItems[j] == gSaveBlock1Ptr->secretBases[0].decorations[i])
+                if (gCurDecorationItems[j] == gSaveBlockPtr->secretBases[0].decorations[i])
                 {
                     for (k = 0; k < count && sSecretBaseItemsIndicesBuffer[k] != j + 1; k++)
                         ;
@@ -1058,11 +1058,11 @@ static void IdentifyOwnedDecorationsCurrentlyInUseInternal(u8 taskId)
     count = 0;
     for (i = 0; i < ARRAY_COUNT(sPlayerRoomItemsIndicesBuffer); i++)
     {
-        if (gSaveBlock1Ptr->playerRoomDecor[i] != DECOR_NONE)
+        if (gSaveBlockPtr->playerRoomDecor[i] != DECOR_NONE)
         {
             for (j = 0; j < gDecorationInventories[sCurDecorationCategory].size; j++)
             {
-                if (gCurDecorationItems[j] == gSaveBlock1Ptr->playerRoomDecor[i] && sub_81277BC(j + 1) != TRUE)
+                if (gCurDecorationItems[j] == gSaveBlockPtr->playerRoomDecor[i] && sub_81277BC(j + 1) != TRUE)
                 {
                     for (k = 0; k < count && sPlayerRoomItemsIndicesBuffer[k] != j + 1; k++);
                     if (k == count)
@@ -1134,15 +1134,15 @@ void sub_8127A8C(u8 taskId)
 
 void sub_8127ACC(u8 taskId)
 {
-    gTasks[taskId].data[3] = gSaveBlock1Ptr->pos.x;
-    gTasks[taskId].data[4] = gSaveBlock1Ptr->pos.y;
+    gTasks[taskId].data[3] = gSaveBlockPtr->pos.x;
+    gTasks[taskId].data[4] = gSaveBlockPtr->pos.y;
     PlayerGetDestCoords(&gTasks[taskId].data[0], &gTasks[taskId].data[1]);
 }
 
 void sub_8127B04(u8 taskId)
 {
     DrawWholeMapView();
-    SetWarpDestination(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1, gTasks[taskId].data[3], gTasks[taskId].data[4]);
+    SetWarpDestination(gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1, gTasks[taskId].data[3], gTasks[taskId].data[4]);
     WarpIntoMap();
 }
 
@@ -1257,9 +1257,9 @@ void sub_8127E18(void)
             gSpecialVar_0x8005 = gMapHeader.events->eventObjects[j].localId;
             gSpecialVar_0x8006 = sCurDecorMapX;
             gSpecialVar_0x8007 = sCurDecorMapY;
-            TrySpawnEventObject(gSpecialVar_0x8005, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-            TryMoveEventObjectToMapCoords(gSpecialVar_0x8005, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, gSpecialVar_0x8006, gSpecialVar_0x8007);
-            TryOverrideEventObjectTemplateCoords(gSpecialVar_0x8005, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+            TrySpawnEventObject(gSpecialVar_0x8005, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
+            TryMoveEventObjectToMapCoords(gSpecialVar_0x8005, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gSpecialVar_0x8006, gSpecialVar_0x8007);
+            TryOverrideEventObjectTemplateCoords(gSpecialVar_0x8005, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
             break;
         }
     }
@@ -1362,7 +1362,7 @@ void SetUpPlacingDecorationPlayerAvatar(u8 taskId, struct PlaceDecorationGraphic
     if (data->decoration->shape == DECORSHAPE_3x1 || data->decoration->shape == DECORSHAPE_3x3 || data->decoration->shape == DECORSHAPE_3x2)
         x -= 8;
 
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         sDecor_CameraSpriteObjectIdx2 = AddPseudoEventObject(EVENT_OBJ_GFX_BRENDAN_DECORATING, SpriteCallbackDummy, x, 72, 0);
     else
         sDecor_CameraSpriteObjectIdx2 = AddPseudoEventObject(EVENT_OBJ_GFX_MAY_DECORATING, SpriteCallbackDummy, x, 72, 0);
@@ -2247,7 +2247,7 @@ void SetUpPuttingAwayDecorationPlayerAvatar(void)
     sDecor_CameraSpriteObjectIdx1 = gSprites[gFieldCamera.spriteId].data[0];
     sub_812A39C();
     gFieldCamera.spriteId = CreateSprite(&gUnknown_085A7404, 120, 80, 0);
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         sDecor_CameraSpriteObjectIdx2 = AddPseudoEventObject(EVENT_OBJ_GFX_BRENDAN_DECORATING, SpriteCallbackDummy, 136, 72, 0);
     else
         sDecor_CameraSpriteObjectIdx2 = AddPseudoEventObject(EVENT_OBJ_GFX_MAY_DECORATING, SpriteCallbackDummy, 136, 72, 0);
@@ -2451,9 +2451,9 @@ void sub_8129F20(void)
     yOff = gDecorationContext.pos[sDecorRearrangementDataBuffer[sCurDecorSelectedInRearrangement].idx] & 0x0F;
     for (i = 0; i < 0x40; i++)
     {
-        if (gSaveBlock1Ptr->eventObjectTemplates[i].x == xOff && gSaveBlock1Ptr->eventObjectTemplates[i].y == yOff && !FlagGet(gSaveBlock1Ptr->eventObjectTemplates[i].flagId))
+        if (gSaveBlockPtr->eventObjectTemplates[i].x == xOff && gSaveBlockPtr->eventObjectTemplates[i].y == yOff && !FlagGet(gSaveBlockPtr->eventObjectTemplates[i].flagId))
         {
-            sDecorRearrangementDataBuffer[sCurDecorSelectedInRearrangement].flagId = gSaveBlock1Ptr->eventObjectTemplates[i].flagId;
+            sDecorRearrangementDataBuffer[sCurDecorSelectedInRearrangement].flagId = gSaveBlockPtr->eventObjectTemplates[i].flagId;
             break;
         }
     }
@@ -2640,7 +2640,7 @@ void sub_812A36C(struct Sprite *sprite)
 
 void sub_812A39C(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
         LoadSpritePalette(&gUnknown_085A73D8);
     else
         LoadSpritePalette(&gUnknown_085A73E0);

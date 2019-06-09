@@ -93,7 +93,7 @@ u32 sub_81CC4D4(void)
 
 void sub_81CC524(void)
 {
-    gSaveBlock2Ptr->regionMapZoom = sub_8124658();
+    gSaveBlockPtr->regionMapZoom = sub_8124658();
     FreePokenavSubstruct(16);
     FreePokenavSubstruct(3);
 }
@@ -199,7 +199,7 @@ static bool8 sub_81CC6D0(void)
     if (sub_81CC5E4())
         return FALSE;
 
-    return gSaveBlock2Ptr->regionMapZoom == 1;
+    return gSaveBlockPtr->regionMapZoom == 1;
 }
 
 static u32 sub_81CC6F4(int taskState)

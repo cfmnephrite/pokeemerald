@@ -885,7 +885,7 @@ static bool32 MatchCallGetFlag_Type2(match_call_t matchCall)
 
 static bool32 MatchCallGetFlag_Type3(match_call_t matchCall)
 {
-    if (matchCall.type4->gender != gSaveBlock2Ptr->playerGender)
+    if (matchCall.type4->gender != gSaveBlockPtr->playerGender)
         return FALSE;
     if (matchCall.type4->flag == 0xffff)
         return TRUE;
@@ -962,12 +962,12 @@ static bool32 MatchCall_IsRematchable_Type1(match_call_t matchCall)
 {
     if (matchCall.type1->rematchTableIdx >= REMATCH_ELITE_FOUR_ENTRIES)
         return FALSE;
-    return gSaveBlock1Ptr->trainerRematches[matchCall.type1->rematchTableIdx] ? TRUE : FALSE;
+    return gSaveBlockPtr->trainerRematches[matchCall.type1->rematchTableIdx] ? TRUE : FALSE;
 }
 
 static bool32 MatchCall_IsRematchable_Type2(match_call_t matchCall)
 {
-    return gSaveBlock1Ptr->trainerRematches[matchCall.type2->rematchTableIdx] ? TRUE : FALSE;
+    return gSaveBlockPtr->trainerRematches[matchCall.type2->rematchTableIdx] ? TRUE : FALSE;
 }
 
 static bool32 MatchCall_IsRematchable_Type3(match_call_t matchCall)
@@ -1143,7 +1143,7 @@ static void sub_81D199C(const match_call_text_data_t *sub0, u16 idx, u8 *dest)
         {
             do
             {
-                if (gSaveBlock1Ptr->trainerRematches[idx])
+                if (gSaveBlockPtr->trainerRematches[idx])
                     i += 2;
                 else if (CountBattledRematchTeams(idx) >= 2)
                     i += 3;

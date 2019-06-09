@@ -179,7 +179,7 @@ static u32 sub_81C943C(struct Pokenav1Struct *a0)
         switch (sDescriptionIds[a0->menuType][a0->cursorPos])
         {
         case 0:
-            a0->helpBarIndex = gSaveBlock2Ptr->regionMapZoom ? 2 : 1;
+            a0->helpBarIndex = gSaveBlockPtr->regionMapZoom ? 2 : 1;
             sub_81C97B0(a0, POKENAV_MENU_6);
             return 8;
         case 1:

@@ -2753,7 +2753,7 @@ static const u8 *BattleStringGetPlayerName(u8 *text, u8 battlerId)
         if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
             toCpy = gLinkPlayers[0].name;
         else
-            toCpy = gSaveBlock2Ptr->playerName;
+            toCpy = gSaveBlockPtr->playerName;
         break;
     case B_POSITION_PLAYER_RIGHT:
         if (gBattleTypeFlags & BATTLE_TYPE_LINK && gBattleTypeFlags & (BATTLE_TYPE_RECORDED | BATTLE_TYPE_MULTI))
@@ -2767,7 +2767,7 @@ static const u8 *BattleStringGetPlayerName(u8 *text, u8 battlerId)
         }
         else
         {
-            toCpy = gSaveBlock2Ptr->playerName;
+            toCpy = gSaveBlockPtr->playerName;
         }
         break;
     }

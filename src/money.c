@@ -71,12 +71,12 @@ static const struct CompressedSpritePalette sSpritePalette_MoneyLabel =
 
 u32 GetMoney(u32* moneyPtr)
 {
-    return *moneyPtr ^ gSaveBlock2Ptr->encryptionKey;
+    return *moneyPtr ^ gSaveBlockPtr->encryptionKey;
 }
 
 void SetMoney(u32* moneyPtr, u32 newValue)
 {
-    *moneyPtr = gSaveBlock2Ptr->encryptionKey ^ newValue;
+    *moneyPtr = gSaveBlockPtr->encryptionKey ^ newValue;
 }
 
 bool8 IsEnoughMoney(u32* moneyPtr, u32 cost)
@@ -122,12 +122,12 @@ void RemoveMoney(u32* moneyPtr, u32 toSub)
 
 bool8 IsEnoughForCostInVar0x8005(void)
 {
-    return IsEnoughMoney(&gSaveBlock1Ptr->money, gSpecialVar_0x8005);
+    return IsEnoughMoney(&gSaveBlockPtr->money, gSpecialVar_0x8005);
 }
 
 void SubtractMoneyFromVar0x8005(void)
 {
-    RemoveMoney(&gSaveBlock1Ptr->money, gSpecialVar_0x8005);
+    RemoveMoney(&gSaveBlockPtr->money, gSpecialVar_0x8005);
 }
 
 void PrintMoneyAmountInMoneyBox(u8 windowId, int amount, u8 speed)

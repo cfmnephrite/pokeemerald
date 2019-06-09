@@ -1472,7 +1472,7 @@ sub_802749C: @ 802749C
 	ldr r1, =0x000f4236
 	bl sub_8027A38
 	adds r2, r0, 0
-	ldr r3, =gSaveBlock2Ptr
+	ldr r3, =gSaveBlockPtr
 	ldr r0, [r3]
 	movs r6, 0x83
 	lsls r6, 2
@@ -2431,7 +2431,7 @@ sub_8027BEC: @ 8027BEC
 	str r1, [sp, 0x18]
 	lsls r0, 24
 	lsrs r7, r0, 24
-	ldr r0, =gSaveBlock2Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r1, [r0]
 	movs r2, 0x84
 	lsls r2, 2
@@ -5469,7 +5469,7 @@ _080293D8:
 	b _0802941C
 	.pool
 _08029404:
-	ldr r0, =gSaveBlock2Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r0, [r0]
 	ldrb r0, [r0, 0x14]
 	lsrs r0, 3

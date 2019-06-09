@@ -61,7 +61,7 @@ void FinishMossdeepGymTiles(void)
 u16 MossdeepGym_MoveEvents(u8 arg0)
 {
     u8 i;
-    struct EventObjectTemplate *events = gSaveBlock1Ptr->eventObjectTemplates;
+    struct EventObjectTemplate *events = gSaveBlockPtr->eventObjectTemplates;
     u16 localId = 0;
 
     for (i = 0; i < EVENT_OBJECT_TEMPLATES_COUNT; i++)
@@ -116,11 +116,11 @@ u16 MossdeepGym_MoveEvents(u8 arg0)
 
             events[i].x += x;
             events[i].y += y;
-            if (GetEventObjectIdByLocalIdAndMap(events[i].localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup) != EVENT_OBJECTS_COUNT)
+            if (GetEventObjectIdByLocalIdAndMap(events[i].localId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup) != EVENT_OBJECTS_COUNT)
             {
                 AddEventObject(i, r5);
                 localId = events[i].localId;
-                ScriptMovement_StartObjectMovementScript(localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, movementScript);
+                ScriptMovement_StartObjectMovementScript(localId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, movementScript);
             }
             else
             {
@@ -146,7 +146,7 @@ void MossdeepGym_TurnEvents(void)
     else
         var = 0x298;
 
-    events = gSaveBlock1Ptr->eventObjectTemplates;
+    events = gSaveBlockPtr->eventObjectTemplates;
     for (i = 0; i < gUnknown_0203CE50->count; i++)
     {
         s32 r6;
@@ -173,7 +173,7 @@ void MossdeepGym_TurnEvents(void)
                 r6 = 2;
         }
 
-        eventObjectId = GetEventObjectIdByLocalIdAndMap(events[gUnknown_0203CE50->objects[i].eventTemplateId].localId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+        eventObjectId = GetEventObjectIdByLocalIdAndMap(events[gUnknown_0203CE50->objects[i].eventTemplateId].localId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
         if (eventObjectId != EVENT_OBJECTS_COUNT)
         {
             const u8 *movementScript;
@@ -202,8 +202,8 @@ void MossdeepGym_TurnEvents(void)
                     continue;
                 }
                 ScriptMovement_StartObjectMovementScript(events[gUnknown_0203CE50->objects[i].eventTemplateId].localId,
-                                                         gSaveBlock1Ptr->location.mapNum,
-                                                         gSaveBlock1Ptr->location.mapGroup,
+                                                         gSaveBlockPtr->location.mapNum,
+                                                         gSaveBlockPtr->location.mapGroup,
                                                          movementScript);
             }
             else if (r6 == 1)
@@ -230,8 +230,8 @@ void MossdeepGym_TurnEvents(void)
                     continue;
                 }
                 ScriptMovement_StartObjectMovementScript(events[gUnknown_0203CE50->objects[i].eventTemplateId].localId,
-                                                         gSaveBlock1Ptr->location.mapNum,
-                                                         gSaveBlock1Ptr->location.mapGroup,
+                                                         gSaveBlockPtr->location.mapNum,
+                                                         gSaveBlockPtr->location.mapGroup,
                                                          movementScript);
             }
         }
@@ -251,7 +251,7 @@ static void sub_81A8D94(u8 eventTemplateId, u8 arg1)
     s32 r6;
     s32 var;
     u16 movementType;
-    struct EventObjectTemplate *events = gSaveBlock1Ptr->eventObjectTemplates;
+    struct EventObjectTemplate *events = gSaveBlockPtr->eventObjectTemplates;
     s16 x = events[eventTemplateId].x + 7;
     s16 y = events[eventTemplateId].y + 7;
     u16 metatile = MapGridGetMetatileIdAt(x, y);

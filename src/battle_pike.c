@@ -22,6 +22,7 @@
 #include "constants/trainers.h"
 #include "constants/species.h"
 #include "constants/moves.h"
+#include "pokemon_storage_system.h"
 
 #define PIKE_ROOM_SINGLE_BATTLE 0
 #define PIKE_ROOM_HEAL_FULL 1
@@ -630,66 +631,66 @@ static void SetupRoomEventObjects(void)
 
 static void GetBattlePikeData(void)
 {
-    u32 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+    u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
 
     switch (gSpecialVar_0x8005)
     {
     case 0:
-        gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_E02;
+        gSpecialVar_Result = gSaveBlockPtr->frontier.field_E02;
         break;
     case 1:
-        gSpecialVar_Result = gSaveBlock2Ptr->frontier.pikeWinStreaks[gSaveBlock2Ptr->frontier.lvlMode];
+        gSpecialVar_Result = gSaveBlockPtr->frontier.pikeWinStreaks[gSaveBlockPtr->frontier.lvlMode];
         break;
     case 2:
-        gSpecialVar_Result = gSaveBlock2Ptr->frontier.pikeRecordStreaks[gSaveBlock2Ptr->frontier.lvlMode];
+        gSpecialVar_Result = gSaveBlockPtr->frontier.pikeRecordStreaks[gSaveBlockPtr->frontier.lvlMode];
         break;
     case 3:
-        gSpecialVar_Result = gSaveBlock2Ptr->frontier.pikeTotalStreaks[gSaveBlock2Ptr->frontier.lvlMode];
+        gSpecialVar_Result = gSaveBlockPtr->frontier.pikeTotalStreaks[gSaveBlockPtr->frontier.lvlMode];
         break;
     case 4:
         if (lvlMode != FRONTIER_LVL_50)
-            gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_CDC & 0x800;
+            gSpecialVar_Result = gSaveBlockPtr->frontier.field_CDC & 0x800;
         else
-            gSpecialVar_Result = gSaveBlock2Ptr->frontier.field_CDC & 0x400;
+            gSpecialVar_Result = gSaveBlockPtr->frontier.field_CDC & 0x400;
         break;
     }
 }
 
 static void SetBattlePikeData(void)
 {
-    u32 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+    u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
 
     switch (gSpecialVar_0x8005)
     {
     case 0:
-        gSaveBlock2Ptr->frontier.field_E02 = gSpecialVar_0x8006;
+        gSaveBlockPtr->frontier.field_E02 = gSpecialVar_0x8006;
         break;
     case 1:
         if (gSpecialVar_0x8006 <= 9999)
-            gSaveBlock2Ptr->frontier.pikeWinStreaks[gSaveBlock2Ptr->frontier.lvlMode] = gSpecialVar_0x8006;
+            gSaveBlockPtr->frontier.pikeWinStreaks[gSaveBlockPtr->frontier.lvlMode] = gSpecialVar_0x8006;
         break;
     case 2:
-        if (gSpecialVar_0x8006 <= 9999 && gSaveBlock2Ptr->frontier.pikeRecordStreaks[gSaveBlock2Ptr->frontier.lvlMode] < gSpecialVar_0x8006)
-            gSaveBlock2Ptr->frontier.pikeRecordStreaks[gSaveBlock2Ptr->frontier.lvlMode] = gSpecialVar_0x8006;
+        if (gSpecialVar_0x8006 <= 9999 && gSaveBlockPtr->frontier.pikeRecordStreaks[gSaveBlockPtr->frontier.lvlMode] < gSpecialVar_0x8006)
+            gSaveBlockPtr->frontier.pikeRecordStreaks[gSaveBlockPtr->frontier.lvlMode] = gSpecialVar_0x8006;
         break;
     case 3:
         if (gSpecialVar_0x8006 <= 9999)
-            gSaveBlock2Ptr->frontier.pikeTotalStreaks[gSaveBlock2Ptr->frontier.lvlMode] = gSpecialVar_0x8006;
+            gSaveBlockPtr->frontier.pikeTotalStreaks[gSaveBlockPtr->frontier.lvlMode] = gSpecialVar_0x8006;
         break;
     case 4:
         if (lvlMode != FRONTIER_LVL_50)
         {
             if (gSpecialVar_0x8006)
-                gSaveBlock2Ptr->frontier.field_CDC |= 0x800;
+                gSaveBlockPtr->frontier.field_CDC |= 0x800;
             else
-                gSaveBlock2Ptr->frontier.field_CDC &= ~(0x800);
+                gSaveBlockPtr->frontier.field_CDC &= ~(0x800);
         }
         else
         {
             if (gSpecialVar_0x8006)
-                gSaveBlock2Ptr->frontier.field_CDC |= 0x400;
+                gSaveBlockPtr->frontier.field_CDC |= 0x400;
             else
-                gSaveBlock2Ptr->frontier.field_CDC &= ~(0x400);
+                gSaveBlockPtr->frontier.field_CDC &= ~(0x400);
         }
         break;
     }
@@ -697,7 +698,7 @@ static void SetBattlePikeData(void)
 
 static void GetInFinalRoom(void)
 {
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum > 14)
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum > 14)
         gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
@@ -720,9 +721,9 @@ static void sub_81A740C(void)
 
 static void sub_81A7418(void)
 {
-    gSaveBlock2Ptr->frontier.field_CA8 = gSpecialVar_0x8005;
+    gSaveBlockPtr->frontier.field_CA8 = gSpecialVar_0x8005;
     VarSet(VAR_TEMP_0, 0);
-    gSaveBlock2Ptr->frontier.field_CA9_a = 1;
+    gSaveBlockPtr->frontier.field_CA9_a = 1;
     save_serialize_map();
     TrySavingData(SAVE_LINK);
 }
@@ -775,9 +776,9 @@ static void BufferNPCMessage(void)
 {
     int speechId;
 
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 4)
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 4)
         speechId = sNPCTable[sNpcId].speechId1;
-    else if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 10)
+    else if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 10)
         speechId = sNPCTable[sNpcId].speechId2;
     else
         speechId = sNPCTable[sNpcId].speechId3;
@@ -902,9 +903,9 @@ static bool8 TryInflictRandomStatus(void)
         SWAP(indices[i], indices[id], temp);
     }
 
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 4)
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 4)
         count = 1;
-    else if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 9)
+    else if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 9)
         count = 2;
     else
         count = 3;
@@ -998,9 +999,9 @@ static bool8 AtLeastOneHealthyMon(void)
     u8 healthyMonsCount;
     u8 count;
 
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 4)
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 4)
         count = 1;
-    else if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 9)
+    else if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 9)
         count = 2;
     else
         count = 3;
@@ -1034,15 +1035,15 @@ static u8 GetNextRoomType(void)
     u8 *roomCandidates;
     u8 id;
 
-    if (gSaveBlock2Ptr->frontier.pikeHintedRoomType == PIKE_ROOM_BRAIN)
-        return gSaveBlock2Ptr->frontier.pikeHintedRoomType;
+    if (gSaveBlockPtr->frontier.pikeHintedRoomType == PIKE_ROOM_BRAIN)
+        return gSaveBlockPtr->frontier.pikeHintedRoomType;
 
     // Check if the player walked into the same room that the lady gave a hint about.
-    if (gSpecialVar_0x8007 == gSaveBlock2Ptr->frontier.pikeHintedRoomIndex)
+    if (gSpecialVar_0x8007 == gSaveBlockPtr->frontier.pikeHintedRoomIndex)
     {
-        if (gSaveBlock2Ptr->frontier.pikeHintedRoomType == PIKE_ROOM_STATUS)
+        if (gSaveBlockPtr->frontier.pikeHintedRoomType == PIKE_ROOM_STATUS)
             TryInflictRandomStatus();
-        return gSaveBlock2Ptr->frontier.pikeHintedRoomType;
+        return gSaveBlockPtr->frontier.pikeHintedRoomType;
     }
 
     for (i = 0; i < 8; i++)
@@ -1051,7 +1052,7 @@ static u8 GetNextRoomType(void)
     numRoomCandidates = 8;
 
     // The room types associated with the lady's hint cannot be in the other two rooms.
-    roomTypeGroup = sRoomTypeHints[gSaveBlock2Ptr->frontier.pikeHintedRoomType];
+    roomTypeGroup = sRoomTypeHints[gSaveBlockPtr->frontier.pikeHintedRoomType];
     for (i = 0; i < 8; i++)
     {
         if (sRoomTypeHints[i] == roomTypeGroup)
@@ -1074,7 +1075,7 @@ static u8 GetNextRoomType(void)
     }
 
     // Remove healing room type candidates if healing rooms are disabled.
-    if (gSaveBlock2Ptr->frontier.pikeHealingRoomsDisabled)
+    if (gSaveBlockPtr->frontier.pikeHealingRoomsDisabled)
     {
         if (roomTypesAvailability[PIKE_ROOM_HEAL_FULL] != 1)
         {
@@ -1120,13 +1121,13 @@ bool32 TryGenerateBattlePikeWildMon(bool8 checkKeenEyeIntimidate)
     s32 i;
     s32 monLevel;
     u8 headerId = GetBattlePikeWildMonHeaderId();
-    u32 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+    u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
     const struct PikeWildMon *const *const wildMons = sWildMons[lvlMode];
     u32 abilityNum;
     s32 pikeMonId = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL);
     pikeMonId = SpeciesToPikeMonId(pikeMonId);
 
-    if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
+    if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_50)
     {
         monLevel = GetHighestLevelInPlayerParty();
         if (monLevel < 60)
@@ -1167,8 +1168,8 @@ bool32 TryGenerateBattlePikeWildMon(bool8 checkKeenEyeIntimidate)
 u8 GetBattlePikeWildMonHeaderId(void)
 {
     u8 headerId;
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-    u16 winStreak = gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode];
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
+    u16 winStreak = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode];
 
     if (winStreak <= 280)
         headerId = 0;
@@ -1349,13 +1350,13 @@ static void SetHintedRoom(void)
     if (GetPikeQueenFightType(1))
     {
         gSpecialVar_Result = 1;
-        gSaveBlock2Ptr->frontier.pikeHintedRoomIndex = Random() % 6;
-        gSaveBlock2Ptr->frontier.pikeHintedRoomType = PIKE_ROOM_BRAIN;
+        gSaveBlockPtr->frontier.pikeHintedRoomIndex = Random() % 6;
+        gSaveBlockPtr->frontier.pikeHintedRoomType = PIKE_ROOM_BRAIN;
     }
     else
     {
-        gSaveBlock2Ptr->frontier.pikeHintedRoomIndex = Random() % 3;
-        if (gSaveBlock2Ptr->frontier.pikeHealingRoomsDisabled)
+        gSaveBlockPtr->frontier.pikeHintedRoomIndex = Random() % 3;
+        if (gSaveBlockPtr->frontier.pikeHealingRoomsDisabled)
             count = 6;
         else
             count = 8;
@@ -1363,7 +1364,7 @@ static void SetHintedRoom(void)
         roomCandidates = AllocZeroed(count);
         for (i = 0, id = 0; i < count; i++)
         {
-            if (gSaveBlock2Ptr->frontier.pikeHealingRoomsDisabled)
+            if (gSaveBlockPtr->frontier.pikeHealingRoomsDisabled)
             {
                 if (i != PIKE_ROOM_HEAL_FULL && i != PIKE_ROOM_HEAL_PART)
                     roomCandidates[id++] = i;
@@ -1374,12 +1375,12 @@ static void SetHintedRoom(void)
             }
         }
 
-        gSaveBlock2Ptr->frontier.pikeHintedRoomType = roomCandidates[Random() % count];
+        gSaveBlockPtr->frontier.pikeHintedRoomType = roomCandidates[Random() % count];
         free(roomCandidates);
-        if (gSaveBlock2Ptr->frontier.pikeHintedRoomType == PIKE_ROOM_STATUS && !AtLeastOneHealthyMon())
-            gSaveBlock2Ptr->frontier.pikeHintedRoomType = PIKE_ROOM_NPC;
-        if (gSaveBlock2Ptr->frontier.pikeHintedRoomType == PIKE_ROOM_DOUBLE_BATTLE && !AtLeastTwoAliveMons())
-            gSaveBlock2Ptr->frontier.pikeHintedRoomType = PIKE_ROOM_NPC;
+        if (gSaveBlockPtr->frontier.pikeHintedRoomType == PIKE_ROOM_STATUS && !AtLeastOneHealthyMon())
+            gSaveBlockPtr->frontier.pikeHintedRoomType = PIKE_ROOM_NPC;
+        if (gSaveBlockPtr->frontier.pikeHintedRoomType == PIKE_ROOM_DOUBLE_BATTLE && !AtLeastTwoAliveMons())
+            gSaveBlockPtr->frontier.pikeHintedRoomType = PIKE_ROOM_NPC;
     }
 }
 
@@ -1388,12 +1389,12 @@ static void GetHintedRoomIndex(void)
     // 0 = left room
     // 1 = center room
     // 2 = right room
-    gSpecialVar_Result = gSaveBlock2Ptr->frontier.pikeHintedRoomIndex;
+    gSpecialVar_Result = gSaveBlockPtr->frontier.pikeHintedRoomIndex;
 }
 
 static void GetRoomTypeHint(void)
 {
-    gSpecialVar_Result = sRoomTypeHints[gSaveBlock2Ptr->frontier.pikeHintedRoomType];
+    gSpecialVar_Result = sRoomTypeHints[gSaveBlockPtr->frontier.pikeHintedRoomType];
 }
 
 static void PrepareOneTrainer(bool8 difficult)
@@ -1409,62 +1410,62 @@ static void PrepareOneTrainer(bool8 difficult)
     else
         battleNum = 6;
 
-    lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-    challengeNum = gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] / 14;
+    lvlMode = gSaveBlockPtr->frontier.lvlMode;
+    challengeNum = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode] / 14;
     do
     {
         trainerId = sub_8162548(challengeNum, battleNum);
-        for (i = 0; i < gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1; i++)
+        for (i = 0; i < gSaveBlockPtr->frontier.curChallengeBattleNum - 1; i++)
         {
-            if (gSaveBlock2Ptr->frontier.trainerIds[i] == trainerId)
+            if (gSaveBlockPtr->frontier.trainerIds[i] == trainerId)
                 break;
         }
-    } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1);
+    } while (i != gSaveBlockPtr->frontier.curChallengeBattleNum - 1);
 
     gTrainerBattleOpponent_A = trainerId;
     gFacilityTrainers = gBattleFrontierTrainers;
     SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_A, 0);
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < 14)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum < 14)
+        gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
 }
 
 static void PrepareTwoTrainers(void)
 {
     int i;
     u16 trainerId;
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-    u16 challengeNum = gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] / 14;
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
+    u16 challengeNum = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode] / 14;
 
     gFacilityTrainers = gBattleFrontierTrainers;
     do
     {
         trainerId = sub_8162548(challengeNum, 1);
-        for (i = 0; i < gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1; i++)
+        for (i = 0; i < gSaveBlockPtr->frontier.curChallengeBattleNum - 1; i++)
         {
-            if (gSaveBlock2Ptr->frontier.trainerIds[i] == trainerId)
+            if (gSaveBlockPtr->frontier.trainerIds[i] == trainerId)
                 break;
         }
-    } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1);
+    } while (i != gSaveBlockPtr->frontier.curChallengeBattleNum - 1);
 
     gTrainerBattleOpponent_A = trainerId;
     SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_A, 0);
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum <= 14)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum <= 14)
+        gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum - 1] = gTrainerBattleOpponent_A;
 
     do
     {
         trainerId = sub_8162548(challengeNum, 1);
-        for (i = 0; i < gSaveBlock2Ptr->frontier.curChallengeBattleNum; i++)
+        for (i = 0; i < gSaveBlockPtr->frontier.curChallengeBattleNum; i++)
         {
-            if (gSaveBlock2Ptr->frontier.trainerIds[i] == trainerId)
+            if (gSaveBlockPtr->frontier.trainerIds[i] == trainerId)
                 break;
         }
-    } while (i != gSaveBlock2Ptr->frontier.curChallengeBattleNum);
+    } while (i != gSaveBlockPtr->frontier.curChallengeBattleNum);
 
     gTrainerBattleOpponent_B = trainerId;
     SetBattleFacilityTrainerGfxId(gTrainerBattleOpponent_B, 1);
-    if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < 14)
-        gSaveBlock2Ptr->frontier.trainerIds[gSaveBlock2Ptr->frontier.curChallengeBattleNum - 2] = gTrainerBattleOpponent_B;
+    if (gSaveBlockPtr->frontier.curChallengeBattleNum < 14)
+        gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum - 2] = gTrainerBattleOpponent_B;
 }
 
 static void ClearPikeTrainerIds(void)
@@ -1472,7 +1473,7 @@ static void ClearPikeTrainerIds(void)
     u8 i;
 
     for (i = 0; i < 14; i++)
-        gSaveBlock2Ptr->frontier.trainerIds[i] = 0xFFFF;
+        gSaveBlockPtr->frontier.trainerIds[i] = 0xFFFF;
 }
 
 static void BufferRecordMixingTrainerMessage(void)
@@ -1514,8 +1515,8 @@ static u8 GetPikeQueenFightType(u8 nextRoom)
 
     u8 var = 5;
     u8 ret = 0;
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-    u16 winStreak = gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode];
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
+    u16 winStreak = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode];
     winStreak += nextRoom;
     numPikeSymbols = GetPlayerSymbolCountForFacility(FRONTIER_FACILITY_PIKE);
 
@@ -1547,7 +1548,7 @@ static void GetCurrentRoomPikeQueenFightType(void)
 
 static void HealSomeMonsBeforePikeQueen(void)
 {
-    u8 toHealCount = sNumMonsToHealBeforePikeQueen[gSaveBlock2Ptr->frontier.pikeHintedRoomIndex][gSpecialVar_0x8007];
+    u8 toHealCount = sNumMonsToHealBeforePikeQueen[gSaveBlockPtr->frontier.pikeHintedRoomIndex][gSpecialVar_0x8007];
 
     TryHealMons(toHealCount);
     gSpecialVar_Result = toHealCount;
@@ -1555,7 +1556,7 @@ static void HealSomeMonsBeforePikeQueen(void)
 
 static void SetHealingRoomsDisabled(void)
 {
-    gSaveBlock2Ptr->frontier.pikeHealingRoomsDisabled = gSpecialVar_0x8005;
+    gSaveBlockPtr->frontier.pikeHealingRoomsDisabled = gSpecialVar_0x8005;
 }
 
 static void CanAnyPartyMonsBeHealed(void)
@@ -1603,9 +1604,9 @@ static void BackupMonHeldItems(void)
 
     for (i = 0; i < 3; i++)
     {
-        int heldItem = GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1],
+        int heldItem = GetMonData(&gPokemonStoragePtr->playerParty[gSaveBlockPtr->frontier.selectedPartyMons[i] - 1],
                                   MON_DATA_HELD_ITEM);
-        gSaveBlock2Ptr->frontier.pikeHeldItemsBackup[i] = heldItem;
+        gSaveBlockPtr->frontier.pikeHeldItemsBackup[i] = heldItem;
     }
 }
 
@@ -1615,21 +1616,21 @@ static void RestoreMonHeldItems(void)
 
     for (i = 0; i < 3; i++)
     {
-        SetMonData(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1],
+        SetMonData(&gPlayerParty[gSaveBlockPtr->frontier.selectedPartyMons[i] - 1],
                    MON_DATA_HELD_ITEM,
-                   &gSaveBlock2Ptr->frontier.pikeHeldItemsBackup[i]);
+                   &gSaveBlockPtr->frontier.pikeHeldItemsBackup[i]);
     }
 }
 
 static void InitPikeChallenge(void)
 {
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
 
-    gSaveBlock2Ptr->frontier.field_CA8 = 0;
-    gSaveBlock2Ptr->frontier.curChallengeBattleNum = 0;
-    gSaveBlock2Ptr->frontier.field_CA9_a = 0;
-    if (!(gSaveBlock2Ptr->frontier.field_CDC & gUnknown_08612690[lvlMode]))
-        gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] = 0;
+    gSaveBlockPtr->frontier.field_CA8 = 0;
+    gSaveBlockPtr->frontier.curChallengeBattleNum = 0;
+    gSaveBlockPtr->frontier.field_CA9_a = 0;
+    if (!(gSaveBlockPtr->frontier.field_CDC & gUnknown_08612690[lvlMode]))
+        gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode] = 0;
 
     gTrainerBattleOpponent_A = 0;
     gBattleOutcome = 0;

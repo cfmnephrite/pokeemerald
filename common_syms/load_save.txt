@@ -1,4 +1,3 @@
 gFlashMemoryPresent
-gSaveBlock1Ptr
-gSaveBlock2Ptr
+gSaveBlockPtr
 gPokemonStoragePtr

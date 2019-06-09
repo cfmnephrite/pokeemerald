@@ -32,11 +32,13 @@ extern const u8 gText_Cute2[];
 extern const u8 gText_Smart2[];
 extern const u8 gText_Tough2[];
 
-extern const u8 gText_Items[];
-extern const u8 gText_Key_Items[];
-extern const u8 gText_Poke_Balls[];
-extern const u8 gText_TMs_Hms[];
-extern const u8 gText_Berries2[];
+extern const u8 gText_ItemsPocket[];
+extern const u8 gText_HoldItemsPocket[];
+extern const u8 gText_MedicinePocket[];
+extern const u8 gText_PokeBallsPocket[];
+extern const u8 gText_BerriesPocket[];
+extern const u8 gText_TMHMPocket[];
+extern const u8 gText_KeyItemsPocket[];
 
 extern const u8 gText_Single2[];
 extern const u8 gText_Double2[];
@@ -980,6 +982,7 @@ extern const u8 gText_AnythingElseICanHelp[];
 extern const u8 gText_QuitShopping[];
 extern const u8 gText_PokedollarVar1[];
 extern const u8 gText_YouDontHaveMoney[];
+extern const u8 gText_YouAlreadyHaveTM[];
 extern const u8 gText_Var1CertainlyHowMany2[];
 extern const u8 gText_Var1CertainlyHowMany[];
 extern const u8 gText_Var1IsItThatllBeVar2[];

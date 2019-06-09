@@ -583,7 +583,7 @@ static u32 AllocateFrontierPassData(void (*callback)(void))
         sPassData->cursorY = 48;
     }
 
-    sPassData->battlePoints = gSaveBlock2Ptr->frontier.battlePoints;
+    sPassData->battlePoints = gSaveBlockPtr->frontier.battlePoints;
     sPassData->hasBattleRecord = CanCopyRecordedBattleSaveData();
     sPassData->unkE = 0;
     sPassData->trainerStars = CountPlayerTrainerStars();
@@ -1592,13 +1592,13 @@ static void InitFrontierMapSprites(void)
     id = GetCurrentRegionMapSectionId();
     if (id == MAPSEC_BATTLE_FRONTIER || id == MAPSEC_ARTISAN_CAVE)
     {
-        s8 mapNum = gSaveBlock1Ptr->location.mapNum;
+        s8 mapNum = gSaveBlockPtr->location.mapNum;
 
         if (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_WEST)
             || (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST) && (x = 55)))
         {
-            x += gSaveBlock1Ptr->pos.x;
-            y = gSaveBlock1Ptr->pos.y;
+            x += gSaveBlockPtr->pos.x;
+            y = gSaveBlockPtr->pos.y;
 
             x /= 8;
             y /= 8;
@@ -1616,12 +1616,12 @@ static void InitFrontierMapSprites(void)
             else
             {
                 // Handle Artisan Cave.
-                if (gSaveBlock1Ptr->escapeWarp.mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST))
-                    x = gSaveBlock1Ptr->escapeWarp.x + 55;
+                if (gSaveBlockPtr->escapeWarp.mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST))
+                    x = gSaveBlockPtr->escapeWarp.x + 55;
                 else
-                    x = gSaveBlock1Ptr->escapeWarp.x;
+                    x = gSaveBlockPtr->escapeWarp.x;
 
-                y = gSaveBlock1Ptr->escapeWarp.y;
+                y = gSaveBlockPtr->escapeWarp.y;
 
                 x /= 8;
                 y /= 8;
@@ -1630,7 +1630,7 @@ static void InitFrontierMapSprites(void)
 
         LoadCompressedSpriteSheet(sHeadsSpriteSheet);
         sprite = sSpriteTemplate_Head;
-        sprite.paletteTag = gSaveBlock2Ptr->playerGender + 4;
+        sprite.paletteTag = gSaveBlockPtr->playerGender + 4;
         if (id != 0)
         {
             spriteId = CreateSprite(&sprite, x, y, 0);
@@ -1644,7 +1644,7 @@ static void InitFrontierMapSprites(void)
 
         sMapData->playerHeadSprite = &gSprites[spriteId];
         sMapData->playerHeadSprite->oam.priority = 0;
-        if (gSaveBlock2Ptr->playerGender != MALE)
+        if (gSaveBlockPtr->playerGender != MALE)
             StartSpriteAnim(sMapData->playerHeadSprite, 1);
     }
 }

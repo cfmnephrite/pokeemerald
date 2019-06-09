@@ -70,14 +70,14 @@ void DoBrailleRegisteelEffect(void);
 bool8 ShouldDoBrailleDigEffect(void)
 {
     if (!FlagGet(FLAG_SYS_BRAILLE_DIG)
-     && (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SEALED_CHAMBER_OUTER_ROOM)
-     && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SEALED_CHAMBER_OUTER_ROOM)))
+     && (gSaveBlockPtr->location.mapGroup == MAP_GROUP(SEALED_CHAMBER_OUTER_ROOM)
+     && gSaveBlockPtr->location.mapNum == MAP_NUM(SEALED_CHAMBER_OUTER_ROOM)))
     {
-        if (gSaveBlock1Ptr->pos.x == 10 && gSaveBlock1Ptr->pos.y == 3)
+        if (gSaveBlockPtr->pos.x == 10 && gSaveBlockPtr->pos.y == 3)
             return TRUE;
-        if (gSaveBlock1Ptr->pos.x == 9 && gSaveBlock1Ptr->pos.y == 3)
+        if (gSaveBlockPtr->pos.x == 9 && gSaveBlockPtr->pos.y == 3)
             return TRUE;
-        if (gSaveBlock1Ptr->pos.x == 11 && gSaveBlock1Ptr->pos.y == 3)
+        if (gSaveBlockPtr->pos.x == 11 && gSaveBlockPtr->pos.y == 3)
             return TRUE;
     }
 
@@ -117,13 +117,13 @@ bool8 CheckRelicanthWailord(void)
 void ShouldDoBrailleRegirockEffectOld(void)
 {
     /*
-        if (!FlagGet(FLAG_SYS_REGIROCK_PUZZLE_COMPLETED) && (gSaveBlock1.location.mapGroup == MAP_GROUP_DESERT_RUINS && gSaveBlock1.location.mapNum == MAP_ID_DESERT_RUINS))
+        if (!FlagGet(FLAG_SYS_REGIROCK_PUZZLE_COMPLETED) && (gSaveBlock.location.mapGroup == MAP_GROUP_DESERT_RUINS && gSaveBlock.location.mapNum == MAP_ID_DESERT_RUINS))
     {
-        if (gSaveBlock1.pos.x == 10 && gSaveBlock1.pos.y == 23)
+        if (gSaveBlock.pos.x == 10 && gSaveBlock.pos.y == 23)
             return TRUE;
-        else if (gSaveBlock1.pos.x == 9 && gSaveBlock1.pos.y == 23)
+        else if (gSaveBlock.pos.x == 9 && gSaveBlock.pos.y == 23)
             return TRUE;
-        else if (gSaveBlock1.pos.x == 11 && gSaveBlock1.pos.y == 23)
+        else if (gSaveBlock.pos.x == 11 && gSaveBlock.pos.y == 23)
             return TRUE;
     }
 
@@ -147,9 +147,9 @@ void DoBrailleRegirockEffect(void)
 
 bool8 ShouldDoBrailleRegisteelEffect(void)
 {
-    if (!FlagGet(FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED) && (gSaveBlock1.location.mapGroup == MAP_GROUP_ANCIENT_TOMB && gSaveBlock1.location.mapNum == MAP_ID_ANCIENT_TOMB))
+    if (!FlagGet(FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED) && (gSaveBlock.location.mapGroup == MAP_GROUP_ANCIENT_TOMB && gSaveBlock.location.mapNum == MAP_ID_ANCIENT_TOMB))
     {
-        if (gSaveBlock1.pos.x == 8 && gSaveBlock1.pos.y == 25)
+        if (gSaveBlock.pos.x == 8 && gSaveBlock.pos.y == 25)
             return TRUE;
     }
 
@@ -242,20 +242,20 @@ void SealedChamberShakingEffect(u8 taskId)
 bool8 ShouldDoBrailleRegirockEffect(void)
 {
     if (!FlagGet(FLAG_SYS_REGIROCK_PUZZLE_COMPLETED)
-        && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(DESERT_RUINS)
-        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(DESERT_RUINS))
+        && gSaveBlockPtr->location.mapGroup == MAP_GROUP(DESERT_RUINS)
+        && gSaveBlockPtr->location.mapNum == MAP_NUM(DESERT_RUINS))
     {
-        if (gSaveBlock1Ptr->pos.x == 6 && gSaveBlock1Ptr->pos.y == 23)
+        if (gSaveBlockPtr->pos.x == 6 && gSaveBlockPtr->pos.y == 23)
         {
             sBraillePuzzleCallbackFlag = REGIROCK_PUZZLE;
             return TRUE;
         }
-        else if (gSaveBlock1Ptr->pos.x == 5 && gSaveBlock1Ptr->pos.y == 23)
+        else if (gSaveBlockPtr->pos.x == 5 && gSaveBlockPtr->pos.y == 23)
         {
             sBraillePuzzleCallbackFlag = REGIROCK_PUZZLE;
             return TRUE;
         }
-        else if (gSaveBlock1Ptr->pos.x == 7 && gSaveBlock1Ptr->pos.y == 23)
+        else if (gSaveBlockPtr->pos.x == 7 && gSaveBlockPtr->pos.y == 23)
         {
             sBraillePuzzleCallbackFlag = REGIROCK_PUZZLE;
             return TRUE;
@@ -293,9 +293,9 @@ void DoBrailleRegirockEffect(void)
 
 bool8 ShouldDoBrailleRegisteelEffect(void)
 {
-    if (!FlagGet(FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED) && (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ANCIENT_TOMB) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ANCIENT_TOMB)))
+    if (!FlagGet(FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED) && (gSaveBlockPtr->location.mapGroup == MAP_GROUP(ANCIENT_TOMB) && gSaveBlockPtr->location.mapNum == MAP_NUM(ANCIENT_TOMB)))
     {
-        if (gSaveBlock1Ptr->pos.x == 8 && gSaveBlock1Ptr->pos.y == 25)
+        if (gSaveBlockPtr->pos.x == 8 && gSaveBlockPtr->pos.y == 25)
         {
             sBraillePuzzleCallbackFlag = REGISTEEL_PUZZLE;
             return TRUE;
@@ -395,9 +395,9 @@ bool32 BrailleWait_CheckButtonPress(void)
 {
     u16 keyMask = A_BUTTON | B_BUTTON | START_BUTTON | SELECT_BUTTON | DPAD_ANY;
 
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+    if (gSaveBlock.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         keyMask |= L_BUTTON | R_BUTTON;
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
+    if (gSaveBlock.optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
         keyMask |= L_BUTTON;
 
     if (gMain.newKeys & keyMask)
@@ -429,8 +429,8 @@ bool8 ShouldDoBrailleRegicePuzzle(void)
 {
     u8 i;
 
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ISLAND_CAVE)
-        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ISLAND_CAVE))
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(ISLAND_CAVE)
+        && gSaveBlockPtr->location.mapNum == MAP_NUM(ISLAND_CAVE))
     {
         if (FlagGet(FLAG_SYS_BRAILLE_REGICE_COMPLETED))
             return FALSE;
@@ -443,7 +443,7 @@ bool8 ShouldDoBrailleRegicePuzzle(void)
         {
             u8 xPos = gRegicePathCoords[i][0];
             u8 yPos = gRegicePathCoords[i][1];
-            if (gSaveBlock1Ptr->pos.x == xPos && gSaveBlock1Ptr->pos.y == yPos)
+            if (gSaveBlockPtr->pos.x == xPos && gSaveBlockPtr->pos.y == yPos)
             {
                 u16 varValue;
 
@@ -471,7 +471,7 @@ bool8 ShouldDoBrailleRegicePuzzle(void)
                     return FALSE;
 
                 // This final check is redundant.
-                if (gSaveBlock1Ptr->pos.x == 8 && gSaveBlock1Ptr->pos.y == 21)
+                if (gSaveBlockPtr->pos.x == 8 && gSaveBlockPtr->pos.y == 21)
                     return TRUE;
                 else
                     return FALSE;

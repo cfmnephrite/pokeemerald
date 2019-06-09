@@ -1216,9 +1216,9 @@ void sub_80125BC(u8 windowId)
     u8 text[30];
     u8 *txtPtr;
 
-    sub_80173E0(windowId, 1, gSaveBlock2Ptr->playerName, 0, 1, 0);
+    sub_80173E0(windowId, 1, gSaveBlockPtr->playerName, 0, 1, 0);
     txtPtr = StringCopy(text, gText_UnkCtrlCodeF907);
-    ConvertIntToDecimalStringN(txtPtr, ReadAsU16(gSaveBlock2Ptr->playerTrainerId), STR_CONV_MODE_LEADING_ZEROS, 5);
+    ConvertIntToDecimalStringN(txtPtr, ReadAsU16(gSaveBlockPtr->playerTrainerId), STR_CONV_MODE_LEADING_ZEROS, 5);
     sub_80173E0(windowId, 1, text, 0, 0x11, 0);
 }
 
@@ -1271,7 +1271,7 @@ void sub_8012780(u8 taskId)
     switch (data->state)
     {
     case 0:
-        if (gSpecialVar_0x8004 == 20 && gSaveBlock2Ptr->frontier.lvlMode == FRONTIER_LVL_OPEN)
+        if (gSpecialVar_0x8004 == 20 && gSaveBlockPtr->frontier.lvlMode == FRONTIER_LVL_OPEN)
             gSpecialVar_0x8004++;
         gUnknown_02022C2C = gUnknown_082F00C4[gSpecialVar_0x8004];
         gUnknown_02022C2D = gUnknown_082F00C4[gSpecialVar_0x8004] >> 8;
@@ -1853,7 +1853,7 @@ void sub_80134E8(u8 taskId)
     switch (data->state)
     {
     case 0:
-        if (gSpecialVar_0x8004 == 20 && gSaveBlock2Ptr->frontier.lvlMode == FRONTIER_LVL_OPEN)
+        if (gSpecialVar_0x8004 == 20 && gSaveBlockPtr->frontier.lvlMode == FRONTIER_LVL_OPEN)
             gSpecialVar_0x8004++;
         gUnknown_02022C2C = gUnknown_082F0530[gSpecialVar_0x8004];
         sub_8010F84(gUnknown_02022C2C, 0, 0);
@@ -2114,7 +2114,7 @@ u32 sub_8013B8C(struct UnkStruct_Group *arg0, s32 id)
 
     if (gUnknown_02022C2C == 4 && structPtr->unk.field_0.unk_00.unk_01_2 != 3)
     {
-        if (!(gSaveBlock2Ptr->specialSaveWarpFlags & 0x80))
+        if (!(gSaveBlockPtr->specialSaveWarpFlags & 0x80))
             return 1;
         else if (structPtr->unk.field_0.unk_00.unk_00_7)
             return 0;
@@ -2338,7 +2338,7 @@ void sub_8013F90(u8 taskId)
         }
         break;
     case 2:
-        memcpy(gBlockSendBuffer, gSaveBlock1Ptr->mail, sizeof(struct MailStruct) * PARTY_SIZE + 4);
+        memcpy(gBlockSendBuffer, gSaveBlockPtr->mail, sizeof(struct MailStruct) * PARTY_SIZE + 4);
         if (SendBlock(0, gBlockSendBuffer, sizeof(struct MailStruct) * PARTY_SIZE + 4))
             gTasks[taskId].data[0]++;
         break;
@@ -2432,8 +2432,8 @@ void sub_8014210(u16 battleFlags)
 void sub_8014290(u16 arg0, u16 x, u16 y)
 {
     VarSet(VAR_CABLE_CLUB_STATE, arg0);
-    SetWarpDestination(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1, x, y);
-    SetDynamicWarpWithCoords(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1, x, y);
+    SetWarpDestination(gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1, x, y);
+    SetDynamicWarpWithCoords(0, gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum, -1, x, y);
     WarpIntoMap();
 }
 
@@ -3397,7 +3397,7 @@ void sub_80156E0(u8 taskId)
             {
                 sub_8011090(0x54, 0, 1);
                 PlaySE(SE_PC_LOGIN);
-                StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
+                StringCopy(gStringVar1, gSaveBlockPtr->playerName);
                 data->state = 42;
                 gSpecialVar_Result = 0;
             }
@@ -3431,7 +3431,7 @@ void sub_80156E0(u8 taskId)
                     sub_8011090(0x54, 0, 1);
                     PlaySE(SE_PC_LOGIN);
                     sub_80181CC();
-                    StringCopy(gStringVar1, gSaveBlock2Ptr->playerName);
+                    StringCopy(gStringVar1, gSaveBlockPtr->playerName);
                     data->state = 45;
                     break;
                 }
@@ -4973,7 +4973,7 @@ void sub_8017BE8(u8 windowId, s32 itemId, u8 y)
         rfu = sub_800F7DC();
         if (rfu->species != SPECIES_NONE)
         {
-            sub_8017B3C(windowId, y, rfu, gSaveBlock2Ptr->playerName, 5);
+            sub_8017B3C(windowId, y, rfu, gSaveBlockPtr->playerName, 5);
         }
     }
     else
@@ -5164,8 +5164,8 @@ bool32 sub_8017FD8(struct UnkStruct_URoom *arg0)
 
 bool32 InUnionRoom(void)
 {
-    return    gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNION_ROOM)
-           && gSaveBlock1Ptr->location.mapNum == MAP_NUM(UNION_ROOM)
+    return    gSaveBlockPtr->location.mapGroup == MAP_GROUP(UNION_ROOM)
+           && gSaveBlockPtr->location.mapNum == MAP_NUM(UNION_ROOM)
            ? TRUE : FALSE;
 }
 

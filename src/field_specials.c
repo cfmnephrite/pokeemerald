@@ -533,22 +533,22 @@ void SpawnLinkPartnerEventObject(void)
     {
         case DIR_WEST:
             j = 2;
-            x = gSaveBlock1Ptr->pos.x - 1;
-            y = gSaveBlock1Ptr->pos.y;
+            x = gSaveBlockPtr->pos.x - 1;
+            y = gSaveBlockPtr->pos.y;
             break;
         case DIR_NORTH:
             j = 1;
-            x = gSaveBlock1Ptr->pos.x;
-            y = gSaveBlock1Ptr->pos.y - 1;
+            x = gSaveBlockPtr->pos.x;
+            y = gSaveBlockPtr->pos.y - 1;
             break;
         case DIR_EAST:
-            x = gSaveBlock1Ptr->pos.x + 1;
-            y = gSaveBlock1Ptr->pos.y;
+            x = gSaveBlockPtr->pos.x + 1;
+            y = gSaveBlockPtr->pos.y;
             break;
         case DIR_SOUTH:
             j = 3;
-            x = gSaveBlock1Ptr->pos.x;
-            y = gSaveBlock1Ptr->pos.y + 1;
+            x = gSaveBlockPtr->pos.x;
+            y = gSaveBlockPtr->pos.y + 1;
     }
     for (i = 0; i < gSpecialVar_0x8004; i++)
     {
@@ -597,7 +597,7 @@ static void LoadLinkPartnerEventObjectSpritePalette(u8 graphicsId, u8 localEvent
         graphicsId == EVENT_OBJ_GFX_RIVAL_BRENDAN_NORMAL ||
         graphicsId == EVENT_OBJ_GFX_RIVAL_MAY_NORMAL)
     {
-        u8 obj = GetEventObjectIdByLocalIdAndMap(localEventId, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+        u8 obj = GetEventObjectIdByLocalIdAndMap(localEventId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
         if (obj != EVENT_OBJECTS_COUNT)
         {
             u8 spriteId = gEventObjects[obj].spriteId;
@@ -905,18 +905,18 @@ void ShowFieldMessageStringVar4(void)
 
 void StorePlayerCoordsInVars(void)
 {
-    gSpecialVar_0x8004 = gSaveBlock1Ptr->pos.x;
-    gSpecialVar_0x8005 = gSaveBlock1Ptr->pos.y;
+    gSpecialVar_0x8004 = gSaveBlockPtr->pos.x;
+    gSpecialVar_0x8005 = gSaveBlockPtr->pos.y;
 }
 
 u8 GetPlayerTrainerIdOnesDigit(void)
 {
-    return (u16)((gSaveBlock2Ptr->playerTrainerId[1] << 8) | gSaveBlock2Ptr->playerTrainerId[0]) % 10;
+    return (u16)((gSaveBlockPtr->playerTrainerId[1] << 8) | gSaveBlockPtr->playerTrainerId[0]) % 10;
 }
 
 void GetPlayerBigGuyGirlString(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
     {
         StringCopy(gStringVar1, gText_BigGuy);
     }
@@ -928,7 +928,7 @@ void GetPlayerBigGuyGirlString(void)
 
 void GetRivalSonDaughterString(void)
 {
-    if (gSaveBlock2Ptr->playerGender == MALE)
+    if (gSaveBlockPtr->playerGender == MALE)
     {
         StringCopy(gStringVar1, gText_Daughter);
     }
@@ -1100,7 +1100,7 @@ static void PCTurnOnEffect_1(s16 flag, s8 dx, s8 dy)
             tileId = 0x27e;
         }
     }
-    MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + dx + 7, gSaveBlock1Ptr->pos.y + dy + 7, tileId | METATILE_COLLISION_MASK);
+    MapGridSetMetatileIdAt(gSaveBlockPtr->pos.x + dx + 7, gSaveBlockPtr->pos.y + dy + 7, tileId | METATILE_COLLISION_MASK);
 }
 
 void DoPCTurnOffEffect(void)
@@ -1141,7 +1141,7 @@ static void PCTurnOffEffect(void)
     {
         tileId = 0x259;
     }
-    MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + dx + 7, gSaveBlock1Ptr->pos.y + dy + 7, tileId | METATILE_COLLISION_MASK);
+    MapGridSetMetatileIdAt(gSaveBlockPtr->pos.x + dx + 7, gSaveBlockPtr->pos.y + dy + 7, tileId | METATILE_COLLISION_MASK);
     DrawWholeMapView();
 }
 
@@ -1283,7 +1283,7 @@ void IsGrassTypeInParty(void)
 
 void SpawnCameraObject(void)
 {
-    u8 obj = SpawnSpecialEventObjectParameterized(EVENT_OBJ_GFX_BOY_1, 8, EVENT_OBJ_ID_CAMERA, gSaveBlock1Ptr->pos.x + 7, gSaveBlock1Ptr->pos.y + 7, 3);
+    u8 obj = SpawnSpecialEventObjectParameterized(EVENT_OBJ_GFX_BOY_1, 8, EVENT_OBJ_ID_CAMERA, gSaveBlockPtr->pos.x + 7, gSaveBlockPtr->pos.y + 7, 3);
     gEventObjects[obj].invisible = TRUE;
     CameraObjectSetFollowedObjectId(gEventObjects[obj].spriteId);
 }
@@ -1291,7 +1291,7 @@ void SpawnCameraObject(void)
 void RemoveCameraObject(void)
 {
     CameraObjectSetFollowedObjectId(GetPlayerAvatarObjectId());
-    RemoveEventObjectByLocalIdAndMap(EVENT_OBJ_ID_CAMERA, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
+    RemoveEventObjectByLocalIdAndMap(EVENT_OBJ_ID_CAMERA, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
 }
 
 u8 GetPokeblockNameByMonNature(void)
@@ -1320,7 +1320,7 @@ u16 GetSlotMachineId(void)
     static const u8 gUnknown_085B2B94[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5};
     static const u8 gUnknown_085B2BA0[] = {3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5};
 
-    u32 v0 = gSaveBlock1Ptr->easyChatPairs[0].unk0_0 + gSaveBlock1Ptr->easyChatPairs[0].unk2 + gUnknown_085B2B88[gSpecialVar_0x8004];
+    u32 v0 = gSaveBlockPtr->easyChatPairs[0].unk0_0 + gSaveBlockPtr->easyChatPairs[0].unk2 + gUnknown_085B2B88[gSpecialVar_0x8004];
     if (GetPriceReduction(2))
     {
         return gUnknown_085B2BA0[v0 % 12];
@@ -1407,7 +1407,7 @@ bool8 Special_AreLeadMonEVsMaxedOut(void)
 
 u8 TryUpdateRusturfTunnelState(void)
 {
-    if (!FlagGet(FLAG_RUSTURF_TUNNEL_OPENED) && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(RUSTURF_TUNNEL) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(RUSTURF_TUNNEL))
+    if (!FlagGet(FLAG_RUSTURF_TUNNEL_OPENED) && gSaveBlockPtr->location.mapGroup == MAP_GROUP(RUSTURF_TUNNEL) && gSaveBlockPtr->location.mapNum == MAP_NUM(RUSTURF_TUNNEL))
     {
         if (FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_ROCK_1))
         {
@@ -1582,7 +1582,7 @@ bool8 MonOTNameMatchesPlayer(void)
     }
 
     GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_OT_NAME, gStringVar1);
-    if (!StringCompare(gSaveBlock2Ptr->playerName, gStringVar1))
+    if (!StringCompare(gSaveBlockPtr->playerName, gStringVar1))
     {
         return FALSE;
     }
@@ -1669,8 +1669,8 @@ bool8 sub_813990C(void)
 
 bool8 InMultiBattleRoom(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM)
-        && gSaveBlock1Ptr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM) &&
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM)
+        && gSaveBlockPtr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM) &&
         VarGet(VAR_FRONTIER_BATTLE_MODE) == FRONTIER_MODE_MULTIS)
         return TRUE;
     return FALSE;
@@ -1727,7 +1727,7 @@ const u16 gUnknown_085B2C06[][3] =
 void SetDepartmentStoreFloorVar(void)
 {
     u8 deptStoreFloor;
-    switch (gSaveBlock1Ptr->dynamicWarp.mapNum)
+    switch (gSaveBlockPtr->dynamicWarp.mapNum)
     {
         case MAP_NUM(LILYCOVE_CITY_DEPARTMENT_STORE_1F):
             deptStoreFloor = 4;
@@ -1759,9 +1759,9 @@ u16 sub_81399F4(void)
     gUnknown_0203AB60 = 0;
     gUnknown_0203AB62 = 0;
 
-    if (gSaveBlock1Ptr->dynamicWarp.mapGroup == MAP_GROUP(LILYCOVE_CITY_DEPARTMENT_STORE_1F))
+    if (gSaveBlockPtr->dynamicWarp.mapGroup == MAP_GROUP(LILYCOVE_CITY_DEPARTMENT_STORE_1F))
     {
-        switch (gSaveBlock1Ptr->dynamicWarp.mapNum)
+        switch (gSaveBlockPtr->dynamicWarp.mapNum)
         {
             case MAP_NUM(LILYCOVE_CITY_DEPARTMENT_STORE_5F):
                 gUnknown_0203AB60 = 0;
@@ -1975,7 +1975,7 @@ bool8 warp0_in_pokecenter(void)
 
 bool32 sub_8139ED0(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(TRAINER_HILL_ENTRANCE) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(TRAINER_HILL_ENTRANCE))
+    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(TRAINER_HILL_ENTRANCE) && gSaveBlockPtr->location.mapNum == MAP_NUM(TRAINER_HILL_ENTRANCE))
     {
         return FALSE;
     }
@@ -2026,73 +2026,73 @@ void sub_8139F20(void)
         case 1:
         case 2:
         case 3:
-            if (gSaveBlock2Ptr->frontier.towerWinStreaks[var][0] >= gSaveBlock2Ptr->frontier.towerWinStreaks[var][1])
+            if (gSaveBlockPtr->frontier.towerWinStreaks[var][0] >= gSaveBlockPtr->frontier.towerWinStreaks[var][1])
             {
-                unk = gSaveBlock2Ptr->frontier.towerWinStreaks[var][0];
+                unk = gSaveBlockPtr->frontier.towerWinStreaks[var][0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.towerWinStreaks[var][1];
+                unk = gSaveBlockPtr->frontier.towerWinStreaks[var][1];
             }
             break;
         case 4:
-            if (gSaveBlock2Ptr->frontier.domeWinStreaks[0][0] >= gSaveBlock2Ptr->frontier.domeWinStreaks[0][1])
+            if (gSaveBlockPtr->frontier.domeWinStreaks[0][0] >= gSaveBlockPtr->frontier.domeWinStreaks[0][1])
             {
-                unk = gSaveBlock2Ptr->frontier.domeWinStreaks[0][0];
+                unk = gSaveBlockPtr->frontier.domeWinStreaks[0][0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.domeWinStreaks[0][1];
+                unk = gSaveBlockPtr->frontier.domeWinStreaks[0][1];
             }
             break;
         case 5:
-            if (gSaveBlock2Ptr->frontier.factoryWinStreaks[0][0] >= gSaveBlock2Ptr->frontier.factoryWinStreaks[0][1])
+            if (gSaveBlockPtr->frontier.factoryWinStreaks[0][0] >= gSaveBlockPtr->frontier.factoryWinStreaks[0][1])
             {
-                unk = gSaveBlock2Ptr->frontier.factoryWinStreaks[0][0];
+                unk = gSaveBlockPtr->frontier.factoryWinStreaks[0][0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.factoryWinStreaks[0][1];
+                unk = gSaveBlockPtr->frontier.factoryWinStreaks[0][1];
             }
             break;
         case 6:
-            if (gSaveBlock2Ptr->frontier.palaceWinStreaks[0][0] >= gSaveBlock2Ptr->frontier.palaceWinStreaks[0][1])
+            if (gSaveBlockPtr->frontier.palaceWinStreaks[0][0] >= gSaveBlockPtr->frontier.palaceWinStreaks[0][1])
             {
-                unk = gSaveBlock2Ptr->frontier.palaceWinStreaks[0][0];
+                unk = gSaveBlockPtr->frontier.palaceWinStreaks[0][0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.palaceWinStreaks[0][1];
+                unk = gSaveBlockPtr->frontier.palaceWinStreaks[0][1];
             }
             break;
         case 7:
-            if (gSaveBlock2Ptr->frontier.arenaWinStreaks[0] >= gSaveBlock2Ptr->frontier.arenaWinStreaks[1])
+            if (gSaveBlockPtr->frontier.arenaWinStreaks[0] >= gSaveBlockPtr->frontier.arenaWinStreaks[1])
             {
-                unk = gSaveBlock2Ptr->frontier.arenaWinStreaks[0];
+                unk = gSaveBlockPtr->frontier.arenaWinStreaks[0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.arenaWinStreaks[1];
+                unk = gSaveBlockPtr->frontier.arenaWinStreaks[1];
             }
             break;
         case 8:
-            if (gSaveBlock2Ptr->frontier.pikeWinStreaks[0] >= gSaveBlock2Ptr->frontier.pikeWinStreaks[1])
+            if (gSaveBlockPtr->frontier.pikeWinStreaks[0] >= gSaveBlockPtr->frontier.pikeWinStreaks[1])
             {
-                unk = gSaveBlock2Ptr->frontier.pikeWinStreaks[0];
+                unk = gSaveBlockPtr->frontier.pikeWinStreaks[0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.pikeWinStreaks[1];
+                unk = gSaveBlockPtr->frontier.pikeWinStreaks[1];
             }
             break;
         case 9:
-            if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[0] >= gSaveBlock2Ptr->frontier.pyramidWinStreaks[1])
+            if (gSaveBlockPtr->frontier.pyramidWinStreaks[0] >= gSaveBlockPtr->frontier.pyramidWinStreaks[1])
             {
-                unk = gSaveBlock2Ptr->frontier.pyramidWinStreaks[0];
+                unk = gSaveBlockPtr->frontier.pyramidWinStreaks[0];
             }
             else
             {
-                unk = gSaveBlock2Ptr->frontier.pyramidWinStreaks[1];
+                unk = gSaveBlockPtr->frontier.pyramidWinStreaks[1];
             }
             break;
     }
@@ -2110,7 +2110,7 @@ void sub_813A080(void)
 
     u8 i;
     u16 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
-    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
 
     if (battleMode == FRONTIER_MODE_MULTIS && !FlagGet(FLAG_CHOSEN_MULTI_BATTLE_NPC_PARTNER))
     {
@@ -2121,7 +2121,7 @@ void sub_813A080(void)
 
     for (i = 0; i < 9; i++)
     {
-        if (gUnknown_085B2CDC[i] > gSaveBlock2Ptr->frontier.towerWinStreaks[battleMode][lvlMode])
+        if (gUnknown_085B2CDC[i] > gSaveBlockPtr->frontier.towerWinStreaks[battleMode][lvlMode])
         {
             gSpecialVar_0x8005 = 4;
             gSpecialVar_0x8006 = i + 5;
@@ -2865,7 +2865,7 @@ void sub_813A8FC(void)
 {
     u8 string[32];
     u32 x;
-    StringCopy(ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->frontier.battlePoints, STR_CONV_MODE_RIGHT_ALIGN, 4), gText_BP);
+    StringCopy(ConvertIntToDecimalStringN(string, gSaveBlockPtr->frontier.battlePoints, STR_CONV_MODE_RIGHT_ALIGN, 4), gText_BP);
     x = GetStringRightAlignXOffset(1, string, 48);
     AddTextPrinterParameterized(gUnknown_0203AB6D, 1, string, x, 1, 0, NULL);
 }
@@ -2896,31 +2896,31 @@ void sub_813A988(void)
 
 void sub_813A9A4(void)
 {
-    if (gSaveBlock2Ptr->frontier.battlePoints < gSpecialVar_0x8004)
+    if (gSaveBlockPtr->frontier.battlePoints < gSpecialVar_0x8004)
     {
-        gSaveBlock2Ptr->frontier.battlePoints = 0;
+        gSaveBlockPtr->frontier.battlePoints = 0;
     }
     else
     {
-        gSaveBlock2Ptr->frontier.battlePoints -= gSpecialVar_0x8004;
+        gSaveBlockPtr->frontier.battlePoints -= gSpecialVar_0x8004;
     }
 }
 
 void sub_813A9D0(void)
 {
-    if (gSaveBlock2Ptr->frontier.battlePoints + gSpecialVar_0x8004 > 9999)
+    if (gSaveBlockPtr->frontier.battlePoints + gSpecialVar_0x8004 > 9999)
     {
-        gSaveBlock2Ptr->frontier.battlePoints = 9999;
+        gSaveBlockPtr->frontier.battlePoints = 9999;
     }
     else
     {
-        gSaveBlock2Ptr->frontier.battlePoints = gSaveBlock2Ptr->frontier.battlePoints + gSpecialVar_0x8004;
+        gSaveBlockPtr->frontier.battlePoints = gSaveBlockPtr->frontier.battlePoints + gSpecialVar_0x8004;
     }
 }
 
 u16 sub_813AA04(void)
 {
-    return gSaveBlock2Ptr->frontier.battlePoints;
+    return gSaveBlockPtr->frontier.battlePoints;
 }
 
 void sub_813AA18(void)
@@ -3314,7 +3314,7 @@ static void ChangeDeoxysRockLevel(u8 rockLevel)
 {
     u8 eventObjectId;
     LoadPalette(&sDeoxysRockPalettes[rockLevel], 0x1A0, 8);
-    TryGetEventObjectIdByLocalIdAndMap(1, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup, &eventObjectId);
+    TryGetEventObjectIdByLocalIdAndMap(1, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, &eventObjectId);
 
     if (rockLevel == 0)
         PlaySE(SE_W109);
@@ -3349,7 +3349,7 @@ static void WaitForDeoxysRockMovement(u8 taskId)
 void IncrementBirthIslandRockStepCount(void)
 {
     u16 var = VarGet(VAR_DEOXYS_ROCK_STEP_COUNT);
-    if (gSaveBlock1Ptr->location.mapNum == MAP_NUM(BIRTH_ISLAND_EXTERIOR) && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(BIRTH_ISLAND_EXTERIOR))
+    if (gSaveBlockPtr->location.mapNum == MAP_NUM(BIRTH_ISLAND_EXTERIOR) && gSaveBlockPtr->location.mapGroup == MAP_GROUP(BIRTH_ISLAND_EXTERIOR))
     {
         var++;
         if (var > 99)
@@ -3516,9 +3516,9 @@ bool8 UnusualWeatherHasExpired(void)
     if (++steps > 999)
     {
         VarSet(VAR_UNUSUAL_WEATHER_STEP_COUNTER, 0);
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_MARINE_CAVE))
+        if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(UNDERWATER_MARINE_CAVE))
         {
-            switch (gSaveBlock1Ptr->location.mapNum)
+            switch (gSaveBlockPtr->location.mapNum)
             {
                 case MAP_NUM(UNDERWATER_MARINE_CAVE):
                 case MAP_NUM(MARINE_CAVE_ENTRANCE):
@@ -3532,9 +3532,9 @@ bool8 UnusualWeatherHasExpired(void)
             }
         }
 
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER3))
+        if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(UNDERWATER3))
         {
-            switch (gSaveBlock1Ptr->location.mapNum)
+            switch (gSaveBlockPtr->location.mapNum)
             {
                 case MAP_NUM(UNDERWATER3):
                 case MAP_NUM(UNDERWATER5):
@@ -3547,8 +3547,8 @@ bool8 UnusualWeatherHasExpired(void)
             }
         }
 
-        if (gSaveBlock1Ptr->location.mapNum == sUnusualWeatherMapNumbers_2[unusualWeather - 1] &&
-            gSaveBlock1Ptr->location.mapGroup == 0)
+        if (gSaveBlockPtr->location.mapNum == sUnusualWeatherMapNumbers_2[unusualWeather - 1] &&
+            gSaveBlockPtr->location.mapGroup == 0)
         {
             return TRUE;
         }
@@ -3590,9 +3590,9 @@ bool32 sub_813B490(void)
     u8 i;
     for (i = 0; i < 12; i++)
     {
-        if (gSaveBlock1Ptr->location.mapGroup == gUnknown_085B3420[i][0])
+        if (gSaveBlockPtr->location.mapGroup == gUnknown_085B3420[i][0])
         {
-            if (gSaveBlock1Ptr->location.mapNum == gUnknown_085B3420[i][1])
+            if (gSaveBlockPtr->location.mapNum == gUnknown_085B3420[i][1])
             {
                 return gUnknown_085B3420[i][2];
             }
@@ -3821,7 +3821,7 @@ static void _fwalk(u8 taskId)
         {
             for (x = 0; x < 3; x++)
             {
-                MapGridSetMetatileIdAt(gSaveBlock1Ptr->pos.x + x + 6, gSaveBlock1Ptr->pos.y + y + 4, x + 0x201 + y * 8 + data[3] * 32);
+                MapGridSetMetatileIdAt(gSaveBlockPtr->pos.x + x + 6, gSaveBlockPtr->pos.y + y + 4, x + 0x201 + y * 8 + data[3] * 32);
             }
         }
         DrawWholeMapView();
@@ -3842,7 +3842,7 @@ void sub_813B968(void)
 
 void sub_813B9A0(void)
 {
-    if (gSaveBlock1Ptr->lastHealLocation.mapGroup == MAP_GROUP(DEWFORD_TOWN) && gSaveBlock1Ptr->lastHealLocation.mapNum == MAP_NUM(DEWFORD_TOWN))
+    if (gSaveBlockPtr->lastHealLocation.mapGroup == MAP_GROUP(DEWFORD_TOWN) && gSaveBlockPtr->lastHealLocation.mapNum == MAP_NUM(DEWFORD_TOWN))
     {
         SetLastHealLocationWarp(3);
     }
@@ -3876,7 +3876,7 @@ bool8 sub_813B9C0(void)
     };
 
     int i;
-    u16 map = (gSaveBlock1Ptr->location.mapGroup << 8) + gSaveBlock1Ptr->location.mapNum;
+    u16 map = (gSaveBlockPtr->location.mapGroup << 8) + gSaveBlockPtr->location.mapNum;
 
     for (i = 0; gUnknown_085B3444[i] != 0xFFFF; i++)
     {
@@ -3890,8 +3890,8 @@ bool8 sub_813B9C0(void)
 
 void ResetFanClub(void)
 {
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] = 0;
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = 0;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] = 0;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = 0;
 }
 
 void sub_813BA30(void)
@@ -3899,17 +3899,17 @@ void sub_813BA30(void)
     if (sub_813BF44() != 0)
     {
         UpdateMovedLilycoveFanClubMembers();
-        gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlock2Ptr->playTimeHours;
+        gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlockPtr->playTimeHours;
     }
 }
 
 void sub_813BA60(void)
 {
-    if (!((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> 7) & 1))
+    if (!((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> 7) & 1))
     {
         sub_813BF60();
         sub_813BD84();
-        gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlock2Ptr->playTimeHours;
+        gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlockPtr->playTimeHours;
         FlagClear(FLAG_HIDE_FANCLUB_OLD_LADY);
         FlagClear(FLAG_HIDE_FANCLUB_BOY);
         FlagClear(FLAG_HIDE_FANCLUB_LITTLE_BOY);
@@ -3925,25 +3925,25 @@ u8 sub_813BADC(u8 a0)
 
     if (VarGet(VAR_LILYCOVE_FAN_CLUB_STATE) == 2)
     {
-        if ((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0x7F) + gUnknown_085B3470[a0] > 19)
+        if ((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0x7F) + gUnknown_085B3470[a0] > 19)
         {
             if (GetNumMovedLilycoveFanClubMembers() < 3)
             {
                 sub_813BB74();
-                gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] &= 0xFF80;
+                gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] &= 0xFF80;
             }
             else
             {
-                gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] = (gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0xFF80) | 0x14;
+                gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] = (gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0xFF80) | 0x14;
             }
         }
         else
         {
-            gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] += gUnknown_085B3470[a0];
+            gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] += gUnknown_085B3470[a0];
         }
     }
 
-    return gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0x7F;
+    return gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] & 0x7F;
 }
 
 static u16 sub_813BB74(void)
@@ -3955,17 +3955,17 @@ static u16 sub_813BB74(void)
 
     for (i = 0; i < 8; i++)
     {
-        if (!((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B3474[i]) & 1))
+        if (!((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B3474[i]) & 1))
         {
             retVal = i;
             if ((Random() & 1) != 0)
             {
-                gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 1 << gUnknown_085B3474[retVal];
+                gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 1 << gUnknown_085B3474[retVal];
                 return retVal;
             }
         }
     }
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 1 << gUnknown_085B3474[retVal];
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 1 << gUnknown_085B3474[retVal];
     return retVal;
 }
 
@@ -3983,20 +3983,20 @@ static u16 sub_813BC00(void)
 
     for (i = 0; i < 8; i++)
     {
-        if (((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B347C[i]) & 1) != 0)
+        if (((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B347C[i]) & 1) != 0)
         {
             retVal = i;
             if ((Random() & 1) != 0)
             {
-                gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] ^= 1 << gUnknown_085B347C[retVal];
+                gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] ^= 1 << gUnknown_085B347C[retVal];
                 return retVal;
             }
         }
     }
 
-    if (((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B347C[retVal]) & 1))
+    if (((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gUnknown_085B347C[retVal]) & 1))
     {
-        gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] ^= 1 << gUnknown_085B347C[retVal];
+        gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] ^= 1 << gUnknown_085B347C[retVal];
     }
 
     return retVal;
@@ -4009,7 +4009,7 @@ u16 GetNumMovedLilycoveFanClubMembers(void)
 
     for (i = 0; i < 8; i++)
     {
-        if (((gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> (i + 8)) & 1) != 0)
+        if (((gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> (i + 8)) & 1) != 0)
         {
             retVal++;
         }
@@ -4021,25 +4021,25 @@ u16 GetNumMovedLilycoveFanClubMembers(void)
 void UpdateMovedLilycoveFanClubMembers(void)
 {
     u8 i = 0;
-    if (gSaveBlock2Ptr->playTimeHours < 999)
+    if (gSaveBlockPtr->playTimeHours < 999)
     {
         while (TRUE)
         {
             if (GetNumMovedLilycoveFanClubMembers() < 5)
             {
-                gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlock2Ptr->playTimeHours;
+                gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] = gSaveBlockPtr->playTimeHours;
                 break;
             }
             else if (i == 8)
             {
                 break;
             }
-            else if (gSaveBlock2Ptr->playTimeHours - gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] < 12)
+            else if (gSaveBlockPtr->playTimeHours - gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] < 12)
             {
                 return;
             }
             sub_813BC00();
-            gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] += 12;
+            gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_2 - VARS_START] += 12;
             i++;
         }
     }
@@ -4047,14 +4047,14 @@ void UpdateMovedLilycoveFanClubMembers(void)
 
 bool8 ShouldMoveLilycoveFanClubMember(void)
 {
-    return (gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gSpecialVar_0x8004) & 1;
+    return (gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> gSpecialVar_0x8004) & 1;
 }
 
 static void sub_813BD84(void)
 {
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x2000;
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x100;
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x400;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x2000;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x100;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x400;
 }
 
 void BufferStreakTrainerText(void)
@@ -4090,7 +4090,7 @@ void BufferStreakTrainerText(void)
         case 15:
             break;
     }
-    sub_813BE30(&gSaveBlock1Ptr->linkBattleRecords, a, b);
+    sub_813BE30(&gPokemonStoragePtr->linkBattleRecords, a, b);
 }
 
 static void sub_813BE30(struct LinkBattleRecords *linkRecords, u8 a, u8 b)
@@ -4149,12 +4149,12 @@ void sub_813BF10(void)
 
 static bool8 sub_813BF44(void)
 {
-    return (gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> 7) & 1;
+    return (gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] >> 7) & 1;
 }
 
 void sub_813BF60(void)
 {
-    gSaveBlock1Ptr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x80;
+    gSaveBlockPtr->vars[VAR_FANCLUB_UNKNOWN_1 - VARS_START] |= 0x80;
 }
 
 u8 sub_813BF7C(void)

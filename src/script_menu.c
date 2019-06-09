@@ -934,11 +934,11 @@ const u8 *const gUnknown_0858BAF0[] =
     gText_Cute2,
     gText_Smart2,
     gText_Tough2,
-    gText_Items,
-    gText_Key_Items,
-    gText_Poke_Balls,
-    gText_TMs_Hms,
-    gText_Berries2,
+    gExpandedPlaceholder_Empty,
+    gExpandedPlaceholder_Empty,
+    gExpandedPlaceholder_Empty,
+    gExpandedPlaceholder_Empty,
+    gExpandedPlaceholder_Empty,
     gText_Single2,
     gText_Double2,
     gText_Multi,
@@ -950,6 +950,13 @@ const u8 *const gUnknown_0858BAF0[] =
     gText_BattleArena,
     gText_BattlePike,
     gText_BattlePyramid,
+    gText_ItemsPocket,
+    gText_HoldItemsPocket,
+    gText_MedicinePocket,
+    gText_PokeBallsPocket,
+    gText_BerriesPocket,
+    gText_TMHMPocket,
+    gText_KeyItemsPocket,
 };
 
 const u8 gUnknown_0858BB68[] = { 74, 75, 76, 77, 78, 79 };
@@ -1071,7 +1078,7 @@ static u16 sub_80E1EB8(const u8 *str)
             str++;
             if (*str == 1)
             {
-                length += StringLength(gSaveBlock2Ptr->playerName);
+                length += StringLength(gSaveBlockPtr->playerName);
                 str++;
             }
         }
@@ -1711,7 +1718,7 @@ static void CreateStartMenu(void)
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionPokemon, 8, 25, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionBag, 8, 41, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionPokenav, 8, 57, TEXT_SPEED_FF, NULL);
-    AddTextPrinterParameterized(windowId, 1, gSaveBlock2Ptr->playerName, 8, 73, TEXT_SPEED_FF, NULL);
+    AddTextPrinterParameterized(windowId, 1, gSaveBlockPtr->playerName, 8, 73, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionSave, 8, 89, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionOption, 8, 105, TEXT_SPEED_FF, NULL);
     AddTextPrinterParameterized(windowId, 1, gText_MenuOptionExit, 8, 121, TEXT_SPEED_FF, NULL);

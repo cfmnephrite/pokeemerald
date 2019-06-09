@@ -5,7 +5,7 @@
 static bool32 IsCurMapInLocationList(const u16 *list)
 {
     s32 i;
-    u16 locSum = (gSaveBlock1Ptr->location.mapGroup << 8) + (gSaveBlock1Ptr->location.mapNum);
+    u16 locSum = (gSaveBlockPtr->location.mapGroup << 8) + (gSaveBlockPtr->location.mapNum);
 
     for (i = 0; list[i] != 0xFFFF; i++)
     {
@@ -89,26 +89,26 @@ static bool32 sub_81AFCEC(void)
 static void TrySetPokeCenterWarpStatus(void)
 {
     if (IsCurMapPokeCenter() == FALSE)
-        gSaveBlock2Ptr->specialSaveWarpFlags &= ~(POKECENTER_SAVEWARP);
+        gSaveBlockPtr->specialSaveWarpFlags &= ~(POKECENTER_SAVEWARP);
     else
-        gSaveBlock2Ptr->specialSaveWarpFlags |= POKECENTER_SAVEWARP;
+        gSaveBlockPtr->specialSaveWarpFlags |= POKECENTER_SAVEWARP;
 }
 
 static void TrySetReloadWarpStatus(void)
 {
     if (!IsCurMapReloadLocation())
-        gSaveBlock2Ptr->specialSaveWarpFlags &= ~(LOBBY_SAVEWARP);
+        gSaveBlockPtr->specialSaveWarpFlags &= ~(LOBBY_SAVEWARP);
     else
-        gSaveBlock2Ptr->specialSaveWarpFlags |= LOBBY_SAVEWARP;
+        gSaveBlockPtr->specialSaveWarpFlags |= LOBBY_SAVEWARP;
 }
 
 // this function definitely sets a warp status, but because the list is empty, it's unknown what this does yet.
 static void sub_81AFD5C(void)
 {
     if (!sub_81AFCEC())
-        gSaveBlock2Ptr->specialSaveWarpFlags &= ~(UNK_SPECIAL_SAVE_WARP_FLAG_3);
+        gSaveBlockPtr->specialSaveWarpFlags &= ~(UNK_SPECIAL_SAVE_WARP_FLAG_3);
     else
-        gSaveBlock2Ptr->specialSaveWarpFlags |= UNK_SPECIAL_SAVE_WARP_FLAG_3;
+        gSaveBlockPtr->specialSaveWarpFlags |= UNK_SPECIAL_SAVE_WARP_FLAG_3;
 }
 
 void TrySetMapSaveWarpStatus(void)
@@ -118,18 +118,7 @@ void TrySetMapSaveWarpStatus(void)
     sub_81AFD5C();
 }
 
-void sub_81AFDA0(void)
-{
-    gSaveBlock2Ptr->field_A8 |= 0x8000;
-    gSaveBlock2Ptr->field_A8 |= 0x1;
-    gSaveBlock2Ptr->field_A8 |= 0x2;
-    gSaveBlock2Ptr->field_A8 |= 0x4;
-    gSaveBlock2Ptr->field_A8 |= 0x10;
-    gSaveBlock2Ptr->field_A8 |= 0x20;
-    gSaveBlock2Ptr->field_A8 |= 0x8;
-}
-
 void sub_81AFDD0(void)
 {
-    gSaveBlock2Ptr->specialSaveWarpFlags |= 0x80;
+    gSaveBlockPtr->specialSaveWarpFlags |= 0x80;
 }

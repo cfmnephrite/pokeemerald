@@ -28,7 +28,7 @@
 #include "constants/species.h"
 #include "constants/moves.h"
 
-#define PLAYER_APPRENTICE gSaveBlock2Ptr->playerApprentice
+#define PLAYER_APPRENTICE gSaveBlockPtr->playerApprentice
 
 struct Unk030062ECStruct
 {
@@ -1059,14 +1059,14 @@ void CopyFriendsApprenticeChallengeText(u8 saveblockApprenticeId)
     u8 i, var;
     const u8 *str;
 
-    var = gSaveBlock2Ptr->apprentices[saveblockApprenticeId].number;
+    var = gSaveBlockPtr->apprentices[saveblockApprenticeId].number;
     for (i = 0; var != 0 && i < 4; var /= 10, i++)
         ;
 
-    StringCopy7(gStringVar1, gSaveBlock2Ptr->apprentices[saveblockApprenticeId].playerName);
-    ConvertInternationalString(gStringVar1, gSaveBlock2Ptr->apprentices[saveblockApprenticeId].language);
-    ConvertIntToDecimalStringN(gStringVar2, gSaveBlock2Ptr->apprentices[saveblockApprenticeId].number, STR_CONV_MODE_RIGHT_ALIGN, i);
-    str = gUnknown_08611330[gSaveBlock2Ptr->apprentices[saveblockApprenticeId].id];
+    StringCopy7(gStringVar1, gSaveBlockPtr->apprentices[saveblockApprenticeId].playerName);
+    ConvertInternationalString(gStringVar1, gSaveBlockPtr->apprentices[saveblockApprenticeId].language);
+    ConvertIntToDecimalStringN(gStringVar2, gSaveBlockPtr->apprentices[saveblockApprenticeId].number, STR_CONV_MODE_RIGHT_ALIGN, i);
+    str = gUnknown_08611330[gSaveBlockPtr->apprentices[saveblockApprenticeId].id];
     StringExpandPlaceholders(gStringVar4, str);
 }
 
@@ -1094,16 +1094,16 @@ void ResetAllApprenticeData(void)
     for (i = 0; i < 4; i++)
     {
         for (j = 0; j < 6; j++)
-            gSaveBlock2Ptr->apprentices[i].easyChatWords[j] = 0xFFFF;
-        gSaveBlock2Ptr->apprentices[i].id = 16;
-        gSaveBlock2Ptr->apprentices[i].playerName[0] = EOS;
-        gSaveBlock2Ptr->apprentices[i].lvlMode = 0;
-        gSaveBlock2Ptr->apprentices[i].number = 0;
-        gSaveBlock2Ptr->apprentices[i].field_1 = 0;
+            gSaveBlockPtr->apprentices[i].easyChatWords[j] = 0xFFFF;
+        gSaveBlockPtr->apprentices[i].id = 16;
+        gSaveBlockPtr->apprentices[i].playerName[0] = EOS;
+        gSaveBlockPtr->apprentices[i].lvlMode = 0;
+        gSaveBlockPtr->apprentices[i].number = 0;
+        gSaveBlockPtr->apprentices[i].field_1 = 0;
         for (j = 0; j < 4; j++)
-            gSaveBlock2Ptr->apprentices[i].playerId[j] = 0;
-        gSaveBlock2Ptr->apprentices[i].language = gGameLanguage;
-        gSaveBlock2Ptr->apprentices[i].checksum = 0;
+            gSaveBlockPtr->apprentices[i].playerId[j] = 0;
+        gSaveBlockPtr->apprentices[i].language = gGameLanguage;
+        gSaveBlockPtr->apprentices[i].checksum = 0;
     }
 
     Script_ResetPlayerApprentice();
@@ -1116,19 +1116,19 @@ static bool8 IsPlayersApprenticeActive(void)
 
 static void sub_819FBC8(void)
 {
-    if (gSaveBlock2Ptr->apprentices[0].number == 0)
+    if (gSaveBlockPtr->apprentices[0].number == 0)
     {
         do
         {
             PLAYER_APPRENTICE.id = gUnknown_08611548[Random() % ARRAY_COUNT(gUnknown_08611548)];
-        } while (PLAYER_APPRENTICE.id == gSaveBlock2Ptr->apprentices[0].id);
+        } while (PLAYER_APPRENTICE.id == gSaveBlockPtr->apprentices[0].id);
     }
     else
     {
         do
         {
             PLAYER_APPRENTICE.id = Random() % 16;
-        } while (PLAYER_APPRENTICE.id == gSaveBlock2Ptr->apprentices[0].id);
+        } while (PLAYER_APPRENTICE.id == gSaveBlockPtr->apprentices[0].id);
     }
 }
 
@@ -1446,16 +1446,16 @@ static void sub_81A0390(u8 arg0)
 
     for (i = 0; i < 3; i++)
     {
-        gSaveBlock2Ptr->apprentices[0].party[i].species = 0;
-        gSaveBlock2Ptr->apprentices[0].party[i].item = 0;
+        gSaveBlockPtr->apprentices[0].party[i].species = 0;
+        gSaveBlockPtr->apprentices[0].party[i].item = 0;
         for (j = 0; j < MAX_MON_MOVES; j++)
-            gSaveBlock2Ptr->apprentices[0].party[i].moves[j] = 0;
+            gSaveBlockPtr->apprentices[0].party[i].moves[j] = 0;
     }
 
     j = PLAYER_APPRENTICE.field_B1_2;
     for (i = 0; i < 3; i++)
     {
-        apprenticeMons[j] = &gSaveBlock2Ptr->apprentices[0].party[i];
+        apprenticeMons[j] = &gSaveBlockPtr->apprentices[0].party[i];
         j = (j + 1) % 3;
     }
 
@@ -1986,7 +1986,7 @@ static void sub_81A0FFC(void)
             StringCopy(stringDst, gText_OpenLevel);
         break;
     case APPRENTICE_BUFF_EASY_CHAT:
-        FrontierSpeechToString(gSaveBlock2Ptr->apprentices[0].easyChatWords);
+        FrontierSpeechToString(gSaveBlockPtr->apprentices[0].easyChatWords);
         StringCopy(stringDst, gStringVar4);
         break;
     case APPRENTICE_BUFF_SPECIES4:
@@ -2049,14 +2049,14 @@ static void sub_81A1370(void)
     s32 r10;
     s32 r9;
 
-    if (gSaveBlock2Ptr->apprentices[0].playerName[0] == EOS)
+    if (gSaveBlockPtr->apprentices[0].playerName[0] == EOS)
         return;
 
     for (i = 0; i < 3; i++)
     {
-        if (gSaveBlock2Ptr->apprentices[i + 1].playerName[0] == EOS)
+        if (gSaveBlockPtr->apprentices[i + 1].playerName[0] == EOS)
         {
-            gSaveBlock2Ptr->apprentices[i + 1] = gSaveBlock2Ptr->apprentices[0];
+            gSaveBlockPtr->apprentices[i + 1] = gSaveBlockPtr->apprentices[0];
             return;
         }
     }
@@ -2065,46 +2065,46 @@ static void sub_81A1370(void)
     r9 = -1;
     for (i = 1; i < 4; i++)
     {
-        if (GetTrainerId(gSaveBlock2Ptr->apprentices[i].playerId) == GetTrainerId(gSaveBlock2Ptr->playerTrainerId)
-            && gSaveBlock2Ptr->apprentices[i].number < r10)
+        if (GetTrainerId(gSaveBlockPtr->apprentices[i].playerId) == GetTrainerId(gSaveBlockPtr->playerTrainerId)
+            && gSaveBlockPtr->apprentices[i].number < r10)
         {
-            r10 = gSaveBlock2Ptr->apprentices[i].number;
+            r10 = gSaveBlockPtr->apprentices[i].number;
             r9 = i;
         }
     }
 
     if (r9 > 0)
-        gSaveBlock2Ptr->apprentices[r9] = gSaveBlock2Ptr->apprentices[0];
+        gSaveBlockPtr->apprentices[r9] = gSaveBlockPtr->apprentices[0];
 }
 
 static void sub_81A1438(void)
 {
     u8 i;
 
-    gSaveBlock2Ptr->apprentices[0].id = PLAYER_APPRENTICE.id;
-    gSaveBlock2Ptr->apprentices[0].lvlMode = PLAYER_APPRENTICE.activeLvlMode;
+    gSaveBlockPtr->apprentices[0].id = PLAYER_APPRENTICE.id;
+    gSaveBlockPtr->apprentices[0].lvlMode = PLAYER_APPRENTICE.activeLvlMode;
 
     for (i = 0; i < 9 && PLAYER_APPRENTICE.field_B8[i].unk0_0; i++)
         ;
 
-    gSaveBlock2Ptr->apprentices[0].field_1 = i;
-    if (gSaveBlock2Ptr->apprentices[0].number < 255)
-        gSaveBlock2Ptr->apprentices[0].number++;
+    gSaveBlockPtr->apprentices[0].field_1 = i;
+    if (gSaveBlockPtr->apprentices[0].number < 255)
+        gSaveBlockPtr->apprentices[0].number++;
 
-    sub_81A0390(gSaveBlock2Ptr->apprentices[0].field_1);
+    sub_81A0390(gSaveBlockPtr->apprentices[0].field_1);
     for (i = 0; i < 4; i++)
-        gSaveBlock2Ptr->apprentices[0].playerId[i] = gSaveBlock2Ptr->playerTrainerId[i];
+        gSaveBlockPtr->apprentices[0].playerId[i] = gSaveBlockPtr->playerTrainerId[i];
 
-    StringCopy(gSaveBlock2Ptr->apprentices[0].playerName, gSaveBlock2Ptr->playerName);
-    gSaveBlock2Ptr->apprentices[0].language = gGameLanguage;
-    CalcApprenticeChecksum(&gSaveBlock2Ptr->apprentices[0]);
+    StringCopy(gSaveBlockPtr->apprentices[0].playerName, gSaveBlockPtr->playerName);
+    gSaveBlockPtr->apprentices[0].language = gGameLanguage;
+    CalcApprenticeChecksum(&gSaveBlockPtr->apprentices[0]);
 }
 
 static void sub_81A150C(void)
 {
     u8 i;
     u8 mapObjectGfxId;
-    u8 class = gApprentices[gSaveBlock2Ptr->apprentices[0].id].facilityClass;
+    u8 class = gApprentices[gSaveBlockPtr->apprentices[0].id].facilityClass;
 
     // Search male classes.
     for (i = 0; i < ARRAY_COUNT(gTowerMaleFacilityClasses) && gTowerMaleFacilityClasses[i] != class; i++)

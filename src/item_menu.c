@@ -423,16 +423,16 @@ const struct WindowTemplate gUnknown_086141AC[] =
 // .text
 
 struct ListBuffer1 {
-    struct ListMenuItem subBuffers[65];
+    struct ListMenuItem subBuffers[125];
 };
 
 struct ListBuffer2 {
-    s8 name[65][24];
+    s8 name[125][24];
 };
 
 struct TempWallyStruct {
-    struct ItemSlot bagPocket_Items[30];
-    struct ItemSlot bagPocket_PokeBalls[16];
+    u16 bagPocket_Items[30];
+    u16 bagPocket_PokeBalls[16];
     u16 cursorPosition[POCKETS_COUNT];
     u16 scrollPosition[POCKETS_COUNT];
     u8 filler[0x2];
@@ -484,11 +484,6 @@ void sub_81AABF0(void (*callback)(void))
 void CB2_GoToSellMenu(void)
 {
     GoToBagMenu(RETURN_LOCATION_SHOP, POCKETS_COUNT, CB2_ExitSellMenu);
-}
-
-void sub_81AAC14(void)
-{
-    GoToBagMenu(RETURN_LOCATION_PC, POCKETS_COUNT, sub_816B31C);
 }
 
 void sub_81AAC28(void)
@@ -705,14 +700,14 @@ bool8 LoadBagMenu_Graphics(void)
             }
             break;
         case 2:
-            if (!IsWallysBag() && gSaveBlock2Ptr->playerGender != MALE)
+            if (!IsWallysBag() && gSaveBlockPtr->playerGender != MALE)
                 LoadCompressedPalette(gBagScreenFemale_Pal, 0, 0x40);
             else
                 LoadCompressedPalette(gBagScreenMale_Pal, 0, 0x40);
             gBagMenu->unk834++;
             break;
         case 3:
-            if (IsWallysBag() == TRUE || gSaveBlock2Ptr->playerGender == MALE)
+            if (IsWallysBag() == TRUE || gSaveBlockPtr->playerGender == MALE)
                 LoadCompressedSpriteSheet(&gBagMaleSpriteSheet);
             else
                 LoadCompressedSpriteSheet(&gBagFemaleSpriteSheet);
@@ -756,7 +751,7 @@ void LoadBagItemListBuffers(u8 pocketId)
     {
         for (i = 0; i < gBagMenu->numItemStacks[pocketId] - 1; i++)
         {
-            GetItemName(sListBuffer2->name[i], pocket->itemSlots[i].itemId);
+            GetItemName(sListBuffer2->name[i], GetBagItemID(pocket->itemSlots[i], pocketId));
             subBuffer = sListBuffer1->subBuffers;
             subBuffer[i].name = sListBuffer2->name[i];
             subBuffer[i].id = i;
@@ -770,7 +765,7 @@ void LoadBagItemListBuffers(u8 pocketId)
     {
         for (i = 0; i < gBagMenu->numItemStacks[pocketId]; i++)
         {
-            GetItemName(sListBuffer2->name[i], pocket->itemSlots[i].itemId);
+            GetItemName(sListBuffer2->name[i], GetBagItemID(pocket->itemSlots[i], pocketId));
             subBuffer = sListBuffer1->subBuffers;
             subBuffer[i].name = sListBuffer2->name[i];
             subBuffer[i].id = i;
@@ -865,7 +860,7 @@ void PrintItemQuantityPlusGFX(u8 rboxId, int item_index_in_pocket, u8 a)
         }
         else
         {
-            if (gSaveBlock1Ptr->registeredItem && gSaveBlock1Ptr->registeredItem == itemId)
+            if (gSaveBlockPtr->registeredItem && gSaveBlockPtr->registeredItem == itemId)
                 BlitBitmapToWindow(rboxId, gUnknown_086140A4, 0x60, a - 1, 0x18, 16);
         }
     }
@@ -973,14 +968,14 @@ void sub_81AB9A8(u8 pocketId)
     {
         case TMHM_POCKET:
         case BERRIES_POCKET:
-            SortBerriesOrTMHMs(pocket);
+            SortBerriesOrTMHMs(pocket, pocketId);
             break;
         default:
-            CompactItemsInBagPocket(pocket);
+            CompactItemsInBagPocket(pocket, pocketId);
             break;
     }
     gBagMenu->numItemStacks[pocketId] = 0;
-    for (i = 0; i < pocket->capacity && pocket->itemSlots[i].itemId; i++)
+    for (i = 0; i < pocket->capacity && GetBagItemID(pocket->itemSlots[i], pocketId); i++)
         gBagMenu->numItemStacks[pocketId]++;
 
     if (!gBagMenu->hideCloseBagText)
@@ -1055,16 +1050,14 @@ void sub_81ABC3C(u8 a)
 
 void sub_81ABC54(u8 a, s16 b)
 {
-    u8 r3 = (gBagPositionStruct.pocket == BERRIES_POCKET) ? 3 : 2;
-    ConvertIntToDecimalStringN(gStringVar1, b, 2, r3);
+    ConvertIntToDecimalStringN(gStringVar1, b, 2, 2);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(a, 1, gStringVar4, GetStringCenterAlignXOffset(1, gStringVar4, 0x28), 2, 0, 0);
 }
 
 void sub_81ABCC0(int a, int b, int c)
 {
-    u8 r3 = (gBagPositionStruct.pocket == BERRIES_POCKET) ? 3 : 2;
-    ConvertIntToDecimalStringN(gStringVar1, b, 2, r3);
+    ConvertIntToDecimalStringN(gStringVar1, b, 2, 2);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(a, 1, gStringVar4, 0, 1, -1, 0);
     PrintMoneyAmount(a, 0x26, 1, c, 0);
@@ -1470,7 +1463,7 @@ void sub_81AC644(u8 unused)
                         gBagMenu->unk820 = &gBagMenu->unk824;
                         gBagMenu->unk828 = 4;
                         memcpy(&gBagMenu->unk824, &gUnknown_08614030, 4);
-                        if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
+                        if (gSaveBlockPtr->registeredItem == gSpecialVar_ItemId)
                             gBagMenu->unk825 = 8;
                         if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
                         {
@@ -1758,10 +1751,10 @@ void ItemMenu_Register(u8 taskId)
     u16* scrollPos = &gBagPositionStruct.scrollPosition[gBagPositionStruct.pocket];
     u16* cursorPos = &gBagPositionStruct.cursorPosition[gBagPositionStruct.pocket];
 
-    if (gSaveBlock1Ptr->registeredItem == gSpecialVar_ItemId)
-        gSaveBlock1Ptr->registeredItem = 0;
+    if (gSaveBlockPtr->registeredItem == gSpecialVar_ItemId)
+        gSaveBlockPtr->registeredItem = 0;
     else
-        gSaveBlock1Ptr->registeredItem = gSpecialVar_ItemId;
+        gSaveBlockPtr->registeredItem = gSpecialVar_ItemId;
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
     LoadBagItemListBuffers(gBagPositionStruct.pocket);
     data[0] = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
@@ -1885,21 +1878,21 @@ bool8 UseRegisteredKeyItemOnField(void)
         return FALSE;
     HideMapNamePopUpWindow();
     ChangeBgY_ScreenOff(0, 0, 0);
-    if (gSaveBlock1Ptr->registeredItem != ITEM_NONE)
+    if (gSaveBlockPtr->registeredItem != ITEM_NONE)
     {
-        if (CheckBagHasItem(gSaveBlock1Ptr->registeredItem, 1) == TRUE)
+        if (CheckBagHasItem(gSaveBlockPtr->registeredItem, 1) == TRUE)
         {
             ScriptContext2_Enable();
             FreezeEventObjects();
             sub_808B864();
             sub_808BCF4();
-            gSpecialVar_ItemId = gSaveBlock1Ptr->registeredItem;
-            taskId = CreateTask(ItemId_GetFieldFunc(gSaveBlock1Ptr->registeredItem), 8);
+            gSpecialVar_ItemId = gSaveBlockPtr->registeredItem;
+            taskId = CreateTask(ItemId_GetFieldFunc(gSaveBlockPtr->registeredItem), 8);
             gTasks[taskId].data[3] = 1;
             return TRUE;
         }
         else
-            gSaveBlock1Ptr->registeredItem = ITEM_NONE;
+            gSaveBlockPtr->registeredItem = ITEM_NONE;
     }
     ScriptContext1_SetupScript(EventScript_SelectWithoutRegisteredItem);
     return TRUE;
@@ -1909,7 +1902,7 @@ void DisplaySellItemAskString(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    if (ItemId_GetPrice(gSpecialVar_ItemId) == 0)
+    if (ItemId_GetPrice(gSpecialVar_ItemId) == 0 || ItemId_GetPocket(gSpecialVar_ItemId) == POCKET_TM_HM)
     {
         CopyItemName(gSpecialVar_ItemId, gStringVar2);
         StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);
@@ -2009,14 +2002,14 @@ void sub_81AD8C8(u8 taskId)
 
     PlaySE(SE_REGI);
     RemoveBagItem(gSpecialVar_ItemId, data[8]);
-    AddMoney(&gSaveBlock1Ptr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
+    AddMoney(&gSaveBlockPtr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
     sub_81AB9A8(gBagPositionStruct.pocket);
     SetInitialScrollAndCursorPositions(gBagPositionStruct.pocket);
     LoadBagItemListBuffers(gBagPositionStruct.pocket);
     data[0] = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
     BagMenu_PrintCursor_(data[0], 2);
-    PrintMoneyAmountInMoneyBox(gBagMenu->unk819, GetMoney(&gSaveBlock1Ptr->money), 0);
+    PrintMoneyAmountInMoneyBox(gBagMenu->unk819, GetMoney(&gSaveBlockPtr->money), 0);
     gTasks[taskId].func = sub_81AD9C0;
 }
 
@@ -2124,16 +2117,16 @@ void PrepareBagForWallyTutorial(void)
     u32 i;
 
     gUnknown_0203CE80 = AllocZeroed(sizeof(struct TempWallyStruct));
-    memcpy(gUnknown_0203CE80->bagPocket_Items, gSaveBlock1Ptr->bagPocket_Items, sizeof(gSaveBlock1Ptr->bagPocket_Items));
-    memcpy(gUnknown_0203CE80->bagPocket_PokeBalls, gSaveBlock1Ptr->bagPocket_PokeBalls, sizeof(gSaveBlock1Ptr->bagPocket_PokeBalls));
+    memcpy(gUnknown_0203CE80->bagPocket_Items, gSaveBlockPtr->bagPocket_Items, sizeof(gSaveBlockPtr->bagPocket_Items));
+    memcpy(gUnknown_0203CE80->bagPocket_PokeBalls, gSaveBlockPtr->bagPocket_PokeBalls, sizeof(gSaveBlockPtr->bagPocket_PokeBalls));
     gUnknown_0203CE80->pocket = gBagPositionStruct.pocket;
     for (i = 0; i <= 4; i++)
     {
         gUnknown_0203CE80->cursorPosition[i] = gBagPositionStruct.cursorPosition[i];
         gUnknown_0203CE80->scrollPosition[i] = gBagPositionStruct.scrollPosition[i];
     }
-    ClearItemSlots(gSaveBlock1Ptr->bagPocket_Items, 30);
-    ClearItemSlots(gSaveBlock1Ptr->bagPocket_PokeBalls, 16);
+    ClearItemSlots(gSaveBlockPtr->bagPocket_Items, 30);
+    ClearItemSlots(gSaveBlockPtr->bagPocket_PokeBalls, 16);
     ResetBagScrollPositions();
 }
 
@@ -2141,8 +2134,8 @@ void RestoreBagAfterWallyTutorial(void)
 {
     u32 i;
 
-    memcpy(gSaveBlock1Ptr->bagPocket_Items, gUnknown_0203CE80->bagPocket_Items, sizeof(gUnknown_0203CE80->bagPocket_Items));
-    memcpy(gSaveBlock1Ptr->bagPocket_PokeBalls, gUnknown_0203CE80->bagPocket_PokeBalls, sizeof(gUnknown_0203CE80->bagPocket_PokeBalls));
+    memcpy(gSaveBlockPtr->bagPocket_Items, gUnknown_0203CE80->bagPocket_Items, sizeof(gUnknown_0203CE80->bagPocket_Items));
+    memcpy(gSaveBlockPtr->bagPocket_PokeBalls, gUnknown_0203CE80->bagPocket_PokeBalls, sizeof(gUnknown_0203CE80->bagPocket_PokeBalls));
     gBagPositionStruct.pocket = gUnknown_0203CE80->pocket;
     for (i = 0; i <= 4; i++)
     {
@@ -2355,7 +2348,7 @@ void BagMenu_YesNo(u8 a, u8 b, const struct YesNoFuncTable *funcTable)
 void bag_menu_AddMoney_window(void)
 {
     u8 windowId = BagMenu_AddWindow(9);
-    PrintMoneyAmountInMoneyBoxWithBorder(windowId, 1, 14, GetMoney(&gSaveBlock1Ptr->money));
+    PrintMoneyAmountInMoneyBoxWithBorder(windowId, 1, 14, GetMoney(&gSaveBlockPtr->money));
     AddMoneyLabelObject(19, 11);
 }
 

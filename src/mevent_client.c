@@ -219,7 +219,7 @@ static u32 mainseq_4(struct mevent_client * svr)
         InitRamScript_NoEventObject(svr->recvBuffer, 1000);
         break;
     case 18:
-        memcpy(&gSaveBlock2Ptr->frontier.ereaderTrainer, svr->recvBuffer, 0xbc);
+        memcpy(&gSaveBlockPtr->frontier.ereaderTrainer, svr->recvBuffer, 0xbc);
         ValidateEReaderTrainer();
         break;
     case 21:
@@ -266,8 +266,8 @@ static u32 mainseq_6(struct mevent_client * svr)
 static u32 mainseq_7(struct mevent_client * svr)
 {
     // exec arbitrary code
-    u32 (*func)(u32 *, struct SaveBlock2 *, struct SaveBlock1 *) = (void *)gDecompressionBuffer;
-    if (func(&svr->param, gSaveBlock2Ptr, gSaveBlock1Ptr) == 1)
+    u32 (*func)(u32 *, struct SaveBlock *) = (void *)gDecompressionBuffer;
+    if (func(&svr->param, gSaveBlockPtr) == 1)
     {
         svr->mainseqno = 4;
         svr->flag = 0;

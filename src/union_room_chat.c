@@ -572,7 +572,7 @@ static void sub_801DDD0(struct UnionRoomChat *unionRoomChat)
     unionRoomChat->unk18 = 0;
     sub_801EF1C(unionRoomChat->unk190);
     for (i = 0; i < 10; i++)
-        StringCopy(unionRoomChat->unkB9[i], gSaveBlock1Ptr->unk3C88[i]);
+        StringCopy(unionRoomChat->unkB9[i], gSaveBlockPtr->unk3C88[i]);
 }
 
 void sub_801DE30(void)
@@ -1410,7 +1410,7 @@ static void sub_801EE2C(void)
 {
     int i;
     for (i = 0; i < 10; i++)
-        StringCopy(gSaveBlock1Ptr->unk3C88[i], gUnknown_02022C84->unkB9[i]);
+        StringCopy(gSaveBlockPtr->unk3C88[i], gUnknown_02022C84->unkB9[i]);
 }
 
 static u8 *sub_801EE6C(int arg0)
@@ -1474,21 +1474,21 @@ static void sub_801EF1C(u8 *arg0)
 static void sub_801EF24(u8 *arg0)
 {
     arg0[0] = 2;
-    StringCopy(&arg0[1], gSaveBlock2Ptr->playerName);
+    StringCopy(&arg0[1], gSaveBlockPtr->playerName);
     arg0[1 + (PLAYER_NAME_LENGTH + 1)] = gUnknown_02022C84->unk13;
 }
 
 static void sub_801EF4C(u8 *arg0)
 {
     arg0[0] = 1;
-    StringCopy(&arg0[1], gSaveBlock2Ptr->playerName);
+    StringCopy(&arg0[1], gSaveBlockPtr->playerName);
     StringCopy(&arg0[1 + (PLAYER_NAME_LENGTH + 1)], gUnknown_02022C84->unk1A);
 }
 
 static void sub_801EF7C(u8 *arg0)
 {
     arg0[0] = 3;
-    StringCopy(&arg0[1], gSaveBlock2Ptr->playerName);
+    StringCopy(&arg0[1], gSaveBlockPtr->playerName);
     arg0[1 + (PLAYER_NAME_LENGTH + 1)] = gUnknown_02022C84->unk13;
     sub_8011A50();
 }
@@ -1496,14 +1496,14 @@ static void sub_801EF7C(u8 *arg0)
 static void sub_801EFA8(u8 *arg0)
 {
     arg0[0] = 4;
-    StringCopy(&arg0[1], gSaveBlock2Ptr->playerName);
+    StringCopy(&arg0[1], gSaveBlockPtr->playerName);
     arg0[1 + (PLAYER_NAME_LENGTH + 1)] = gUnknown_02022C84->unk13;
 }
 
 static void sub_801EFD0(u8 *arg0)
 {
     arg0[0] = 5;
-    StringCopy(&arg0[1], gSaveBlock2Ptr->playerName);
+    StringCopy(&arg0[1], gSaveBlockPtr->playerName);
     arg0[1 + (PLAYER_NAME_LENGTH + 1)] = gUnknown_02022C84->unk13;
 }
 
@@ -1654,16 +1654,16 @@ static u8 *sub_801F1D0(void)
 
 void copy_strings_to_sav1(void)
 {
-    StringCopy(gSaveBlock1Ptr->unk3C88[0], gText_Hello);
-    StringCopy(gSaveBlock1Ptr->unk3C88[1], gText_Pokemon2);
-    StringCopy(gSaveBlock1Ptr->unk3C88[2], gText_Trade);
-    StringCopy(gSaveBlock1Ptr->unk3C88[3], gText_Battle);
-    StringCopy(gSaveBlock1Ptr->unk3C88[4], gText_Lets);
-    StringCopy(gSaveBlock1Ptr->unk3C88[5], gText_Ok);
-    StringCopy(gSaveBlock1Ptr->unk3C88[6], gText_Sorry);
-    StringCopy(gSaveBlock1Ptr->unk3C88[7], gText_YayUnkF9F9);
-    StringCopy(gSaveBlock1Ptr->unk3C88[8], gText_ThankYou);
-    StringCopy(gSaveBlock1Ptr->unk3C88[9], gText_ByeBye);
+    StringCopy(gSaveBlockPtr->unk3C88[0], gText_Hello);
+    StringCopy(gSaveBlockPtr->unk3C88[1], gText_Pokemon2);
+    StringCopy(gSaveBlockPtr->unk3C88[2], gText_Trade);
+    StringCopy(gSaveBlockPtr->unk3C88[3], gText_Battle);
+    StringCopy(gSaveBlockPtr->unk3C88[4], gText_Lets);
+    StringCopy(gSaveBlockPtr->unk3C88[5], gText_Ok);
+    StringCopy(gSaveBlockPtr->unk3C88[6], gText_Sorry);
+    StringCopy(gSaveBlockPtr->unk3C88[7], gText_YayUnkF9F9);
+    StringCopy(gSaveBlockPtr->unk3C88[8], gText_ThankYou);
+    StringCopy(gSaveBlockPtr->unk3C88[9], gText_ByeBye);
 }
 
 static void sub_801F2B4(u8 taskId)
@@ -2336,7 +2336,7 @@ bool32 sub_801FD30(u8 *state)
     {
     case 0:
         DynamicPlaceholderTextUtil_Reset();
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gSaveBlock2Ptr->playerName);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gSaveBlockPtr->playerName);
         sub_801FF18(9, 0);
         CopyWindowToVram(gUnknown_02022C88->unk1E, 3);
         (*state)++;

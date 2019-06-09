@@ -504,7 +504,6 @@ gSpecials:: @ 81DBA64
 	def_special sub_813B490
 	def_special sub_80A08CC
 	def_special Unused_SetWeatherSunny
-	def_special sub_81AFDA0
 	def_special sub_813B4E0
 	def_special ShouldDoBrailleRegicePuzzle
 	def_special EnableNationalPokedex

@@ -309,7 +309,7 @@ bool32 sub_81CAEBC(int index)
     if (index == REMATCH_TABLE_ENTRIES)
         return FALSE;
 
-    return gSaveBlock1Ptr->trainerRematches[index] != 0;
+    return gSaveBlockPtr->trainerRematches[index] != 0;
 }
 
 int sub_81CAF04(int index)
@@ -458,7 +458,7 @@ bool32 unref_sub_81CB16C(void)
 
     for (i = 0; i < REMATCH_TABLE_ENTRIES; i++)
     {
-        if (sub_81CAE08(i) && gSaveBlock1Ptr->trainerRematches[i])
+        if (sub_81CAE08(i) && gSaveBlockPtr->trainerRematches[i])
             return TRUE;
     }
 
@@ -467,7 +467,7 @@ bool32 unref_sub_81CB16C(void)
         if (MatchCallFlagGetByIndex(i))
         {
             int index = MatchCall_GetRematchTableIdx(i);
-            if (gSaveBlock1Ptr->trainerRematches[index])
+            if (gSaveBlockPtr->trainerRematches[index])
                 return TRUE;
         }
     }
@@ -483,7 +483,7 @@ static bool32 sub_81CB1D0(void)
     {
         if (sub_81CAEA4(index) == gMapHeader.regionMapSectionId)
         {
-            if (!gSaveBlock1Ptr->trainerRematches[state->unk1C[index].unk2])
+            if (!gSaveBlockPtr->trainerRematches[state->unk1C[index].unk2])
                 return TRUE;
         }
     }

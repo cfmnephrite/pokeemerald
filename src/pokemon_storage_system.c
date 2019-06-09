@@ -6459,7 +6459,7 @@ static void sub_80CE350(u16 *moves)
     for (i = 0; i < ARRAY_COUNT(gUnknown_0857B9A4); i++)
     {
         if (gUnknown_0857B9A4[i].mapGroup == MAP_GROUPS_COUNT
-            || (gUnknown_0857B9A4[i].mapGroup == gSaveBlock1Ptr->location.mapGroup && gUnknown_0857B9A4[i].mapNum == gSaveBlock1Ptr->location.mapNum))
+            || (gUnknown_0857B9A4[i].mapGroup == gSaveBlockPtr->location.mapGroup && gUnknown_0857B9A4[i].mapNum == gSaveBlockPtr->location.mapNum))
         {
             *moves = gUnknown_0857B9A4[i].move;
             moves++;
@@ -7040,7 +7040,7 @@ static u8 InBoxInput_Normal(void)
         if (gMain.newKeys & B_BUTTON)
             return 19;
 
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
             if (gMain.heldKeys & L_BUTTON)
                 return 10;
@@ -7297,7 +7297,7 @@ _080CF2E4:\n\
     b _080CF366\n\
     .pool\n\
 _080CF2F8:\n\
-    ldr r0, =gSaveBlock2Ptr\n\
+    ldr r0, =gSaveBlockPtr\n\
     ldr r0, [r0]\n\
     ldrb r0, [r0, 0x13]\n\
     cmp r0, 0x1\n\
@@ -7512,7 +7512,7 @@ static u8 InBoxInput_MovingMultiple(void)
     }
     else
     {
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
             if (gMain.heldKeys & L_BUTTON)
                 return 10;
@@ -7950,7 +7950,7 @@ static u8 HandleInput_OnBox(void)
         if (gMain.heldKeys & DPAD_RIGHT)
             return 9;
 
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+        if (gSaveBlockPtr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
         {
             if (gMain.heldKeys & L_BUTTON)
                 return 10;
@@ -8032,7 +8032,7 @@ _080CF834:\n\
     ands r0, r2\n\
     cmp r0, 0\n\
     bne _080CF86E\n\
-    ldr r0, =gSaveBlock2Ptr\n\
+    ldr r0, =gSaveBlockPtr\n\
     ldr r0, [r0]\n\
     ldrb r0, [r0, 0x13]\n\
     cmp r0, 0x1\n\
@@ -10370,70 +10370,70 @@ bool32 AnyStorageMonWithMove(u16 moveId)
 
 void ResetWaldaWallpaper(void)
 {
-    gSaveBlock1Ptr->waldaPhrase.iconId = 0;
-    gSaveBlock1Ptr->waldaPhrase.patternId = 0;
-    gSaveBlock1Ptr->waldaPhrase.patternUnlocked = FALSE;
-    gSaveBlock1Ptr->waldaPhrase.colors[0] = RGB(21, 25, 30);
-    gSaveBlock1Ptr->waldaPhrase.colors[1] = RGB(6, 12, 24);
-    gSaveBlock1Ptr->waldaPhrase.text[0] = EOS;
+    gSaveBlockPtr->waldaPhrase.iconId = 0;
+    gSaveBlockPtr->waldaPhrase.patternId = 0;
+    gSaveBlockPtr->waldaPhrase.patternUnlocked = FALSE;
+    gSaveBlockPtr->waldaPhrase.colors[0] = RGB(21, 25, 30);
+    gSaveBlockPtr->waldaPhrase.colors[1] = RGB(6, 12, 24);
+    gSaveBlockPtr->waldaPhrase.text[0] = EOS;
 }
 
 void SetWaldaWallpaperLockedOrUnlocked(bool32 unlocked)
 {
-    gSaveBlock1Ptr->waldaPhrase.patternUnlocked = unlocked;
+    gSaveBlockPtr->waldaPhrase.patternUnlocked = unlocked;
 }
 
 bool32 IsWaldaWallpaperUnlocked(void)
 {
-    return gSaveBlock1Ptr->waldaPhrase.patternUnlocked;
+    return gSaveBlockPtr->waldaPhrase.patternUnlocked;
 }
 
 u32 GetWaldaWallpaperPatternId(void)
 {
-    return gSaveBlock1Ptr->waldaPhrase.patternId;
+    return gSaveBlockPtr->waldaPhrase.patternId;
 }
 
 void SetWaldaWallpaperPatternId(u8 id)
 {
     if (id < FRIENDS_WALLPAPERS_COUNT)
-        gSaveBlock1Ptr->waldaPhrase.patternId = id;
+        gSaveBlockPtr->waldaPhrase.patternId = id;
 }
 
 u32 GetWaldaWallpaperIconId(void)
 {
-    return gSaveBlock1Ptr->waldaPhrase.iconId;
+    return gSaveBlockPtr->waldaPhrase.iconId;
 }
 
 void SetWaldaWallpaperIconId(u8 id)
 {
     if (id < 30)
-        gSaveBlock1Ptr->waldaPhrase.iconId = id;
+        gSaveBlockPtr->waldaPhrase.iconId = id;
 }
 
 u16 *GetWaldaWallpaperColorsPtr(void)
 {
-    return gSaveBlock1Ptr->waldaPhrase.colors;
+    return gSaveBlockPtr->waldaPhrase.colors;
 }
 
 void SetWaldaWallpaperColors(u16 color1, u16 color2)
 {
-    gSaveBlock1Ptr->waldaPhrase.colors[0] = color1;
-    gSaveBlock1Ptr->waldaPhrase.colors[1] = color2;
+    gSaveBlockPtr->waldaPhrase.colors[0] = color1;
+    gSaveBlockPtr->waldaPhrase.colors[1] = color2;
 }
 
 u8 *GetWaldaPhrasePtr(void)
 {
-    return gSaveBlock1Ptr->waldaPhrase.text;
+    return gSaveBlockPtr->waldaPhrase.text;
 }
 
 void SetWaldaPhrase(const u8 *src)
 {
-    StringCopy(gSaveBlock1Ptr->waldaPhrase.text, src);
+    StringCopy(gSaveBlockPtr->waldaPhrase.text, src);
 }
 
 bool32 IsWaldaPhraseEmpty(void)
 {
-    return (gSaveBlock1Ptr->waldaPhrase.text[0] == EOS);
+    return (gSaveBlockPtr->waldaPhrase.text[0] == EOS);
 }
 
 // Not sure what the purpose of these functions is.

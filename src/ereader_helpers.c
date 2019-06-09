@@ -42,7 +42,7 @@ extern const u8 gUnknown_08625B6C[][0x148];
 
 static u8 sub_81D38D4(void)
 {
-    return (gSaveBlock1Ptr->trainerHill.unused + 1) % 256;
+    return (gSaveBlockPtr->trainerHill.unused + 1) % 256;
 }
 
 static bool32 Struct_Unk81D38FC_ValidateChecksum(struct Unk81D38FC *arg0)

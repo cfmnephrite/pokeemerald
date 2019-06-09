@@ -2594,7 +2594,7 @@ _0802E322:
 
 	thumb_func_start sub_802E32C
 sub_802E32C: @ 802E32C
-	ldr r0, =gSaveBlock2Ptr
+	ldr r0, =gSaveBlockPtr
 	ldr r0, [r0]
 	movs r1, 0xFE
 	lsls r1, 1

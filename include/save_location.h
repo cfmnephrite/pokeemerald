@@ -8,7 +8,6 @@
 #define UNK_SPECIAL_SAVE_WARP_FLAG_3 (1 << 3)
 
 void TrySetMapSaveWarpStatus(void);
-void sub_81AFDA0(void);
 void sub_81AFDD0(void);
 
 #endif // GUARD_SAVE_LOCATION_H
