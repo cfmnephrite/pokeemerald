@@ -10,7 +10,7 @@ bool32 sub_81C98D4(void)
     {
         if (sub_81CB0C8(i) == gMapHeader.regionMapSectionId
          && sub_81CAE08(i)
-         && gSaveBlock1Ptr->trainerRematches[i])
+         && gSaveBlockPtr->trainerRematches[i])
             return TRUE;
     }
 
