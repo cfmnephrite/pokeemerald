@@ -8,7 +8,6 @@
 #include "text.h"
 #include "trainer_pokemon_sprites.h"
 #include "window.h"
-#include "pokemon_storage_system.h"
 
 struct Pokenav10Struct
 {
@@ -108,7 +107,7 @@ void sub_81D0EFC(struct Pokenav10Struct2 *structPtr)
     }
     else
     {
-        ribbonId = gPokemonStoragePtr->giftRibbons[ribbonId - 25];
+        ribbonId = gSaveBlockPtr->giftRibbons[ribbonId - 25];
         if (ribbonId == 0)
             return;
 

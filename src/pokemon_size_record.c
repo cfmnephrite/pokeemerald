@@ -204,7 +204,7 @@ void GiveGiftRibbonToParty(u8 index, u8 ribbonId)
 
     if (index < 11 && ribbonId < 65)
     {
-        gPokemonStoragePtr->giftRibbons[index] = ribbonId;
+        gSaveBlockPtr->giftRibbons[index] = ribbonId;
         for (i = 0; i < PARTY_SIZE; i++)
         {
             struct Pokemon *mon = &gPlayerParty[i];

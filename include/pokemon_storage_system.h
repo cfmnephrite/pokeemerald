@@ -30,7 +30,6 @@ struct PokemonStorage
     
     // Not really mon storage related...
     /*0x3150*/ struct LinkBattleRecords linkBattleRecords;
-    /*0x31A8*/ u8 giftRibbons[52];
 };
 
 extern struct PokemonStorage *gPokemonStoragePtr;

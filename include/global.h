@@ -871,7 +871,7 @@ struct SaveBlock
     /*0x64C*/ struct BattleFrontier frontier;
     // sizeof: 0xF2C -> 0xEA8 // Without filler, 216 bytes
     
-             u8 hallOfFame[0x960];
+             u8 hallOfFame[0x90E];
     /*0x00*/ struct Coords16 pos;
     /*0x04*/ struct WarpData location;
     /*0x0C*/ struct WarpData continueGameWarp;
@@ -961,13 +961,13 @@ struct SaveBlock
     /*0x3???*/ u8 unk3C88[10][21];
     /*0x3???*/ struct SaveTrainerHill trainerHill;
     /*0x3???*/ struct WaldaPhrase waldaPhrase;
+    /*0x31A8*/ u8 giftRibbons[52];
     // sizeof: 0x3D88 -> 3CA6// Without filler, 360 bytes (An extra 0x68 from Pokedex struct)
                              // +876 from deleting Mystery Event
                              // +604 from moving team
                              // +288 from moving daycare
                              // +28 from moving the roamer
                              // +88 from moving linkBattleRecords
-                             // +52 from moving giftRibbons
 };
 
 extern struct SaveBlock* gSaveBlockPtr;

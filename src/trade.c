@@ -2219,7 +2219,7 @@ static bool8 shedinja_maker_maybe(void)
         }
         break;
     case 17:
-        Trade_Memcpy(gBlockSendBuffer, gPokemonStoragePtr->giftRibbons, 11);
+        Trade_Memcpy(gBlockSendBuffer, gSaveBlockPtr->giftRibbons, 11);
         gUnknown_0203229C->unk_69++;
         break;
     case 19:
@@ -3476,10 +3476,10 @@ static void sub_807A5B0(void)
 
     for (i = 0; i < 11; i++)
     {
-        if (gPokemonStoragePtr->giftRibbons[i] == 0 && gUnknown_0203229C->unk_A9[i] != 0)
+        if (gSaveBlockPtr->giftRibbons[i] == 0 && gUnknown_0203229C->unk_A9[i] != 0)
         {
             if (gUnknown_0203229C->unk_A9[i] < 64)
-                gPokemonStoragePtr->giftRibbons[i] = gUnknown_0203229C->unk_A9[i];
+                gSaveBlockPtr->giftRibbons[i] = gUnknown_0203229C->unk_A9[i];
         }
     }
 }
