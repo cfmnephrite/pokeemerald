@@ -157,7 +157,7 @@ static const u8 sText_SpDefence[] = _("Sp. Defence");
 static const u8 sText_Speed[] = _("Speed");
 static const u8 sText_Accuracy[] = _("Accuracy");
 static const u8 sText_Evasiveness[] = _("Evasiveness");
-static const u8 sText_Freeze[] = _("Freeze");
+static const u8 sText_Freeze[] = _("freeze");
 static const u8 sText_ToxicPoison[] = _("Toxic Poison");
 static const u8 sText_ToxicCounter[] = _("Toxic Counter");
 static const u8 sText_Flinch[] = _("Flinch");
@@ -353,10 +353,10 @@ static const struct ListMenuItem sStatsListItems[] =
 static const struct ListMenuItem sStatus1ListItems[] =
 {
     {gText_Sleep, 0},
-    {gText_Poison, 1},
-    {gText_Burn, 2},
-    {sText_Freeze, 3},
-    {gText_Paralysis, 4},
+    {sText_Freeze, 1},
+    {gText_Paralysis, 2},
+    {gText_Burn, 3},
+    {gText_Poison, 4},
     {sText_ToxicPoison, 5},
     {sText_ToxicCounter, 6},
 };

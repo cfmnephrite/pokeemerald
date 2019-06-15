@@ -24,6 +24,7 @@ tools/agbcc
 *.dump
 *.sa*
 Thumbs.db
+nephrite.zip
 build/
 .DS_Store
 *.ddump
