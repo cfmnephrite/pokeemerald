@@ -116,4 +116,7 @@
 #define SPLIT_SPECIAL   0x1
 #define SPLIT_STATUS    0x2
 
+// Shiny odds
+#define SHINY_ODDS 8 // Actual probability is SHINY_ODDS/65536
+
 #endif // GUARD_CONSTANTS_POKEMON_H
