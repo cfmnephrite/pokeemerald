@@ -13,7 +13,7 @@ gFont8LatinGlyphWidths:: @ 8633AE4
 
 	.align 2
 gFont0LatinGlyphs:: @ 8633CE4
-	.incbin "data/graphics/fonts/font0.latfont"
+	.incbin "data/graphics/fonts/font0.4bpp.lz"
 
 	.align 2
 gFont0LatinGlyphWidths:: @ 863BCE4
