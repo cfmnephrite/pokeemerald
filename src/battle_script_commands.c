@@ -11687,7 +11687,7 @@ static void atkF2_displaydexinfo(void)
         }
         break;
     case 3:
-        sub_80356D0();
+        LoadBattleBgsAndWindows();
         LoadBattleTextboxAndBackground();
         gBattle_BG3_X = 0x100;
         gBattleCommunication[0]++;

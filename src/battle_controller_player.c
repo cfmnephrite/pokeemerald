@@ -329,7 +329,8 @@ static void HandleInputChooseAction(void)
     }
     else if (gMain.newKeys & START_BUTTON)
     {
-        SwapHpBarsWithHpText();
+        //To-Do: make this Mega Evolve the pokemanz
+        //SwapHpBarsWithHpText();
     }
     else if (USE_BATTLE_DEBUG && gMain.newKeys & SELECT_BUTTON)
     {
@@ -2263,6 +2264,7 @@ static void PlayerHandleSwitchInAnim(void)
     BattleLoadPlayerMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
+    gMoveSelectionState[gActiveBattler] = 0;
     sub_805B258(gActiveBattler, gBattleResources->bufferA[gActiveBattler][2]);
     gBattlerControllerFuncs[gActiveBattler] = sub_805902C;
 }
@@ -3179,12 +3181,14 @@ static void PlayerHandleResetActionMoveSelection(void)
     case RESET_ACTION_MOVE_SELECTION:
         gActionSelectionCursor[gActiveBattler] = 0;
         gMoveSelectionCursor[gActiveBattler] = 0;
+        gMoveSelectionState[gActiveBattler] = 0;
         break;
     case RESET_ACTION_SELECTION:
         gActionSelectionCursor[gActiveBattler] = 0;
         break;
     case RESET_MOVE_SELECTION:
         gMoveSelectionCursor[gActiveBattler] = 0;
+        gMoveSelectionState[gActiveBattler] = 0;
         break;
     }
     PlayerBufferExecCompleted();

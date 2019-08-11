@@ -2,7 +2,7 @@
 #define GUARD_BATTLE_BG_H
 
 void BattleInitBgsAndWindows(void);
-void sub_80356D0(void);
+void LoadBattleBgsAndWindows(void);
 void LoadBattleMenuWindowGfx(void);
 void DrawMainBattleBackground(void);
 void LoadBattleTextboxAndBackground(void);

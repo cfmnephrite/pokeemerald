@@ -54,6 +54,7 @@ void SetUpBattleVarsAndBirchZigzagoon(void)
         gBattlerPositions[i] = 0xFF;
         gActionSelectionCursor[i] = 0;
         gMoveSelectionCursor[i] = 0;
+        gMoveSelectionState[i] = 0;
     }
 
     HandleLinkBattleSetup();

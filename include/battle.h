@@ -806,6 +806,7 @@ extern u8 *gLinkBattleRecvBuffer;
 extern struct BattleResources *gBattleResources;
 extern u8 gActionSelectionCursor[MAX_BATTLERS_COUNT];
 extern u8 gMoveSelectionCursor[MAX_BATTLERS_COUNT];
+extern u8 gMoveSelectionState[MAX_BATTLERS_COUNT];
 extern u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT];
 extern u8 gBattlerInMenuId;
 extern bool8 gDoingBattleAnim;

@@ -197,8 +197,8 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
     },
     { // 4 Top right move
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 55,
+        .tilemapLeft = 2,
+        .tilemapTop = 57,
         .width = 8,
         .height = 2,
         .paletteNum = 5,
@@ -206,7 +206,7 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
     },
     { // 5 Bottom left move
         .bg = 0,
-        .tilemapLeft = 2,
+        .tilemapLeft = 11,
         .tilemapTop = 57,
         .width = 8,
         .height = 2,
@@ -710,7 +710,7 @@ void BattleInitBgsAndWindows(void)
     DeactivateAllTextPrinters();
 }
 
-void sub_80356D0(void)
+void LoadBattleBgsAndWindows(void)
 {
     DisableInterrupts(INTR_FLAG_HBLANK);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_VCOUNT | INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
