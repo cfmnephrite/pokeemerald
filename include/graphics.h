@@ -6570,10 +6570,13 @@ extern const u32 gBerryPalette_Babiri[];
 extern const u32 gBerryPalette_Chilan[];
 extern const u32 gBerryPalette_Roseli[];
 
-//credits
-extern const u32 gCreditsCopyrightEnd_Gfx[];
-
 //pokenav
+extern const u16 gPokenavCondition_Pal[];
+extern const u32 gPokenavCondition_Gfx[];
+extern const u32 gPokenavCondition_Tilemap[];
+extern const u16 gPokenavOptions_Tilemap[];
+extern const u32 gPokenavOptions_Gfx[];
+extern const u16 gPokenavOptions_Pal[];
 extern const u8 gPokenavConditionMarker_Gfx[];
 extern const u16 gPokenavConditionMarker_Pal[];
 extern const u16 gPokenavLeftHeader_Pal[];
@@ -6592,6 +6595,9 @@ extern const u32 gPokenavLeftHeaderBeauty_Gfx[];
 extern const u32 gPokenavLeftHeaderCute_Gfx[];
 extern const u32 gPokenavLeftHeaderSmart_Gfx[];
 extern const u32 gPokenavLeftHeaderTough_Gfx[];
+extern const u16 gUnknown_08DDE010[];
+extern const u32 gUnknown_08DDE030[];
+extern const u32 gUnknown_08DDE12C[];
 
 extern const u32 gPageInfoTilemap[];
 extern const u32 gUnknown_08D98CC8[];
@@ -6645,7 +6651,7 @@ extern const u32 gContestConfetti_Pal[];
 extern const u32 gUnknown_08C093F0[];
 extern const u32 gSubstituteDollTilemap[];
 extern const u32 gSubstituteDollGfx[];
-extern const u16 gSubstituteDollPal[];
+extern const u32 gSubstituteDollPal[];
 extern const u32 gHealthboxSinglesPlayerGfx[];
 extern const u32 gHealthboxSinglesOpponentGfx[];
 extern const u32 gHealthboxDoublesPlayerGfx[];
@@ -7291,6 +7297,20 @@ extern const u32 gBattleAnimSpritePal_PowerGem[];
 extern const u32 gBattleAnimSpritePal_StoneEdge[];
 extern const u32 gBattleAnimSpritePal_StealthRock[];
 extern const u32 gBattleAnimSpritePal_PoisonJab[];
+// New Battle Anim Particles
+extern const u32 gBattleAnimSpriteGfx_WhiteStreak[];
+extern const u32 gBattleAnimSpritePal_WhiteStreak[];
+extern const u32 gBattleAnimSpriteGfx_PurpleJab[];
+extern const u32 gBattleAnimSpritePal_PurpleJab[];
+extern const u32 gBattleAnimSpritePal_ToxicSpikes[];
+extern const u32 gBattleAnimSpriteGfx_EnergyBall[];
+extern const u32 gBattleAnimSpritePal_EnergyBall[];
+extern const u32 gBattleAnimSpriteGfx_MegaStone[];
+extern const u32 gBattleAnimSpritePal_MegaStone[];
+extern const u32 gBattleAnimSpriteGfx_MegaParticles[];
+extern const u32 gBattleAnimSpritePal_MegaParticles[];
+extern const u32 gBattleAnimSpriteGfx_MegaSymbol[];
+extern const u32 gBattleAnimSpritePal_MegaSymbol[];
 
 extern const u32 gBattleAnimBgImage_Dark[];
 extern const u32 gBattleAnimBgImage_Ghost[];
@@ -7544,24 +7564,19 @@ extern const u32 gLinkMiscMenu_Tilemap[];
 // Use Pokeblock
 extern const u8 gPokenavConditionCancel_Gfx[];
 extern const u16 gPokenavConditionCancel_Pal[];
+extern const u8 gUsePokeblockUpDown_Gfx[];
+extern const u16 gUsePokeblockUpDown_Pal[];
+extern const u16 gUsePokeblockCondition_Pal[];
 
 // Berry Crush
 extern const u32 gUnknown_08DE34B8[];
 extern const u16 gUnknown_08DE3398[];
 
-// New Battle Anim Particles
-extern const u32 gBattleAnimSpriteGfx_WhiteStreak[];
-extern const u32 gBattleAnimSpritePal_WhiteStreak[];
-extern const u32 gBattleAnimSpriteGfx_PurpleJab[];
-extern const u32 gBattleAnimSpritePal_PurpleJab[];
-extern const u32 gBattleAnimSpritePal_ToxicSpikes[];
-extern const u32 gBattleAnimSpriteGfx_EnergyBall[];
-extern const u32 gBattleAnimSpritePal_EnergyBall[];
-extern const u32 gBattleAnimSpriteGfx_MegaStone[];
-extern const u32 gBattleAnimSpritePal_MegaStone[];
-extern const u32 gBattleAnimSpriteGfx_MegaParticles[];
-extern const u32 gBattleAnimSpritePal_MegaParticles[];
-extern const u32 gBattleAnimSpriteGfx_MegaSymbol[];
-extern const u32 gBattleAnimSpritePal_MegaSymbol[];
+// Pokenav
+extern const u32 gPokenavMessageBox_Gfx[];
+extern const u32 gPokenavMessageBox_Tilemap[];
+extern const u16 gPokenavMessageBox_Pal[];
+extern const u32 gPokenavOptions_Gfx[];
+extern const u16 gPokenavOptions_Pal[];
 
 #endif //GUARD_GRAPHICS_H

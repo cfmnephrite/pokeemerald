@@ -4120,6 +4120,7 @@ static void atk45_playanimation(void)
     if (gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE
         || gBattlescriptCurrInstr[2] == B_ANIM_SNATCH_MOVE
         || gBattlescriptCurrInstr[2] == B_ANIM_MEGA_EVOLUTION
+        || gBattlescriptCurrInstr[2] == B_ANIM_ILLUSION_OFF
         || gBattlescriptCurrInstr[2] == B_ANIM_SUBSTITUTE_FADE)
     {
         BtlController_EmitBattleAnimation(0, gBattlescriptCurrInstr[2], *argumentPtr);
@@ -4164,6 +4165,7 @@ static void atk46_playanimation2(void) // animation Id is stored in the first po
     if (*animationIdPtr == B_ANIM_STATS_CHANGE
         || *animationIdPtr == B_ANIM_SNATCH_MOVE
         || *animationIdPtr == B_ANIM_MEGA_EVOLUTION
+        || *animationIdPtr == B_ANIM_ILLUSION_OFF
         || *animationIdPtr == B_ANIM_SUBSTITUTE_FADE)
     {
         BtlController_EmitBattleAnimation(0, *animationIdPtr, *argumentPtr);
@@ -6127,6 +6129,17 @@ static void atk6B_atknameinbuff1(void)
     gBattlescriptCurrInstr++;
 }
 
+// Because the indicator must have priority 0 to be properly displayed on healthbox, it needs to be temporarily changed while displaying lvl-up-box.
+static void ChangeMegaIndicatorsPriority(u32 priority)
+{
+    s32 i;
+    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
+        if (gBattleStruct->mega.indicatorSpriteIds[i] != 0xFF)
+            gSprites[gBattleStruct->mega.indicatorSpriteIds[i]].oam.priority = priority;
+    }
+}
+
 static void atk6C_drawlvlupbox(void)
 {
     if (gBattleScripting.atk6C_state == 0)
@@ -6157,6 +6170,7 @@ static void atk6C_drawlvlupbox(void)
         SetBgAttribute(1, BG_ATTR_PRIORITY, 0);
         ShowBg(0);
         ShowBg(1);
+        ChangeMegaIndicatorsPriority(1);
         HandleBattleWindow(0x12, 7, 0x1D, 0x13, WINDOW_x80);
         gBattleScripting.atk6C_state = 4;
         break;
@@ -6209,6 +6223,7 @@ static void atk6C_drawlvlupbox(void)
     case 10:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
+            ChangeMegaIndicatorsPriority(0);
             SetBgAttribute(0, BG_ATTR_PRIORITY, 0);
             SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
             ShowBg(0);
@@ -6619,13 +6634,13 @@ u32 IsFlowerVeilProtected(u32 battler)
 static void atk76_various(void)
 {
     struct Pokemon *mon;
-    u8 side, boostStat, boost;
+    u8 boostStat, boost;
     u16 highestStat;
     s32 i, j;
     u8 data[10];
-    u32 bits;
+    u32 side, bits;
     bool8 noFreed = TRUE;
-    u32 hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 100);
+    u32 hpFraction;
 
     if (gBattleControllerExecFlags)
         return;
@@ -6634,6 +6649,29 @@ static void atk76_various(void)
 
     switch (gBattlescriptCurrInstr[2])
     {
+    case VARIOUS_TRACE_ABILITY:
+        gBattleMons[gActiveBattler].ability = gBattleStruct->tracedAbility[gActiveBattler];
+        break;
+    case VARIOUS_TRY_ILLUSION_OFF:
+        if (GetIllusionMonPtr(gActiveBattler) != NULL)
+        {
+            gBattlescriptCurrInstr += 3;
+            BattleScriptPushCursor();
+            gBattlescriptCurrInstr = BattleScript_IllusionOff;
+            return;
+        }
+        break;
+    case VARIOUS_SET_SPRITEIGNORE0HP:
+        gBattleStruct->spriteIgnore0Hp = gBattlescriptCurrInstr[3];
+        gBattlescriptCurrInstr += 4;
+        return;
+    case VARIOUS_UPDATE_NICK:
+        if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+            mon = &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]];
+        else
+            mon = &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]];
+        UpdateHealthboxAttribute(gHealthboxSpriteIds[gActiveBattler], mon, HEALTHBOX_NICK);
+        break;
     case VARIOUS_JUMP_IF_NOT_BERRY:
         if (ItemId_GetPocket(gBattleMons[gActiveBattler].item) == POCKET_BERRIES)
             gBattlescriptCurrInstr += 7;
@@ -7013,6 +7051,7 @@ static void atk76_various(void)
         MarkBattlerForControllerExec(gActiveBattler);
         break;
     case VARIOUS_TRY_ACTIVATE_MOXIE:
+        hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 100);
         if (GetBattlerAbility(gActiveBattler) == ABILITY_MOXIE
             && HasAttackerFaintedTarget()
             && !IsBattleLostForPlayer()

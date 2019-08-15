@@ -4546,6 +4546,7 @@ BattleScript_EffectCamouflage::
 	goto BattleScript_MoveEnd
 
 BattleScript_FaintAttacker::
+	tryillusionoff BS_ATTACKER
 	playfaintcry BS_ATTACKER
 	pause 0x40
 	dofaintanimation BS_ATTACKER
@@ -4555,6 +4556,7 @@ BattleScript_FaintAttacker::
 	return
 
 BattleScript_FaintTarget::
+	tryillusionoff BS_TARGET
 	playfaintcry BS_TARGET
 	pause 0x40
 	dofaintanimation BS_TARGET
@@ -5816,6 +5818,17 @@ BattleScript_Z_Move::
 	waitmessage 0x40
 	jumptocalledmove FALSE
 
+BattleScript_IllusionOff::
+	spriteignore0hp TRUE
+	playanimation BS_TARGET, B_ANIM_ILLUSION_OFF, NULL
+	waitanimation
+	updatenick BS_TARGET
+	waitstate
+	spriteignore0hp FALSE
+	printstring STRINGID_ILLUSIONWOREOFF
+	waitmessage 0x40
+	return
+
 BattleScript_MoveUsedIsAsleep::
 	printstring STRINGID_PKMNFASTASLEEP
 	waitmessage 0x40
@@ -6193,6 +6206,7 @@ BattleScript_TraceActivates::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_PKMNTRACED
 	waitmessage 0x40
+	settracedability BS_ATTACKER
 	switchinabilities BS_ATTACKER
 	end3
 
@@ -6632,7 +6646,6 @@ BattleScript_AttackerAbilityStatRaiseEnd3::
 
 BattleScript_SwitchInAbilityMsg::
 	call BattleScript_AbilityPopUp
-	waitmessage 0x20
 	printfromtable gSwitchInAbilityStringIds
 	waitmessage 0x40
 	end3
