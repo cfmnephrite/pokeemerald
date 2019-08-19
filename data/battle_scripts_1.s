@@ -6234,6 +6234,7 @@ BattleScript_SolarPowerActivates::
 	printstring STRINGID_SOLARPOWERHPDROP
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, FALSE, NULL
+	jumpifability BS_ATTACKER, ABILITY_RKS_SYSTEM, BattleScript_IntimidateActivatesReturn
 	end3
 
 BattleScript_SandstreamActivates::

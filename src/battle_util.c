@@ -2962,6 +2962,51 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+		case ABILITY_RKS_SYSTEM:
+			if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_SILVALLY)
+			{
+				u8 dummy = 1;
+				u32 stats[2][6] = {STAT_HP, STAT_ATK, STAT_DEF, STAT_SPEED, STAT_SPATK, STAT_SPDEF}; 
+				//First row denotes stats: 1 for attack, 2 for defense, 3 for speed, 4 for spatk, and 5 for spdef
+				//second row denotes how many stages to increase or decrease said stat
+				u16 highestOffense;
+				if(gBattleMons[battler].spAttack > gBattleMons[battler].attack)
+					highestOffense = STAT_SPATK;
+				else
+					highestOffense = STAT_ATK;
+				SET_BATTLER_TYPE(battler, dummy);
+				switch(dummy)
+				{
+					case 1: case 7: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_DEF] = -2;} break; //bug, fire
+					case 2: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_SPDEF] = -2;} break; //dark
+					case 3: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_DEF] = -1; stats[1][STAT_SPDEF] = -1;} break; //dragon
+					case 4: {stats[1][STAT_SPEED] = 2; stats[1][STAT_ATK] = -1; stats[1][STAT_DEF] = -1;} break; //electric
+					case 5: {stats[1][STAT_SPDEF] = 2; stats[1][STAT_ATK] = -2;} break; //fairy
+					case 6: {stats[1][STAT_ATK] = 2; stats[1][STAT_SPDEF] = -2;} break; //fighting
+					case 8: {stats[1][highestOffense] = 1; stats[1][STAT_SPEED] = 1; stats[1][STAT_DEF] = -2;} break; //flying
+					case 9: {stats[1][highestOffense] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_DEF] = -2;} break; //ghost
+					case 10: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_ATK] = -3;} break; //grass
+					case 11: {stats[1][STAT_ATK] = 1; stats[1][STAT_DEF] = 1; stats[1][STAT_SPATK] = -1; stats[1][STAT_SPDEF] = -1;} break; //ground
+					case 12: {stats[1][highestOffense] = 2; stats[1][STAT_DEF] = -1; stats[1][STAT_ATK] = -1;} break; //ice
+					case 14: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_SPATK] = -1; stats[1][STAT_SPEED] = -1;} break; //poison
+					case 15: {stats[1][STAT_SPATK] = 2; stats[1][STAT_DEF] = -2;} break; //psychic
+					case 16: {stats[1][STAT_ATK] = 1; stats[1][STAT_DEF] = 2; stats[1][STAT_SPATK] = -3;} break; //rock
+					case 17: {stats[1][STAT_DEF] = 3; stats[1][STAT_SPEED] = -3;} break; //steel
+					case 18: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_ATK] = -1; stats[1][STAT_SPEED] = -1;} break; //water
+					default: break; //anything else (nothing)
+				}
+				for (i = 0; i < 5; i++)
+				{
+					if(stats[0][i] != 0)
+					{
+						//if(stats[0][i] > 0 && /*gBattleMons[battler].statStages[stats[0][i]] != 12 I don't think I should need to check this?*/)
+						gBattleMons[battler].statStages[stats[0][i]] += stats[1][i];
+						SET_STATCHANGER(stats[0][i], abs(stats[1][i]), (stats[1][i] < 0));
+					}
+				}
+				effect++;
+			}
+			break;
         case ABILITY_DRIZZLE:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_RAIN, TRUE))
             {
@@ -3666,6 +3711,25 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_INNARDS_OUT:
+			if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && !IsBattlerAlive(battler)
+             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && TARGET_TURN_DAMAGED
+			 && move != MOVE_CORE_ENFORCER)
+			{
+				u16 dmg;
+				if(gProtectStructs[battler].physicalDmg)
+					dmg = gProtectStructs[battler].physicalDmg;
+				else
+					dmg = gProtectStructs[battler].specialDmg;
+				gBattleMoveDamage = dmg;
+				PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
+                effect++;
+			}
+			break;
         case ABILITY_EFFECT_SPORE:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
@@ -3925,6 +3989,22 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_RKS_SYSTEM:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && IsBattlerAlive(battler)
+             && TARGET_TURN_DAMAGED
+			 && (gBattleMons[battler].species == SPECIES_TYPE_NULL
+			 && ((gBattleMons[battler].spAttack > gBattleMons[battler].attack && IS_MOVE_SPECIAL(move)) 
+			 || (gBattleMons[battler].attack >= gBattleMons[battler].spAttack && IS_MOVE_PHYSICAL(move)))))
+			{
+				gBattleMoveDamage = gBattleMons[battler].maxHP / 6;
+				if (gBattleMoveDamage == 0)
+					gBattleMoveDamage = 1;
+				BattleScriptPushCursor();
+				gBattlescriptCurrInstr = BattleScript_SolarPowerActivates;
+				effect++;
+			}
+			break;
         }
         if (effect)
         {
@@ -5813,7 +5893,8 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.3));
         break;
     case ABILITY_SAND_FORCE:
-        if (moveType == TYPE_STEEL || moveType == TYPE_ROCK || moveType == TYPE_GROUND)
+        if ((moveType == TYPE_STEEL || moveType == TYPE_ROCK || moveType == TYPE_GROUND) && WEATHER_HAS_EFFECT
+             && (gBattleWeather & WEATHER_SANDSTORM_ANY))
            MulModifier(&modifier, UQ_4_12(1.3));
         break;
     case ABILITY_RIVALRY:
@@ -5847,6 +5928,12 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (moveType == TYPE_WATER)
            MulModifier(&modifier, UQ_4_12(2.0));
         break;
+	case ABILITY_RKS_SYSTEM:
+		if (gBattleMons[battlerAtk].species == SPECIES_TYPE_NULL
+		&& ((gBattleMons[battlerAtk].spAttack > gBattleMons[battlerAtk].attack && IS_MOVE_SPECIAL(move)) 
+		|| (gBattleMons[battlerAtk].attack >= gBattleMons[battlerAtk].spAttack && IS_MOVE_PHYSICAL(move))))
+			MulModifier(&modifier, UQ_4_12(1.5));
+		break;
     case ABILITY_STEELWORKER:
         if (moveType == TYPE_STEEL)
            MulModifier(&modifier, UQ_4_12(1.5));
@@ -5874,6 +5961,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (moveType == TYPE_NORMAL && gBattleStruct->ateBoost[battlerAtk])
             MulModifier(&modifier, UQ_4_12(1.5));
         break;
+	case ABILITY_INNER_FOCUS:
+		if (moveType == TYPE_PSYCHIC)
+			MulModifier(&modifier, UQ_4_12(1.5));
+		break;
     }
 
     // field abilities
