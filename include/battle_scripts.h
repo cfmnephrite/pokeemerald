@@ -348,5 +348,6 @@ extern const u8 BattleScript_FlameOrb[];
 extern const u8 BattleScript_MoveEffectIncinerate[];
 extern const u8 BattleScript_MoveEffectBugBite[];
 extern const u8 BattleScript_IllusionOff[];
+extern const u8 BattleScript_RKSSystemBoosts[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

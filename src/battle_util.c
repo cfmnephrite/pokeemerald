@@ -100,6 +100,38 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
 
 };
 
+static const u8 sAbilitiesAffectedByAuraBreak[] =
+{
+	[ABILITY_ADAPTABILITY] = 1,
+	[ABILITY_AERILATE] = 1,
+	[ABILITY_BLAZE] = 1,
+	[ABILITY_FLARE_BOOST] = 1,
+	[ABILITY_GALVANIZE] = 1,
+	[ABILITY_GUTS] = 1,
+	[ABILITY_HUGE_POWER] = 1,
+	[ABILITY_IRON_FIST] = 1,
+	[ABILITY_LONG_REACH] = 1,
+	[ABILITY_MEGA_LAUNCHER] = 1,
+	[ABILITY_OVERGROW] = 1,
+	[ABILITY_PIXILATE] = 1,
+	[ABILITY_POISON_TOUCH] = 1,
+	[ABILITY_POWER_OF_ALCHEMY] = 1,
+	[ABILITY_PURE_POWER] = 1,
+	[ABILITY_RECKLESS] = 1,
+	[ABILITY_REFRIGERATE] = 1,
+	[ABILITY_SAND_FORCE] = 1,
+	[ABILITY_SHEER_FORCE] = 1,
+	[ABILITY_SOLAR_POWER] = 1,
+	[ABILITY_STEELWORKER] = 1,
+	[ABILITY_STRONG_JAW] = 1,
+	[ABILITY_SWARM] = 1,
+	[ABILITY_TECHNICIAN] = 1,
+	[ABILITY_TORRENT] = 1,
+	[ABILITY_TOUGH_CLAWS] = 1,
+	[ABILITY_TOXIC_BOOST] = 1,
+	[ABILITY_WATER_BUBBLE] = 1,
+};
+
 static const u8 sHoldEffectToType[][2] =
 {
     {HOLD_EFFECT_BUG_POWER, TYPE_BUG},
@@ -2963,7 +2995,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
             break;
 		case ABILITY_RKS_SYSTEM:
-			if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_SILVALLY)
+			if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_TORCHIC)
 			{
 				u8 dummy = 1;
 				u32 stats[2][6] = {STAT_HP, STAT_ATK, STAT_DEF, STAT_SPEED, STAT_SPATK, STAT_SPDEF}; 
@@ -3004,6 +3036,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 						SET_STATCHANGER(stats[0][i], abs(stats[1][i]), (stats[1][i] < 0));
 					}
 				}
+				BattleScriptPushCursorAndCallback(BattleScript_RKSSystemBoosts);
 				effect++;
 			}
 			break;
@@ -5971,9 +6004,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     if ((IsAbilityOnField(ABILITY_DARK_AURA) && moveType == TYPE_DARK)
         || (IsAbilityOnField(ABILITY_FAIRY_AURA) && moveType == TYPE_FAIRY))
     {
-        if (IsAbilityOnField(ABILITY_AURA_BREAK))
-            MulModifier(&modifier, UQ_4_12(0.75));
-        else
+        if (!IsAbilityOnField(ABILITY_AURA_BREAK))
             MulModifier(&modifier, UQ_4_12(1.33));
     }
 

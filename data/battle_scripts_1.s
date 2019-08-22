@@ -355,6 +355,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectMagneticFlux
 	.4byte BattleScript_EffectGearUp
 	.4byte BattleScript_EffectBugBite
+	.4byte BattleScript_RKSSystemBoosts
 	
 BattleScript_EffectBugBite:
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
@@ -6576,6 +6577,63 @@ BattleScript_TargetAbilityStatRaise::
 	waitanimation
 	printstring STRINGID_TARGETABILITYSTATRAISE
 	waitmessage 0x40
+	return
+	
+BattleScript_RKSSystemBoosts::
+	call BattleScript_AbilityPopUp
+	jumpiftype BS_ABILITY_BATTLER, TYPE_BUG, BattleScript_RKSBugFire
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FIRE, BattleScript_RKSBugFire
+	jumpiftype BS_ABILITY_BATTLER, TYPE_DARK, BattleScript_RKSDark
+	jumpiftype BS_ABILITY_BATTLER, TYPE_DRAGON, BattleScript_RKSDragon
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ELECTRIC, BattleScript_RKSElectric
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FAIRY, BattleScript_RKSFairy
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FIGHTING, BattleScript_RKSFighting
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FLYING, BattleScript_RKSFlying
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GHOST, BattleScript_RKSGhost
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GRASS, BattleScript_RKSGrass
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GROUND, BattleScript_RKSGround
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ICE, BattleScript_RKSIce
+	jumpiftype BS_ABILITY_BATTLER, TYPE_POISON, BattleScript_RKSPoison
+	jumpiftype BS_ABILITY_BATTLER, TYPE_PSYCHIC, BattleScript_RKSPsychic
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ROCK, BattleScript_RKSRock
+	jumpiftype BS_ABILITY_BATTLER, TYPE_STEEL, BattleScript_RKSSteel
+	jumpiftype BS_ABILITY_BATTLER, TYPE_WATER, BattleScript_RKSWater
+	printfromtable gStatDownStringIds
+	waitmessage 0x20
+	end3
+BattleScript_RKSBugFire:
+	setbyte sSTAT_BOOST_TRACKER, 0x3
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0x0
+	return
+BattleScript_RKSDark:
+	return
+BattleScript_RKSDragon:
+	return
+BattleScript_RKSElectric:
+	return
+BattleScript_RKSFairy:
+	return
+BattleScript_RKSFighting:
+	return
+BattleScript_RKSFlying:
+	return
+BattleScript_RKSGhost:
+	return
+BattleScript_RKSGrass:
+	return
+BattleScript_RKSGround:
+	return
+BattleScript_RKSIce:
+	return
+BattleScript_RKSPoison:
+	return
+BattleScript_RKSPsychic:
+	return
+BattleScript_RKSRock:
+	return
+BattleScript_RKSSteel:
+	return
+BattleScript_RKSWater:
 	return
 
 BattleScript_BattleArmorBroke::

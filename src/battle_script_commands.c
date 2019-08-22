@@ -7306,6 +7306,10 @@ static void atk76_various(void)
         else
             gBattlescriptCurrInstr += 7;
         return;
+	/*case VARIOUS_CHECK_HIGHER_ATK:
+		if (gBattleMons[gActiveBattler].spAttack > gBattleMons[gActiveBattler].attack)
+			gBattlescriptCurrInstr += 7;
+		*/
     case VARIOUS_TRY_ELECTRIFY:
         if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
         {
