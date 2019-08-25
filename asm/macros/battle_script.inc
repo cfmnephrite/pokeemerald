@@ -1619,6 +1619,10 @@
 	various \battler, VARIOUS_SET_AURORA_VEIL
 	.endm
 	
+	.macro boosthigheroffense battler:req
+	various \battler, VARIOUS_BOOST_HIGHER_OFFENSE
+	.endm
+	
 	.macro trysetthirdtype battler:req, ptr:req
 	various \battler, VARIOUS_TRY_THIRD_TYPE
 	.4byte \ptr

@@ -100,6 +100,38 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
 
 };
 
+static const u8 sAbilitiesAffectedByAuraBreak[] =
+{
+	[ABILITY_ADAPTABILITY] = 1,
+	[ABILITY_AERILATE] = 1,
+	[ABILITY_BLAZE] = 1,
+	[ABILITY_FLARE_BOOST] = 1,
+	[ABILITY_GALVANIZE] = 1,
+	[ABILITY_GUTS] = 1,
+	[ABILITY_HUGE_POWER] = 1,
+	[ABILITY_IRON_FIST] = 1,
+	[ABILITY_LONG_REACH] = 1,
+	[ABILITY_MEGA_LAUNCHER] = 1,
+	[ABILITY_OVERGROW] = 1,
+	[ABILITY_PIXILATE] = 1,
+	[ABILITY_POISON_TOUCH] = 1,
+	[ABILITY_POWER_OF_ALCHEMY] = 1,
+	[ABILITY_PURE_POWER] = 1,
+	[ABILITY_RECKLESS] = 1,
+	[ABILITY_REFRIGERATE] = 1,
+	[ABILITY_SAND_FORCE] = 1,
+	[ABILITY_SHEER_FORCE] = 1,
+	[ABILITY_SOLAR_POWER] = 1,
+	[ABILITY_STEELWORKER] = 1,
+	[ABILITY_STRONG_JAW] = 1,
+	[ABILITY_SWARM] = 1,
+	[ABILITY_TECHNICIAN] = 1,
+	[ABILITY_TORRENT] = 1,
+	[ABILITY_TOUGH_CLAWS] = 1,
+	[ABILITY_TOXIC_BOOST] = 1,
+	[ABILITY_WATER_BUBBLE] = 1,
+};
+
 static const u8 sHoldEffectToType[][2] =
 {
     {HOLD_EFFECT_BUG_POWER, TYPE_BUG},
@@ -2965,45 +2997,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 		case ABILITY_RKS_SYSTEM:
 			if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_SILVALLY)
 			{
-				u8 dummy = 1;
-				u32 stats[2][6] = {STAT_HP, STAT_ATK, STAT_DEF, STAT_SPEED, STAT_SPATK, STAT_SPDEF}; 
-				//First row denotes stats: 1 for attack, 2 for defense, 3 for speed, 4 for spatk, and 5 for spdef
-				//second row denotes how many stages to increase or decrease said stat
-				u16 highestOffense;
-				if(gBattleMons[battler].spAttack > gBattleMons[battler].attack)
-					highestOffense = STAT_SPATK;
-				else
-					highestOffense = STAT_ATK;
+				u8 dummy = 12;
 				SET_BATTLER_TYPE(battler, dummy);
-				switch(dummy)
-				{
-					case 1: case 7: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_DEF] = -2;} break; //bug, fire
-					case 2: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_SPDEF] = -2;} break; //dark
-					case 3: {stats[1][STAT_ATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_DEF] = -1; stats[1][STAT_SPDEF] = -1;} break; //dragon
-					case 4: {stats[1][STAT_SPEED] = 2; stats[1][STAT_ATK] = -1; stats[1][STAT_DEF] = -1;} break; //electric
-					case 5: {stats[1][STAT_SPDEF] = 2; stats[1][STAT_ATK] = -2;} break; //fairy
-					case 6: {stats[1][STAT_ATK] = 2; stats[1][STAT_SPDEF] = -2;} break; //fighting
-					case 8: {stats[1][highestOffense] = 1; stats[1][STAT_SPEED] = 1; stats[1][STAT_DEF] = -2;} break; //flying
-					case 9: {stats[1][highestOffense] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_DEF] = -2;} break; //ghost
-					case 10: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_SPATK] = 1; stats[1][STAT_ATK] = -3;} break; //grass
-					case 11: {stats[1][STAT_ATK] = 1; stats[1][STAT_DEF] = 1; stats[1][STAT_SPATK] = -1; stats[1][STAT_SPDEF] = -1;} break; //ground
-					case 12: {stats[1][highestOffense] = 2; stats[1][STAT_DEF] = -1; stats[1][STAT_ATK] = -1;} break; //ice
-					case 14: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_SPATK] = -1; stats[1][STAT_SPEED] = -1;} break; //poison
-					case 15: {stats[1][STAT_SPATK] = 2; stats[1][STAT_DEF] = -2;} break; //psychic
-					case 16: {stats[1][STAT_ATK] = 1; stats[1][STAT_DEF] = 2; stats[1][STAT_SPATK] = -3;} break; //rock
-					case 17: {stats[1][STAT_DEF] = 3; stats[1][STAT_SPEED] = -3;} break; //steel
-					case 18: {stats[1][STAT_DEF] = 1; stats[1][STAT_SPDEF] = 1; stats[1][STAT_ATK] = -1; stats[1][STAT_SPEED] = -1;} break; //water
-					default: break; //anything else (nothing)
-				}
-				for (i = 0; i < 5; i++)
-				{
-					if(stats[0][i] != 0)
-					{
-						//if(stats[0][i] > 0 && /*gBattleMons[battler].statStages[stats[0][i]] != 12 I don't think I should need to check this?*/)
-						gBattleMons[battler].statStages[stats[0][i]] += stats[1][i];
-						SET_STATCHANGER(stats[0][i], abs(stats[1][i]), (stats[1][i] < 0));
-					}
-				}
+				BattleScriptPushCursorAndCallback(BattleScript_RKSSystemBoosts);
 				effect++;
 			}
 			break;
@@ -5971,9 +5967,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     if ((IsAbilityOnField(ABILITY_DARK_AURA) && moveType == TYPE_DARK)
         || (IsAbilityOnField(ABILITY_FAIRY_AURA) && moveType == TYPE_FAIRY))
     {
-        if (IsAbilityOnField(ABILITY_AURA_BREAK))
-            MulModifier(&modifier, UQ_4_12(0.75));
-        else
+        if (!IsAbilityOnField(ABILITY_AURA_BREAK))
             MulModifier(&modifier, UQ_4_12(1.33));
     }
 
@@ -6883,7 +6877,7 @@ u8 GetHigherOffStat(u8 battlerId)
     else if (gBaseStats[battlerId].baseSpAttack > gBaseStats[battlerId].baseAttack)
         return STAT_SPATK;
     else
-        return 1 + (Random() % 2);
+        return 1 + 3 * (Random() % 2);
 }
 
 u8 GetHigherDefStat(u8 battlerId)
@@ -6897,7 +6891,7 @@ u8 GetHigherDefStat(u8 battlerId)
     else if (gBaseStats[battlerId].baseSpDefense > gBaseStats[battlerId].baseDefense)
         return STAT_SPDEF;
     else
-        return 4 + (Random() % 2);
+        return 2 + 3 * (Random() % 2);
 }
 
 bool32 CanMegaEvolve(u8 battlerId)

@@ -7794,6 +7794,12 @@ static void atk76_various(void)
             gBattlescriptCurrInstr += 7;
         }
         return;
+	case VARIOUS_BOOST_HIGHER_OFFENSE:
+		if(gBattleMons[gActiveBattler].type1 == TYPE_ICE && GetBattlerAbility(gActiveBattler) == ABILITY_RKS_SYSTEM)
+			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 2, FALSE);
+		else
+			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 1, FALSE);
+		break;
     }
 
     gBattlescriptCurrInstr += 3;

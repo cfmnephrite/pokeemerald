@@ -355,6 +355,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectMagneticFlux
 	.4byte BattleScript_EffectGearUp
 	.4byte BattleScript_EffectBugBite
+	.4byte BattleScript_RKSSystemBoosts
 	
 BattleScript_EffectBugBite:
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
@@ -6630,6 +6631,303 @@ BattleScript_AttackerAbilityStatRaise::
 	printstring STRINGID_ATTACKERABILITYSTATRAISE
 	waitmessage 0x40
 	return
+	
+BattleScript_RKSSystemBoosts::
+	call BattleScript_AbilityPopUp
+	jumpiftype BS_ABILITY_BATTLER, TYPE_BUG, BattleScript_RKSBugFire
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FIRE, BattleScript_RKSBugFire
+	jumpiftype BS_ABILITY_BATTLER, TYPE_DARK, BattleScript_RKSDark
+	jumpiftype BS_ABILITY_BATTLER, TYPE_DRAGON, BattleScript_RKSDragon
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ELECTRIC, BattleScript_RKSElectric
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FAIRY, BattleScript_RKSFairy
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FIGHTING, BattleScript_RKSFighting
+	jumpiftype BS_ABILITY_BATTLER, TYPE_FLYING, BattleScript_RKSFlying
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GHOST, BattleScript_RKSGhost
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GRASS, BattleScript_RKSGrass
+	jumpiftype BS_ABILITY_BATTLER, TYPE_GROUND, BattleScript_RKSGround
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ICE, BattleScript_RKSIce
+	jumpiftype BS_ABILITY_BATTLER, TYPE_POISON, BattleScript_RKSPoison
+	jumpiftype BS_ABILITY_BATTLER, TYPE_PSYCHIC, BattleScript_RKSPsychic
+	jumpiftype BS_ABILITY_BATTLER, TYPE_ROCK, BattleScript_RKSRock
+	jumpiftype BS_ABILITY_BATTLER, TYPE_STEEL, BattleScript_RKSSteel
+	jumpiftype BS_ABILITY_BATTLER, TYPE_WATER, BattleScript_RKSWater
+	end3
+BattleScript_RKSBugFire:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSDark:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSDragon:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_DEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSElectric:
+	setstatchanger STAT_SPEED, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_ATK, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSFairy:
+	setstatchanger STAT_SPDEF, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_ATK, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSFighting:
+	setstatchanger STAT_ATK, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSFlying:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPEED, 0x0
+	boosthigheroffense BS_ATTACKER
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPEED, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSGhost:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPDEF, 0x0
+	boosthigheroffense BS_ATTACKER
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSGrass:
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF | BIT_SPATK, 0x0
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_ATK, 3, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSGround:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPDEF, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_SPATK, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSIce:
+	boosthigheroffense BS_ATTACKER
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_DEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSPoison:
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, 0x0
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPEED, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_SPATK, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPEED, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSPsychic:
+	setstatchanger STAT_SPATK, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 2, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSRock:
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_DEF, 2, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 3, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSSteel:
+	setstatchanger STAT_DEF, 3, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPEED, 3, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
+BattleScript_RKSWater:
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPATK, 0x0
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatUpStringIds
+	waitmessage 0x10
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPEED, ATK48_STAT_NEGATIVE | ATK48_ONLY_MULTIPLE
+	setstatchanger STAT_ATK, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x10
+	setstatchanger STAT_SPEED, 1, TRUE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+	end3
 
 BattleScript_FellStingerRaisesStat::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_FellStingerRaisesAtkEnd
