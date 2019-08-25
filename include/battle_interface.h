@@ -87,7 +87,7 @@ void HideMegaTriggerSprite(void);
 void DestroyMegaTriggerSprite(void);
 void HideZMoveTriggerSprite(void);
 void DestroyZMoveTriggerSprite(void);
-void CreateMegaIndicatorSprite(u32 battlerId, u32 which);
+u32 CreateMegaIndicatorSprite(u32 battlerId, u32 which);
 void DestroyMegaIndicatorSprite(u8 battlerId);
 u8 CreatePartyStatusSummarySprites(u8 battler, struct HpAndStatus *partyInfo, u8 arg2, bool8 isBattleStart);
 void Task_HidePartyStatusSummary(u8 taskId);

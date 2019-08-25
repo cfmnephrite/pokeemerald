@@ -1017,10 +1017,35 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
     }
 }
 
+static bool32 NoTargetPresent(u32 move)
+{
+    if (!IsBattlerAlive(gBattlerTarget))
+        gBattlerTarget = GetMoveTarget(move, 0);
+
+    switch (gBattleMoves[move].target)
+    {
+    case MOVE_TARGET_SELECTED:
+    case MOVE_TARGET_DEPENDS:
+    case MOVE_TARGET_RANDOM:
+        if (!IsBattlerAlive(gBattlerTarget))
+            return TRUE;
+        break;
+    case MOVE_TARGET_BOTH:
+        if (!IsBattlerAlive(gBattlerTarget) && !IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)))
+            return TRUE;
+        break;
+    case MOVE_TARGET_FOES_AND_ALLY:
+        if (!IsBattlerAlive(gBattlerTarget) && !IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) && !IsBattlerAlive(BATTLE_PARTNER(gBattlerAttacker)))
+            return TRUE;
+        break;
+    }
+
+    return FALSE;
+}
+
 static void atk00_attackcanceler(void)
 {
-    s32 i;
-    u32 moveType;
+    s32 i, moveType;
 
     if (gBattleOutcome != 0)
     {
@@ -1065,11 +1090,9 @@ static void atk00_attackcanceler(void)
     }
 
     gHitMarker &= ~(HITMARKER_x800000);
-
     if (!(gHitMarker & HITMARKER_OBEYS) && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
     {
-        i = IsMonDisobedient(); // why use the 'i' variable...?
-        switch (i)
+        switch (IsMonDisobedient())
         {
         case 0:
             break;
@@ -1083,6 +1106,12 @@ static void atk00_attackcanceler(void)
     }
 
     gHitMarker |= HITMARKER_OBEYS;
+
+    if (NoTargetPresent(gCurrentMove))
+    {
+        gBattlescriptCurrInstr = BattleScript_ButItFailedAtkStringPpReduce;
+        return;
+    }
 
     if (gProtectStructs[gBattlerTarget].bounceMove
         && gBattleMoves[gCurrentMove].flags & FLAG_MAGICCOAT_AFFECTED
@@ -3605,7 +3634,7 @@ static void atk23_getexp(void)
     }
 }
 
-static bool32 IsBattleLostForPlayer(void)
+static bool32 NoAliveMonsForPlayer(void)
 {
     u32 i;
     u32 HP_count = 0;
@@ -3633,7 +3662,7 @@ static bool32 IsBattleLostForPlayer(void)
     return (HP_count == 0);
 }
 
-static bool32 IsBattleWonForPlayer(void)
+static bool32 NoAliveMonsForOpponent(void)
 {
     u32 i;
     u32 HP_count = 0;
@@ -3650,14 +3679,19 @@ static bool32 IsBattleWonForPlayer(void)
     return (HP_count == 0);
 }
 
+bool32 NoAliveMonsForEitherParty(void)
+{
+    return (NoAliveMonsForPlayer() || NoAliveMonsForOpponent());
+}
+
 static void atk24(void)
 {
     if (gBattleControllerExecFlags)
         return;
 
-    if (IsBattleLostForPlayer())
+    if (NoAliveMonsForPlayer())
         gBattleOutcome |= B_OUTCOME_LOST;
-    if (IsBattleWonForPlayer())
+    if (NoAliveMonsForOpponent())
         gBattleOutcome |= B_OUTCOME_WON;
 
     if (gBattleOutcome == 0 && (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_x2000000)))
@@ -5758,6 +5792,7 @@ static void atk5B_yesnoboxstoplearningmove(void)
             gBattleCommunication[CURSOR_POSITION] = 1;
             BattleCreateYesNoCursorAt(1);
         }
+
         if (gMain.newKeys & A_BUTTON)
         {
             PlaySE(SE_SELECT);
@@ -6129,17 +6164,6 @@ static void atk6B_atknameinbuff1(void)
     gBattlescriptCurrInstr++;
 }
 
-// Because the indicator must have priority 0 to be properly displayed on healthbox, it needs to be temporarily changed while displaying lvl-up-box.
-static void ChangeMegaIndicatorsPriority(u32 priority)
-{
-    s32 i;
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
-    {
-        if (gBattleStruct->mega.indicatorSpriteIds[i] != 0xFF)
-            gSprites[gBattleStruct->mega.indicatorSpriteIds[i]].oam.priority = priority;
-    }
-}
-
 static void atk6C_drawlvlupbox(void)
 {
     if (gBattleScripting.atk6C_state == 0)
@@ -6170,7 +6194,6 @@ static void atk6C_drawlvlupbox(void)
         SetBgAttribute(1, BG_ATTR_PRIORITY, 0);
         ShowBg(0);
         ShowBg(1);
-        ChangeMegaIndicatorsPriority(1);
         HandleBattleWindow(0x12, 7, 0x1D, 0x13, WINDOW_x80);
         gBattleScripting.atk6C_state = 4;
         break;
@@ -6223,7 +6246,6 @@ static void atk6C_drawlvlupbox(void)
     case 10:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            ChangeMegaIndicatorsPriority(0);
             SetBgAttribute(0, BG_ATTR_PRIORITY, 0);
             SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
             ShowBg(0);
@@ -7054,18 +7076,17 @@ static void atk76_various(void)
         hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 100);
         if (GetBattlerAbility(gActiveBattler) == ABILITY_MOXIE
             && HasAttackerFaintedTarget()
-            && !IsBattleLostForPlayer()
-            && !IsBattleWonForPlayer())
+            && !NoAliveMonsForEitherParty())
         {
-            if(gBattleMons[gBattlerAttacker].attack > gBattleMons[gBattlerAttacker].spAttack)
-                boostStat = STAT_ATK;
-            else
+            if(gBattleMons[gBattlerAttacker].spAttack > gBattleMons[gBattlerAttacker].attack)
                 boostStat = STAT_SPATK;
+            else
+                boostStat = STAT_ATK;
             if(hpFraction > 75)
                 boost = 2;
             else if(hpFraction <= 75 && hpFraction >= 25)
                 boost = 1;
-            if(gBattleMons[gBattlerAttacker].statStages[boostStat] != 12 && boost != 0)
+            if(gBattleMons[gBattlerAttacker].statStages[boostStat] != 12 && boost)
             {
                 gBattleMons[gBattlerAttacker].statStages[boostStat] += boost;
                 SET_STATCHANGER(boostStat, boost, FALSE);
@@ -7094,9 +7115,9 @@ static void atk76_various(void)
             }
             if(hpFraction > 25)
                 boost = 1;
-            if( HasAttackerFaintedTarget()
-                && !IsBattleLostForPlayer()
-                && !IsBattleWonForPlayer()
+            if(HasAttackerFaintedTarget()
+                && NoAliveMonsForPlayer()
+                && NoAliveMonsForOpponent()
                 && gBattleMons[gBattlerAttacker].statStages[boostStat] != 12
                 && boost != 0)
             {
@@ -7112,8 +7133,7 @@ static void atk76_various(void)
     case VARIOUS_TRY_ACTIVATE_FELL_STINGER:
         if (gBattleMoves[gCurrentMove].effect == EFFECT_FELL_STINGER
             && HasAttackerFaintedTarget()
-            && !IsBattleLostForPlayer()
-            && !IsBattleWonForPlayer()
+            && !NoAliveMonsForEitherParty()
             && gBattleMons[gBattlerAttacker].statStages[STAT_ATK] != 12)
         {
             if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] >= 11)
@@ -7301,7 +7321,7 @@ static void atk76_various(void)
         }
         return;
     case VARIOUS_JUMP_IF_BATTLE_END:
-        if (IsBattleLostForPlayer() || IsBattleWonForPlayer())
+        if (NoAliveMonsForEitherParty())
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
         else
             gBattlescriptCurrInstr += 7;
@@ -7956,7 +7976,7 @@ static void atk7A_jumpifnexttargetvalid(void)
     {
         if (gBattlerTarget == gBattlerAttacker && !(gBattleMoves[gCurrentMove].target & MOVE_TARGET_USER))
             continue;
-        if (!(gAbsentBattlerFlags & gBitTable[gBattlerTarget]))
+        if (IsBattlerAlive(gBattlerTarget))
             break;
     }
 
@@ -9339,7 +9359,11 @@ static void atk95_setsandstorm(void)
 
 static void atk96_weatherdamage(void)
 {
-    if (WEATHER_HAS_EFFECT)
+    if (!IsBattlerAlive(gBattlerAttacker) || !WEATHER_HAS_EFFECT)
+    {
+        gBattleMoveDamage = 0;
+    }
+    else
     {
         u32 ability = GetBattlerAbility(gBattlerAttacker);
         if (gBattleWeather & WEATHER_SANDSTORM_ANY)
@@ -9395,13 +9419,6 @@ static void atk96_weatherdamage(void)
             }
         }
     }
-    else
-    {
-        gBattleMoveDamage = 0;
-    }
-
-    if (gAbsentBattlerFlags & gBitTable[gBattlerAttacker])
-        gBattleMoveDamage = 0;
 
     gBattlescriptCurrInstr++;
 }
@@ -10621,7 +10638,7 @@ static void atkC2_selectfirstvalidtarget(void)
     {
         if (gBattlerTarget == gBattlerAttacker && !(gBattleMoves[gCurrentMove].target & MOVE_TARGET_USER))
             continue;
-        if (!(gAbsentBattlerFlags & gBitTable[gBattlerTarget]))
+        if (IsBattlerAlive(gBattlerTarget))
             break;
     }
     gBattlescriptCurrInstr++;
@@ -12007,7 +12024,7 @@ static void atkF2_displaydexinfo(void)
 
 void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags)
 {
-    s32 destY, destX;
+    s32 destY, destX, bgId;
     u16 var = 0;
 
     for (destY = yStart; destY <= yEnd; destY++)
@@ -12045,10 +12062,8 @@ void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags)
             if (flags & WINDOW_CLEAR)
                 var = 0;
 
-            if (flags & WINDOW_x80)
-                CopyToBgTilemapBufferRect_ChangePalette(1, &var, destX, destY, 1, 1, 0x11);
-            else
-                CopyToBgTilemapBufferRect_ChangePalette(0, &var, destX, destY, 1, 1, 0x11);
+            bgId = (flags & WINDOW_x80) ? 1 : 0;
+            CopyToBgTilemapBufferRect_ChangePalette(bgId, &var, destX, destY, 1, 1, 0x11);
         }
     }
 }

@@ -5283,7 +5283,7 @@ static void HandleAction_UseMove(void)
                 {
                     if (gBattlerTarget == gBattlerAttacker)
                         continue;
-                    if (!(gAbsentBattlerFlags & gBitTable[gBattlerTarget]))
+                    if (IsBattlerAlive(gBattlerTarget))
                         break;
                 }
             }
@@ -5292,7 +5292,7 @@ static void HandleAction_UseMove(void)
                 gBattlerTarget = *(gBattleStruct->moveTarget + gBattlerAttacker);
             }
 
-            if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
+            if (!IsBattlerAlive(gBattlerTarget))
             {
                 if (GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
                 {
@@ -5301,7 +5301,7 @@ static void HandleAction_UseMove(void)
                 else
                 {
                     gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerAttacker) ^ BIT_SIDE);
-                    if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
+                    if (!IsBattlerAlive(gBattlerTarget))
                         gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
                 }
             }
@@ -5355,14 +5355,14 @@ static void HandleAction_UseMove(void)
         {
             if (gBattlerTarget == gBattlerAttacker)
                 continue;
-            if (!(gAbsentBattlerFlags & gBitTable[gBattlerTarget]))
+            if (IsBattlerAlive(gBattlerTarget))
                 break;
         }
     }
     else
     {
         gBattlerTarget = *(gBattleStruct->moveTarget + gBattlerAttacker);
-        if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
+        if (!IsBattlerAlive(gBattlerTarget))
         {
             if (GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
             {
@@ -5371,7 +5371,7 @@ static void HandleAction_UseMove(void)
             else
             {
                 gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerAttacker) ^ BIT_SIDE);
-                if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
+                if (!IsBattlerAlive(gBattlerTarget))
                     gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
             }
         }
