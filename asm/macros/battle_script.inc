@@ -1678,6 +1678,11 @@
 	.4byte \ptr
 	.endm 
 	
+	.macro jumpifleafguard ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_LEAF_GUARD
+	.4byte \ptr
+	.endm 
+	
 	.macro jumpifnotberry battler:req, ptr:req
 	various \battler, VARIOUS_JUMP_IF_NOT_BERRY
 	.4byte \ptr

@@ -1564,10 +1564,10 @@ u8 DoBattlerEndTurnEffects(void)
         case ENDTURN_BURN:  // burn
             if ((gBattleMons[gActiveBattler].status1 & STATUS1_BURN)
                 && gBattleMons[gActiveBattler].hp != 0
-                && ability != ABILITY_MAGIC_GUARD)
+                && (ability != ABILITY_MAGIC_GUARD || ability != ABILITY_FLARE_BOOST))
             {
                 gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
-                if (ability == ABILITY_FLARE_BOOST || ability == ABILITY_HEATPROOF)
+                if (ability == ABILITY_HEATPROOF)
                     gBattleMoveDamage /= 2;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
@@ -3109,14 +3109,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 break;
             }
         case ABILITY_FLOWER_GIFT:
-            effect = TryWeatherFormChange(battler);
-            if (effect != 0)
-            {
-                BattleScriptPushCursorAndCallback(BattleScript_CastformChange);
-                gBattleScripting.battler = battler;
-                *(&gBattleStruct->formToChangeInto) = effect - 1;
-            }
-            break;
+            if (gBattleMons[battler].moves[0] == MOVE_SUNNY_DAY && TryChangeBattleWeather(battler, ENUM_WEATHER_SUN, TRUE))
+                {
+                    BattleScriptPushCursorAndCallback(BattleScript_DroughtActivates);
+                    gBattleScripting.battler = battler;
+                    effect++;
+                }
+                break;
         case ABILITY_TRACE:
             if (!(gSpecialStatuses[battler].traced))
             {
@@ -3565,9 +3564,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
              && moveType == TYPE_DARK
-             && gBattleMons[battler].statStages[STAT_ATK] != 12)
+             && gBattleMons[battler].statStages[GetHigherOffStat(battler)] != 12)
             {
-                SET_STATCHANGER(STAT_ATK, 1, FALSE);
+                SET_STATCHANGER(GetHigherOffStat(battler), 1, FALSE);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
                 effect++;
@@ -3904,7 +3903,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-        /*case ABILITY_DANCER: //todo
+		/*case ABILITY_DANCER: //todo
             if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp != 0
              && (gBattleMoves[gLastUsedMove].flags & FLAG_DANCE) gLastUsedMove == MOVE_SPLASH)
@@ -3926,8 +3925,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     gBattlescriptCurrInstr = BattleScript_DancerActivates;
                     effect++;
                 //}
-            }
-            break;*/
+			}
+			break;*/
         }
         break;
     case ABILITYEFFECT_MOVE_END_ACTIVE: // Think contact abilities.
@@ -4255,12 +4254,14 @@ u32 GetBattlerAbility(u8 battlerId)
 {
     if (gStatuses3[battlerId] & STATUS3_GASTRO_ACID)
         return ABILITY_NONE;
-    else if ((((gBattleMons[gBattlerAttacker].ability == ABILITY_MOLD_BREAKER
+    else if ((((((gBattleMons[gBattlerAttacker].ability == ABILITY_MOLD_BREAKER
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TERAVOLT
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TURBOBLAZE)
             && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
             || gBattleMoves[gCurrentMove].flags & FLAG_TARGET_ABILITY_IGNORED)
-            && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability]
+            && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability])
+			|| (IsAbilityOnField(ABILITY_AURA_BREAK)
+			&& sAbilitiesAffectedByAuraBreak[gBattleMons[gBattlerAttacker].ability]))
             && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
             && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
             && gCurrentTurnActionNumber < gBattlersCount)
@@ -4290,7 +4291,7 @@ u32 IsAbilityOnField(u32 ability)
 
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (IsBattlerAlive(i) && GetBattlerAbility(i) == ability)
+        if (IsBattlerAlive(i) && gBattleMons[i].ability == ability)
             return i + 1;
     }
 
@@ -6019,6 +6020,9 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         if (moveType == TYPE_WATER)
             MulModifier(&modifier, UQ_4_12(2.0));
         break;
+	case ABILITY_JUSTIFIED:
+		if (moveType == TYPE_DARK)
+			MulModifier(&modifier, UQ_4_12(0.5));
     }
 
     holdEffectAtk = GetBattlerHoldEffect(battlerAtk, TRUE);
@@ -6235,10 +6239,10 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
                 MulModifier(&modifier, UQ_4_12(1.5));
         }
         break;
-    case ABILITY_FLOWER_GIFT:
+    /*case ABILITY_FLOWER_GIFT:
         if (gBattleMons[battlerAtk].species == SPECIES_CHERRIM && WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
             MulModifier(&modifier, UQ_4_12(1.5));
-        break;
+        break;*/
     case ABILITY_HUSTLE:
         if (IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(1.5));
@@ -6255,7 +6259,7 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
     }
 
     // ally's abilities
-    if (IsBattlerAlive(BATTLE_PARTNER(battlerAtk)))
+    /*if (IsBattlerAlive(BATTLE_PARTNER(battlerAtk)))
     {
         switch (GetBattlerAbility(BATTLE_PARTNER(battlerAtk)))
         {
@@ -6264,7 +6268,7 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
                 MulModifier(&modifier, UQ_4_12(1.5));
             break;
         }
-    }
+    }*/
 
     // attacker's hold effect
     switch (GetBattlerHoldEffect(battlerAtk, TRUE))
@@ -6363,7 +6367,7 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
     }
 
     // ally's abilities
-    if (IsBattlerAlive(BATTLE_PARTNER(battlerDef)))
+    /*if (IsBattlerAlive(BATTLE_PARTNER(battlerDef)))
     {
         switch (GetBattlerAbility(BATTLE_PARTNER(battlerDef)))
         {
@@ -6372,7 +6376,7 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
                 MulModifier(&modifier, UQ_4_12(1.5));
             break;
         }
-    }
+    }*/
 
     // target's hold effects
     switch (GetBattlerHoldEffect(battlerDef, TRUE))

@@ -183,7 +183,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_USER,
         .priority = 0,
-        .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
+        .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
@@ -2584,7 +2584,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_FIERY_DANCE] = {
-        .effect = EFFECT_SPECIAL_ATTACK_UP,
+        .effect = EFFECT_SP_ATTACK_UP_HIT,
         .power = 80,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -4653,7 +4653,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_USER,
         .priority = 0,
-        .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
+        .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },

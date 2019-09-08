@@ -2005,6 +2005,7 @@ BattleScript_EffectSleep::
 	jumpifcantmakeasleep BattleScript_CantMakeAsleep
 	jumpifflowerveil BattleScript_FlowerVeilProtects
 	jumpifability BS_TARGET_SIDE, ABILITY_SWEET_VEIL, BattleScript_SweetVeilProtects
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
@@ -2720,6 +2721,7 @@ BattleScript_EffectPoison::
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
 	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 BattleScript_EffectPoisonFromTypeCheck:
 	jumpifability BS_ATTACKER, ABILITY_CORROSION, BattleScript_EffectPoisonSkipTypeCheck
 	jumpiftype BS_TARGET, TYPE_POISON, BattleScript_NotAffected
@@ -2742,6 +2744,7 @@ BattleScript_EffectPoisonPowder:
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifflowerveil BattleScript_FlowerVeilProtects
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_EffectPoisonPowderToxic
 	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
@@ -2759,6 +2762,7 @@ BattleScript_EffectToxic::
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifflowerveil BattleScript_FlowerVeilProtects
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
 	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
@@ -2813,6 +2817,7 @@ BattleScript_EffectParalyse:
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_AbilityPreventsParalysis
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifstatus BS_TARGET, STATUS1_PARALYSIS, BattleScript_AlreadyParalysed
 	jumpifflowerveil BattleScript_FlowerVeilProtects
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
@@ -3950,6 +3955,7 @@ BattleScript_EffectBurn::
 	jumpifability BS_TARGET, ABILITY_DAMP, BattleScript_AbilityPreventsBurns
 	jumpifability BS_TARGET, ABILITY_WATER_BUBBLE, BattleScript_AbilityPreventsBurns
 	jumpifability BS_TARGET, ABILITY_HEATPROOF, BattleScript_AbilityPreventsBurns
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifflowerveil BattleScript_FlowerVeilProtects
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected
@@ -4205,6 +4211,7 @@ BattleScript_EffectYawn::
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_PrintBankAbilityMadeIneffective
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_PrintBankAbilityMadeIneffective
+	jumpifleafguard BattleScript_PrintBankAbilityMadeIneffective
 	jumpifflowerveil BattleScript_FlowerVeilProtects
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, BattleScript_SafeguardProtected

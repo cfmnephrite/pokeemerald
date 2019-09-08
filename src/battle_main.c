@@ -5124,8 +5124,17 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                 )
              )
     {
-        gBattleStruct->dynamicMoveType = ateType;
-        gBattleStruct->ateBoost[battlerAtk] = 1;
+		if((attackerAbility == ABILITY_DARK_AURA 
+		 || attackerAbility == ABILITY_FAIRY_AURA)
+		 && IsAbilityOnField(ABILITY_AURA_BREAK))
+		 {
+			 gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
+		 }
+		else
+		{
+			gBattleStruct->dynamicMoveType = ateType;
+			gBattleStruct->ateBoost[battlerAtk] = 1;
+		}
     }
     else if (gBattleMoves[move].type != TYPE_NORMAL
              && gBattleMoves[move].effect != EFFECT_HIDDEN_POWER

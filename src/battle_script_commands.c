@@ -1368,8 +1368,8 @@ static void atk01_accuracycheck(void)
         calc = sAccuracyStageRatios[buff].dividend * moveAcc;
         calc /= sAccuracyStageRatios[buff].divisor;
 
-        if (atkAbility == ABILITY_COMPOUND_EYES)
-            calc = (calc * 130) / 100; // 1.3 compound eyes boost
+        if (atkAbility == ABILITY_COMPOUND_EYES || atkAbility == ABILITY_KEEN_EYE)
+            calc = (calc * 130) / 100; // 1.3 compound eyes/keen eye boost
         else if (atkAbility == ABILITY_VICTORY_STAR)
             calc = (calc * 110) / 100; // 1.1 victory star boost
         if (IsBattlerAlive(BATTLE_PARTNER(gBattlerAttacker)) && GetBattlerAbility(BATTLE_PARTNER(gBattlerAttacker)) == ABILITY_VICTORY_STAR)
@@ -2221,7 +2221,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_INSOMNIA
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || IsAbilityOnSide(gEffectBattler, ABILITY_SWEET_VEIL)
-                || IsFlowerVeilProtected(gEffectBattler))
+                || IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             // CFM Nightmare
@@ -2249,7 +2250,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
 
             if (gBattleMons[gEffectBattler].status1
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
-                || IsFlowerVeilProtected(gEffectBattler))
+                || IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             if ((GetBattlerAbility(gEffectBattler) == ABILITY_IMMUNITY
@@ -2280,7 +2282,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_WATER_BUBBLE
                 || GetBattlerAbility(gEffectBattler) == ABILITY_HEATPROOF
                 || gBattleMons[gEffectBattler].status1
-                || IsFlowerVeilProtected(gEffectBattler))
+                || IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             statusChanged = TRUE;
@@ -2291,7 +2294,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_FIRE)
                 || gBattleMons[gEffectBattler].status1
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
-                || IsFlowerVeilProtected(gEffectBattler))
+                || IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             CancelMultiTurnMoves(gEffectBattler);
@@ -2302,7 +2306,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 || GetBattlerAbility(gEffectBattler) == ABILITY_LIMBER
                 || GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE
                 || gBattleMons[gEffectBattler].status1
-                || IsFlowerVeilProtected(gEffectBattler))
+                || IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             statusChanged = TRUE;
@@ -2320,7 +2325,9 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL)))
                 break;
 
-            if (GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE || IsFlowerVeilProtected(gEffectBattler))
+            if (GetBattlerAbility(gEffectBattler) == ABILITY_COMATOSE 
+				|| IsFlowerVeilProtected(gEffectBattler)
+				|| ((gBattleWeather & WEATHER_SUN_ANY) && GetBattlerAbility(gEffectBattler) == ABILITY_LEAF_GUARD))
                 break;
 
             if (GetBattlerAbility(gEffectBattler) == ABILITY_IMMUNITY
@@ -7820,6 +7827,12 @@ static void atk76_various(void)
 		else
 			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 1, FALSE);
 		break;
+	case VARIOUS_JUMP_IF_LEAF_GUARD:
+		if (GetBattlerAbility(gBattlerTarget) == ABILITY_LEAF_GUARD && (gBattleWeather & WEATHER_SUN_ANY))
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+		else
+			gBattlescriptCurrInstr += 7;
+		return;
     }
 
     gBattlescriptCurrInstr += 3;
