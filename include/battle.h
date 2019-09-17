@@ -121,6 +121,7 @@ struct DisableStruct
     u8 wrapTurns;
 	u8 skyDrop;
     u8 skyDropTrappingBattler;
+	u8 statRaised;
 };
 
 struct ProtectStruct

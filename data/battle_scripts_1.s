@@ -356,6 +356,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectGearUp
 	.4byte BattleScript_EffectBugBite
 	.4byte BattleScript_RKSSystemBoosts
+	.4byte BattleScript_MoodyActivates
 	
 BattleScript_EffectBugBite:
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
@@ -718,6 +719,24 @@ BattleScript_EffectAcupressureTry:
 	printstring STRINGID_PKMNSSTATCHANGED2
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
+	
+BattleScript_MoodyActivates::
+	call BattleScript_AbilityPopUp
+	tryaccupressure BS_ABILITY_BATTLER, BattleScript_MoodyLowerStats
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x20
+BattleScript_MoodyLowerStats:
+	trylowerrandomstat BS_ABILITY_BATTLER, BattleScript_MoodyEnd3
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, NULL
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x20
+BattleScript_MoodyEnd3:
+	end3
 
 BattleScript_MoveEffectFeint::
 	printstring STRINGID_FELLFORFEINT
@@ -6172,6 +6191,10 @@ BattleScript_EffectWithChance::
 	return
 
 BattleScript_ItemSteal::
+	jumpifmove MOVE_THIEF, BattleScript_StealItem
+	jumpifmove MOVE_COVET, BattleScript_StealItem
+	call BattleScript_AbilityPopUp
+BattleScript_StealItem::
 	playanimation BS_TARGET, B_ANIM_ITEM_STEAL, NULL
 	printstring STRINGID_PKMNSTOLEITEM
 	waitmessage 0x40

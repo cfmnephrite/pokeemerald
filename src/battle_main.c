@@ -5141,9 +5141,15 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
              && gBattleMoves[move].effect != EFFECT_WEATHER_BALL
              && attackerAbility == ABILITY_NORMALIZE)
     {
-        gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
+        gBattleStruct->dynamicMoveType = TYPE_NORMAL;
         gBattleStruct->ateBoost[battlerAtk] = 1;
     }
+	else if ((gBattleMoves[move].flags & FLAG_SOUND)
+		&& attackerAbility == ABILITY_LIQUID_VOICE)
+		{
+			gBattleStruct->dynamicMoveType = TYPE_WATER;
+			gBattleStruct->ateBoost[battlerAtk] = 1;
+		}
     
     // CFM Magic Moves & Z-Moves
     if (gBattleMoves[move].split != GetMoveSplit(battlerAtk, move, 1))

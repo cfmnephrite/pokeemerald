@@ -1633,6 +1633,11 @@
 	.4byte \ptr
 	.endm
 	
+	.macro trylowerrandomstat battler:req, ptr:req
+	various \battler, VARIOUS_TRY_LOWER_RANDOM_STAT
+	.4byte \ptr
+	.endm
+	
 	.macro setpowder battler:req
 	various \battler, VARIOUS_SET_POWDER
 	.endm

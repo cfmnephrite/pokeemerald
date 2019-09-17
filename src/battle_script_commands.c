@@ -1515,7 +1515,7 @@ s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbi
     }
     else if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS
              || gBattleMoves[move].effect == EFFECT_ALWAYS_CRIT
-             || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_PSN_ANY))
+             || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_ANY))
     {
         critChance = -2;
     }
@@ -2665,10 +2665,10 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                         gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
                         RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
                     }
-                    else if (gBattleMons[gBattlerAttacker].item != 0
+                    else if (gBattleMons[gBattlerAttacker].item != ITEM_NONE
                         || gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY
                         || IS_ITEM_MAIL(gBattleMons[gBattlerTarget].item)
-                        || gBattleMons[gBattlerTarget].item == 0)
+                        || gBattleMons[gBattlerTarget].item == ITEM_NONE)
                     {
                         gBattlescriptCurrInstr++;
                     }
@@ -4319,7 +4319,9 @@ static void atk48_playstatchangeanimation(void)
                         && ability != ABILITY_FULL_METAL_BODY
                         && !IsFlowerVeilProtected(gActiveBattler)
                         && !(ability == ABILITY_KEEN_EYE && currStat == STAT_ACC)
-                        && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK))
+                        && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK)
+						&& !(ability == ABILITY_LIMBER && currStat == STAT_SPEED)
+						&& !(ability == ABILITY_BIG_PECKS && currStat == STAT_DEF))
                 {
                     if (gBattleMons[gActiveBattler].statStages[currStat] > 0)
                     {
@@ -6858,10 +6860,36 @@ static void atk76_various(void)
                 statId = (Random() % 7) + 1;
             } while (!(bits & gBitTable[statId]));
 
+			gDisableStructs[gActiveBattler].statRaised = statId;
+			
             if (gBattleMons[gActiveBattler].statStages[statId] >= 11)
                 SET_STATCHANGER(statId, 1, FALSE);
             else
                 SET_STATCHANGER(statId, 2, FALSE);
+
+            gBattlescriptCurrInstr += 7;
+        }
+        else
+        {
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        }
+        return;
+	case VARIOUS_TRY_LOWER_RANDOM_STAT: //perhaps one day we'll be able to make STAT_RANDOM a thing or something so we can take up less space
+        bits = 0;
+        for (i = STAT_ATK; i < 7; i++)
+        {
+            if (gBattleMons[gActiveBattler].statStages[i] != 0 && i != gDisableStructs[gActiveBattler].statRaised)
+                bits |= gBitTable[i];
+        }
+        if (bits)
+        {
+            u32 statId;
+            do
+            {
+                statId = (Random() % 7) + 1;
+            } while (!(bits & gBitTable[statId]) || statId == gDisableStructs[gActiveBattler].statRaised);
+
+            SET_STATCHANGER(statId, 1, TRUE);
 
             gBattlescriptCurrInstr += 7;
         }
@@ -8805,7 +8833,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         */else if (((GetBattlerAbility(gActiveBattler) == ABILITY_BIG_PECKS && statId == STAT_DEF)
                     || (GetBattlerAbility(gActiveBattler) == ABILITY_HYPER_CUTTER && statId == STAT_ATK)
-                    || (GetBattlerAbility(gActiveBattler) == ABILITY_KEEN_EYE && statId == STAT_ACC))
+                    || (GetBattlerAbility(gActiveBattler) == ABILITY_KEEN_EYE && statId == STAT_ACC)
+					|| (GetBattlerAbility(gActiveBattler) == ABILITY_LIMBER && statId == STAT_SPEED))
                     && !certain )
         {
             if (flags == STAT_CHANGE_BS_PTR)
