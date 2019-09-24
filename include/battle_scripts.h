@@ -163,7 +163,7 @@ extern const u8 BattleScript_WasntAffected[];
 extern const u8 BattleScript_ObliviousPreventsAttraction[];
 extern const u8 BattleScript_FlinchPrevention[];
 extern const u8 BattleScript_OwnTempoPrevents[];
-extern const u8 BattleScript_SoundproofProtected[];
+extern const u8 BattleScript_AbilityProtectsAgainstMove[];
 extern const u8 BattleScript_AbilityNoSpecificStatLoss[];
 extern const u8 BattleScript_StickyHoldActivates[];
 extern const u8 BattleScript_ColorChangeActivates[];
@@ -351,5 +351,6 @@ extern const u8 BattleScript_MoveEffectBugBite[];
 extern const u8 BattleScript_IllusionOff[];
 extern const u8 BattleScript_RKSSystemBoosts[];
 extern const u8 BattleScript_MoodyActivates[];
+extern const u8 BattleScript_MagicianCausesMiss[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

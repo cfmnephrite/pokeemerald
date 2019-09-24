@@ -627,7 +627,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_STATUS,
     },
 
@@ -1490,7 +1490,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -4626,7 +4626,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -8682,7 +8682,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },
@@ -8914,7 +8914,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -9160,7 +9160,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MAGICIAN_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
     },

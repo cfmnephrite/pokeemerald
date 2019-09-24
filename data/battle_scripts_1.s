@@ -6508,12 +6508,21 @@ BattleScript_OwnTempoPrevents::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
-BattleScript_SoundproofProtected::
+BattleScript_AbilityProtectsAgainstMove::
 	attackstring
 	ppreduce
 	pause 0x20
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_PKMNSXBLOCKSY
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+
+BattleScript_MagicianCausesMiss::
+	attackstring
+	ppreduce
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_ATTACKMISSED
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 

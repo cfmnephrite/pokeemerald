@@ -3452,20 +3452,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         {
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
                 gHitMarker |= HITMARKER_NO_PPDEDUCT;
-            gBattlescriptCurrInstr = BattleScript_SoundproofProtected;
+            gBattlescriptCurrInstr = BattleScript_AbilityProtectsAgainstMove;
             effect = 1;
         }
 		else if (GetBattlerAbility(battler) == ABILITY_MAGICIAN
 			 && gBattleMons[battler].item != ITEM_NONE
-			 && (move == MOVE_KNOCK_OFF || move == MOVE_TRICK || move == MOVE_SWITCHEROO))
+			 && gBattleMoves[move].flags & FLAG_MAGICIAN_AFFECTED)
 			 {
-				 gBattlescriptCurrInstr = BattleScript_SoundproofProtected;
+				 gBattlescriptCurrInstr = BattleScript_MagicianCausesMiss;
 				 effect = 1;
 			 }
         else if (((gLastUsedAbility == ABILITY_DAZZLING || gLastUsedAbility == ABILITY_QUEENLY_MAJESTY)
                    || (IsBattlerAlive(battler ^= BIT_FLANK) && (GetBattlerAbility(battler) == ABILITY_DAZZLING || GetBattlerAbility(battler) == ABILITY_QUEENLY_MAJESTY))
                    )
-                 && GetChosenMovePriority(battler) > 0
+                 && GetChosenMovePriority(gBattlerAttacker) > 0
                  && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(battler))
         {
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
