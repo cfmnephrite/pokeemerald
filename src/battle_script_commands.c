@@ -6680,6 +6680,9 @@ static void atk76_various(void)
 
     switch (gBattlescriptCurrInstr[2])
     {
+    case VARIOUS_MULTITYPE_ACTIVATES:
+        gBattleMons[gActiveBattler].ability = ABILITY_CONTRARY; // Placeholder until Arceus forms are sorted
+        break;
     case VARIOUS_TRACE_ABILITY:
         gBattleMons[gActiveBattler].ability = gBattleStruct->tracedAbility[gActiveBattler];
         break;

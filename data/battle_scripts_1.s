@@ -6232,6 +6232,16 @@ BattleScript_SpeedBoostActivates::
 	waitmessage 0x40
 	end3
 
+BattleScript_MultitypeActivates::
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	multitypeactivates BS_ABILITY_BATTLER
+	printstring STRINGID_MULTITYPEACTIVATES
+	waitmessage 0x40
+	recordability BS_ABILITY_BATTLER
+	switchinabilities BS_ABILITY_BATTLER
+	end3
+
 BattleScript_TraceActivates::
 	pause 0x20
 	call BattleScript_AbilityPopUp

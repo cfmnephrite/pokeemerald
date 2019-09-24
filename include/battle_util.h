@@ -20,6 +20,7 @@
 #define ABILITYEFFECT_INTIMIDATE1                0x9
 #define ABILITYEFFECT_INTIMIDATE2                0xA
 #define ABILITYEFFECT_TRACE                      0xB
+#define ABILITYEFFECT_MULTITYPE                  0xC
 #define ABILITYEFFECT_SWITCH_IN_WEATHER          0xFF
 #define ABILITYEFFECT_MOVE_END_ACTIVE            0x14
 

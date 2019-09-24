@@ -351,5 +351,6 @@ extern const u8 BattleScript_MoveEffectBugBite[];
 extern const u8 BattleScript_IllusionOff[];
 extern const u8 BattleScript_RKSSystemBoosts[];
 extern const u8 BattleScript_MoodyActivates[];
+extern const u8 BattleScript_MultitypeActivates[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

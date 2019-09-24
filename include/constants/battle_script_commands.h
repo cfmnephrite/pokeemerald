@@ -155,9 +155,10 @@
 #define VARIOUS_UPDATE_NICK                     89
 #define VARIOUS_TRY_ILLUSION_OFF                90
 #define VARIOUS_SET_SPRITEIGNORE0HP             91
-#define VARIOUS_BOOST_HIGHER_OFFENSE			92
-#define VARIOUS_JUMP_IF_LEAF_GUARD				93
-#define VARIOUS_TRY_LOWER_RANDOM_STAT			94
+#define VARIOUS_BOOST_HIGHER_OFFENSE            92
+#define VARIOUS_JUMP_IF_LEAF_GUARD              93
+#define VARIOUS_TRY_LOWER_RANDOM_STAT           94
+#define VARIOUS_MULTITYPE_ACTIVATES             95
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
