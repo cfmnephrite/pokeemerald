@@ -6034,6 +6034,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 		if (moveType == TYPE_PSYCHIC)
 			MulModifier(&modifier, UQ_4_12(1.5));
 		break;
+	case ABILITY_OWN_TEMPO:
+		if (gBattleMoves[move].flags & FLAG_SOUND)
+			MulModifier(&modifier, UQ_4_12(1.3));
+		break;
     }
 
     // field abilities
@@ -6427,6 +6431,11 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
         if (!gIsCriticalHit && IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(1.33));
         break;
+	case ABILITY_MULTISCALE:
+	case ABILITY_SHADOW_SHIELD:
+		if (gBattleMons[battlerDef].hp == gBattleMons[battlerDef].maxHP)
+			MulModifier(&modifier, UQ_4_12(2.0));
+		break;
     }
 
     // ally's abilities
@@ -6545,6 +6554,10 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
     case ABILITY_SNIPER:
         if (isCrit)
             MulModifier(&finalModifier, UQ_4_12(1.5));
+        break;
+	case ABILITY_NEUROFORCE:
+		if (typeEffectivenessModifier >= UQ_4_12(2.0))
+            MulModifier(&finalModifier, UQ_4_12(1.2));
         break;
     }
 
