@@ -1428,6 +1428,8 @@ static void atk02_attackstring(void)
         PrepareStringBattle(STRINGID_USEDMOVE, gBattlerAttacker);
         gHitMarker |= HITMARKER_ATTACKSTRING_PRINTED;
     }
+	else
+		PrepareStringBattle(STRINGID_EMPTYSTRING3, gBattlerAttacker);
     gBattlescriptCurrInstr++;
     gBattleCommunication[MSG_DISPLAY] = 0;
 }
@@ -2712,7 +2714,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gBattlescriptCurrInstr = BattleScript_RapidSpinAway;
                 break;
             case MOVE_EFFECT_REMOVE_STATUS: // Smelling salts
-                if (!(gBattleMons[gBattlerTarget].status1 & gBattleMoves[gCurrentMove].argument))
+                if (!(gBattleMons[gBattlerTarget].status1 & gBattleMoves[gCurrentMove].argument) || !(gBattleStruct->parentalBondMove[gBattlerAttacker]))
                 {
                     gBattlescriptCurrInstr++;
                 }
@@ -2791,7 +2793,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     }
                     break;
                 }
-                if (gBattleMons[gEffectBattler].item)
+                if (gBattleMons[gEffectBattler].item && !gBattleStruct->parentalBondMove[gBattlerAttacker])
                 {
                     side = GetBattlerSide(gEffectBattler);
 
@@ -2824,7 +2826,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 }
                 break;
             case MOVE_EFFECT_SMACK_DOWN:
-                if (!IsBattlerGrounded(gBattlerTarget))
+                if (!IsBattlerGrounded(gBattlerTarget) && !(gBattleStruct->parentalBondMove[gBattlerAttacker]))
                 {
                     gStatuses3[gBattlerTarget] |= STATUS3_SMACKED_DOWN;
                     gStatuses3[gBattlerTarget] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
@@ -11448,36 +11450,39 @@ static void atkE3_jumpifhasnohp(void)
 
 static void atkE4_getsecretpowereffect(void)
 {
-    switch (gBattleTerrain)
-    {
-    case BATTLE_TERRAIN_GRASS:
-        gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
-        break;
-    case BATTLE_TERRAIN_LONG_GRASS:
-        gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
-        break;
-    case BATTLE_TERRAIN_SAND:
-        gBattleScripting.moveEffect = MOVE_EFFECT_ACC_MINUS_1;
-        break;
-    case BATTLE_TERRAIN_UNDERWATER:
-        gBattleScripting.moveEffect = MOVE_EFFECT_DEF_MINUS_1;
-        break;
-    case BATTLE_TERRAIN_WATER:
-        gBattleScripting.moveEffect = MOVE_EFFECT_ATK_MINUS_1;
-        break;
-    case BATTLE_TERRAIN_POND:
-        gBattleScripting.moveEffect = MOVE_EFFECT_SPD_MINUS_1;
-        break;
-    case BATTLE_TERRAIN_MOUNTAIN:
-        gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
-        break;
-    case BATTLE_TERRAIN_CAVE:
-        gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
-        break;
-    default:
-        gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
-        break;
-    }
+	if(!(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && !(gBattleStruct->parentalBondMove[gBattlerAttacker])))
+	{
+		switch (gBattleTerrain)
+		{
+		case BATTLE_TERRAIN_GRASS:
+			gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+			break;
+		case BATTLE_TERRAIN_LONG_GRASS:
+			gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
+			break;
+		case BATTLE_TERRAIN_SAND:
+			gBattleScripting.moveEffect = MOVE_EFFECT_ACC_MINUS_1;
+			break;
+		case BATTLE_TERRAIN_UNDERWATER:
+			gBattleScripting.moveEffect = MOVE_EFFECT_DEF_MINUS_1;
+			break;
+		case BATTLE_TERRAIN_WATER:
+			gBattleScripting.moveEffect = MOVE_EFFECT_ATK_MINUS_1;
+			break;
+		case BATTLE_TERRAIN_POND:
+			gBattleScripting.moveEffect = MOVE_EFFECT_SPD_MINUS_1;
+			break;
+		case BATTLE_TERRAIN_MOUNTAIN:
+			gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
+			break;
+		case BATTLE_TERRAIN_CAVE:
+			gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
+			break;
+		default:
+			gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
+			break;
+		}
+	}
     gBattlescriptCurrInstr++;
 }
 

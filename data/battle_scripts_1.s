@@ -2410,6 +2410,11 @@ BattleScript_MultiHitEnd::
 	moveendcase ATK49_SYNCHRONIZE_TARGET
 	moveendfrom ATK49_STATUS_IMMUNITY_ABILITIES
 	end
+	
+BattleScript_ParentalBondStrings::
+	printstring STRINGID_HITXTIMES
+	waitmessage 0x30
+	end
 
 BattleScript_EffectConversion::
 	attackcanceler

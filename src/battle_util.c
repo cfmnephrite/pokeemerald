@@ -34,6 +34,8 @@
 
 // rom const data
 
+extern const u8* const gBattleScriptsForMoveEffects[];
+
 static const u8 sAbilitiesAffectedByMoldBreaker[] =
 {   [ABILITY_AROMA_VEIL] = 1,
     [ABILITY_BATTLE_ARMOR] = 1,
@@ -153,6 +155,16 @@ static const u8 sHoldEffectToType[][2] =
     {HOLD_EFFECT_DRAGON_POWER, TYPE_DRAGON},
     {HOLD_EFFECT_NORMAL_POWER, TYPE_NORMAL},
     {HOLD_EFFECT_FAIRY_POWER, TYPE_FAIRY},
+};
+
+static const u16 sUnaffectedByParentalBond[] =
+{
+	[EFFECT_SEMI_INVULNERABLE] = 1,
+	[EFFECT_SOLARBEAM] = 1,
+	[EFFECT_UPROAR] = 1,
+	[EFFECT_HIT_ARG_TIMES] = 1,
+	[EFFECT_DOUBLE_HIT_EFFECT] = 1,
+	[EFFECT_SKULL_BASH] = 1,
 };
 
 // percent in UQ_4_12 format
@@ -4066,6 +4078,32 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				}
 			}
 			break;
+		case ABILITY_PARENTAL_BOND:
+			if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && IsBattlerAlive(battler)
+             && TARGET_TURN_DAMAGED
+			 && IsBattlerAlive(gBattlerTarget)
+			 && !(sUnaffectedByParentalBond[gBattleMoves[move].effect])
+			 && !(gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
+			 && gBattleMoves[move].split != SPLIT_STATUS
+			 && !gBattleStruct->parentalBondMove[battler])
+			{
+				gMultiHitCounter++;
+				gBattleStruct->parentalBondMove[battler] = 1;
+				gBattlescriptCurrInstr = gBattleScriptsForMoveEffects[gBattleMoves[gCurrentMove].effect];
+			}
+			else if((sUnaffectedByParentalBond[gBattleMoves[move].effect])
+			 || (gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
+			 || gBattleMoves[move].split == SPLIT_STATUS)
+				break;
+			else
+			{
+				gMultiHitCounter++;
+				gBattleStruct->parentalBondMove[battler] = 0;
+				PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gMultiHitCounter)
+				gBattlescriptCurrInstr = BattleScript_ParentalBondStrings;
+			}
+			break;
         }
         if (effect)
         {
@@ -6037,6 +6075,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 	case ABILITY_OWN_TEMPO:
 		if (gBattleMoves[move].flags & FLAG_SOUND)
 			MulModifier(&modifier, UQ_4_12(1.3));
+		break;
+	case ABILITY_PARENTAL_BOND:
+		if (gBattleStruct->parentalBondMove[battlerAtk])
+			MulModifier(&modifier, UQ_4_12(0.25));
 		break;
     }
 
