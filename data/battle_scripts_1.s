@@ -2411,6 +2411,10 @@ BattleScript_MultiHitEnd::
 	moveendfrom ATK49_STATUS_IMMUNITY_ABILITIES
 	end
 	
+BattleScript_ParentalBondLoop::
+	movevaluescleanup
+	jumptocalledmove TRUE
+	
 BattleScript_ParentalBondStrings::
 	printstring STRINGID_HITXTIMES
 	waitmessage 0x30

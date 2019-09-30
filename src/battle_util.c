@@ -34,7 +34,7 @@
 
 // rom const data
 
-extern const u8* const gBattleScriptsForMoveEffects[];
+#define UNAFFECTED_END 0xFFFF
 
 static const u8 sAbilitiesAffectedByMoldBreaker[] =
 {   [ABILITY_AROMA_VEIL] = 1,
@@ -159,12 +159,13 @@ static const u8 sHoldEffectToType[][2] =
 
 static const u16 sUnaffectedByParentalBond[] =
 {
-	[EFFECT_SEMI_INVULNERABLE] = 1,
-	[EFFECT_SOLARBEAM] = 1,
-	[EFFECT_UPROAR] = 1,
-	[EFFECT_HIT_ARG_TIMES] = 1,
-	[EFFECT_DOUBLE_HIT_EFFECT] = 1,
-	[EFFECT_SKULL_BASH] = 1,
+	EFFECT_SEMI_INVULNERABLE,
+	EFFECT_SOLARBEAM,
+	EFFECT_UPROAR,
+	EFFECT_HIT_ARG_TIMES,
+	EFFECT_DOUBLE_HIT_EFFECT,
+	EFFECT_SKULL_BASH,
+	UNAFFECTED_END
 };
 
 // percent in UQ_4_12 format
@@ -2328,6 +2329,7 @@ u8 AtkCanceller_UnableToUseMove(void)
                     {
                         gCurrentMove = MOVE_BIDE;
                         *bideDmg = gTakenDmg[gBattlerAttacker] * 2;
+						gTakenDmg[gBattlerAttacker] = 0;
                         gBattlerTarget = gTakenDmgByBattler[gBattlerAttacker];
                         if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
                             gBattlerTarget = GetMoveTarget(MOVE_BIDE, 1);
@@ -3674,6 +3676,15 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 case ABILITY_SHIELDS_DOWN:
                 case ABILITY_STANCE_CHANGE:
                     break;
+				case ABILITY_PARENTAL_BOND: //attack anyway. Mummy becomes the ability after the second hit
+					if(!(gBattleStruct->parentalBondMove[gBattlerAttacker]))
+					{
+						gBattleStruct->parentalBondMove[gBattlerAttacker] = -1;
+						BattleScriptPushCursor();
+						gBattlescriptCurrInstr = BattleScript_MummyActivates;
+						effect++;
+					}
+					break;
                 default:
                     gLastUsedAbility = gBattleMons[gBattlerAttacker].ability = ABILITY_MUMMY;
                     BattleScriptPushCursor();
@@ -4079,28 +4090,39 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			}
 			break;
 		case ABILITY_PARENTAL_BOND:
+			for(i = 0; sUnaffectedByParentalBond[i] != UNAFFECTED_END; i++)
+			{
+				if(sUnaffectedByParentalBond[i] == gBattleMoves[move].effect)
+					break;
+			}
 			if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(battler)
              && TARGET_TURN_DAMAGED
 			 && IsBattlerAlive(gBattlerTarget)
-			 && !(sUnaffectedByParentalBond[gBattleMoves[move].effect])
+			 && sUnaffectedByParentalBond[i] == UNAFFECTED_END
 			 && !(gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
 			 && gBattleMoves[move].split != SPLIT_STATUS
-			 && !gBattleStruct->parentalBondMove[battler])
+			 && gBattleStruct->parentalBondMove[battler] < 1
+			 && GetMoveTargetCount(move, battler, gBattlerTarget) < 2)
 			{
 				gMultiHitCounter++;
-				gBattleStruct->parentalBondMove[battler] = 1;
-				gBattlescriptCurrInstr = gBattleScriptsForMoveEffects[gBattleMoves[gCurrentMove].effect];
+				gBattleStruct->parentalBondMove[battler] += 2;
+				gCalledMove = move;
+				gBattlescriptCurrInstr = BattleScript_ParentalBondLoop;
 			}
-			else if((sUnaffectedByParentalBond[gBattleMoves[move].effect])
+			else if((gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+			 || sUnaffectedByParentalBond[i] != UNAFFECTED_END
 			 || (gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
-			 || gBattleMoves[move].split == SPLIT_STATUS)
+			 || gBattleMoves[move].split == SPLIT_STATUS
+			 || GetMoveTargetCount(move, battler, gBattlerTarget) >= 2)
 				break;
 			else
 			{
 				gMultiHitCounter++;
-				gBattleStruct->parentalBondMove[battler] = 0;
 				PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gMultiHitCounter)
+				if(gBattleStruct->parentalBondMove[battler] == 1)
+					gBattleMons[gBattlerAttacker].ability = ABILITY_MUMMY;
+				gBattleStruct->parentalBondMove[battler] = 0;
 				gBattlescriptCurrInstr = BattleScript_ParentalBondStrings;
 			}
 			break;

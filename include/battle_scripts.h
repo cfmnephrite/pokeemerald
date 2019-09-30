@@ -352,6 +352,7 @@ extern const u8 BattleScript_IllusionOff[];
 extern const u8 BattleScript_RKSSystemBoosts[];
 extern const u8 BattleScript_MoodyActivates[];
 extern const u8 BattleScript_MagicianCausesMiss[];
+extern const u8 BattleScript_ParentalBondLoop[];
 extern const u8 BattleScript_ParentalBondStrings[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

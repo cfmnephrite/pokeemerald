@@ -562,7 +562,7 @@ struct BattleStruct
     u8 tracedAbility[MAX_BATTLERS_COUNT];
     bool8 spriteIgnore0Hp;
     struct Illusion illusion[MAX_BATTLERS_COUNT];
-	bool8 parentalBondMove[MAX_BATTLERS_COUNT];
+	s8 parentalBondMove[MAX_BATTLERS_COUNT];
 };
 
 #define GET_MOVE_TYPE(move, typeArg)                        \

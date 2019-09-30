@@ -94,6 +94,7 @@ bool32 IsBattlerGrounded(u8 battlerId);
 bool32 IsBattlerAlive(u8 battlerId);
 u8 GetBattleMonMoveSlot(struct BattlePokemon *battleMon, u16 move);
 u32 GetBattlerWeight(u8 battlerId);
+u32 GetMoveTargetCount(u16 move, u8 battlerAtk, u8 battlerDef);
 s32 CalculateMoveDamage(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, s32 fixedBasePower, bool32 isCrit, bool32 randomFactor, bool32 updateFlags);
 u16 CalcTypeEffectivenessMultiplier(u16 move, u8 moveType, u8 battlerAtk, u8 battlerDef, bool32 recordAbilities);
 u16 CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u8 abilityDef);

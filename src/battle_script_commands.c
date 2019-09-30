@@ -1297,7 +1297,8 @@ static bool32 AccuracyCalcHelper(u16 move)
      || ((gBattleWeather & WEATHER_SANDSTORM_ANY) && move == MOVE_STONE_EDGE)
      || ((gBattleWeather & WEATHER_SUN_ANY) && gBattleMoves[move].effect == EFFECT_HURRICANE && IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_FIRE))))
      || (gBattleMoves[move].effect == EFFECT_VITAL_THROW)
-     || (gBattleMoves[move].accuracy == 0))
+     || (gBattleMoves[move].accuracy == 0)
+	 || (gBattleStruct-> parentalBondMove[gBattlerAttacker] > 0))
     {
         JumpIfMoveFailed(7, move);
         return TRUE;
@@ -1694,7 +1695,7 @@ static void atk09_attackanimation(void)
     if (gBattleControllerExecFlags)
         return;
 
-    if ((gHitMarker & HITMARKER_NO_ANIMATIONS) && (gCurrentMove != MOVE_TRANSFORM && gCurrentMove != MOVE_SUBSTITUTE))
+    if (((gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleStruct->parentalBondMove[gBattlerAttacker] > 0) && (gCurrentMove != MOVE_TRANSFORM && gCurrentMove != MOVE_SUBSTITUTE))
     {
         BattleScriptPush(gBattlescriptCurrInstr + 1);
         gBattlescriptCurrInstr = BattleScript_Pausex20;
@@ -2467,7 +2468,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 }
                 break;
             case MOVE_EFFECT_PAYDAY:
-                if (GET_BATTLER_SIDE(gBattlerAttacker) == B_SIDE_PLAYER)
+                if (GET_BATTLER_SIDE(gBattlerAttacker) == B_SIDE_PLAYER 
+				&& !(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] > 0))
                 {
                     u16 PayDay = gPaydayMoney;
                     gPaydayMoney += (gBattleMons[gBattlerAttacker].level * 5);
@@ -2714,7 +2716,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gBattlescriptCurrInstr = BattleScript_RapidSpinAway;
                 break;
             case MOVE_EFFECT_REMOVE_STATUS: // Smelling salts
-                if (!(gBattleMons[gBattlerTarget].status1 & gBattleMoves[gCurrentMove].argument) || !(gBattleStruct->parentalBondMove[gBattlerAttacker]))
+                if (!(gBattleMons[gBattlerTarget].status1 & gBattleMoves[gCurrentMove].argument) 
+					&& !(gBattleStruct->parentalBondMove[gBattlerAttacker] > 0 && GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND))
                 {
                     gBattlescriptCurrInstr++;
                 }
@@ -2743,28 +2746,49 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gBattlescriptCurrInstr = BattleScript_AtkDown3;
                 break;
             case MOVE_EFFECT_RECOIL_25: // 25% recoil
-                gBattleMoveDamage = (gHpDealt) / 4;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
+				if(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND
+				&& gBattleStruct->parentalBondMove[gBattlerAttacker] < 1)
+					gTakenDmg[gBattlerAttacker] = gHpDealt;
+				else
+				{
+					gBattleMoveDamage = (gHpDealt + gTakenDmg[gBattlerAttacker]) / 4;
+					if (gBattleMoveDamage == 0)
+						gBattleMoveDamage = 1;
 
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					BattleScriptPush(gBattlescriptCurrInstr + 1);
+					gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					gTakenDmg[gBattlerAttacker] = 0;
+				}
                 break;
             case MOVE_EFFECT_RECOIL_33: // 33% recoil
-                gBattleMoveDamage = gHpDealt / 3;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
+				if(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND
+				&& gBattleStruct->parentalBondMove[gBattlerAttacker] < 1)
+					gTakenDmg[gBattlerAttacker] = gHpDealt;
+				else
+				{
+					gBattleMoveDamage = (gHpDealt + gTakenDmg[gBattlerAttacker]) / 3;
+					if (gBattleMoveDamage == 0)
+						gBattleMoveDamage = 1;
 
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					BattleScriptPush(gBattlescriptCurrInstr + 1);
+					gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					gTakenDmg[gBattlerAttacker] = 0;
+				}
                 break;
             case MOVE_EFFECT_RECOIL_50: // 50% recoil
-                gBattleMoveDamage = gHpDealt / 2;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
+                if(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND
+				&& gBattleStruct->parentalBondMove[gBattlerAttacker] < 1)
+					gTakenDmg[gBattlerAttacker] = gHpDealt;
+				else
+				{
+					gBattleMoveDamage = (gHpDealt + gTakenDmg[gBattlerAttacker]) / 2;
+					if (gBattleMoveDamage == 0)
+						gBattleMoveDamage = 1;
 
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					BattleScriptPush(gBattlescriptCurrInstr + 1);
+					gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
+					gTakenDmg[gBattlerAttacker] = 0;
+				}
                 break;
             case MOVE_EFFECT_THRASH:
                 if (gBattleMons[gEffectBattler].status2 & STATUS2_LOCK_CONFUSE)
@@ -2826,7 +2850,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 }
                 break;
             case MOVE_EFFECT_SMACK_DOWN:
-                if (!IsBattlerGrounded(gBattlerTarget) && !(gBattleStruct->parentalBondMove[gBattlerAttacker]))
+                if (!IsBattlerGrounded(gBattlerTarget) && !(gBattleStruct->parentalBondMove[gBattlerAttacker] > 0 && GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND))
                 {
                     gStatuses3[gBattlerTarget] |= STATUS3_SMACKED_DOWN;
                     gStatuses3[gBattlerTarget] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
@@ -11450,7 +11474,7 @@ static void atkE3_jumpifhasnohp(void)
 
 static void atkE4_getsecretpowereffect(void)
 {
-	if(!(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && !(gBattleStruct->parentalBondMove[gBattlerAttacker])))
+	if(!(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] > 0))
 	{
 		switch (gBattleTerrain)
 		{
