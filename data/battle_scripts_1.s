@@ -359,6 +359,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_MoodyActivates
 	
 BattleScript_EffectBugBite:
+	jumpifparentalbond TRUE, BattleScript_EffectHit
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
 	
@@ -882,6 +883,7 @@ BattleScript_EffectPsychoShiftCanWork:
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectSmackDown:
+	jumpifparentalbond TRUE, BattleScript_EffectHit
 	setmoveeffect MOVE_EFFECT_SMACK_DOWN | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
 
@@ -1028,6 +1030,7 @@ BattleScript_EffectHitSwitchTarget:
 	resultmessage
 	waitmessage 0x40
 	tryfaintmon BS_TARGET, FALSE, NULL
+	jumpifparentalbond TRUE, BattleScript_MoveEnd
 	jumpifability BS_TARGET, ABILITY_SUCTION_CUPS, BattleScript_AbilityPreventsPhasingOut
 	jumpifstatus3 BS_TARGET, STATUS3_ROOTED, BattleScript_PrintMonIsRooted
 	tryhitswitchtarget BattleScript_EffectHitSwitchTargetMoveEnd
@@ -1860,7 +1863,9 @@ BattleScript_EffectHitEscape:
 	jumpifmovehadnoeffect BattleScript_MoveEnd
 	seteffectwithchance
 	tryfaintmon BS_TARGET, FALSE, NULL
+	jumpifparentalbond TRUE, BattleScript_HitEscapeSwitch
 	moveendall
+BattleScript_HitEscapeSwitch:
 	jumpifbattleend BattleScript_HitEscapeEnd
 	jumpifbyte CMP_NOT_EQUAL gBattleOutcome 0, BattleScript_HitEscapeEnd
 	jumpifcantswitch ATK4F_DONT_CHECK_STATUSES | BS_ATTACKER, BattleScript_HitEscapeEnd
@@ -2476,6 +2481,7 @@ BattleScript_EffectRestoreHp::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectPayDay::
+	jumpifparentalbond FALSE, BattleScript_EffectHitArgEffect
 	setmoveeffect MOVE_EFFECT_PAYDAY | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHitArgEffect
 
@@ -3242,6 +3248,7 @@ BattleScript_PartyHealEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectThief::
+	jumpifparentalbond TRUE, BattleScript_EffectHit
 	setmoveeffect MOVE_EFFECT_STEAL_ITEM | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
 
@@ -3896,6 +3903,7 @@ BattleScript_EffectSpitUp::
 	setbyte gIsCriticalHit, FALSE
 	damagecalc
 	adjustdamage
+	jumpifparentalbond FALSE, BattleScript_HitFromAtkAnimation
 	stockpiletobasedamage BattleScript_SpitUpFail
 	goto BattleScript_HitFromAtkAnimation
 BattleScript_SpitUpFail::
@@ -4338,6 +4346,7 @@ BattleScript_EffectSnatch:
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectSecretPower::
+	jumpifparentalbond TRUE, BattleScript_EffectHit
 	getsecretpowereffect
 	goto BattleScript_EffectHit
 
@@ -5178,8 +5187,10 @@ BattleScript_BideAttack::
 	attackcanceler
 	setmoveeffect MOVE_EFFECT_CHARGING
 	clearstatusfromeffect BS_ATTACKER
+	jumpifparentalbond TRUE, BattleScript_BideSkipText
 	printstring STRINGID_PKMNUNLEASHEDENERGY
 	waitmessage 0x40
+BattleScript_BideDoAttack::
 	accuracycheck BattleScript_MoveMissed, ACC_CURR_MOVE
 	typecalc
 	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
@@ -5197,6 +5208,10 @@ BattleScript_BideAttack::
 	waitmessage 0x40
 	tryfaintmon BS_TARGET, FALSE, NULL
 	goto BattleScript_MoveEnd
+	
+BattleScript_BideSkipText::
+	printstring STRINGID_EMPTYSTRING3
+	goto BattleScript_BideDoAttack
 
 BattleScript_BideNoEnergyToAttack::
 	attackcanceler

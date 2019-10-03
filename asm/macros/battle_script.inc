@@ -1720,6 +1720,12 @@
 	.byte \val
 	.endm
 	
+	.macro jumpifparentalbond val:req, ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_PARENTAL_BOND
+	.byte \val
+	.4byte \ptr
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7
@@ -1819,7 +1825,7 @@
 	jumpifability BS_TARGET_SIDE, ABILITY_FLOWER_VEIL, \jumpptr
 	1:
 	.endm
-
+	
 	.macro setallytonexttarget jumpptr:req
 	jumpifbyte CMP_GREATER_THAN, gBattlerTarget, 0x1, 1f
 	addbyte gBattlerTarget, 0x2

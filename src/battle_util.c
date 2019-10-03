@@ -165,6 +165,11 @@ static const u16 sUnaffectedByParentalBond[] =
 	EFFECT_HIT_ARG_TIMES,
 	EFFECT_DOUBLE_HIT_EFFECT,
 	EFFECT_SKULL_BASH,
+	EFFECT_ENDEAVOR,
+	EFFECT_FLING,
+	EFFECT_EXPLOSION,
+	EFFECT_FINAL_GAMBIT,
+	EFFECT_ROLLOUT,
 	UNAFFECTED_END
 };
 
@@ -4103,18 +4108,26 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			 && !(gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
 			 && gBattleMoves[move].split != SPLIT_STATUS
 			 && gBattleStruct->parentalBondMove[battler] < 1
-			 && GetMoveTargetCount(move, battler, gBattlerTarget) < 2)
+			 && GetMoveTargetCount(move, battler, gBattlerTarget) < 2
+			 && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE))
 			{
 				gMultiHitCounter++;
 				gBattleStruct->parentalBondMove[battler] += 2;
-				gCalledMove = move;
-				gBattlescriptCurrInstr = BattleScript_ParentalBondLoop;
+				if (gBattleMoves[move].effect == EFFECT_BIDE)
+					gBattlescriptCurrInstr = BattleScript_BideAttack;
+				else
+				{
+					gCalledMove = move;
+					gBattlescriptCurrInstr = BattleScript_ParentalBondLoop;
+				}
 			}
 			else if((gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+			 || !TARGET_TURN_DAMAGED
 			 || sUnaffectedByParentalBond[i] != UNAFFECTED_END
 			 || (gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
 			 || gBattleMoves[move].split == SPLIT_STATUS
-			 || GetMoveTargetCount(move, battler, gBattlerTarget) >= 2)
+			 || GetMoveTargetCount(move, battler, gBattlerTarget) >= 2
+			 || (gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE))
 				break;
 			else
 			{
@@ -5854,7 +5867,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_ASSURANCE:
-        if (gProtectStructs[battlerAtk].physicalDmg != 0 || gProtectStructs[battlerAtk].specialDmg != 0)
+        if (gProtectStructs[battlerDef].physicalDmg != 0 || gProtectStructs[battlerDef].specialDmg != 0)
             basePower *= 2;
         break;
     case EFFECT_TRUMP_CARD:

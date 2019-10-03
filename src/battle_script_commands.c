@@ -2468,16 +2468,15 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 }
                 break;
             case MOVE_EFFECT_PAYDAY:
-                if (GET_BATTLER_SIDE(gBattlerAttacker) == B_SIDE_PLAYER 
-				&& !(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] > 0))
+                if (GET_BATTLER_SIDE(gBattlerAttacker) == B_SIDE_PLAYER)
                 {
                     u16 PayDay = gPaydayMoney;
                     gPaydayMoney += (gBattleMons[gBattlerAttacker].level * 5);
                     if (PayDay > gPaydayMoney)
                         gPaydayMoney = 0xFFFF;
-                }
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleScripting.moveEffect];
+				}
                 break;
             case MOVE_EFFECT_HAPPY_HOUR:
                 if (GET_BATTLER_SIDE(gBattlerAttacker) == B_SIDE_PLAYER)
@@ -2850,7 +2849,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 }
                 break;
             case MOVE_EFFECT_SMACK_DOWN:
-                if (!IsBattlerGrounded(gBattlerTarget) && !(gBattleStruct->parentalBondMove[gBattlerAttacker] > 0 && GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND))
+                if (!IsBattlerGrounded(gBattlerTarget))
                 {
                     gStatuses3[gBattlerTarget] |= STATUS3_SMACKED_DOWN;
                     gStatuses3[gBattlerTarget] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR);
@@ -4520,7 +4519,8 @@ static void atk49_moveend(void)
             if (gBattleMons[gBattlerTarget].status1 & STATUS1_FREEZE
                 && gBattleMons[gBattlerTarget].hp != 0 && gBattlerAttacker != gBattlerTarget
                 && gSpecialStatuses[gBattlerTarget].specialDmg
-                && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && (moveType == TYPE_FIRE || gBattleMoves[gCurrentMove].effect == EFFECT_SCALD))
+                && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && (moveType == TYPE_FIRE || gBattleMoves[gCurrentMove].effect == EFFECT_SCALD)
+				&& !(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] < 1))
             {
                 gBattleMons[gBattlerTarget].status1 &= ~(STATUS1_FREEZE | STATUS1_THAW | STATUS1_SLP_FRZ_TIMER);
                 gActiveBattler = gBattlerTarget;
@@ -7887,6 +7887,14 @@ static void atk76_various(void)
 		else
 			gBattlescriptCurrInstr += 7;
 		return;
+	case VARIOUS_JUMP_IF_PARENTAL_BOND:
+		if(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND 
+		 && ((!gBattlescriptCurrInstr[1] && gBattleStruct->parentalBondMove[gBattlerAttacker] < 1) //first hit applies the move effect
+		 || (gBattlescriptCurrInstr[1] && gBattleStruct->parentalBondMove[gBattlerAttacker] > 0))) //second hit applies the move effect
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 4);
+		else
+			gBattlescriptCurrInstr += 7;
+		return;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -10400,7 +10408,8 @@ static void atkB5_handlefurycutter(void)
     }
     else
     {
-        if (gDisableStructs[gBattlerAttacker].furyCutterCounter != 5)
+        if (gDisableStructs[gBattlerAttacker].furyCutterCounter != 3
+		&& !(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] < 1))
             gDisableStructs[gBattlerAttacker].furyCutterCounter++;
 
         gBattlescriptCurrInstr++;
@@ -11474,38 +11483,35 @@ static void atkE3_jumpifhasnohp(void)
 
 static void atkE4_getsecretpowereffect(void)
 {
-	if(!(GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND && gBattleStruct->parentalBondMove[gBattlerAttacker] > 0))
+	switch (gBattleTerrain)
 	{
-		switch (gBattleTerrain)
-		{
-		case BATTLE_TERRAIN_GRASS:
-			gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
-			break;
-		case BATTLE_TERRAIN_LONG_GRASS:
-			gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
-			break;
-		case BATTLE_TERRAIN_SAND:
-			gBattleScripting.moveEffect = MOVE_EFFECT_ACC_MINUS_1;
-			break;
-		case BATTLE_TERRAIN_UNDERWATER:
-			gBattleScripting.moveEffect = MOVE_EFFECT_DEF_MINUS_1;
-			break;
-		case BATTLE_TERRAIN_WATER:
-			gBattleScripting.moveEffect = MOVE_EFFECT_ATK_MINUS_1;
-			break;
-		case BATTLE_TERRAIN_POND:
-			gBattleScripting.moveEffect = MOVE_EFFECT_SPD_MINUS_1;
-			break;
-		case BATTLE_TERRAIN_MOUNTAIN:
-			gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
-			break;
-		case BATTLE_TERRAIN_CAVE:
-			gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
-			break;
-		default:
-			gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
-			break;
-		}
+	case BATTLE_TERRAIN_GRASS:
+		gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+		break;
+	case BATTLE_TERRAIN_LONG_GRASS:
+		gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
+		break;
+	case BATTLE_TERRAIN_SAND:
+		gBattleScripting.moveEffect = MOVE_EFFECT_ACC_MINUS_1;
+		break;
+	case BATTLE_TERRAIN_UNDERWATER:
+		gBattleScripting.moveEffect = MOVE_EFFECT_DEF_MINUS_1;
+		break;
+	case BATTLE_TERRAIN_WATER:
+		gBattleScripting.moveEffect = MOVE_EFFECT_ATK_MINUS_1;
+		break;
+	case BATTLE_TERRAIN_POND:
+		gBattleScripting.moveEffect = MOVE_EFFECT_SPD_MINUS_1;
+		break;
+	case BATTLE_TERRAIN_MOUNTAIN:
+		gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
+		break;
+	case BATTLE_TERRAIN_CAVE:
+		gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
+		break;
+	default:
+		gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
+		break;
 	}
     gBattlescriptCurrInstr++;
 }
