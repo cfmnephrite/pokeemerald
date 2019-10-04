@@ -3253,6 +3253,7 @@ BattleScript_EffectThief::
 	goto BattleScript_EffectHit
 
 BattleScript_EffectHitPreventEscape:
+	jumpifparentalbond TRUE, BattleScript_EffectHit
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
 

@@ -4109,7 +4109,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			 && gBattleMoves[move].split != SPLIT_STATUS
 			 && gBattleStruct->parentalBondMove[battler] < 1
 			 && GetMoveTargetCount(move, battler, gBattlerTarget) < 2
-			 && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE))
+			 && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE)
+			 && !(gBattleMoves[move].flags & FLAG_Z_MOVE))
 			{
 				gMultiHitCounter++;
 				gBattleStruct->parentalBondMove[battler] += 2;
@@ -4127,7 +4128,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			 || (gBattleMoves[move].effect == EFFECT_BOUNCE && (IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)))
 			 || gBattleMoves[move].split == SPLIT_STATUS
 			 || GetMoveTargetCount(move, battler, gBattlerTarget) >= 2
-			 || (gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE))
+			 || (gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE)
+			 || (gBattleMoves[move].flags & FLAG_Z_MOVE))
 				break;
 			else
 			{
