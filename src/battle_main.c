@@ -5150,6 +5150,17 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
 			gBattleStruct->dynamicMoveType = TYPE_WATER;
 			gBattleStruct->ateBoost[battlerAtk] = 1;
 		}
+	else if (gBattleMoves[move].effect != EFFECT_HIDDEN_POWER
+             && gBattleMoves[move].effect != EFFECT_WEATHER_BALL
+             && gBattleMoves[move].effect != EFFECT_JUDGMENT
+             && gBattleMoves[move].effect != EFFECT_NATURAL_GIFT
+			 && move == gBattleMons[battlerAtk].moves[0]
+			 && gBattleMoves[move].type != gBattleMons[battlerAtk].type1
+			 && attackerAbility == ABILITY_POWER_OF_ALCHEMY)
+		{
+			gBattleStruct->dynamicMoveType = gBattleMons[battlerAtk].type1;
+			gBattleStruct->ateBoost[battlerAtk] = 1;
+		}
     
     // CFM Magic Moves & Z-Moves
     if (gBattleMoves[move].split != GetMoveSplit(battlerAtk, move, 1))

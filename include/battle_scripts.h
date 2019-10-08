@@ -352,5 +352,9 @@ extern const u8 BattleScript_IllusionOff[];
 extern const u8 BattleScript_RKSSystemBoosts[];
 extern const u8 BattleScript_MoodyActivates[];
 extern const u8 BattleScript_MagicianCausesMiss[];
+extern const u8 BattleScript_MonStatusedByAttackImmune_PPLoss[];
+extern const u8 BattleScript_MonStatusedByAttackImmune[];
+extern const u8 BattleScript_NotAffectedAtkStringPpReduce[];
+extern const u8 BattleScript_ReceiverActivates[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

@@ -166,6 +166,7 @@
 #define ATK80_1_8_TARGET_HP                                 3
 #define ATK80_FULL_ATTACKER_HP                              4
 #define ATK80_CURR_ATTACKER_HP                              5
+#define ATK80_HALF_ATTACKER_HP								6
 
 // atk4F, a flag used for the jumpifcantswitch command
 #define ATK4F_DONT_CHECK_STATUSES   0x80

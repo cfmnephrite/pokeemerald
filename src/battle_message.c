@@ -299,6 +299,8 @@ static const u8 sText_PkmnsXPreventsFlinching[] = _("{B_EFF_NAME_WITH_PREFIX}'s 
 static const u8 sText_PkmnsXPreventsYsZ[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY}\nprevents {B_DEF_NAME_WITH_PREFIX}'s\l{B_DEF_ABILITY} from working!");
 static const u8 sText_PkmnsXCuredItsYProblem[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\ncured its {B_BUFF1} problem!");
 static const u8 sText_PkmnsXHadNoEffectOnY[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nhad no effect on {B_EFF_NAME_WITH_PREFIX}!");
+static const u8 sText_PkmnBurnedItselfOut[] = _("{B_ATK_NAME_WITH_PREFIX} burned itself out!");
+static const u8 sText_PkmnsAbilityTakenOver[] = _("{B_BUFF1}'s {B_BUFF2} \nwas taken over!");
 static const u8 sText_StatSharply[] = _("sharply ");
 const u8 gText_StatRose[] = _("rose!");
 static const u8 sText_StatHarshly[] = _("harshly ");
@@ -1234,6 +1236,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_FRISKDOUBLE - 12] = sText_FriskDouble,
     [STRINGID_TARGETABILITYSTATLOWERFOE - 12] = sText_TargetAbilityLoweredFoeStat,
     [STRINGID_HEALERACTIVATES - 12] = sText_HealerActivates,
+	[STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
+	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =

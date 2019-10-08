@@ -98,6 +98,7 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
     [ABILITY_WHITE_SMOKE] = 1,
     [ABILITY_WONDER_GUARD] = 1,
     [ABILITY_WONDER_SKIN] = 1,
+	[ABILITY_POISON_HEAL] = 1,
 
 };
 
@@ -1519,7 +1520,10 @@ u8 DoBattlerEndTurnEffects(void)
                 }
                 else
                 {
-                    gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
+					if(ability == ABILITY_QUICK_FEET)
+						gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 16;
+					else
+						gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
                     if (gBattleMoveDamage == 0)
                         gBattleMoveDamage = 1;
                     BattleScriptExecute(BattleScript_PoisonTurnDmg);
@@ -1538,8 +1542,6 @@ u8 DoBattlerEndTurnEffects(void)
                     if (!BATTLER_MAX_HP(gActiveBattler) && !(gStatuses3[gActiveBattler] & STATUS3_HEAL_BLOCK))
                     {
                         gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
-                        if (ability == ABILITY_TOXIC_BOOST)
-                            gBattleMoveDamage /= 2;
                         if (gBattleMoveDamage == 0)
                             gBattleMoveDamage = 1;
                         gBattleMoveDamage *= -1;
@@ -1554,7 +1556,7 @@ u8 DoBattlerEndTurnEffects(void)
                         gBattleMoveDamage = 1;
                     if ((gBattleMons[gActiveBattler].status1 & STATUS1_TOXIC_COUNTER) != STATUS1_TOXIC_COUNTER) // not 16 turns
                         gBattleMons[gActiveBattler].status1 += 0x100;
-                    if (ability != ABILITY_TOXIC_BOOST)
+                    if (ability != ABILITY_TOXIC_BOOST || ability != ABILITY_QUICK_FEET)
                         gBattleMoveDamage *= (gBattleMons[gActiveBattler].status1 & STATUS1_TOXIC_COUNTER) >> 8;
                     BattleScriptExecute(BattleScript_PoisonTurnDmg);
                     effect++;
@@ -1568,7 +1570,7 @@ u8 DoBattlerEndTurnEffects(void)
                 && (ability != ABILITY_MAGIC_GUARD || ability != ABILITY_FLARE_BOOST))
             {
                 gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
-                if (ability == ABILITY_HEATPROOF)
+                if (ability == ABILITY_HEATPROOF || ability == ABILITY_QUICK_FEET)
                     gBattleMoveDamage /= 2;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
@@ -3307,7 +3309,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                  && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
-                    gBattleMoveDamage = gBattleMons[battler].maxHP / 16;
+                    gBattleMoveDamage = gBattleMons[battler].maxHP / 8;
                     if (gBattleMoveDamage == 0)
                         gBattleMoveDamage = 1;
                     gBattleMoveDamage *= -1;
@@ -3489,6 +3491,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (moveType == TYPE_WATER)
                     effect = 1;
                 break;
+			case ABILITY_POISON_HEAL:
+				if (moveType == TYPE_POISON)
+				{
+					if(gBattleMons[battler].status1 & STATUS1_PSN_ANY)
+						effect = 1;
+					else if((gSideStatuses[GET_BATTLER_SIDE(gBattlerAttacker)] & SIDE_STATUS_SAFEGUARD)
+						|| IS_BATTLER_OF_TYPE(battler, TYPE_STEEL)
+						|| IS_BATTLER_OF_TYPE(battler, TYPE_POISON)
+						|| (gBattleMons[battler].status1 & STATUS1_ANY))
+						break;
+					else
+						effect = 3;
+				}
+				break;
             case ABILITY_MOTOR_DRIVE:
                 if (moveType == TYPE_ELECTRIC)
                     effect = 2, statId = STAT_SPEED;
@@ -3570,6 +3586,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
                 }
             }
+			else if (effect == 3) //CFM Poison Heal
+			{
+				if(gBattleMoves[move].argument == MOVE_EFFECT_TOXIC || gBattleMoves[move].effect == EFFECT_TOXIC)
+					gBattleScripting.moveEffect = MOVE_EFFECT_TOXIC;
+				else
+					gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+				if (gProtectStructs[gBattlerAttacker].notFirstStrike)
+					gBattlescriptCurrInstr = BattleScript_MonStatusedByAttackImmune;
+				else
+					gBattlescriptCurrInstr = BattleScript_MonStatusedByAttackImmune_PPLoss;
+			}
         }
         break;
     case ABILITYEFFECT_MOVE_END: // Think contact abilities.
@@ -4029,11 +4056,14 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			}
 			break;
 		case ABILITY_MAGICIAN:
+		case ABILITY_PICKPOCKET:
 			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(battler)
              && TARGET_TURN_DAMAGED
 			 && gBattleScripting.moveEffect != MOVE_EFFECT_STEAL_ITEM)
 			{
+				if(gLastUsedAbility == ABILITY_PICKPOCKET && !(gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+					break;
 				gBattleScripting.moveEffect = MOVE_EFFECT_STEAL_ITEM | MOVE_EFFECT_CERTAIN;
 				effect++;
 			}
@@ -5794,7 +5824,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower *= 2;
         break;
     case EFFECT_ASSURANCE:
-        if (gProtectStructs[battlerAtk].physicalDmg != 0 || gProtectStructs[battlerAtk].specialDmg != 0)
+        if (gProtectStructs[battlerDef].physicalDmg != 0 || gProtectStructs[battlerDef].specialDmg != 0)
             basePower *= 2;
         break;
     case EFFECT_TRUMP_CARD:
@@ -6030,6 +6060,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 		if ((gBattleMoves[move].flags & FLAG_SOUND) && gBattleStruct->ateBoost[battlerAtk])
 			MulModifier(&modifier, UQ_4_12(1.2));
         break;
+	case ABILITY_POWER_OF_ALCHEMY:
+		if(moveType == gBattleMons[battlerAtk].type1 && gBattleStruct->ateBoost[battlerAtk])
+			MulModifier(&modifier, UQ_4_12(1.2));
+		break;
 	case ABILITY_INNER_FOCUS:
 		if (moveType == TYPE_PSYCHIC)
 			MulModifier(&modifier, UQ_4_12(1.5));
@@ -6261,10 +6295,13 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
     switch (GetBattlerAbility(battlerAtk))
     {
     case ABILITY_HUGE_POWER:
-    case ABILITY_PURE_POWER:
         if (IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(2.0));
         break;
+	case ABILITY_PURE_POWER:
+		if ((IS_MOVE_PHYSICAL(move) && GetHigherOffStat(battlerAtk) == STAT_ATK)
+		 || (IS_MOVE_SPECIAL(move) && GetHigherOffStat(battlerAtk) == STAT_SPATK))
+			MulModifier(&modifier, UQ_4_12(2.0));
     case ABILITY_SLOW_START:
         if (gDisableStructs[battlerAtk].slowStartTimer != 0)
             MulModifier(&modifier, UQ_4_12(0.5));

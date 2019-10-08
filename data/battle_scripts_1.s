@@ -355,8 +355,6 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectMagneticFlux
 	.4byte BattleScript_EffectGearUp
 	.4byte BattleScript_EffectBugBite
-	.4byte BattleScript_RKSSystemBoosts
-	.4byte BattleScript_MoodyActivates
 	
 BattleScript_EffectBugBite:
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
@@ -2574,6 +2572,8 @@ BattleScript_DoWrapEffect::
 BattleScript_EffectRecoilIfMiss::
 	attackcanceler
 	accuracycheck BattleScript_MoveMissedDoDamage, ACC_CURR_MOVE
+	typecalc
+	jumpifmovehadnoeffect BattleScript_MoveMissedDoDamage
 	goto BattleScript_HitFromAtkString
 BattleScript_MoveMissedDoDamage::
 	attackstring
@@ -2581,19 +2581,17 @@ BattleScript_MoveMissedDoDamage::
 	pause 0x40
 	resultmessage
 	waitmessage 0x40
-	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE, BattleScript_MoveEnd
 	printstring STRINGID_PKMNCRASHED
 	waitmessage 0x40
-	damagecalc
-	typecalc
-	adjustdamage
-	manipulatedamage ATK80_DMG_HALF_BY_TWO_NOT_MORE_THAN_HALF_MAX_HP
+	manipulatedamage ATK80_HALF_ATTACKER_HP
 	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
+	bichalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED
+	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectMist::
@@ -3831,6 +3829,10 @@ BattleScript_ButItFailed::
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
+BattleScript_NotAffectedAtkStringPpReduce::
+	attackstring
+BattleScript_NotAffectedAtkString::
+	ppreduce
 BattleScript_NotAffected::
 	pause 0x20
 	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
@@ -6407,6 +6409,14 @@ BattleScript_BadDreamsIncrement:
 	goto BattleScript_BadDreamsLoop
 BattleScript_BadDreamsEnd:
 	end3
+	
+BattleScript_ReceiverActivates::
+	call BattleScript_AbilityPopUp
+	waitmessage 0x20
+	printstring STRINGID_PKMNSABILITYTAKENOVER
+	waitmessage 0x40
+	settracedability BS_ABILITY_BATTLER
+	return
 
 BattleScript_TookAttack::
 	attackstring
@@ -6463,6 +6473,16 @@ BattleScript_MonMadeMoveUseless::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_PKMNSXMADEYUSELESS
 	waitmessage 0x40
+	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	goto BattleScript_MoveEnd
+	
+BattleScript_MonStatusedByAttackImmune_PPLoss::
+	ppreduce
+BattleScript_MonStatusedByAttackImmune::
+	attackstring
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	seteffectsecondary
 	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
 	goto BattleScript_MoveEnd
 

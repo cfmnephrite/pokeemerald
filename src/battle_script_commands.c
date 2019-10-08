@@ -1177,6 +1177,11 @@ static void atk00_attackcanceler(void)
         gBattleCommunication[6] = 1;
         gBattlescriptCurrInstr++;
     }
+	else if (GetBattlerAbility(gBattlerAttacker) == ABILITY_PRANKSTER
+	 && gBattleMoves[gCurrentMove].split == SPLIT_STATUS
+	 && (gBattleMoves[gCurrentMove].target != MOVE_TARGET_USER || gBattlerTarget != BATTLE_PARTNER(gBattlerAttacker))
+	 && IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_DARK))
+		gBattlescriptCurrInstr = BattleScript_NotAffectedAtkStringPpReduce;
     else
     {
         gBattlescriptCurrInstr++;
@@ -2741,7 +2746,10 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gBattlescriptCurrInstr = BattleScript_AtkDown3;
                 break;
             case MOVE_EFFECT_RECOIL_25: // 25% recoil
-                gBattleMoveDamage = (gHpDealt) / 4;
+				if(gCurrentMove == MOVE_STRUGGLE)
+					gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
+				else
+					gBattleMoveDamage = (gHpDealt) / 4;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
 
@@ -3136,6 +3144,41 @@ static void atk19_tryfaintmon(void)
 
                 PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].moves[moveIndex])
             }
+			if(gBattleTypeFlags & BATTLE_TYPE_DOUBLE
+			&& GetBattlerAbility(BATTLE_PARTNER(gActiveBattler) == ABILITY_RECEIVER))
+			{
+				switch(gBattleMons[gActiveBattler].ability)
+				{
+					case ABILITY_TRACE:
+					case ABILITY_FORECAST:
+					case ABILITY_FLOWER_GIFT:
+					case ABILITY_ZEN_MODE:
+					case ABILITY_ILLUSION:
+					case ABILITY_IMPOSTER:
+					case ABILITY_POWER_OF_ALCHEMY:
+					case ABILITY_RECEIVER:
+					case ABILITY_POWER_CONSTRUCT:
+					case ABILITY_MULTITYPE:
+					case ABILITY_STANCE_CHANGE:
+					case ABILITY_SCHOOLING:
+					case ABILITY_COMATOSE:
+					case ABILITY_SHIELDS_DOWN:
+					case ABILITY_DISGUISE:
+					case ABILITY_RKS_SYSTEM:
+					case ABILITY_BATTLE_BOND:
+						break;
+					default:
+					{
+						gBattlerAbility = gBattleScripting.battler = BATTLE_PARTNER(gActiveBattler);
+						gBattleStruct->tracedAbility[gBattlerAbility] = gLastUsedAbility;
+						PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gActiveBattler, gBattlerPartyIndexes[gActiveBattler])
+						PREPARE_ABILITY_BUFFER(gBattleTextBuff2, gLastUsedAbility)
+						BattleScriptPush(gBattlescriptCurrInstr);
+						gBattlescriptCurrInstr = BattleScript_ReceiverActivates;
+						break;
+					}
+				}
+			}
         }
         else
         {
@@ -6681,7 +6724,7 @@ static void atk76_various(void)
     switch (gBattlescriptCurrInstr[2])
     {
     case VARIOUS_TRACE_ABILITY:
-        gBattleMons[gActiveBattler].ability = gBattleStruct->tracedAbility[gActiveBattler];
+		gBattleMons[gActiveBattler].ability = gBattleStruct->tracedAbility[gActiveBattler];
         break;
     case VARIOUS_TRY_ILLUSION_OFF:
         if (GetIllusionMonPtr(gActiveBattler) != NULL)
@@ -8180,6 +8223,9 @@ static void atk80_manipulatedamage(void)
     case ATK80_CURR_ATTACKER_HP:
         gBattleMoveDamage = gBattleMons[gBattlerAttacker].hp;
         break;
+	case ATK80_HALF_ATTACKER_HP:
+		gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 2;
+		break;
     }
 
     gBattlescriptCurrInstr += 2;
