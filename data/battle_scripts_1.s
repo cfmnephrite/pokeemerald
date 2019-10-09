@@ -6297,6 +6297,11 @@ BattleScript_WeatherFormChangesLoop::
 BattleScript_CastformChange::
 	call BattleScript_82DB4AF
 	end3
+	
+BattleScript_SlowStartEnd::
+	printstring STRINGID_SLOWSTARTEND
+	waitmessage 0x40
+	end3
 
 BattleScript_82DB4AF::
 	copybyte gBattlerAbility, sBATTLER

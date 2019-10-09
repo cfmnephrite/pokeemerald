@@ -1534,7 +1534,8 @@ s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbi
                     + 2 * (holdEffectAtk == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBattlerAttacker].species == SPECIES_CHANSEY)
                     + 2 * (holdEffectAtk == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD)
                     + 2 * (gBattleMoves[gCurrentMove].effect == EFFECT_AEROBLAST && gBattleMons[gBattlerAttacker].species == SPECIES_LUGIA) // CFM Lugia's Aeroblast: +2 crit rate
-                    + (abilityAtk == ABILITY_SUPER_LUCK);
+                    + (abilityAtk == ABILITY_SUPER_LUCK)
+					+ (abilityAtk == ABILITY_ROCK_HEAD && ((gBattleMoves[gCurrentMove].flags & FLAG_RECKLESS_BOOST) || (gBattleMoves[gCurrentMove].flags & FLAG_HEAD)));
 
         if (critChance >= ARRAY_COUNT(sCriticalHitChance))
             critChance = ARRAY_COUNT(sCriticalHitChance) - 1;
@@ -3144,41 +3145,6 @@ static void atk19_tryfaintmon(void)
 
                 PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].moves[moveIndex])
             }
-			if(gBattleTypeFlags & BATTLE_TYPE_DOUBLE
-			&& GetBattlerAbility(BATTLE_PARTNER(gActiveBattler) == ABILITY_RECEIVER))
-			{
-				switch(gBattleMons[gActiveBattler].ability)
-				{
-					case ABILITY_TRACE:
-					case ABILITY_FORECAST:
-					case ABILITY_FLOWER_GIFT:
-					case ABILITY_ZEN_MODE:
-					case ABILITY_ILLUSION:
-					case ABILITY_IMPOSTER:
-					case ABILITY_POWER_OF_ALCHEMY:
-					case ABILITY_RECEIVER:
-					case ABILITY_POWER_CONSTRUCT:
-					case ABILITY_MULTITYPE:
-					case ABILITY_STANCE_CHANGE:
-					case ABILITY_SCHOOLING:
-					case ABILITY_COMATOSE:
-					case ABILITY_SHIELDS_DOWN:
-					case ABILITY_DISGUISE:
-					case ABILITY_RKS_SYSTEM:
-					case ABILITY_BATTLE_BOND:
-						break;
-					default:
-					{
-						gBattlerAbility = gBattleScripting.battler = BATTLE_PARTNER(gActiveBattler);
-						gBattleStruct->tracedAbility[gBattlerAbility] = gLastUsedAbility;
-						PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gActiveBattler, gBattlerPartyIndexes[gActiveBattler])
-						PREPARE_ABILITY_BUFFER(gBattleTextBuff2, gLastUsedAbility)
-						BattleScriptPush(gBattlescriptCurrInstr);
-						gBattlescriptCurrInstr = BattleScript_ReceiverActivates;
-						break;
-					}
-				}
-			}
         }
         else
         {

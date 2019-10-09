@@ -107,6 +107,7 @@
 #define FLAG_MON_EXCLUSIVE          0x200000
 #define FLAG_SPECIAL_TYPEMOD        0x400000
 #define FLAG_TARGET_ABILITY_IGNORED 0x800000
+#define FLAG_HEAD					0x1000000
 #define FLAG_SELF_Z                 0x20000000
 #define FLAG_Z_SPECIAL              0x40000000
 #define FLAG_Z_MOVE                 0x80000000
