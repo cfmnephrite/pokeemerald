@@ -35,6 +35,13 @@
 #define sSAVED_MOVE_EFFECT gBattleScripting + 0x2C
 #define sMOVE_EFFECT gBattleScripting + 0x2E
 #define sMULTIHIT_EFFECT gBattleScripting + 0x30
+#define sSTAT_BOOST_ATK gBattleScripting + 0x32
+#define sSTAT_BOOST_DEF gBattleScripting + 0x33
+#define sSTAT_BOOST_SPE gBattleScripting + 0x34
+#define sSTAT_BOOST_SPA gBattleScripting + 0x35
+#define sSTAT_BOOST_SPD gBattleScripting + 0x36
+#define sSTAT_BOOST_ACC gBattleScripting + 0x37
+#define sSTAT_BOOST_EVA gBattleScripting + 0x38
 
 #define cMULTISTRING_CHOOSER gBattleCommunication + 5
 
@@ -158,6 +165,9 @@
 #define VARIOUS_BOOST_HIGHER_OFFENSE			92
 #define VARIOUS_JUMP_IF_LEAF_GUARD				93
 #define VARIOUS_TRY_LOWER_RANDOM_STAT			94
+#define VARIOUS_ADJUST_STAT_BOOSTS  			95
+#define VARIOUS_STAT_STRING_TEST				96
+#define VARIOUS_STAT_ANIMATION_TEST 			97
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

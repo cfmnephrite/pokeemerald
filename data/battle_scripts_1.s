@@ -1307,6 +1307,20 @@ BattleScript_EffectQuiverDance:
 	attackcanceler
 	attackstring
 	ppreduce
+	setallstatboosts BS_ATTACKER, 0, 0, 3, 3, 3, 0, 0 @include func to adjust due to limits/
+	printstring STRINGID_ABOOSTED
+	waitmessage 0x40
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	@playstatchangeanimationtest BS_ATTACKER, 0x0 @custom statchangeanimation
+	@printfromtabletest gStatUpStringIds, 0x0 @or some custom function to print strings
+	printstring STRINGID_USENEXTPKMN
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+
+BattleScript_EffectQuiverDance_:
+	attackcanceler
+	attackstring
+	ppreduce
 	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPATK, 0xC, BattleScript_QuiverDanceDoMoveAnim
 	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPDEF, 0xC, BattleScript_QuiverDanceDoMoveAnim
 	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPEED, 0xC, BattleScript_QuiverDanceSkipMoveAnim
@@ -5601,7 +5615,7 @@ BattleScript_MoveUsedIsTaunted::
 BattleScript_SelectingNotAllowedMoveTauntInPalace::
 	printstring STRINGID_PKMNCANTUSEMOVETAUNT
 	goto BattleScript_SelectingUnusableMoveInPalace
-    
+
 BattleScript_SelectingNotAllowedMoveThroatChop::
 	printselectionstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
 	endselectionscript

@@ -6680,6 +6680,66 @@ static void atk76_various(void)
 
     switch (gBattlescriptCurrInstr[2])
     {
+    case VARIOUS_STAT_ANIMATION_TEST:
+    /*else if (changeableStatsCount != 0 && !gBattleScripting.statAnimPlayed)
+    {
+        BtlController_EmitBattleAnimation(0, B_ANIM_STATS_CHANGE, statAnimId);
+        MarkBattlerForControllerExec(gActiveBattler);
+        if (flags & ATK48_ONLY_MULTIPLE && changeableStatsCount > 1)
+            gBattleScripting.statAnimPlayed = TRUE;
+        gBattlescriptCurrInstr += 4;
+    }*/
+        break;
+    case VARIOUS_STAT_STRING_TEST:
+        break;
+    case VARIOUS_ADJUST_STAT_BOOSTS:
+        boost = 0; // Check if any boosts go through at all - if not, skip animation and jump to "can't raise stats!"
+        for (i = 1; i < 8; i++)
+        {
+            s8 adjustedBoost = gBattleScripting.statBoosts[i - 1];
+            u8 currentBoost = gBattleMons[gActiveBattler].statStages[i];
+            u16 battlerAbility = GetBattlerAbility(gActiveBattler);
+            
+            
+            // All the ability checks
+            if(battlerAbility == ABILITY_SIMPLE)
+                adjustedBoost *= 2;
+            else if(battlerAbility == ABILITY_CONTRARY)
+                adjustedBoost *= -1;
+            
+            if (adjustedBoost < 0)
+            {
+                if (battlerAbility == ABILITY_WHITE_SMOKE || battlerAbility == ABILITY_FULL_METAL_BODY)
+                    adjustedBoost = 0;
+                else if (gActiveBattler != gBattlerAttacker)
+                {
+                    if (battlerAbility == ABILITY_CLEAR_BODY
+                    || (battlerAbility == ABILITY_HYPER_CUTTER && i == STAT_ATK)
+                    || (battlerAbility == ABILITY_BIG_PECKS && i == STAT_DEF)
+                    || (battlerAbility == ABILITY_LIMBER && i == STAT_SPEED))
+                        adjustedBoost = 0;
+                }
+                // TO-DO: Mist, Flower Veil etc.
+            }
+                        
+            if (adjustedBoost + currentBoost > 12)
+                adjustedBoost = 12 - currentBoost;
+            else if (adjustedBoost + currentBoost < 0)
+                adjustedBoost = -1 * currentBoost;
+            
+            // Apply the actual stat boost
+            gBattleMons[gActiveBattler].statStages[i] += adjustedBoost;
+            
+            // Update gBattleScripting statboosts
+            gBattleScripting.statBoosts[i - 1] = adjustedBoost;
+            
+            if (adjustedBoost != 0) boost++;                
+        }
+        if (!boost)
+            gBattlescriptCurrInstr += 15;
+        else 
+            gBattlescriptCurrInstr += 3;
+        return;
     case VARIOUS_TRACE_ABILITY:
         gBattleMons[gActiveBattler].ability = gBattleStruct->tracedAbility[gActiveBattler];
         break;
@@ -8387,8 +8447,7 @@ static void atk88_setdrainedhp(void)
 
 static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr)
 {
-    bool32 certain = FALSE;
-    bool32 notProtectAffected = FALSE;
+    bool32 certain, notProtectAffected, selfInflicted = FALSE;
     u32 index;
 
     // Determine the actual signed value of boost to be applied

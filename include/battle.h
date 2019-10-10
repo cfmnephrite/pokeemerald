@@ -644,6 +644,7 @@ struct BattleScripting
     u16 savedMoveEffect; // For moves hitting multiple targets.
     u16 moveEffect;
     u16 multihitMoveEffect;
+    u8 statBoosts[7];
 };
 
 // rom_80A5C6C

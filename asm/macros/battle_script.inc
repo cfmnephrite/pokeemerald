@@ -1724,7 +1724,48 @@
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7
 	.endm
-	
+    
+    .macro setallstatboosts battler:req, atkBoost:req, defBoost:req, spaBoost:req, spdBoost:req, speBoost:req, accBoost:req, evaBoost:req
+    setbyte sSTAT_BOOST_ATK \atkBoost
+    setbyte sSTAT_BOOST_DEF \defBoost
+    setbyte sSTAT_BOOST_SPA \spaBoost
+    setbyte sSTAT_BOOST_SPD \spdBoost
+    setbyte sSTAT_BOOST_SPE \speBoost
+    setbyte sSTAT_BOOST_ACC \accBoost
+    setbyte sSTAT_BOOST_EVA \evaBoost
+    various \battler VARIOUS_ADJUST_STAT_BOOSTS
+	.endm
+    
+    .macro setstatboost battler:req, stat:req, boost:req
+	jumpifbyte CMP_EQUAL, \stat, STAT_DEF, 1f
+	jumpifbyte CMP_EQUAL, \stat, STAT_SPA, 2f
+	jumpifbyte CMP_EQUAL, \stat, STAT_SPD, 3f
+	jumpifbyte CMP_EQUAL, \stat, STAT_SPE, 4f
+	jumpifbyte CMP_EQUAL, \stat, STAT_ACC, 5f
+	jumpifbyte CMP_EQUAL, \stat, STAT_EVA, 6f
+	setbyte sSTAT_BOOST_ATK \boost
+	goto 7f
+	1:
+	setbyte sSTAT_BOOST_DEF \boost
+	goto 7f
+    2:
+	setbyte sSTAT_BOOST_SPA \boost
+	goto 7f
+    3:
+	setbyte sSTAT_BOOST_SPD \boost
+	goto 7f
+    4:
+	setbyte sSTAT_BOOST_SPE \boost
+	goto 7f
+    5:
+	setbyte sSTAT_BOOST_ACC \boost
+	goto 7f
+    6:
+	setbyte sSTAT_BOOST_EVA \boost
+    7:
+    various \battler VARIOUS_ADJUST_STAT_BOOSTS
+	.endm
+
 	.macro setmoveeffect effect:req
 	sethword sMOVE_EFFECT \effect
 	sethword sSAVED_MOVE_EFFECT \effect
