@@ -158,6 +158,7 @@
 #define VARIOUS_BOOST_HIGHER_OFFENSE			92
 #define VARIOUS_JUMP_IF_LEAF_GUARD				93
 #define VARIOUS_TRY_LOWER_RANDOM_STAT			94
+#define VARIOUS_TRY_ACTIVATE_SYMBIOSIS			95
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

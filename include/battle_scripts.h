@@ -357,5 +357,6 @@ extern const u8 BattleScript_MonStatusedByAttackImmune[];
 extern const u8 BattleScript_NotAffectedAtkStringPpReduce[];
 extern const u8 BattleScript_ReceiverActivates[];
 extern const u8 BattleScript_SlowStartEnd[];
+extern const u8 BattleScript_SymbiosisActivates[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

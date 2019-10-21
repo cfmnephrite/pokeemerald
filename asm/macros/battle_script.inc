@@ -1720,6 +1720,10 @@
 	.byte \val
 	.endm
 	
+	.macro tryactivatesymbiosis battler:req
+	various \battler, VARIOUS_TRY_ACTIVATE_SYMBIOSIS
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7

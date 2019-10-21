@@ -1415,6 +1415,7 @@ enum
     ENDTURN_POWDER,
     ENDTURN_NEEDLE_ARM,
     ENDTURN_THROAT_CHOP,
+	ENDTURN_SWITCHIN_RESET,
     ENDTURN_BATTLER_COUNT
 };
 
@@ -1887,6 +1888,10 @@ u8 DoBattlerEndTurnEffects(void)
             }
             gBattleStruct->turnEffectsTracker++;
             break;
+		case ENDTURN_SWITCHIN_RESET:
+			gSwitchedIn[gActiveBattler] = 0;
+			gBattleStruct->turnEffectsTracker++;
+			break;
         case ENDTURN_BATTLER_COUNT:  // done
             gBattleStruct->turnEffectsTracker = 0;
             gBattleStruct->turnEffectsBattlerId++;
@@ -2835,6 +2840,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 move;
     u8 side;
     u8 target1;
+	u16 typeEffectiveness;
 
     if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
         return 0;
@@ -2861,6 +2867,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         move = gCurrentMove;
 
     GET_MOVE_TYPE(move, moveType);
+	
+	typeEffectiveness = CalcTypeEffectivenessMultiplier(move, moveType, gBattlerAttacker, gBattlerTarget, FALSE);
 
     switch (caseID)
     {
@@ -3000,7 +3008,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (gBattleMons[battler].statStages[statId] != 12)
                 {
                     gBattlerAttacker = battler;
-                    gBattleMons[battler].statStages[statId]++;
+                    //gBattleMons[battler].statStages[statId]++;
                     SET_STATCHANGER(statId, 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
@@ -3168,7 +3176,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (anticipated == TRUE && gBattleMons[battler].statStages[STAT_SPEED] != 0xC)
                 {
                     gBattlerAttacker = battler;
-                    gBattleMons[battler].statStages[STAT_SPEED]++;
+                    //gBattleMons[battler].statStages[STAT_SPEED]++;
                     SET_STATCHANGER(STAT_SPEED, 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
@@ -3302,7 +3310,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				{
 					gBattlerAttacker = battler;
                     gBattleMons[battler].statStages[boostStat]++;
-                    SET_STATCHANGER(boostStat, 1, FALSE);
+                    //SET_STATCHANGER(boostStat, 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, boostStat);
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
                     effect++;
@@ -3606,7 +3614,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         gBattlescriptCurrInstr = BattleScript_MoveStatDrain_PPLoss;
 
                     SET_STATCHANGER(statId, 1, FALSE);
-                    gBattleMons[battler].statStages[statId]++;
+                    //gBattleMons[battler].statStages[statId]++;
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
                 }
             }
@@ -3729,7 +3737,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gBattleMons[battler].statStages[GetHigherOffStat(battler)] != 0xC
              && RandomChance(1, 2))
             {
-                gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
+                //gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
                 SET_STATCHANGER(GetHigherOffStat(battler), 1, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherOffStat(battler));
                 BattleScriptPushCursor();
@@ -3745,7 +3753,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 100) <= 50
              && ((gHpDealt + gBattleMons[battler].hp) > (gBattleMons[battler].maxHP / 2)))
             {
-                gBattleMons[battler].statStages[GetHigherOffStat(battler)] += 2;
+                //gBattleMons[battler].statStages[GetHigherOffStat(battler)] += 2;
                 SET_STATCHANGER(GetHigherOffStat(battler), 2, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherOffStat(battler));
                 BattleScriptPushCursor();
@@ -3974,6 +3982,35 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_STAMINA:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+             && IsBattlerAlive(battler)
+             && gBattleMons[battler].statStages[GetHigherDefStat(battler)] != 0xC)
+            {
+                //gBattleMons[battler].statStages[GetHigherDefStat(battler)]++;
+                SET_STATCHANGER(GetHigherDefStat(battler), 1, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherDefStat(battler));
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
+                effect++;
+            }
+            break;
+		case ABILITY_STEADFAST:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+             && IsBattlerAlive(battler)
+			 && typeEffectiveness >= UQ_4_12(2.0)
+             && gBattleMons[battler].statStages[GetHigherOffStat(battler)] != 0xC)
+            {
+                //gBattleMons[battler].statStages[GetHigherOffStat(battler)] += 2;
+                SET_STATCHANGER(GetHigherOffStat(battler), 3, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherOffStat(battler));
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
+                effect++;
+            }
+            break;
 		/*case ABILITY_DANCER: //todo
             if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp != 0
@@ -4114,7 +4151,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 					activate = RandomChance(3, 10);
 				if(activate)
 				{
-					gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
+					//gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
                     SET_STATCHANGER(GetHigherOffStat(battler), 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherOffStat(battler));
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
@@ -6117,6 +6154,13 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 		if (moveType == TYPE_ROCK)
 			MulModifier(&modifier, UQ_4_12(1.2));
 		break;
+	case ABILITY_STAKEOUT:
+		if (gSwitchedIn[battlerDef])
+			MulModifier(&modifier, UQ_4_12(2.0));
+		break;
+	case ABILITY_STALL:
+		MulModifier(&modifier, UQ_4_12(1.3));
+		break;
     }
 
     // field abilities
@@ -6513,6 +6557,9 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
         if (!gIsCriticalHit && IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(1.33));
         break;
+	case ABILITY_STALL:
+		MulModifier(&modifier, UQ_4_12(1.3));
+		break;
     }
 
     // ally's abilities
@@ -7533,4 +7580,20 @@ bool32 SetIllusionMon(struct Pokemon *mon, u32 battlerId)
     }
 
     return FALSE;
+}
+
+void UpdateUnburden(void)
+{
+	u8 battlers[2] = {gBattlerAttacker, gBattlerTarget};
+	u8 i;
+	for(i = 0; i < 2; i++)
+	{
+		if(GetBattlerAbility(battlers[i]) == ABILITY_UNBURDEN && IsBattlerAlive(battlers[i]))
+		{
+			if(gBattleMons[battlers[i]].item && (gBattleResources->flags->flags[battlers[i]] & RESOURCE_FLAG_UNBURDEN))
+				gBattleResources->flags->flags[battlers[i]] &= ~(RESOURCE_FLAG_UNBURDEN);
+			else if(gBattleMons[battlers[i]].item == 0 && !(gBattleResources->flags->flags[battlers[i]] & RESOURCE_FLAG_UNBURDEN))
+				gBattleResources->flags->flags[battlers[i]] |= RESOURCE_FLAG_UNBURDEN;
+		}
+	}
 }

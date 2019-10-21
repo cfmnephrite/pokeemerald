@@ -247,6 +247,7 @@ EWRAM_DATA u32 gFieldStatuses = 0;
 EWRAM_DATA struct FieldTimer gFieldTimers = {0};
 EWRAM_DATA u8 gBattlerAbility = 0;
 EWRAM_DATA u16 gPartnerSpriteId = 0;
+EWRAM_DATA u8 gSwitchedIn[MAX_BATTLERS_COUNT] = {0};
 
 // IWRAM common vars
 void (*gPreBattleCallback1)(void);

@@ -119,5 +119,6 @@ void UndoCastform(u8 battlerId);
 struct Pokemon *GetIllusionMonPtr(u32 battlerId);
 void ClearIllusionMon(u32 battlerId);
 bool32 SetIllusionMon(struct Pokemon *mon, u32 battlerId);
+void UpdateUnburden(void);
 
 #endif // GUARD_BATTLE_UTIL_H

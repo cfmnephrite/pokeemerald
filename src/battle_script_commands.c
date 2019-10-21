@@ -2690,6 +2690,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                         gActiveBattler = gBattlerTarget;
                         BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gBattlerTarget].item);
                         MarkBattlerForControllerExec(gBattlerTarget);
+						UpdateUnburden();
 
                         BattleScriptPush(gBattlescriptCurrInstr + 1);
                         gBattlescriptCurrInstr = BattleScript_ItemSteal;
@@ -2806,6 +2807,8 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
 
                     gLastUsedItem = gBattleMons[gEffectBattler].item;
                     gBattleMons[gEffectBattler].item = 0;
+					if(GetBattlerAbility(gEffectBattler) == ABILITY_UNBURDEN)
+						gBattleResources->flags->flags[gEffectBattler] |= RESOURCE_FLAG_UNBURDEN;
                     gWishFutureKnock.knockedOffMons[side] |= gBitTable[gBattlerPartyIndexes[gEffectBattler]];
 
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
@@ -2984,6 +2987,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     gActiveBattler = gEffectBattler;
                     BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gEffectBattler].item);
                     MarkBattlerForControllerExec(gActiveBattler);
+					UpdateUnburden();
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_MoveEffectBugBite;
                 }
@@ -4772,6 +4776,8 @@ static void atk49_moveend(void)
         case ATK49_CLEAR_BITS: // Clear bits active while using a move for all targets and all hits.
             if (gSpecialStatuses[gBattlerAttacker].instructedChosenTarget)
                 *(gBattleStruct->moveTarget + gBattlerAttacker) = gSpecialStatuses[gBattlerAttacker].instructedChosenTarget & 0x3;
+			if ((gBattleResources->flags->flags[gBattlerAttacker] & RESOURCE_FLAG_UNBURDEN) && GetBattlerAbility(gBattlerAttacker) != ABILITY_UNBURDEN)
+				gBattleResources->flags->flags[gBattlerAttacker] &= ~(RESOURCE_FLAG_UNBURDEN);
             gProtectStructs[gBattlerAttacker].usesBouncedMove = 0;
             gBattleStruct->ateBoost[gBattlerAttacker] = 0;
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
@@ -5494,6 +5500,7 @@ static void atk52_switchineffects(void)
 
     gHitMarker &= ~(HITMARKER_FAINTED(gActiveBattler));
     gSpecialStatuses[gActiveBattler].flag40 = 0;
+	gSwitchedIn[gActiveBattler] = 1;
 
     if (!(gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES_DAMAGED)
         && (gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES)
@@ -6158,6 +6165,8 @@ static void atk6A_consumeitem(void)
         gBattleStruct->usedHeldItems[gActiveBattler] = gBattleMons[gActiveBattler].item;
 
     gBattleMons[gActiveBattler].item = 0;
+	if(GetBattlerAbility(gActiveBattler) == ABILITY_UNBURDEN)
+		gBattleResources->flags->flags[gActiveBattler] |= RESOURCE_FLAG_UNBURDEN;
     BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
     MarkBattlerForControllerExec(gActiveBattler);
     if((gLastUsedItem >= FIRST_BERRY_INDEX && gLastUsedItem <= LAST_BERRY_INDEX) && (GetBattlerAbility(gActiveBattler) == ABILITY_CHEEK_POUCH))
@@ -6166,13 +6175,19 @@ static void atk6A_consumeitem(void)
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
         gBattleMoveDamage *= -1;
+		gBattlerAbility = gBattlerTarget = gActiveBattler;
         gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
     }
-    else
-    {
-        ClearBattlerItemEffectHistory(gActiveBattler);
-        gBattlescriptCurrInstr += 2;
-    }
+	ClearBattlerItemEffectHistory(gActiveBattler);
+	gBattlescriptCurrInstr += 2;
+	if (GetBattlerAbility(BATTLE_PARTNER(gActiveBattler)) == ABILITY_SYMBIOSIS && gBattleMons[BATTLE_PARTNER(gActiveBattler)].item
+		&& CanBattlerGetOrLoseItem(BATTLE_PARTNER(gActiveBattler), gBattleMons[BATTLE_PARTNER(gActiveBattler)].item)
+		&& CanBattlerGetOrLoseItem(gActiveBattler, gBattleMons[BATTLE_PARTNER(gActiveBattler)].item) && IS_WHOLE_SIDE_ALIVE(gActiveBattler))
+	{
+		BattleScriptPushCursor();
+		gBattleScripting.battler = gActiveBattler;
+		gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
+	}
 }
 
 static void atk6B_atknameinbuff1(void)
@@ -7776,6 +7791,7 @@ static void atk76_various(void)
             gBattleMons[gActiveBattler].item = gLastUsedItem;
             BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
             MarkBattlerForControllerExec(gActiveBattler);
+			UpdateUnburden();
 
             gBattlescriptCurrInstr += 7;
         }
@@ -7870,6 +7886,22 @@ static void atk76_various(void)
 		else
 			gBattlescriptCurrInstr += 7;
 		return;
+	case VARIOUS_TRY_ACTIVATE_SYMBIOSIS:
+		gLastUsedItem = gBattleMons[BATTLE_PARTNER(gActiveBattler)].item;
+
+		gActiveBattler = BATTLE_PARTNER(gActiveBattler);
+		gBattleMons[gActiveBattler].item = ITEM_NONE;
+		BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+		MarkBattlerForControllerExec(gActiveBattler);
+
+		gActiveBattler = gBattleScripting.battler;
+		gBattleMons[gActiveBattler].item = gLastUsedItem;
+		BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+		MarkBattlerForControllerExec(gActiveBattler);
+
+		gBattlerAbility = gBattlerAttacker = BATTLE_PARTNER(gActiveBattler);
+		//gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
+		break;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -11009,11 +11041,13 @@ static void atkD2_tryswapitems(void) // trick
 
             gBattleStruct->choicedMove[gBattlerTarget] = 0;
             gBattleStruct->choicedMove[gBattlerAttacker] = 0;
+			
 
             gBattlescriptCurrInstr += 5;
 
             PREPARE_ITEM_BUFFER(gBattleTextBuff1, *newItemAtk)
             PREPARE_ITEM_BUFFER(gBattleTextBuff2, oldItemAtk)
+			UpdateUnburden();
 
             if (oldItemAtk != 0 && *newItemAtk != 0)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 2; // attacker's item -> <- target's item
@@ -11683,6 +11717,7 @@ static void atkEA_tryrecycleitem(void)
 
         BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
         MarkBattlerForControllerExec(gActiveBattler);
+		UpdateUnburden();
 
         gBattlescriptCurrInstr += 5;
     }
