@@ -212,8 +212,9 @@
 #define ATK49_MIRROR_MOVE 18
 #define ATK49_NEXT_TARGET 19
 #define ATK49_LIFE_ORB 20
-#define ATK49_CLEAR_BITS 21
-#define ATK49_COUNT 22
+#define ATK49_MOVE_END_DANCER 21
+#define ATK49_CLEAR_BITS 22
+#define ATK49_COUNT 23
 
 #define BIT_HP                      0x1
 #define BIT_ATK                     0x2

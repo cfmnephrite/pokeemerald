@@ -20,8 +20,9 @@
 #define ABILITYEFFECT_INTIMIDATE1                0x9
 #define ABILITYEFFECT_INTIMIDATE2                0xA
 #define ABILITYEFFECT_TRACE                      0xB
+#define ABILITYEFFECT_MOVE_END_ATTACKER          0xC
+#define ABILITYEFFECT_MOVE_END_DANCER            0xD
 #define ABILITYEFFECT_SWITCH_IN_WEATHER          0xFF
-#define ABILITYEFFECT_MOVE_END_ACTIVE            0x14
 
 #define ITEMEFFECT_ON_SWITCH_IN                 0x0
 #define ITEMEFFECT_MOVE_END                     0x3

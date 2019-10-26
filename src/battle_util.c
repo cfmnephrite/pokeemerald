@@ -1395,6 +1395,7 @@ enum
     ENDTURN_WRAP,
     ENDTURN_UPROAR,
     ENDTURN_THRASH,
+    ENDTURN_FLINCH,
     ENDTURN_DISABLE,
     ENDTURN_ENCORE,
     ENDTURN_MAGNET_RISE,
@@ -1691,7 +1692,8 @@ u8 DoBattlerEndTurnEffects(void)
         case ENDTURN_THRASH:  // thrash
             if (gBattleMons[gActiveBattler].status2 & STATUS2_LOCK_CONFUSE)
             {
-                gBattleMons[gActiveBattler].status2 -= 0x400;
+				if(gLockedMoves[gActiveBattler] != gCalledMove)
+					gBattleMons[gActiveBattler].status2 -= 0x400;
                 if (WasUnableToUseMove(gActiveBattler))
                     CancelMultiTurnMoves(gActiveBattler);
                 else if (!(gBattleMons[gActiveBattler].status2 & STATUS2_LOCK_CONFUSE)
@@ -1708,6 +1710,10 @@ u8 DoBattlerEndTurnEffects(void)
                     }
                 }
             }
+            gBattleStruct->turnEffectsTracker++;
+            break;
+        case ENDTURN_FLINCH:  // reset flinch
+            gBattleMons[gActiveBattler].status2 &= ~(STATUS2_FLINCHED);
             gBattleStruct->turnEffectsTracker++;
             break;
         case ENDTURN_DISABLE:  // disable
@@ -2228,7 +2234,6 @@ u8 AtkCanceller_UnableToUseMove(void)
         case CANCELLER_FLINCH: // flinch
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_FLINCHED)
             {
-                gBattleMons[gBattlerAttacker].status2 &= ~(STATUS2_FLINCHED);
                 gProtectStructs[gBattlerAttacker].flinchImmobility = 1;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedFlinched;
@@ -3557,7 +3562,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
         }
         break;
-    case ABILITYEFFECT_MOVE_END: // Think contact abilities.
+    case ABILITYEFFECT_MOVE_END: // Think Effect Spore, Static etc.
         switch (gLastUsedAbility)
         {
         case ABILITY_JUSTIFIED:
@@ -3776,7 +3781,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
-        POISON_POINT:
         case ABILITY_POISON_POINT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
@@ -3801,7 +3805,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-        STATIC:
         case ABILITY_STATIC:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerAlive(gBattlerAttacker)
@@ -3904,33 +3907,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-        /*case ABILITY_DANCER: //todo
-            if(!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && gBattleMons[gBattlerTarget].hp != 0
-             && (gBattleMoves[gLastUsedMove].flags & FLAG_DANCE) gLastUsedMove == MOVE_SPLASH)
+        case ABILITY_ILLUSION:
+            if (gBattleStruct->illusion[battler].on && !gBattleStruct->illusion[battler].broken && IsBattlerAlive(battler) && TARGET_TURN_DAMAGED)
             {
-                u16 danceMoves[9] = {MOVE_FEATHER_DANCE, MOVE_FIERY_DANCE, MOVE_DRAGON_DANCE, MOVE_LUNAR_DANCE,
-                MOVE_PETAL_DANCE, MOVE_REVELATION_DANCE, MOVE_QUIVER_DANCE, MOVE_SWORDS_DANCE, MOVE_TEETER_DANCE};
-                bool8 dance = FALSE;
-                for(i = 0; i < 9; i++)
-                {
-                    if(gLastUsedMove == danceMoves[i])
-                        dance = TRUE;
-                }
-                if(dance == TRUE)
-                {
-                    gCalledMove = gLastUsedMove;
-                    gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);
-                    gBattlerTarget = GetMoveTarget(gCalledMove, 0);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_DancerActivates;
-                    effect++;
-                //}
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_IllusionOff;
+                effect++;
             }
-            break;*/
+            break;
         }
         break;
-    case ABILITYEFFECT_MOVE_END_ACTIVE: // Think contact abilities.
+    case ABILITYEFFECT_MOVE_END_ATTACKER: // Think Poison Touch, Stench etc.
         switch (gLastUsedAbility)
         {
         case ABILITY_GOOEY:
@@ -4017,6 +4004,35 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             gBattlerAbility = battler;
             BattleScriptPushCursor();
             gBattlescriptCurrInstr = BattleScript_AbilityActiveEffect;
+        }
+        break;
+    case ABILITYEFFECT_MOVE_END_DANCER: // Special case
+        switch (GetBattlerAbility(battler))
+        {
+        case ABILITY_DANCER:
+            if (IsBattlerAlive(battler)
+             && (gBattleMoves[gCurrentMove].flags & FLAG_DANCE)
+             && !gSpecialStatuses[battler].dancerUsedMove
+             && gBattlerAttacker != battler)
+            {
+                // Set bit and save Dancer mon's original target
+                gSpecialStatuses[battler].dancerUsedMove = 1;
+                gSpecialStatuses[battler].dancerOriginalTarget = *(gBattleStruct->moveTarget + battler) | 0x4;
+				gBattleStruct->atkCancellerTracker = 0;
+                gBattlerAttacker = gBattlerAbility = battler;
+                gCalledMove = gCurrentMove;
+                
+                // Set the target to the original target of the mon that first used a Dance move
+                gBattlerTarget = gBattleScripting.savedBattler & 0x3;
+                
+                // Make sure that the target isn't an ally - if it is, target the original user
+                if (GetBattlerSide(gBattlerTarget) == GetBattlerSide(gBattlerAttacker))
+                    gBattlerTarget = (gBattleScripting.savedBattler & 0xF0) >> 4;
+                gHitMarker &= ~(HITMARKER_ATTACKSTRING_PRINTED);
+                BattleScriptExecute(BattleScript_DancerActivates);
+                effect++;
+            }
+            break;
         }
         break;
     case ABILITYEFFECT_IMMUNITY: // 5

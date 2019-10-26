@@ -1106,7 +1106,6 @@ static void atk00_attackcanceler(void)
     }
 
     gHitMarker |= HITMARKER_OBEYS;
-
     if (NoTargetPresent(gCurrentMove))
     {
         gBattlescriptCurrInstr = BattleScript_ButItFailedAtkStringPpReduce;
@@ -4508,10 +4507,10 @@ static void atk49_moveend(void)
             gBattleScripting.atk49_state++;
             break;
         case ATK49_MOVE_END_ACTIVE_ABILITIES: // Gooey, Poison Touch, Hyper Cutter
-            if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END_ACTIVE, gBattlerAttacker, 0, 0, 0))
+            if (AbilityBattleEffects(ABILITYEFFECT_MOVE_END_ATTACKER, gBattlerAttacker, 0, 0, 0))
                 effect = TRUE;
             gBattleScripting.atk49_state++;
-            break;
+            break;           
         case ATK49_STATUS_IMMUNITY_ABILITIES: // status immunities
             if (AbilityBattleEffects(ABILITYEFFECT_IMMUNITY, 0, 0, 0, 0))
                 effect = TRUE; // it loops through all battlers, so we increment after its done with all battlers
@@ -4625,8 +4624,6 @@ static void atk49_moveend(void)
             gBattleScripting.atk49_state++;
             break;
         case ATK49_UPDATE_LAST_MOVES:
-            gDisableStructs[gBattlerAttacker].usedMoves |= gBitTable[gCurrMovePos];
-            gBattleStruct->lastMoveTarget[gBattlerAttacker] = gBattlerTarget;
             if (gMoveResultFlags & (MOVE_RESULT_FAILED | MOVE_RESULT_DOESNT_AFFECT_FOE))
                 gBattleStruct->lastMoveFailed |= gBitTable[gBattlerAttacker];
             else
@@ -4639,10 +4636,15 @@ static void atk49_moveend(void)
                 gBattlerTarget = gActiveBattler;
                 gHitMarker &= ~(HITMARKER_SWAP_ATTACKER_TARGET);
             }
-            if (gHitMarker & HITMARKER_ATTACKSTRING_PRINTED)
+            if (gSpecialStatuses[gBattlerAttacker].dancerUsedMove == 0)
             {
-                gLastPrintedMoves[gBattlerAttacker] = gChosenMove;
-                gLastUsedMove = gCurrentMove;
+                gDisableStructs[gBattlerAttacker].usedMoves |= gBitTable[gCurrMovePos];
+                gBattleStruct->lastMoveTarget[gBattlerAttacker] = gBattlerTarget;
+                if (gHitMarker & HITMARKER_ATTACKSTRING_PRINTED)
+                {
+                    gLastPrintedMoves[gBattlerAttacker] = gChosenMove;
+                    gLastUsedMove = gCurrentMove;
+                }
             }
             if (!(gAbsentBattlerFlags & gBitTable[gBattlerAttacker])
                 && !(gBattleStruct->field_91 & gBitTable[gBattlerAttacker])
@@ -4650,9 +4652,11 @@ static void atk49_moveend(void)
                 && gBattleMoves[originallyUsedMove].effect != EFFECT_HEALING_WISH)
             {
                 if (gHitMarker & HITMARKER_OBEYS)
-                {
-                    gLastMoves[gBattlerAttacker] = gChosenMove;
-                    gLastResultingMoves[gBattlerAttacker] = gCurrentMove;
+                {   if (gSpecialStatuses[gBattlerAttacker].dancerUsedMove == 0)
+                    {
+                        gLastMoves[gBattlerAttacker] = gChosenMove;
+                        gLastResultingMoves[gBattlerAttacker] = gCurrentMove;
+                    }
                 }
                 else
                 {
@@ -4751,9 +4755,41 @@ static void atk49_moveend(void)
             }
             gBattleScripting.atk49_state++;
             break;
+        case ATK49_MOVE_END_DANCER: // Special case because it's so annoying
+            if (gBattleMoves[gCurrentMove].flags & FLAG_DANCE)
+            {
+                u8 battler, nextDancer = 0;
+                
+                if (!(gBattleStruct->lastMoveFailed & gBitTable[gBattlerAttacker]
+                    || (gSpecialStatuses[gBattlerAttacker].dancerUsedMove == 0
+                        && gProtectStructs[gBattlerAttacker].usesBouncedMove)))
+                {   // Dance move succeeds
+                    // Set target for other Dancer mons; set bit so that mon cannot activate Dancer off of its own move
+                    if (gSpecialStatuses[gBattlerAttacker].dancerUsedMove == 0)
+                    {
+                        gBattleScripting.savedBattler = gBattlerTarget | 0x4;
+                        gBattleScripting.savedBattler |= (gBattlerAttacker << 4);
+                        gSpecialStatuses[gBattlerAttacker].dancerUsedMove = 1;
+                    }
+                    for (battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
+                    {
+                        if (GetBattlerAbility(battler) == ABILITY_DANCER && gSpecialStatuses[battler].dancerUsedMove == 0)
+                        {
+                            if (!nextDancer || (gBattleMons[battler].speed < gBattleMons[nextDancer & 0x3].speed))
+                                nextDancer = battler | 0x4;                            
+                        }
+                    }
+                    if (nextDancer && AbilityBattleEffects(ABILITYEFFECT_MOVE_END_DANCER, nextDancer & 0x3, 0, 0, 0))
+                        effect = TRUE;
+                }
+            }
+            gBattleScripting.atk49_state++;
+            break;
         case ATK49_CLEAR_BITS: // Clear bits active while using a move for all targets and all hits.
             if (gSpecialStatuses[gBattlerAttacker].instructedChosenTarget)
                 *(gBattleStruct->moveTarget + gBattlerAttacker) = gSpecialStatuses[gBattlerAttacker].instructedChosenTarget & 0x3;
+            if (gSpecialStatuses[gBattlerAttacker].dancerOriginalTarget)
+                *(gBattleStruct->moveTarget + gBattlerAttacker) = gSpecialStatuses[gBattlerAttacker].dancerOriginalTarget & 0x3;
             gProtectStructs[gBattlerAttacker].usesBouncedMove = 0;
             gBattleStruct->ateBoost[gBattlerAttacker] = 0;
             gStatuses3[gBattlerAttacker] &= ~(STATUS3_ME_FIRST);
@@ -4762,8 +4798,6 @@ static void atk49_moveend(void)
             gBattleScripting.statBoostFailure = 0;
             gBattleScripting.statBoostSplitStrings = 0;
             gBattleScripting.statBoostStringIndex = 0;
-            gBattleScripting.effectChance = 0;
-            gBattleScripting.abilityEffect = 0;
             gSpecialStatuses[gBattlerAttacker].gemBoost = 0;
             gSpecialStatuses[gBattlerAttacker].damagedMons = 0;
             gSpecialStatuses[gBattlerTarget].berryReduced = 0;
@@ -8917,7 +8951,7 @@ static void atk8B_setbide(void)
 
 static void atk8C_confuseifrepeatingattackends(void)
 {
-    if (!(gBattleMons[gBattlerAttacker].status2 & STATUS2_LOCK_CONFUSE))
+    if (!(gBattleMons[gBattlerAttacker].status2 & STATUS2_LOCK_CONFUSE) && gSpecialStatuses[gBattlerAttacker].dancerUsedMove == 0)
         gBattleScripting.moveEffect = (MOVE_EFFECT_THRASH | MOVE_EFFECT_AFFECTS_USER);
 
     gBattlescriptCurrInstr++;
@@ -9803,7 +9837,7 @@ static void atkA4_trysetencore(void)
         gBattlescriptCurrInstr += 5;
     }
     else if (gDisableStructs[gBattlerTarget].encoredMove == 0
-        && i != 4 && gBattleMons[gBattlerTarget].pp[i] != 0 && !GetBattlerAbility(gBattlerTarget))
+        && i != 4 && gBattleMons[gBattlerTarget].pp[i] != 0 /*&& !GetBattlerAbility(gBattlerTarget)*/)
     {
         gDisableStructs[gBattlerTarget].encoredMove = gBattleMons[gBattlerTarget].moves[i];
         gDisableStructs[gBattlerTarget].encoredMovePos = i;
@@ -11666,7 +11700,7 @@ static void atkEC_pursuitrelated(void)
         gCurrentMove = gChosenMoveByBattler[gActiveBattler];
         gBattlescriptCurrInstr += 5;
         gBattleScripting.animTurn = 1;
-        gBattleScripting.field_20 = gBattlerAttacker;
+        gBattleScripting.savedBattler = gBattlerAttacker;
         gBattlerAttacker = gActiveBattler;
     }
     else
