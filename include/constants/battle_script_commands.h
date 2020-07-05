@@ -9,10 +9,11 @@
 #define sTWOTURN_STRINGID gBattleScripting + 0xF
 #define sB_ANIM_ARG1 gBattleScripting + 0x10
 #define sB_ANIM_ARG2 gBattleScripting + 0x11
-#define sTRIPLE_KICK_POWER gBattleScripting + 0x12
+#define sCFM_BYTE gBattleScripting + 0x12
+#define sEFFECT_CHANCE gBattleScripting + 0x13
 #define sMOVEEND_STATE gBattleScripting + 0x14
-#define sSAVED_STAT_CHANGER gBattleScripting + 0x15
-#define sSHIFT_SWITCHED gBattleScripting + 0x16
+#define sSTAT_BOOST_TRACKER gBattleScripting + 0x15
+#define sSTAT_BOOST_STRING_INDEX gBattleScripting + 0x16
 #define sBATTLER gBattleScripting + 0x17
 #define sB_ANIM_TURN gBattleScripting + 0x18
 #define sB_ANIM_TARGETS_HIT gBattleScripting + 0x19
@@ -35,8 +36,12 @@
 #define sMOVE_EFFECT gBattleScripting + 0x2E
 #define sMULTIHIT_EFFECT gBattleScripting + 0x30
 #define sILLUSION_NICK_HACK gBattleScripting + 0x32
+#define sSAVED_STAT_CHANGER gBattleScripting + 0x33
+#define sSHIFT_SWITCHED gBattleScripting + 0x34
 
 #define cMULTISTRING_CHOOSER gBattleCommunication + 5
+
+#define tGRASSY_TERRAIN_TIMER gFieldTimers + 4
 
 // Battle Script defines for getting the wanted battler
 #define BS_TARGET                   0
@@ -136,7 +141,7 @@
 #define VARIOUS_TRY_THIRD_TYPE                  72
 #define VARIOUS_ACUPRESSURE                     73
 #define VARIOUS_SET_POWDER                      74
-#define VARIOUS_SPECTRAL_THIEF                  75
+#define VARIOUS_CHECK_SKY_DROP                  75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS        76
 #define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS   77
 #define VARIOUS_JUMP_IF_ROAR_FAILS              78
@@ -163,6 +168,16 @@
 #define VARIOUS_SET_LAST_USED_ITEM              99
 #define VARIOUS_PARALYZE_TYPE_IMMUNITY          100
 #define VARIOUS_JUMP_IF_ABSENT                  101
+#define VARIOUS_ARG_TO_SAVED_EFFECT             102
+#define VARIOUS_ARG_TO_EFFECT_SELF              103
+#define VARIOUS_SPECTRAL_THIEF                  104
+#define VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA     105
+#define VARIOUS_JUMP_IF_TERRAIN_AFFECTING       106
+#define VARIOUS_CHECK_FLOWER_VEIL               107
+#define VARIOUS_BOOST_HIGHER_OFFENSE            108
+#define VARIOUS_JUMP_IF_LEAF_GUARD              109
+#define VARIOUS_TRY_LOWER_RANDOM_STAT           110
+#define VARIOUS_TRY_ACTIVATE_SYMBIOSIS          111
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0
@@ -180,6 +195,8 @@
 // Cmd_statbuffchange
 #define STAT_BUFF_ALLOW_PTR                 0x1   // If set, allow use of jumpptr. Set in every use of statbuffchange
 #define STAT_BUFF_NOT_PROTECT_AFFECTED      0x20
+#define STAT_BUFF_AFFECT_MULTIPLE_STATS     0x400
+#define STAT_BUFF_Z_EFFECT                  0x800
 
 // stat change flags for Cmd_playstatchangeanimation
 #define STAT_CHANGE_NEGATIVE         0x1

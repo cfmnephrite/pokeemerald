@@ -369,9 +369,10 @@
 	.byte 0x42
 	.endm
 
-	.macro jumpifabilitypresent ability:req, ptr:req
+	.macro jumpifspecies battler:req, species:req, ptr:req
 	.byte 0x43
-	.byte \ability
+	.byte \battler
+	.2byte \species
 	.4byte \ptr
 	.endm
 
@@ -605,7 +606,7 @@
 	.4byte \ptr
 	.endm
 
-	.macro removeitem battler:req
+	.macro consumeitem battler:req
 	.byte 0x6a
 	.byte \battler
 	.endm
@@ -978,7 +979,7 @@
 	.byte 0xbb
 	.endm
 
-	.macro maxattackhalvehp param0:req
+	.macro maxargstathalvehp param0:req
 	.byte 0xbc
 	.4byte \param0
 	.endm
@@ -1631,6 +1632,10 @@
 	various \battler, VARIOUS_SET_AURORA_VEIL
 	.endm
 	
+	.macro boosthigheroffense battler:req
+	various \battler, VARIOUS_BOOST_HIGHER_OFFENSE
+	.endm
+	
 	.macro trysetthirdtype battler:req, ptr:req
 	various \battler, VARIOUS_TRY_THIRD_TYPE
 	.4byte \ptr
@@ -1641,22 +1646,60 @@
 	.4byte \ptr
 	.endm
 	
+	.macro trylowerrandomstat battler:req, ptr:req
+	various \battler, VARIOUS_TRY_LOWER_RANDOM_STAT
+	.4byte \ptr
+	.endm
+	
 	.macro setpowder battler:req
 	various \battler, VARIOUS_SET_POWDER
 	.endm
 	
-	.macro spectralthiefprintstats
-	various BS_ATTACKER, VARIOUS_SPECTRAL_THIEF
+	.macro checkskydrop ptr:req
+	various BS_ATTACKER, VARIOUS_CHECK_SKY_DROP
+	.4byte \ptr
 	.endm
 	
 	.macro bringdownairbornebattler battler:req
 	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
 	.endm
 	
+	.macro argumenttosavedeffect
+	various BS_ATTACKER, VARIOUS_ARG_TO_SAVED_EFFECT
+	.endm	
+	
+	.macro setargtoeffectself
+	various BS_ATTACKER, VARIOUS_ARG_TO_EFFECT_SELF
+	.endm	
+
+	.macro spectralthiefprintstats
+	various BS_ATTACKER, VARIOUS_SPECTRAL_THIEF
+	.endm
+
+	.macro jumpifhigherorequalspa ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_HIGHER_OR_EQUAL_SPA
+	.4byte \ptr
+	.endm
+
+	.macro jumpifterrainaffecting battler:req, ptr:req
+	various \battler, VARIOUS_JUMP_IF_TERRAIN_AFFECTING
+	.4byte \ptr
+	.endm
+
 	.macro checkgrassyterrainheal battler:req, ptr:req
 	various \battler, VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS
 	.4byte \ptr
-	.endm
+	.endm 
+	
+	.macro checkflowerveil ptr:req
+	various BS_ATTACKER, VARIOUS_CHECK_FLOWER_VEIL
+	.4byte \ptr
+	.endm 
+	
+	.macro jumpifleafguard ptr:req
+	various BS_ATTACKER, VARIOUS_JUMP_IF_LEAF_GUARD
+	.4byte \ptr
+	.endm 
 	
 	.macro jumpifnotberry battler:req, ptr:req
 	various \battler, VARIOUS_JUMP_IF_NOT_BERRY
@@ -1754,6 +1797,10 @@
 	.macro jumpifabsent battler:req, ptr:req
 	various \battler, VARIOUS_JUMP_IF_ABSENT
 	.4byte \ptr
+	.endm
+
+	.macro tryactivatesymbiosis battler:req
+	various \battler, VARIOUS_TRY_ACTIVATE_SYMBIOSIS
 	.endm
 	
 @ helpful macros

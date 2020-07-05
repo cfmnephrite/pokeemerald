@@ -425,7 +425,7 @@ BattleFrontier_Lounge7_Text_CounterDesc:: @ 8265F77
 BattleFrontier_Lounge7_Text_ThunderWaveDesc:: @ 8265FAA
 	.string "A weak jolt of\n"
 	.string "electricity that\n"
-	.string "paralyzes the foe.$"
+	.string "paralyses the foe.$"
 
 BattleFrontier_Lounge7_Text_SwordsDanceDesc:: @ 8265FDD
 	.string "A fighting dance\n"
@@ -475,7 +475,7 @@ BattleFrontier_Lounge7_Text_IcePunchDesc:: @ 826615F
 BattleFrontier_Lounge7_Text_ThunderPunchDesc:: @ 8266185
 	.string "An electrified\n"
 	.string "punch that may\n"
-	.string "paralyze the foe.$"
+	.string "paralyse the foe.$"
 
 BattleFrontier_Lounge7_Text_FirePunchDesc:: @ 82661B5
 	.string "A fiery punch\n"

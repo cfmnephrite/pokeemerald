@@ -1377,7 +1377,7 @@ PetalburgCity_Gym_Text_ExplainBalanceBadgeTakeThis: @ 820618A
 PetalburgCity_Gym_Text_ExplainFacade: @ 8206254
 	.string "DAD: TM42 contains FACADE.\p"
 	.string "It doubles the power of moves if\n"
-	.string "the POKéMON is poisoned, paralyzed,\l"
+	.string "the POKéMON is poisoned, paralysed,\l"
 	.string "or burned.\p"
 	.string "It might be able to turn a bad\n"
 	.string "situation into an advantage.$"

@@ -127,7 +127,7 @@ Route115_EventScript_ItemPPUp:: @ 8290E6B
 	end
 
 Route116_EventScript_ItemXSpecial:: @ 8290E78
-	finditem ITEM_X_SPECIAL
+	finditem ITEM_X_SP_ATK
 	end
 
 Route116_EventScript_ItemEther:: @ 8290E85
@@ -315,7 +315,7 @@ MauvilleCity_EventScript_ItemXSpeed:: @ 82910CE
 	end
 
 RustboroCity_EventScript_ItemXDefend:: @ 82910DB
-	finditem ITEM_X_DEFEND
+	finditem ITEM_X_DEFENSE
 	end
 
 LilycoveCity_EventScript_ItemMaxRepel:: @ 82910E8
@@ -339,7 +339,7 @@ PetalburgWoods_EventScript_ItemEther:: @ 829111C
 	end
 
 PetalburgWoods_EventScript_ItemParalyzeHeal:: @ 8291129
-	finditem ITEM_PARALYZE_HEAL
+	finditem ITEM_PARALYSE_HEAL
 	end
 
 RusturfTunnel_EventScript_ItemPokeBall:: @ 8291136
@@ -415,7 +415,7 @@ NewMauville_Inside_EventScript_ItemFullHeal:: @ 8291213
 	end
 
 NewMauville_Inside_EventScript_ItemParalyzeHeal:: @ 8291220
-	finditem ITEM_PARALYZE_HEAL
+	finditem ITEM_PARALYSE_HEAL
 	end
 
 AbandonedShip_Rooms_1F_EventScript_ItemHarborMail:: @ 829122D

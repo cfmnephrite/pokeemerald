@@ -5748,4 +5748,3 @@ static const u32 sTutorLearnsets[] =
                                 | TUTOR(MOVE_DEFENSE_CURL)),
 
 };
-

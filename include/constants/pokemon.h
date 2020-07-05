@@ -2,27 +2,27 @@
 #define GUARD_CONSTANTS_POKEMON_H
 
 // Pokemon types
-#define TYPE_NONE             255
-#define TYPE_NORMAL           0
-#define TYPE_FIGHTING         1
-#define TYPE_FLYING           2
-#define TYPE_POISON           3
-#define TYPE_GROUND           4
-#define TYPE_ROCK             5
-#define TYPE_BUG              6
-#define TYPE_GHOST            7
-#define TYPE_STEEL            8
-#define TYPE_MYSTERY          9
-#define TYPE_FIRE             10
-#define TYPE_WATER            11
-#define TYPE_GRASS            12
-#define TYPE_ELECTRIC         13
-#define TYPE_PSYCHIC          14
-#define TYPE_ICE              15
-#define TYPE_DRAGON           16
-#define TYPE_DARK             17
-#define TYPE_FAIRY            18
-#define NUMBER_OF_MON_TYPES   19
+#define TYPE_MYSTERY            0x00
+#define TYPE_BUG                0x01
+#define TYPE_DARK               0x02
+#define TYPE_DRAGON             0x03
+#define TYPE_ELECTRIC           0x04
+#define TYPE_FAIRY              0x05
+#define TYPE_FIGHTING           0x06
+#define TYPE_FIRE               0x07
+#define TYPE_FLYING             0x08
+#define TYPE_GHOST              0x09
+#define TYPE_GRASS              0x0a
+#define TYPE_GROUND             0x0b
+#define TYPE_ICE                0x0c
+#define TYPE_NORMAL             0x0d
+#define TYPE_POISON             0x0e
+#define TYPE_PSYCHIC            0x0f
+#define TYPE_ROCK               0x10
+#define TYPE_STEEL              0x11
+#define TYPE_WATER              0x12
+#define NUMBER_OF_MON_TYPES     0x13
+
 
 // Pokemon egg groups
 #define EGG_GROUP_NONE          0
@@ -90,25 +90,31 @@
 #define FLAG_MAGICCOAT_AFFECTED     0x4
 #define FLAG_SNATCH_AFFECTED        0x8
 #define FLAG_MIRROR_MOVE_AFFECTED   0x10
-#define FLAG_KINGSROCK_AFFECTED     0x20
+#define FLAG_MAGICIAN_AFFECTED      0x20
 #define FLAG_HIGH_CRIT              0x40
 #define FLAG_RECKLESS_BOOST         0x80
 #define FLAG_IRON_FIST_BOOST        0x100
-#define FLAG_SHEER_FORCE_BOOST      0x200
-#define FLAG_STRONG_JAW_BOOST       0x400
-#define FLAG_MEGA_LAUNCHER_BOOST    0x800
+#define FLAG_STRONG_JAW_BOOST       0x200
+#define FLAG_MEGA_LAUNCHER_BOOST    0x400
+#define FLAG_THAWS_USER             0x800
 #define FLAG_STAT_STAGES_IGNORED    0x1000
-#define FLAG_DMG_MINIMIZE           0x2000
-#define FLAG_DMG_UNDERGROUND        0x4000
-#define FLAG_DMG_UNDERWATER         0x8000
+#define FLAG_ANTI_AIR               0x2000
+#define FLAG_MAGIC                  0x4000
+#define FLAG_OMNITYPE               0x8000
 #define FLAG_SOUND                  0x10000
 #define FLAG_BALLISTIC              0x20000
 #define FLAG_PROTECTION_MOVE        0x40000
 #define FLAG_POWDER                 0x80000
-#define FLAG_TARGET_ABILITY_IGNORED 0x100000
-#define FLAG_DANCE                  0x200000
-#define FLAG_DMG_IN_AIR             0x400000 // X2 dmg on air, always hits target on air
-#define FLAG_HIT_IN_AIR             0x800000 // dmg is normal, always hits target on air
+#define FLAG_DANCE                  0x100000
+#define FLAG_MON_EXCLUSIVE          0x200000
+#define FLAG_SPECIAL_TYPEMOD        0x400000
+#define FLAG_TARGET_ABILITY_IGNORED 0x800000
+#define FLAG_HEAD                   0x1000000
+#define FLAG_SELF_Z                 0x20000000
+#define FLAG_Z_SPECIAL              0x40000000
+#define FLAG_Z_MOVE                 0x80000000
+#define FLAG_DMG_IN_AIR             0x100000000 // X2 dmg on air, always hits target on air
+#define FLAG_HIT_IN_AIR             0x200000000 // dmg is normal, always hits target on air
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0
