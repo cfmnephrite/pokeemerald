@@ -5,17 +5,27 @@
 #define WINDOW_x80              0x80
 
 s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility);
+u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u16 type);
 u8 GetBattlerTurnOrderNum(u8 battlerId);
 void SetMoveEffect(bool32 primary, u32 certain, u8 multistring);
 bool32 NoAliveMonsForEitherParty(void);
+bool32 CanBattlerSwitch(u32 battlerId);
 void BattleDestroyYesNoCursorAt(u8 cursorPosition);
 void BattleCreateYesNoCursorAt(u8 cursorPosition);
 void BufferMoveToLearnIntoBattleTextBuff2(void);
 void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags);
 bool8 UproarWakeUpCheck(u8 battlerId);
 bool32 DoesSubstituteBlockMove(u8 battlerAtk, u8 battlerDef, u32 move);
+bool32 DoesDisguiseBlockMove(u8 battlerAtk, u8 battlerDef, u32 move);
+bool32 CanPoisonType(u8 battlerAttacker, u8 battlerTarget);
+bool32 CanParalyzeType(u8 battlerAttacker, u8 battlerTarget);
+bool32 CanBurnType(u8 battlerAttacker, u8 battlerTarget);
+bool32 CanFreezeType(u8 battlerAttacker, u8 battlerTarget);
 bool32 CanUseLastResort(u8 battlerId);
 u32 IsFlowerVeilProtected(u32 battler);
+u32 IsLeafGuardProtected(u32 battler);
+bool32 IsShieldsDownProtected(u32 battler);
+u32 IsAbilityStatusProtected(u32 battler);
 
 extern void (* const gBattleScriptingCommandsTable[])(void);
 extern const u8 gUnknown_0831C494[][4];

@@ -6,7 +6,7 @@
 #include "constants/battle_anim.h"
 #include "battle_interface.h"
 #include "main.h"
-#include "alloc.h"
+#include "malloc.h"
 #include "graphics.h"
 #include "random.h"
 #include "util.h"
@@ -411,7 +411,10 @@ bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattler, u8 atkBattler, u8 de
     }
 
     if (tableId == B_ANIM_ILLUSION_OFF)
-        ClearIllusionMon(activeBattler);
+    {
+        gBattleStruct->illusion[activeBattler].broken = 1;
+        gBattleStruct->illusion[activeBattler].on = 0;
+    }
 
     gBattleAnimAttacker = atkBattler;
     gBattleAnimTarget = defBattler;
@@ -481,7 +484,7 @@ static void Task_ClearBitWhenSpecialAnimDone(u8 taskId)
 // Great function to include newly added moves that don't have animation yet.
 bool8 IsMoveWithoutAnimation(u16 moveId, u8 animationTurn)
 {
-    if (moveId >= (MOVES_COUNT_GEN6 - 1))
+    if (moveId >= (MOVES_COUNT - 1))
         return TRUE;
     else
         return FALSE;
@@ -746,7 +749,7 @@ bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId)
         break;
     case 4:
         InitBattlerHealthboxCoords(*battlerId);
-        if (gBattlerPositions[*battlerId] <= 1)
+        if (gBattlerPositions[*battlerId] <= B_POSITION_OPPONENT_LEFT)
             DummyBattleInterfaceFunc(gHealthboxSpriteIds[*battlerId], FALSE);
         else
             DummyBattleInterfaceFunc(gHealthboxSpriteIds[*battlerId], TRUE);
@@ -778,7 +781,7 @@ bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId)
         break;
     case 6:
         LoadAndCreateEnemyShadowSprites();
-        sub_81B8C68();
+        BufferBattlePartyCurrentOrder();
         retVal = TRUE;
         break;
     }
@@ -1025,8 +1028,8 @@ void HandleBattleLowHpMusicChange(void)
     {
         u8 playerBattler1 = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
         u8 playerBattler2 = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
-        u8 battler1PartyId = pokemon_order_func(gBattlerPartyIndexes[playerBattler1]);
-        u8 battler2PartyId = pokemon_order_func(gBattlerPartyIndexes[playerBattler2]);
+        u8 battler1PartyId = GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[playerBattler1]);
+        u8 battler2PartyId = GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[playerBattler2]);
 
         if (GetMonData(&gPlayerParty[battler1PartyId], MON_DATA_HP) != 0)
             HandleLowHpMusicChange(&gPlayerParty[battler1PartyId], playerBattler1);
@@ -1158,11 +1161,6 @@ void ClearTemporarySpeciesSpriteData(u8 battlerId, bool8 dontClearSubstitute)
     gBattleMonForms[battlerId] = 0;
     if (!dontClearSubstitute)
         ClearBehindSubstituteBit(battlerId);
-
-    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-        SetIllusionMon(&gPlayerParty[gBattlerPartyIndexes[battlerId]], battlerId);
-    else
-        SetIllusionMon(&gEnemyParty[gBattlerPartyIndexes[battlerId]], battlerId);
 }
 
 void AllocateMonSpritesGfx(void)
@@ -1195,8 +1193,8 @@ void FreeMonSpritesGfx(void)
     if (gMonSpritesGfxPtr == NULL)
         return;
 
-    if (gMonSpritesGfxPtr->field_17C != NULL)
-        FREE_AND_SET_NULL(gMonSpritesGfxPtr->field_17C);
+    if (gMonSpritesGfxPtr->buffer != NULL)
+        FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
     if (gMonSpritesGfxPtr->field_178 != NULL)
         FREE_AND_SET_NULL(gMonSpritesGfxPtr->field_178);
 

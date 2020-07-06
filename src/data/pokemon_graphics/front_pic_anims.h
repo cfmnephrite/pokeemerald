@@ -13584,3 +13584,5 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     ANIM_CMD(MEGA_DIANCIE),
 };
 
+#undef ANIM_CMD
+#undef ANIM_CMD_FULL

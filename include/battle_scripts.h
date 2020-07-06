@@ -1,6 +1,7 @@
 #ifndef GUARD_BATTLE_SCRIPTS_H
 #define GUARD_BATTLE_SCRIPTS_H
 
+extern const u8 BattleScript_NotAffected[];
 extern const u8 BattleScript_HitFromCritCalc[];
 extern const u8 BattleScript_MoveEnd[];
 extern const u8 BattleScript_MakeMoveMissed[];
@@ -141,6 +142,7 @@ extern const u8 BattleScript_ItemSteal[];
 extern const u8 BattleScript_DrizzleActivates[];
 extern const u8 BattleScript_SpeedBoostActivates[];
 extern const u8 BattleScript_TraceActivates[];
+extern const u8 BattleScript_TraceActivatesEnd3[];
 extern const u8 BattleScript_RainDishActivates[];
 extern const u8 BattleScript_SandstreamActivates[];
 extern const u8 BattleScript_ShedSkinActivates[];
@@ -176,6 +178,7 @@ extern const u8 BattleScript_AbilityCuredStatus[];
 extern const u8 BattleScript_IgnoresWhileAsleep[];
 extern const u8 BattleScript_IgnoresAndUsesRandomMove[];
 extern const u8 BattleScript_MoveUsedLoafingAround[];
+extern const u8 BattleScript_TruantLoafingAround[];
 extern const u8 BattleScript_IgnoresAndFallsAsleep[];
 extern const u8 BattleScript_IgnoresAndHitsItself[];
 extern const u8 BattleScript_SubstituteFade[];
@@ -195,7 +198,8 @@ extern const u8 BattleScript_BerryCureChosenStatusEnd2[];
 extern const u8 BattleScript_BerryCureChosenStatusRet[];
 extern const u8 BattleScript_WhiteHerbEnd2[];
 extern const u8 BattleScript_WhiteHerbRet[];
-extern const u8 BattleScript_ItemHealHP_RemoveItem[];
+extern const u8 BattleScript_ItemHealHP_RemoveItemRet[];
+extern const u8 BattleScript_ItemHealHP_RemoveItemEnd2[];
 extern const u8 BattleScript_BerryPPHealEnd2[];
 extern const u8 BattleScript_ItemHealHP_End2[];
 extern const u8 BattleScript_ItemHealHP_Ret[];
@@ -315,6 +319,7 @@ extern const u8 BattleScript_DancerActivates[];
 extern const u8 BattleScript_EmergencyExit[];
 extern const u8 BattleScript_CannotUseExclusiveMove[];
 extern const u8 BattleScript_BrokeThroughProtectLike[];
+extern const u8 BattleScript_GrassyTerrainHeals[];
 extern const u8 BattleScript_SpikyShieldEffect[];
 extern const u8 BattleScript_KingsShieldEffect[];
 extern const u8 BattleScript_ProtectLikeMoveEffect[];
@@ -358,5 +363,15 @@ extern const u8 BattleScript_NotAffectedAtkStringPpReduce[];
 extern const u8 BattleScript_ReceiverActivates[];
 extern const u8 BattleScript_SlowStartEnd[];
 extern const u8 BattleScript_SymbiosisActivates[];
+extern const u8 BattleScript_AftermathDmg[];
+extern const u8 BattleScript_AttackerFormChange[];
+extern const u8 BattleScript_AttackerFormChangeEnd3[];
+extern const u8 BattleScript_TargetFormChange[];
+extern const u8 BattleScript_AnticipationActivates[];
+extern const u8 BattleScript_SlowStartEnds[];
+extern const u8 BattleScript_ScriptingAbilityStatRaise[];
+extern const u8 BattleScript_FriskActivates[];
+extern const u8 BattleScript_FriskMsg[];
+extern const u8 BattleScript_FriskMsgWithPopup[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

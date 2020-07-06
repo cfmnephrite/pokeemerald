@@ -64,6 +64,8 @@
 #define B_TXT_DEF_NAME 0x39
 #define B_TXT_DEF_TEAM1 0x3A // Your/The opposing
 #define B_TXT_DEF_TEAM2 0x3B // your/the opposing
+#define B_TXT_ACTIVE_NAME 0x3C
+#define B_TXT_ACTIVE_NAME2 0x3D // no Illusion check
 
 // for B_TXT_BUFF1, B_TXT_BUFF2 and B_TXT_BUFF3
 
@@ -238,7 +240,7 @@ enum
 void BufferStringBattle(u16 stringID);
 u32 BattleStringExpandPlaceholdersToDisplayedString(const u8* src);
 u32 BattleStringExpandPlaceholders(const u8* src, u8* dst);
-void BattlePutTextOnWindow(const u8* text, u8 arg1);
+void BattlePutTextOnWindow(const u8* text, u8 windowId);
 void SetPpNumbersPaletteInMoveSelection(void);
 u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp);
 bool32 ShouldDoTrainerSlide(u32 battlerId, u32 trainerId, u32 which);
@@ -284,7 +286,7 @@ extern const u8 gText_Love[];
 extern const u8 gText_SpaceAndSpace[];
 extern const u8 gText_CommaSpace[];
 extern const u8 gText_Space2[];
-extern const u8 gText_ScrollTextUp[];
+extern const u8 gText_LineBreak[];
 extern const u8 gText_NewLine[];
 extern const u8 gText_Are[];
 extern const u8 gText_Are2[];

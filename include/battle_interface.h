@@ -66,6 +66,7 @@ enum
     HEALTHBOX_SAFARI_BALLS_TEXT
 };
 
+u8 GetMegaIndicatorSpriteId(u32 healthboxSpriteId);
 u8 CreateBattlerHealthboxSprites(u8 battler);
 u8 CreateSafariPlayerHealthboxSprites(void);
 void SetBattleBarStruct(u8 battler, u8 healthboxSpriteId, s32 maxVal, s32 currVal, s32 receivedValue);
@@ -88,7 +89,7 @@ void DestroyMegaTriggerSprite(void);
 void HideZMoveTriggerSprite(void);
 void DestroyZMoveTriggerSprite(void);
 u32 CreateMegaIndicatorSprite(u32 battlerId, u32 which);
-void DestroyMegaIndicatorSprite(u8 battlerId);
+void DestroyMegaIndicatorSprite(u32 healthboxSpriteId);
 u8 CreatePartyStatusSummarySprites(u8 battler, struct HpAndStatus *partyInfo, u8 arg2, bool8 isBattleStart);
 void Task_HidePartyStatusSummary(u8 taskId);
 void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elementId);

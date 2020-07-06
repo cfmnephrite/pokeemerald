@@ -1,5 +1,5 @@
 #include "global.h"
-#include "alloc.h"
+#include "malloc.h"
 #include "battle.h"
 #include "pokemon.h"
 #include "battle_controllers.h"
@@ -201,10 +201,10 @@ static void Task_FreeAbilityPopUpGfx(u8 taskId);
 static const struct OamData sUnknown_0832C138 =
 {
     .y = 0,
-    .affineMode = 0,
-    .objMode = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = 0,
-    .bpp = 0,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x32),
     .x = 0,
     .matrixNum = 0,
@@ -273,10 +273,10 @@ static const struct SpriteTemplate sHealthboxSafariSpriteTemplate =
 static const struct OamData sOamData_Healthbar =
 {
     .y = 0,
-    .affineMode = 0,
-    .objMode = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = 0,
-    .bpp = 0,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x8),
     .x = 0,
     .matrixNum = 0,
@@ -329,15 +329,50 @@ static const struct SpriteTemplate sHealthbarSpriteTemplates[MAX_BATTLERS_COUNT]
 
 static const struct Subsprite sUnknown_0832C258[] =
 {
-    {240,   0,  1,  1,  0,      1},
-    {16,    0,  1,  1,  4,      1}
+    {
+        .x = 240,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 0,
+        .priority = 1
+    },
+    {
+        .x = 16,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 4,
+        .priority = 1
+    }
 };
 
 static const struct Subsprite sUnknown_0832C260[] =
 {
-    {240,   0,  1,  1,  0,      1},
-    {16,    0,  1,  1,  4,      1},
-    {224,   0,  0,  0,  8,      1}
+    {
+        .x = 240,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 0,
+        .priority = 1
+    },
+    {
+        .x = 16,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 4,
+        .priority = 1
+    },
+    {
+        .x = 224,
+        .y = 0,
+        .shape = SPRITE_SHAPE(8x8),
+        .size = SPRITE_SIZE(8x8),
+        .tileOffset = 8,
+        .priority = 1
+    }
 };
 
 static const struct SubspriteTable sUnknown_0832C28C[] =
@@ -348,20 +383,90 @@ static const struct SubspriteTable sUnknown_0832C28C[] =
 
 static const struct Subsprite sStatusSummaryBar_Subsprites_0[] =
 {
-    {160,   0,  1,  1,  0,      1},
-    {192,   0,  1,  1,  4,      1},
-    {224,   0,  1,  1,  8,      1},
-    {0,     0,  1,  1,  12,     1}
+    {
+        .x = 160,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 0,
+        .priority = 1
+    },
+    {
+        .x = 192,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 4,
+        .priority = 1
+    },
+    {
+        .x = 224,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 8,
+        .priority = 1
+    },
+    {
+        .x = 0,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 12,
+        .priority = 1
+    }
 };
 
 static const struct Subsprite sUnknown_0832C2AC[] =
 {
-    {160,   0,  1,  1,  0,      1},
-    {192,   0,  1,  1,  4,      1},
-    {224,   0,  1,  1,  8,      1},
-    {0,     0,  1,  1,  8,      1},
-    {32,    0,  1,  1,  8,      1},
-    {64,    0,  1,  1,  12,     1}
+    {
+        .x = 160,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 0,
+        .priority = 1
+    },
+    {
+        .x = 192,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 4,
+        .priority = 1
+    },
+    {
+        .x = 224,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 8,
+        .priority = 1
+    },
+    {
+        .x = 0,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 8,
+        .priority = 1
+    },
+    {
+        .x = 32,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 8,
+        .priority = 1
+    },
+    {
+        .x = 64,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x8),
+        .size = SPRITE_SIZE(32x8),
+        .tileOffset = 12,
+        .priority = 1
+    }
 };
 
 static const struct SubspriteTable sStatusSummaryBar_SubspriteTable[] =
@@ -397,10 +502,10 @@ static const struct SpriteSheet sStatusSummaryBallsSpriteSheet =
 static const struct OamData sOamData_StatusSummaryBalls =
 {
     .y = 0,
-    .affineMode = 0,
-    .objMode = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = 0,
-    .bpp = 0,
+    .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(8x8),
     .x = 0,
     .matrixNum = 0,
@@ -605,10 +710,19 @@ static const struct SpriteTemplate sSpriteTemplate_MegaIndicator =
 
 // data fields for healthboxRight
 #define hOther_HealthBoxSpriteId    data[5]
+#define hOther_IndicatorSpriteId    data[6] // For Mega Evo
 
 // data fields for healthbar
 #define hBar_HealthBoxSpriteId      data[5]
 #define hBar_Data6                  data[6]
+
+u8 GetMegaIndicatorSpriteId(u32 healthboxSpriteId)
+{
+    u8 spriteId = gSprites[healthboxSpriteId].oam.affineParam;
+    if (spriteId >= MAX_SPRITES)
+        return 0xFF;
+    return gSprites[spriteId].hOther_IndicatorSpriteId;
+}
 
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
 {
@@ -624,9 +738,9 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
             healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[0], 240, 160, 1);
             healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[0], 240, 160, 1);
 
-            gSprites[healthboxLeftSpriteId].oam.shape = 0;
+            gSprites[healthboxLeftSpriteId].oam.shape = ST_OAM_SQUARE;
 
-            gSprites[healthboxRightSpriteId].oam.shape = 0;
+            gSprites[healthboxRightSpriteId].oam.shape = ST_OAM_SQUARE;
             gSprites[healthboxRightSpriteId].oam.tileNum += 64;
         }
         else
@@ -676,7 +790,7 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     healthbarSpriteId = CreateSpriteAtEnd(&sHealthbarSpriteTemplates[gBattlerPositions[battlerId]], 140, 60, 0);
     healthBarSpritePtr = &gSprites[healthbarSpriteId];
     SetSubspriteTables(healthBarSpritePtr, &sUnknown_0832C28C[GetBattlerSide(battlerId)]);
-    healthBarSpritePtr->subspriteMode = 2;
+    healthBarSpritePtr->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
     healthBarSpritePtr->oam.priority = 1;
 
     CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_1), (void*)(OBJ_VRAM0 + healthBarSpritePtr->oam.tileNum * TILE_SIZE_4BPP), 64);
@@ -686,6 +800,7 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     gSprites[healthboxLeftSpriteId].invisible = TRUE;
 
     gSprites[healthboxRightSpriteId].invisible = TRUE;
+    gSprites[healthboxRightSpriteId].hOther_IndicatorSpriteId = 0xFF;
 
     healthBarSpritePtr->hBar_HealthBoxSpriteId = healthboxLeftSpriteId;
     healthBarSpritePtr->hBar_Data6 = data6;
@@ -708,8 +823,8 @@ u8 CreateSafariPlayerHealthboxSprites(void)
     healthboxLeftSpriteId = CreateSprite(&sHealthboxSafariSpriteTemplate, 240, 160, 1);
     healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxSafariSpriteTemplate, 240, 160, 1);
 
-    gSprites[healthboxLeftSpriteId].oam.shape = 0;
-    gSprites[healthboxRightSpriteId].oam.shape = 0;
+    gSprites[healthboxLeftSpriteId].oam.shape = ST_OAM_SQUARE;
+    gSprites[healthboxRightSpriteId].oam.shape = ST_OAM_SQUARE;
 
     gSprites[healthboxRightSpriteId].oam.tileNum += 64;
 
@@ -755,7 +870,7 @@ static void SpriteCB_HealthBar(struct Sprite *sprite)
 static void SpriteCB_HealthBoxOther(struct Sprite *sprite)
 {
     u8 healthboxMainSpriteId = sprite->hOther_HealthBoxSpriteId;
-    u8 megaSpriteId = gBattleStruct->mega.indicatorSpriteIds[gSprites[healthboxMainSpriteId].hMain_Battler];
+    u8 megaSpriteId = sprite->hOther_IndicatorSpriteId;
 
     sprite->pos1.x = gSprites[healthboxMainSpriteId].pos1.x + 64;
     sprite->pos1.y = gSprites[healthboxMainSpriteId].pos1.y;
@@ -781,7 +896,7 @@ void SetBattleBarStruct(u8 battlerId, u8 healthboxSpriteId, s32 maxVal, s32 oldV
 
 void SetHealthboxSpriteInvisible(u8 healthboxSpriteId)
 {
-    DestroyMegaIndicatorSprite(gSprites[healthboxSpriteId].hMain_Battler);
+    DestroyMegaIndicatorSprite(healthboxSpriteId);
     gSprites[healthboxSpriteId].invisible = TRUE;
     gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId].invisible = TRUE;
     gSprites[gSprites[healthboxSpriteId].oam.affineParam].invisible = TRUE;
@@ -796,8 +911,9 @@ void SetHealthboxSpriteVisible(u8 healthboxSpriteId)
     gSprites[gSprites[healthboxSpriteId].oam.affineParam].invisible = FALSE;
     if (gBattleStruct->mega.evolvedPartyIds[GetBattlerSide(battlerId)] & gBitTable[gBattlerPartyIndexes[battlerId]])
     {
-        if (gBattleStruct->mega.indicatorSpriteIds[battlerId] != 0xFF)
-            gSprites[gBattleStruct->mega.indicatorSpriteIds[battlerId]].invisible = FALSE;
+        u8 spriteId = GetMegaIndicatorSpriteId(healthboxSpriteId);
+        if (spriteId != 0xFF)
+            gSprites[spriteId].invisible = FALSE;
         else
             CreateMegaIndicatorSprite(battlerId, 0);
     }
@@ -811,7 +927,7 @@ static void UpdateSpritePos(u8 spriteId, s16 x, s16 y)
 
 void DestoryHealthboxSprite(u8 healthboxSpriteId)
 {
-    DestroyMegaIndicatorSprite(gSprites[healthboxSpriteId].hMain_Battler);
+    DestroyMegaIndicatorSprite(healthboxSpriteId);
     DestroySprite(&gSprites[gSprites[healthboxSpriteId].oam.affineParam]);
     DestroySprite(&gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId]);
     DestroySprite(&gSprites[healthboxSpriteId]);
@@ -831,12 +947,13 @@ void UpdateOamPriorityInAllHealthboxes(u8 priority)
         u8 healthboxLeftSpriteId = gHealthboxSpriteIds[i];
         u8 healthboxRightSpriteId = gSprites[gHealthboxSpriteIds[i]].oam.affineParam;
         u8 healthbarSpriteId = gSprites[gHealthboxSpriteIds[i]].hMain_HealthBarSpriteId;
+        u8 indicatorSpriteId = GetMegaIndicatorSpriteId(healthboxLeftSpriteId);
 
         gSprites[healthboxLeftSpriteId].oam.priority = priority;
         gSprites[healthboxRightSpriteId].oam.priority = priority;
         gSprites[healthbarSpriteId].oam.priority = priority;
-        if (gBattleStruct->mega.indicatorSpriteIds[i] != 0xFF)
-            gSprites[gBattleStruct->mega.indicatorSpriteIds[i]].oam.priority = priority;
+        if (indicatorSpriteId != 0xFF)
+            gSprites[indicatorSpriteId].oam.priority = priority;
     }
 }
 
@@ -1440,26 +1557,26 @@ u32 CreateMegaIndicatorSprite(u32 battlerId, u32 which)
         y += sIndicatorPosSingles[position][1];
     }
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_MegaIndicator, x, y, 0);
-    gBattleStruct->mega.indicatorSpriteIds[battlerId] = spriteId;
+    gSprites[gSprites[gHealthboxSpriteIds[battlerId]].oam.affineParam].hOther_IndicatorSpriteId = spriteId;
 
     gSprites[spriteId].tBattler = battlerId;
     return spriteId;
 }
 
-void DestroyMegaIndicatorSprite(u8 battlerId)
+void DestroyMegaIndicatorSprite(u32 healthboxSpriteId)
 {
     u32 i;
+    s16 *spriteId = &gSprites[gSprites[healthboxSpriteId].oam.affineParam].hOther_IndicatorSpriteId;
 
-    if (gBattleStruct->mega.indicatorSpriteIds[battlerId] != 0xFF)
+    if (*spriteId != 0xFF)
     {
-        if (gBattleStruct->mega.indicatorSpriteIds[battlerId] != 0) // If called before initialized to 0xFF.
-            DestroySprite(&gSprites[gBattleStruct->mega.indicatorSpriteIds[battlerId]]);
-        gBattleStruct->mega.indicatorSpriteIds[battlerId] = 0xFF;
+        DestroySprite(&gSprites[*spriteId]);
+        *spriteId = 0xFF;
     }
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        if (gBattleStruct->mega.indicatorSpriteIds[i] != 0xFF)
+        if (gSprites[gSprites[gHealthboxSpriteIds[i]].oam.affineParam].hOther_IndicatorSpriteId != 0xFF)
             break;
     }
     // Free Sprite pal/tiles only if no indicator sprite is active for all battlers.
@@ -1472,8 +1589,7 @@ void DestroyMegaIndicatorSprite(u8 battlerId)
 
 static void SpriteCb_MegaIndicator(struct Sprite *sprite)
 {
-    if (gBattleStruct->mega.indicatorSpriteIds[sprite->tBattler] == 0xFF)
-        DestroySprite(sprite);
+
 }
 
 #undef tBattler
@@ -1712,9 +1828,9 @@ void Task_HidePartyStatusSummary(u8 taskId)
     gTasks[taskId].tData15 = 16;
 
     for (i = 0; i < PARTY_SIZE; i++)
-        gSprites[ballIconSpriteIds[i]].oam.objMode = 1;
+        gSprites[ballIconSpriteIds[i]].oam.objMode = ST_OAM_OBJ_BLEND;
 
-    gSprites[summaryBarSpriteId].oam.objMode = 1;
+    gSprites[summaryBarSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
 
     if (isBattleStart)
     {
