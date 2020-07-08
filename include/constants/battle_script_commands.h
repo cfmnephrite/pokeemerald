@@ -168,17 +168,16 @@
 #define VARIOUS_LOSE_TYPE                       99
 #define VARIOUS_TRY_ACTIVATE_SOULHEART          100
 #define VARIOUS_TRY_ACTIVATE_RECEIVER           101
-#define VARIOUS_TRY_ACTIVATE_BEAST_BOOST        102
-#define VARIOUS_TRY_FRISK                       103
-#define VARIOUS_JUMP_IF_SHIELDS_DOWN_PROTECTED  104
-#define VARIOUS_TRY_FAIRY_LOCK                  105
-#define VARIOUS_JUMP_IF_NO_ALLY                 106
-#define VARIOUS_POISON_TYPE_IMMUNITY            107
-#define VARIOUS_JUMP_IF_NO_HOLD_EFFECT          108
-#define VARIOUS_INFATUATE_WITH_BATTLER          109
-#define VARIOUS_SET_LAST_USED_ITEM              110
-#define VARIOUS_PARALYZE_TYPE_IMMUNITY          111
-#define VARIOUS_JUMP_IF_ABSENT                  112
+#define VARIOUS_TRY_FRISK                       102
+#define VARIOUS_JUMP_IF_SHIELDS_DOWN_PROTECTED  103
+#define VARIOUS_TRY_FAIRY_LOCK                  104
+#define VARIOUS_JUMP_IF_NO_ALLY                 105
+#define VARIOUS_POISON_TYPE_IMMUNITY            106
+#define VARIOUS_JUMP_IF_NO_HOLD_EFFECT          107
+#define VARIOUS_INFATUATE_WITH_BATTLER          108
+#define VARIOUS_SET_LAST_USED_ITEM              109
+#define VARIOUS_PARALYZE_TYPE_IMMUNITY          110
+#define VARIOUS_JUMP_IF_ABSENT                  111
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0

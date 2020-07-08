@@ -2863,7 +2863,7 @@ static const u16 sWeatherFlagsInfo[][5] =
 {
     [ENUM_WEATHER_RAIN] = {WEATHER_RAIN_ANY, WEATHER_RAIN_TEMPORARY, WEATHER_RAIN_FORECAST, HOLD_EFFECT_DAMP_ROCK},
     [ENUM_WEATHER_SUN] = {WEATHER_SUN_ANY, WEATHER_SUN_TEMPORARY, WEATHER_SUN_FORECAST, HOLD_EFFECT_HEAT_ROCK},
-    [ENUM_WEATHER_SANDSTORM] = {WEATHER_SANDSTORM_ANY, WEATHER_SANDSTORM_TEMPORARY, NULL, HOLD_EFFECT_SMOOTH_ROCK},
+    [ENUM_WEATHER_SANDSTORM] = {WEATHER_SANDSTORM_ANY, WEATHER_SANDSTORM_TEMPORARY, 0, HOLD_EFFECT_SMOOTH_ROCK},
     [ENUM_WEATHER_HAIL] = {WEATHER_HAIL_ANY, WEATHER_HAIL_TEMPORARY, WEATHER_HAIL_FORECAST, HOLD_EFFECT_ICY_ROCK},
 };
 
@@ -2958,9 +2958,6 @@ static u8 ForewarnChooseMove(u32 battler)
                 data[count].battlerId = i;
                 switch (gBattleMoves[data[count].moveId].effect)
                 {
-                case EFFECT_OHKO:
-                    data[count].power = 150;
-                    break;
                 case EFFECT_COUNTER:
                 case EFFECT_MIRROR_COAT:
                 case EFFECT_METAL_BURST:
@@ -3525,16 +3522,12 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
                 break;
             case ABILITY_HEALER:
-                if ((gBattleMons[battler].status1 & STATUS1_ANY) && RandomChance(3, 10))
+                gBattleScripting.battler = BATTLE_PARTNER(battler);
+                if (IsBattlerAlive(gBattleScripting.battler)
+                    && gBattleMons[gBattleScripting.battler].status1 & STATUS1_ANY
+                    && RandomChance(3, 10))
                 {
-                    gBattleMons[battler].status1 = 0;
-                    gBattleMons[battler].status2 &= ~(STATUS2_NIGHTMARE);
-                    gBattlerAbility = gEffectBattler = BATTLE_PARTNER(battler);
-                    RecordAbilityBattle(gEffectBattler, gLastUsedAbility);
-                    PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, battler, gBattlerPartyIndexes[battler]);
                     BattleScriptPushCursorAndCallback(BattleScript_HealerActivates);
-                    BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
-                    MarkBattlerForControllerExec(battler);
                     effect++;
                 }
                 break;
@@ -3640,16 +3633,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                         BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                         gBattleMoveDamage *= -1;
                     }
-                    effect++;
-                }
-                break;
-            case ABILITY_HEALER:
-                gBattleScripting.battler = BATTLE_PARTNER(battler);
-                if (IsBattlerAlive(gBattleScripting.battler)
-                    && gBattleMons[gBattleScripting.battler].status1 & STATUS1_ANY
-                    && (Random() % 100) < 30)
-                {
-                    BattleScriptPushCursorAndCallback(BattleScript_HealerActivates);
                     effect++;
                 }
                 break;
@@ -3858,35 +3841,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-        case ABILITY_STAMINA:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && TARGET_TURN_DAMAGED
-             && IsBattlerAlive(battler)
-             && gBattleMons[battler].statStages[STAT_DEF] != 12)
-            {
-                SET_STATCHANGER(STAT_DEF, 1, FALSE);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
-                effect++;
-            }
-            break;
-        case ABILITY_BERSERK:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && TARGET_TURN_DAMAGED
-             && IsBattlerAlive(battler)
-            // Had more than half of hp before, now has less
-             && gBattleStruct->hpBefore[battler] > gBattleMons[battler].maxHP / 2
-             && gBattleMons[battler].hp < gBattleMons[battler].maxHP / 2
-             && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
-             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_SHEER_FORCE && gBattleMoves[gCurrentMove].flags & FLAG_SHEER_FORCE_BOOST)
-             && gBattleMons[battler].statStages[STAT_SPATK] != 12)
-            {
-                SET_STATCHANGER(STAT_SPATK, 1, FALSE);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
-                effect++;
-            }
-            break;
         case ABILITY_WEAK_ARMOR:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
@@ -3976,9 +3930,12 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
-             && gBattleMons[battler].statStages[GetHigherOffStat(battler)] != 0xC
-             && GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 100) <= 50
-             && ((gHpDealt + gBattleMons[battler].hp) > (gBattleMons[battler].maxHP / 2)))
+            // Had more than half of hp before, now has less
+             && gBattleStruct->hpBefore[battler] > gBattleMons[battler].maxHP / 2
+             && gBattleMons[battler].hp < gBattleMons[battler].maxHP / 2
+             && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
+             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_SHEER_FORCE && gBattleMoves[gCurrentMove].secondaryEffectChance > 0)
+             && gBattleMons[battler].statStages[GetHigherOffStat(battler)] != 12)
             {
                 //gBattleMons[battler].statStages[GetHigherOffStat(battler)] += 2;
                 SET_STATCHANGER(GetHigherOffStat(battler), 2, FALSE);
@@ -4033,20 +3990,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
-                effect++;
-            }
-            break;
-        case ABILITY_AFTERMATH:
-            if (!IsAbilityOnField(ABILITY_DAMP)
-             && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && gBattleMons[gBattlerTarget].hp == 0
-             && IsMoveMakingContact(move, gBattlerAttacker))
-            {
-                gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AftermathDmg;
                 effect++;
             }
             break;
@@ -4207,14 +4150,13 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
             break;
         case ABILITY_AFTERMATH:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(gBattlerAttacker)
+            if (!IsAbilityOnField(ABILITY_DAMP)
+             && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && !(IsBattlerAlive(battler))
+             && IsMoveMakingContact(move, gBattlerAttacker)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && TARGET_TURN_DAMAGED
-             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT)
-             && !(IsBattlerAlive(battler))
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
-             && GetBattlerAbility(gBattlerAttacker) != ABILITY_DAMP
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_ROCK_HEAD)
             {
                 gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
@@ -4314,7 +4256,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
              && gBattleMons[gBattlerTarget].hp != 0
              && !gProtectStructs[gBattlerTarget].confusionSelfDmg
              && TARGET_TURN_DAMAGED
-             && CanPoisonType(gBattlerAttacker, gBattlerTarget);
+             && CanPoisonType(gBattlerAttacker, gBattlerTarget)
              && GetBattlerAbility(gBattlerTarget) != ABILITY_IMMUNITY
              && GetBattlerAbility(gBattlerTarget) != ABILITY_WATER_VEIL
              && !(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY)
@@ -7813,7 +7755,7 @@ bool32 CanUseZMove(u8 battlerId)
         return FALSE;
 }
 
-void UndoMegaEvolution(u8 monId)
+void UndoMegaEvolution(u32 monId)
 {
     if (gBattleStruct->mega.evolvedPartyIds[B_SIDE_PLAYER] & gBitTable[monId])
     {

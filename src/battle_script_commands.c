@@ -6929,6 +6929,7 @@ static void Cmd_various(void)
     s32 i, j;
     u8 data[10];
     u32 side, bits;
+    u8 boostStat, boost, hpFraction;
 
     if (gBattleControllerExecFlags)
         return;
@@ -7096,21 +7097,6 @@ static void Cmd_various(void)
             gBattleMoveDamage *= -2;
         else
             gBattleMoveDamage *= -1;
-        return;
-    // Roar will fail in a double wild battle when used by the player against one of the two alive wild mons.
-    // Also when an opposing wild mon uses it againt its partner.
-    case VARIOUS_JUMP_IF_ROAR_FAILS:
-        if (WILD_DOUBLE_BATTLE
-            && GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER
-            && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT
-            && IS_WHOLE_SIDE_ALIVE(gBattlerTarget))
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-        else if (WILD_DOUBLE_BATTLE
-                 && GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
-                 && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT)
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-        else
-            gBattlescriptCurrInstr += 7;
         return;
     case VARIOUS_GRAVITY_ON_AIRBORNE_MONS:
         if (gStatuses3[gActiveBattler] & STATUS3_ON_AIR)
@@ -7497,39 +7483,6 @@ static void Cmd_various(void)
             }
         }
         break;
-    case VARIOUS_TRY_ACTIVATE_BEAST_BOOST:
-        if (GetBattlerAbility(gActiveBattler) == ABILITY_BEAST_BOOST)
-        {
-            u16 gBattleStats[5] = {gBattleMons[gActiveBattler].attack,
-                                   gBattleMons[gActiveBattler].defense,
-                                   gBattleMons[gActiveBattler].speed,
-                                   gBattleMons[gActiveBattler].spAttack,
-                                   gBattleMons[gActiveBattler].spDefense};
-            for (i = 1; i < 6; i++)
-            {
-                if (gBattleStats[i-1] > highestStat)
-                {
-                    highestStat = gBattleStats[i-1];
-                    boostStat = i;
-                }
-            }
-            if(hpFraction > 25)
-                boost = 1;
-            if(HasAttackerFaintedTarget()
-                && NoAliveMonsForPlayer()
-                && NoAliveMonsForOpponent()
-                && gBattleMons[gBattlerAttacker].statStages[boostStat] != 12
-                && boost != 0)
-            {
-                gBattleMons[gBattlerAttacker].statStages[boostStat]++;
-                SET_STATCHANGER(boostStat, 1, FALSE);
-                PREPARE_STAT_BUFFER(gBattleTextBuff1, boostStat);
-                BattleScriptPush(gBattlescriptCurrInstr + 3);
-                gBattlescriptCurrInstr = BattleScript_AttackerAbilityStatRaise;
-                return;
-            }
-        }
-        break;
     case VARIOUS_TRY_ACTIVATE_RECEIVER: // Partner gets fainted's ally ability
         gBattlerAbility = BATTLE_PARTNER(gActiveBattler);
         i = GetBattlerAbility(gBattlerAbility);
@@ -7559,9 +7512,11 @@ static void Cmd_various(void)
         break;
     case VARIOUS_TRY_ACTIVATE_BEAST_BOOST:
         i = GetHighestStatId(gActiveBattler);
+        hpFraction = GetScaledHPFraction(gHpDealt, gBattleMons[gBattlerTarget].maxHP, 100);
         if (GetBattlerAbility(gActiveBattler) == ABILITY_BEAST_BOOST
             && HasAttackerFaintedTarget()
             && !NoAliveMonsForEitherParty()
+            && hpFraction > 25
             && gBattleMons[gBattlerAttacker].statStages[i] != 12)
         {
             gBattleMons[gBattlerAttacker].statStages[i]++;

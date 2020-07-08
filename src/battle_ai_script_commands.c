@@ -1403,34 +1403,23 @@ static u32 WhichMoveBetter(u32 move1, u32 move2)
         if (((gBattleMoves[move1].effect == EFFECT_RECOIL_25
                 || gBattleMoves[move1].effect == EFFECT_RECOIL_IF_MISS
                 || gBattleMoves[move1].effect == EFFECT_RECOIL_50
-                || gBattleMoves[move1].effect == EFFECT_RECOIL_33
-                || gBattleMoves[move1].effect == EFFECT_RECOIL_33_STATUS)
+                || gBattleMoves[move1].effect == EFFECT_RECOIL_33)
             && (gBattleMoves[move2].effect != EFFECT_RECOIL_25
                  && gBattleMoves[move2].effect != EFFECT_RECOIL_IF_MISS
                  && gBattleMoves[move2].effect != EFFECT_RECOIL_50
-                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33
-                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33_STATUS
-                 && gBattleMoves[move2].effect != EFFECT_RECHARGE)))
+                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33)))
             return 1;
 
         if (((gBattleMoves[move2].effect == EFFECT_RECOIL_25
                 || gBattleMoves[move2].effect == EFFECT_RECOIL_IF_MISS
                 || gBattleMoves[move2].effect == EFFECT_RECOIL_50
-                || gBattleMoves[move2].effect == EFFECT_RECOIL_33
-                || gBattleMoves[move2].effect == EFFECT_RECOIL_33_STATUS)
+                || gBattleMoves[move2].effect == EFFECT_RECOIL_33)
             && (gBattleMoves[move1].effect != EFFECT_RECOIL_25
                  && gBattleMoves[move1].effect != EFFECT_RECOIL_IF_MISS
                  && gBattleMoves[move1].effect != EFFECT_RECOIL_50
-                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33
-                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33_STATUS
-                 && gBattleMoves[move1].effect != EFFECT_RECHARGE)))
+                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33)))
             return 0;
     }
-    // Check recharge
-    if (gBattleMoves[move1].effect == EFFECT_RECHARGE && gBattleMoves[move2].effect != EFFECT_RECHARGE)
-        return 1;
-    if (gBattleMoves[move2].effect == EFFECT_RECHARGE && gBattleMoves[move1].effect != EFFECT_RECHARGE)
-        return 0;
     // Check additional effect.
     if (gBattleMoves[move1].effect == 0 && gBattleMoves[move2].effect != 0)
         return 1;
