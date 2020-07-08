@@ -1724,6 +1724,10 @@
 	various \battler, VARIOUS_TRY_ACTIVATE_SYMBIOSIS
 	.endm
 	
+	.macro checkballfetch
+	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7

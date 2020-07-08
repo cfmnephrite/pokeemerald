@@ -1063,7 +1063,7 @@ static void atk00_attackcanceler(void)
 
     // Check Protean activation.
     GET_MOVE_TYPE(gCurrentMove, moveType);
-    if (GetBattlerAbility(gBattlerAttacker) == ABILITY_PROTEAN
+    if ((GetBattlerAbility(gBattlerAttacker) == ABILITY_PROTEAN || GetBattlerAbility(gBattlerAbility) == ABILITY_LIBERO)
         && (gBattleMons[gBattlerAttacker].type1 != moveType || gBattleMons[gBattlerAttacker].type2 != moveType ||
             (gBattleMons[gBattlerAttacker].type3 != moveType && gBattleMons[gBattlerAttacker].type3 != TYPE_MYSTERY))
         && gCurrentMove != MOVE_STRUGGLE)
@@ -7902,6 +7902,15 @@ static void atk76_various(void)
 		gBattlerAbility = gBattlerAttacker = BATTLE_PARTNER(gActiveBattler);
 		//gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
 		break;
+	case VARIOUS_CHECK_BALL_FETCH:
+		if(gBattleMons[gActiveBattler].item == ITEM_NONE && (GetBattlerAbility(gActiveBattler) == ABILITY_BALL_FETCH)
+			&& gLastUsedItem != ITEM_SAFARI_BALL)
+		{
+			gBattleMons[gActiveBattler].item = gLastUsedItem;
+			BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+			MarkBattlerForControllerExec(gActiveBattler);
+		}
+		break;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -8834,16 +8843,16 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                  || GetBattlerAbility(gActiveBattler) == ABILITY_WHITE_SMOKE
                  || GetBattlerAbility(gActiveBattler) == ABILITY_FULL_METAL_BODY)
         {
-            if (flags == STAT_CHANGE_BS_PTR)
+            if (flags == STAT_CHANGE_BS_PTR) //CFM allows abilities that lower stats to also prevent self-inflicted drops
             {
-                if (gSpecialStatuses[gActiveBattler].statLowered || gActiveBattler == gBattlerAttacker)
+                /*if (gSpecialStatuses[gActiveBattler].statLowered || gActiveBattler == gBattlerAttacker)
                 {
                     gBattlescriptCurrInstr = BS_ptr;
                     gLastUsedAbility = GetBattlerAbility(gActiveBattler);
                     RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
                 }
                 else
-                {
+                {*/
                     BattleScriptPush(BS_ptr);
                     gBattleScripting.battler = gActiveBattler;
                     gBattlerAbility = gActiveBattler;
@@ -8851,7 +8860,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                     gLastUsedAbility = GetBattlerAbility(gActiveBattler);
                     RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
                     gSpecialStatuses[gActiveBattler].statLowered = 1;
-                }
+               // }
             }
             return STAT_CHANGE_DIDNT_WORK;
         }
