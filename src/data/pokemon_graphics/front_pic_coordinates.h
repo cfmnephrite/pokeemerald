@@ -4036,6 +4036,16 @@ const struct MonCoords gMonFrontPicCoords[] =
         .size = 0x45,
         .y_offset = 0x04,
     },
+    [SPECIES_MELTAN] =
+    {
+        .size = 0x45,
+        .y_offset = 0x08,
+    },
+    [SPECIES_MELMETAL] =
+    {
+        .size = 0x86,
+        .y_offset = 0x04,
+    },
     [SPECIES_EGG] =
     {
         .size = 0x33,
@@ -4421,5 +4431,187 @@ const struct MonCoords gMonFrontPicCoords[] =
     {
         .size = 0,
         .y_offset = 6,
+    },
+    // Alolan Forms
+    [SPECIES_ALOLAN_RATTATA] =
+    {
+        .size = 0x44,
+        .y_offset = 0xd,
+    },
+    [SPECIES_ALOLAN_RATICATE] =
+    {
+        .size = 0x66,
+        .y_offset = 0x6,
+    },
+    [SPECIES_ALOLAN_RAICHU] =
+    {
+        .size = 0x67,
+        .y_offset = 0x3,
+    },
+    [SPECIES_ALOLAN_SANDSHREW] =
+    {
+        .size = 0x55,
+        .y_offset = 0xb,
+    },
+    [SPECIES_ALOLAN_SANDSLASH] =
+    {
+        .size = 0x76,
+        .y_offset = 0x6,
+    },
+    [SPECIES_ALOLAN_VULPIX] =
+    {
+        .size = 0x65,
+        .y_offset = 0xb,
+    },
+    [SPECIES_ALOLAN_NINETALES] =
+    {
+        .size = 0x88,
+        .y_offset = 0x3,
+    },
+    [SPECIES_ALOLAN_DIGLETT] =
+    {
+        .size = 0x54,
+        .y_offset = 0x11,
+    },
+    [SPECIES_ALOLAN_DUGTRIO] =
+    {
+        .size = 0x75,
+        .y_offset = 0xb,
+    },
+    [SPECIES_ALOLAN_MEOWTH] =
+    {
+        .size = 0x55,
+        .y_offset = 0xa,
+    },
+    [SPECIES_ALOLAN_PERSIAN] =
+    {
+        .size = 0x77,
+        .y_offset = 0x4,
+    },
+    [SPECIES_ALOLAN_GEODUDE] =
+    {
+        .size = 0x54,
+        .y_offset = 0x13,
+    },
+    [SPECIES_ALOLAN_GRAVELER] =
+    {
+        .size = 0x87,
+        .y_offset = 0x9,
+    },
+    [SPECIES_ALOLAN_GOLEM] =
+    {
+        .size = 0x77,
+        .y_offset = 0x6,
+    },
+    [SPECIES_ALOLAN_GRIMER] =
+    {
+        .size = 0x65,
+        .y_offset = 0x9,
+    },
+    [SPECIES_ALOLAN_MUK] =
+    {
+        .size = 0x87,
+        .y_offset = 0x7,
+    },
+    [SPECIES_ALOLAN_EXEGGUTOR] =
+    {
+        .size = 0x88,
+        .y_offset = 0x0,
+    },
+    [SPECIES_ALOLAN_MAROWAK] =
+    {
+        .size = 0x76,
+        .y_offset = 0x8,
+    },
+    // Forms
+    [SPECIES_PRIMAL_KYOGRE] =
+    {
+        .size = 0x87,
+        .y_offset = 0x0,
+    },
+    [SPECIES_PRIMAL_GROUDON] =
+    {
+        .size = 0x88,
+        .y_offset = 0x0,
+    },
+    [SPECIES_SHAYMIN_SKY] =
+    {
+        .size = 0x87,
+        .y_offset = 0x7,
+    },
+    [SPECIES_GIRATINA_ORIGIN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x2,
+    },
+    [SPECIES_DARMANITAN_ZEN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x9,
+    },
+    [SPECIES_TORNADUS_THERIAN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x2,
+    },
+    [SPECIES_THUNDURUS_THERIAN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x0,
+    },
+    [SPECIES_LANDORUS_THERIAN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x2,
+    },
+    [SPECIES_MELOETTA_PIROUETTE] =
+    {
+        .size = 0x87,
+        .y_offset = 0x3,
+    },
+    [SPECIES_AEGISLASH_BLADE] =
+    {
+        .size = 0x87,
+        .y_offset = 0x1,
+    },
+    [SPECIES_HOOPA_UNBOUND] =
+    {
+        .size = 0x87,
+        .y_offset = 0x1,
+    },
+    [SPECIES_MINIOR_CORE] =
+    {
+        .size = 0x87,
+        .y_offset = 0x9,
+    },
+    [SPECIES_WISHIWASHI_SCHOOL] =
+    {
+        .size = 0x87,
+        .y_offset = 0x3,
+    },
+    [SPECIES_KYUREM_BLACK] =
+    {
+        .size = 0x87,
+        .y_offset = 0x0,
+    },
+    [SPECIES_KYUREM_WHITE] =
+    {
+        .size = 0x87,
+        .y_offset = 0x0,
+    },
+    [SPECIES_MIMIKYU_BUSTED] =
+    {
+        .size = 0x45,
+        .y_offset = 0x0C,
+    },
+    [SPECIES_LYCANROC_MIDNIGHT] =
+    {
+        .size = 0x45,
+        .y_offset = 0x00,
+    },
+    [SPECIES_LYCANROC_DUSK] =
+    {
+        .size = 0x45,
+        .y_offset = 0x00,
     },
 };

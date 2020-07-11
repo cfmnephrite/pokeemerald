@@ -7888,6 +7888,18 @@ static const union AnimCmd sAnim_ZERAORA_1[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_MELTAN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_MELMETAL_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd sAnim_MEGA_VENUSAUR_1[] =
 {
 	ANIMCMD_FRAME(0, 1),
@@ -8186,6 +8198,210 @@ static const union AnimCmd sAnim_MEGA_DIANCIE_1[] =
 {
 	ANIMCMD_FRAME(0, 1),
 	ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_RATTATA_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_RATICATE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_RAICHU_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_SANDSHREW_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_SANDSLASH_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_VULPIX_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_NINETALES_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_DIGLETT_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_DUGTRIO_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_MEOWTH_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_PERSIAN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_GEODUDE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_GRAVELER_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_GOLEM_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_GRIMER_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_MUK_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_EXEGGUTOR_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_ALOLAN_MAROWAK_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_SHAYMIN_SKY_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_GIRATINA_ORIGIN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_DARMANITAN_ZEN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_TORNADUS_THERIAN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_THUNDURUS_THERIAN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_LANDORUS_THERIAN_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_MELOETTA_PIROUETTE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_AEGISLASH_BLADE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_HOOPA_UNBOUND_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_MINIOR_CORE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_WISHIWASHI_SCHOOL_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_KYUREM_BLACK_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_KYUREM_WHITE_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_MIMIKYU_BUSTED_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_LYCANROC_MIDNIGHT_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_LYCANROC_DUSK_1[] =
+{
+    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_END,
 };
 
 static const union AnimCmd *const sAnims_NONE[] ={
@@ -12458,6 +12674,16 @@ static const union AnimCmd *const sAnims_ZERAORA[] ={
     sAnim_ZERAORA_1,
 };
 
+static const union AnimCmd *const sAnims_MELTAN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_MELTAN_1,
+};
+
+static const union AnimCmd *const sAnims_MELMETAL[] ={
+    sAnim_GeneralFrame0,
+    sAnim_MELMETAL_1,
+};
+
 static const union AnimCmd *const sAnims_MEGA_VENUSAUR[] ={
 	sAnim_GeneralFrame0,
 	sAnim_MEGA_VENUSAUR_1,
@@ -12706,6 +12932,176 @@ static const union AnimCmd *const sAnims_MEGA_AUDINO[] ={
 static const union AnimCmd *const sAnims_MEGA_DIANCIE[] ={
 	sAnim_GeneralFrame0,
 	sAnim_MEGA_DIANCIE_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_RATTATA[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_RATTATA_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_RATICATE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_RATICATE_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_RAICHU[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_RAICHU_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_SANDSHREW[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_SANDSHREW_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_SANDSLASH[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_SANDSLASH_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_VULPIX[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_VULPIX_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_NINETALES[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_NINETALES_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_DIGLETT[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_DIGLETT_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_DUGTRIO[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_DUGTRIO_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_MEOWTH[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_MEOWTH_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_PERSIAN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_PERSIAN_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_GEODUDE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_GEODUDE_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_GRAVELER[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_GRAVELER_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_GOLEM[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_GOLEM_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_GRIMER[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_GRIMER_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_MUK[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_MUK_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_EXEGGUTOR[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_EXEGGUTOR_1,
+};
+
+static const union AnimCmd *const sAnims_ALOLAN_MAROWAK[] ={
+    sAnim_GeneralFrame0,
+    sAnim_ALOLAN_MAROWAK_1,
+};
+
+static const union AnimCmd *const sAnims_SHAYMIN_SKY[] ={
+    sAnim_GeneralFrame0,
+    sAnim_SHAYMIN_SKY_1,
+};
+
+static const union AnimCmd *const sAnims_GIRATINA_ORIGIN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_GIRATINA_ORIGIN_1,
+};
+
+static const union AnimCmd *const sAnims_DARMANITAN_ZEN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_DARMANITAN_ZEN_1,
+};
+
+static const union AnimCmd *const sAnims_TORNADUS_THERIAN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_TORNADUS_THERIAN_1,
+};
+
+static const union AnimCmd *const sAnims_THUNDURUS_THERIAN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_THUNDURUS_THERIAN_1,
+};
+
+static const union AnimCmd *const sAnims_LANDORUS_THERIAN[] ={
+    sAnim_GeneralFrame0,
+    sAnim_LANDORUS_THERIAN_1,
+};
+
+static const union AnimCmd *const sAnims_MELOETTA_PIROUETTE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_MELOETTA_PIROUETTE_1,
+};
+
+static const union AnimCmd *const sAnims_AEGISLASH_BLADE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_AEGISLASH_BLADE_1,
+};
+
+static const union AnimCmd *const sAnims_HOOPA_UNBOUND[] ={
+    sAnim_GeneralFrame0,
+    sAnim_HOOPA_UNBOUND_1,
+};
+
+static const union AnimCmd *const sAnims_MINIOR_CORE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_MINIOR_CORE_1,
+};
+
+static const union AnimCmd *const sAnims_WISHIWASHI_SCHOOL[] ={
+    sAnim_GeneralFrame0,
+    sAnim_WISHIWASHI_SCHOOL_1,
+};
+
+static const union AnimCmd *const sAnims_KYUREM_BLACK[] ={
+    sAnim_GeneralFrame0,
+    sAnim_KYUREM_BLACK_1,
+};
+
+static const union AnimCmd *const sAnims_KYUREM_WHITE[] ={
+    sAnim_GeneralFrame0,
+    sAnim_KYUREM_WHITE_1,
+};
+
+static const union AnimCmd *const sAnims_MIMIKYU_BUSTED[] ={
+    sAnim_GeneralFrame0,
+    sAnim_MIMIKYU_BUSTED_1,
+};
+
+static const union AnimCmd *const sAnims_LYCANROC_MIDNIGHT[] ={
+    sAnim_GeneralFrame0,
+    sAnim_LYCANROC_MIDNIGHT_1,
+};
+
+static const union AnimCmd *const sAnims_LYCANROC_DUSK[] ={
+    sAnim_GeneralFrame0,
+    sAnim_LYCANROC_DUSK_1,
 };
 
 #define ANIM_CMD(name)             [SPECIES_##name] = sAnims_##name
@@ -13531,6 +13927,8 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     ANIM_CMD(STAKATAKA),
     ANIM_CMD(BLACEPHALON),
     ANIM_CMD(ZERAORA),
+    ANIM_CMD(MELTAN),
+    ANIM_CMD(MELMETAL),
     ANIM_CMD(EGG),
     ANIM_CMD(MEGA_VENUSAUR),
     ANIM_CMD(MEGA_CHARIZARD_X),
@@ -13582,6 +13980,40 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     ANIM_CMD(MEGA_GALLADE),
     ANIM_CMD(MEGA_AUDINO),
     ANIM_CMD(MEGA_DIANCIE),
+    ANIM_CMD(ALOLAN_RATTATA),
+    ANIM_CMD(ALOLAN_RATICATE),
+    ANIM_CMD(ALOLAN_RAICHU),
+    ANIM_CMD(ALOLAN_SANDSHREW),
+    ANIM_CMD(ALOLAN_SANDSLASH),
+    ANIM_CMD(ALOLAN_VULPIX),
+    ANIM_CMD(ALOLAN_NINETALES),
+    ANIM_CMD(ALOLAN_DIGLETT),
+    ANIM_CMD(ALOLAN_DUGTRIO),
+    ANIM_CMD(ALOLAN_MEOWTH),
+    ANIM_CMD(ALOLAN_PERSIAN),
+    ANIM_CMD(ALOLAN_GEODUDE),
+    ANIM_CMD(ALOLAN_GRAVELER),
+    ANIM_CMD(ALOLAN_GOLEM),
+    ANIM_CMD(ALOLAN_GRIMER),
+    ANIM_CMD(ALOLAN_MUK),
+    ANIM_CMD(ALOLAN_EXEGGUTOR),
+    ANIM_CMD(ALOLAN_MAROWAK),
+    ANIM_CMD(SHAYMIN_SKY),
+    ANIM_CMD(GIRATINA_ORIGIN),
+    ANIM_CMD(DARMANITAN_ZEN),
+    ANIM_CMD(TORNADUS_THERIAN),
+    ANIM_CMD(THUNDURUS_THERIAN),
+    ANIM_CMD(LANDORUS_THERIAN),
+    ANIM_CMD(MELOETTA_PIROUETTE),
+    ANIM_CMD(AEGISLASH_BLADE),
+    ANIM_CMD(HOOPA_UNBOUND),
+    ANIM_CMD(MINIOR_CORE),
+    ANIM_CMD(WISHIWASHI_SCHOOL),
+    ANIM_CMD(KYUREM_BLACK),
+    ANIM_CMD(KYUREM_WHITE),
+    ANIM_CMD(MIMIKYU_BUSTED),
+    ANIM_CMD(LYCANROC_MIDNIGHT),
+    ANIM_CMD(LYCANROC_DUSK),
 };
 
 #undef ANIM_CMD
