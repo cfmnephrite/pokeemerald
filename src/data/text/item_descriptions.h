@@ -158,7 +158,7 @@ static const u8 sAwakeningDesc[] = _(
     "POKéMON.");
 
 static const u8 sParalyzeHealDesc[] = _(
-    "Heals a paralyzed\n"
+    "Heals a paralysed\n"
     "POKéMON.");
 
 static const u8 sFullRestoreDesc[] = _(
@@ -1633,7 +1633,7 @@ static const u8 sTM24Desc[] = _(
 static const u8 sTM25Desc[] = _(
     "Strikes the foe\n"
     "with a thunderbolt.\n"
-    "It may paralyze.");
+    "It may paralyse.");
 
 static const u8 sTM26Desc[] = _(
     "Causes a quake\n"
@@ -1718,7 +1718,7 @@ static const u8 sTM41Desc[] = _(
 static const u8 sTM42Desc[] = _(
     "Raises ATTACK when\n"
     "poisoned, burned,\n"
-    "or paralyzed.");
+    "or paralysed.");
 
 static const u8 sTM43Desc[] = _(
     "Adds an effect to\n"

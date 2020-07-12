@@ -106,7 +106,7 @@ struct DisableStruct
     u8 truantCounter:1;
     u8 truantSwitchInHack:1;
     u8 mimickedMoves:4;
-    u8 rechargeTimer;
+    u8 unnerveTimer: 2;
     u8 autotomizeCount;
     u8 slowStartTimer;
     u8 embargoTimer;
@@ -117,15 +117,22 @@ struct DisableStruct
     u8 throatChopTimer;
     u8 usedMoves:4;
     u8 wrapTurns;
+    u8 skyDrop;
+    u8 skyDropTrappingBattler;
+    u8 statRaised;
 };
 
 struct ProtectStruct
 {
     u32 protected:1;
+    u32 detected:1;
+    u32 endured:1;
     u32 spikyShielded:1;
     u32 kingsShielded:1;
     u32 banefulBunkered:1;
-    u32 endured:1;
+    u32 craftyShielded:1;
+    u32 flowerShielded:1;
+    u32 shellTrapProtected:1;
     u32 noValidMoves:1;
     u32 helpingHand:1;
     u32 bounceMove:1;
@@ -210,17 +217,18 @@ struct SideTimer
 
 struct FieldTimer
 {
-    u8 mudSportTimer;
-    u8 waterSportTimer;
     u8 wonderRoomTimer;
     u8 magicRoomTimer;
     u8 trickRoomTimer;
+    u8 gravityTimer;
     u8 grassyTerrainTimer;
     u8 mistyTerrainTimer;
     u8 electricTerrainTimer;
     u8 psychicTerrainTimer;
+    u8 mudSportTimer;
+    u8 waterSportTimer;
     u8 echoVoiceCounter;
-    u8 gravityTimer;
+    u8 cometPunchCounter;
     u8 fairyLockTimer;
 };
 
@@ -427,6 +435,18 @@ struct MegaEvolutionData
     u8 triggerSpriteId;
 };
 
+struct zMoveData
+{
+    u8 toUseZ; // As flags using gBitTable.
+    u8 usedZPartyIds[2]; // As flags using gBitTable;
+    bool8 alreadyUsedZ[4]; // Array id is used for mon position.
+    u8 battlerId;
+    u16 dynamicZBP;
+    bool8 playerSelect;
+    u8 triggerSpriteId;
+    u8 indicatorSpriteIds[MAX_BATTLERS_COUNT];
+};
+
 struct Illusion
 {
     u8 on;
@@ -521,16 +541,17 @@ struct BattleStruct
     u16 arenaStartHp[2];
     u8 arenaLostPlayerMons; // Bits for party member, lost as in referee's decision, not by fainting.
     u8 arenaLostOpponentMons;
-    u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed pokemon.
+    u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralysed pokemon.
     u8 debugBattler;
-    u8 magnitudeBasePower;
-    u8 presentBasePower;
+    u8 dynamicBasePower;
+    u8 dynamicMoveSplit;
     u8 roostTypes[MAX_BATTLERS_COUNT][3];
     u8 savedBattlerTarget;
     bool8 ateBoost[MAX_BATTLERS_COUNT];
     u8 activeAbilityPopUps; // as bits for each battler
     bool8 throwingPokeBall;
     struct MegaEvolutionData mega;
+    struct zMoveData zMove;
     const u8 *trainerSlideMsg;
     bool8 trainerSlideLowHpMsgDone;
     u8 introState;
@@ -559,8 +580,8 @@ struct BattleStruct
         typeArg = gBattleMoves[move].type;                  \
 }
 
-#define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].split == SPLIT_PHYSICAL)
-#define IS_MOVE_SPECIAL(move)(gBattleMoves[move].split == SPLIT_SPECIAL)
+#define IS_MOVE_PHYSICAL(move)((!(gBattleStruct->dynamicMoveSplit) && gBattleMoves[move].split == SPLIT_PHYSICAL) || (gBattleStruct->dynamicMoveSplit && gBattleMoves[move].split == SPLIT_SPECIAL)) 
+#define IS_MOVE_SPECIAL(move)((!(gBattleStruct->dynamicMoveSplit) && gBattleMoves[move].split == SPLIT_SPECIAL) || (gBattleStruct->dynamicMoveSplit && gBattleMoves[move].split == SPLIT_PHYSICAL)) 
 
 #define BATTLER_MAX_HP(battlerId)(gBattleMons[battlerId].hp == gBattleMons[battlerId].maxHP)
 #define TARGET_TURN_DAMAGED ((gSpecialStatuses[gBattlerTarget].physicalDmg != 0 || gSpecialStatuses[gBattlerTarget].specialDmg != 0))
@@ -573,9 +594,19 @@ struct BattleStruct
     gBattleMons[battlerId].type3 = TYPE_MYSTERY;    \
 }
 
+#define SET_BATTLER_TYPE2(battlerId, type)          \
+{                                                   \
+    gBattleMons[battlerId].type2 = type;            \
+    gBattleMons[battlerId].type3 = TYPE_MYSTERY;    \
+}
+#define SET_BATTLER_TYPE3(battlerId, type)          \
+{                                                   \
+    gBattleMons[battlerId].type3 = type;    		\
+}
+
 #define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
-#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40
+#define GET_STAT_BUFF_VALUE(n)(((n & STAT_BUFF_NEGATIVE) ? -1 : 1) * ((n >> 3) & 0xF))     // 0x8, 0x10, 0x20, 0x40
 #define STAT_BUFF_NEGATIVE 0x80                     // 0x80, the sign bit
 
 #define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
@@ -592,10 +623,15 @@ struct BattleScripting
     u8 twoTurnsMoveStringId;
     u8 animArg1;
     u8 animArg2;
-    u16 tripleKickPower;
+    u8 cfmByte;
+    u8 effectChance:7;
+    u8 abilityEffect:1;
     u8 moveendState;
-    u8 savedStatChanger; // For further use, if attempting to change stat two times(ex. Moody)
-    u8 shiftSwitched; // When the game tells you the next enemy's pokemon and you switch. Option for noobs but oh well.
+    u8 statBoostTracker:4;
+    u8 statBoostCounter:3;
+    u8 statBoostFailure:1;
+    u8 statBoostStringIndex:7;
+    u8 statBoostSplitStrings:1;
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;
@@ -618,6 +654,8 @@ struct BattleScripting
     u16 moveEffect;
     u16 multihitMoveEffect;
     u8 illusionNickHack; // To properly display nick in STRINGID_ENEMYABOUTTOSWITCHPKMN.
+    u8 savedStatChanger; // For further use, if attempting to change stat two times(ex. Moody)
+    u8 shiftSwitched; // When the game tells you the next enemy's pokemon and you switch. Option for noobs but oh well.
 };
 
 // rom_80A5C6C
@@ -822,6 +860,7 @@ extern u32 gFieldStatuses;
 extern struct FieldTimer gFieldTimers;
 extern u8 gBattlerAbility;
 extern u16 gPartnerSpriteId;
+extern bool8 gSwitchedIn[MAX_BATTLERS_COUNT];
 
 extern void (*gPreBattleCallback1)(void);
 extern void (*gBattleMainFunc)(void);

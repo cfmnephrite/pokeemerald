@@ -3623,7 +3623,7 @@ const u8 gTynamoPokedexText[] = _(
 const u8 gEelektrikPokedexText[] = _(
     "These Pokémon have a big appetite.\n"
     "It wraps itself around its prey and\n"
-    "paralyzes it with electricity from the\n"
+    "paralyses it with electricity from the\n"
     "round spots on its sides. Then it chomps.");
 
 const u8 gEelektrossPokedexText[] = _(

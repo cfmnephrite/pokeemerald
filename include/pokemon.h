@@ -88,7 +88,7 @@ struct BoxPokemon
 {
     u32 personality;
     u32 otId;
-    u8 nickname[POKEMON_NAME_LENGTH];
+    u8 nickname[POKEMON_NAME_LENGTH]; // length 12
     u8 language;
     u8 isBadEgg:1;
     u8 hasSpecies:1;
@@ -190,6 +190,7 @@ struct BaseStats
  /* 0x0A */ u16 evYield_Speed:2;
  /* 0x0B */ u16 evYield_SpAttack:2;
  /* 0x0B */ u16 evYield_SpDefense:2;
+ /* 0x0B */ u16 bodyColor:4;
  /* 0x0C */ u16 item1;
  /* 0x0E */ u16 item2;
  /* 0x10 */ u8 genderRatio;
@@ -200,9 +201,14 @@ struct BaseStats
  /* 0x15 */ u8 eggGroup2;
  /* 0x16 */ u8 abilities[2];
  /* 0x18 */ u8 abilityHidden;
- /* 0x19 */ u8 safariZoneFleeRate;
- /* 0x1A */ u8 bodyColor : 7;
-            u8 noFlip : 1;
+ /* 0x19 */ u8 noFlip:1;
+            u8 airborne:1;
+            u8 canDive:1;
+            u8 canSurf:1;
+            u8 canFly:1;
+            u8 unused:1;
+            u8 legendary:1;
+            u8 noShiny:1;
 };
 
 struct BattleMove
@@ -295,6 +301,7 @@ void SetBattleMonMoveSlot(struct BattlePokemon *mon, u16 move, u8 slot);
 void GiveMonInitialMoveset(struct Pokemon *mon);
 void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon);
 u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
+u16 MonTryLearningNewMoveEvolution(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 

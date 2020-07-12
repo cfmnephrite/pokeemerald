@@ -98,13 +98,15 @@
 // Non-volatile status conditions
 // These persist remain outside of battle and after switching out
 #define STATUS1_NONE             0x0
-#define STATUS1_SLEEP            0x7
-#define STATUS1_POISON           0x8
-#define STATUS1_BURN             0x10
-#define STATUS1_FREEZE           0x20
-#define STATUS1_PARALYSIS        0x40
+#define STATUS1_SLP_FRZ_TIMER    0x3
+#define STATUS1_SLEEP            0x4
+#define STATUS1_FREEZE           0x8
+#define STATUS1_PARALYSIS        0x10
+#define STATUS1_BURN             0x20
+#define STATUS1_POISON           0x40
 #define STATUS1_TOXIC_POISON     0x80
 #define STATUS1_TOXIC_COUNTER    0xF00
+#define STATUS1_THAW             0x1000
 #define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
 #define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_FREEZE | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
 
@@ -122,7 +124,7 @@
 #define STATUS2_INFATUATED_WITH(battler) (gBitTable[battler] << 16)
 #define STATUS2_FOCUS_ENERGY          0x00100000
 #define STATUS2_TRANSFORMED           0x00200000
-#define STATUS2_RECHARGE              0x00400000
+#define STATUS2_NEEDLE_ARM            0x00400000
 #define STATUS2_RAGE                  0x00800000
 #define STATUS2_SUBSTITUTE            0x01000000
 #define STATUS2_DESTINY_BOND          0x02000000
@@ -216,13 +218,13 @@
 #define STATUS_FIELD_MAGIC_ROOM         0x1
 #define STATUS_FIELD_TRICK_ROOM         0x2
 #define STATUS_FIELD_WONDER_ROOM        0x4
-#define STATUS_FIELD_MUDSPORT           0x8
-#define STATUS_FIELD_WATERSPORT         0x10
-#define STATUS_FIELD_GRAVITY            0x20
-#define STATUS_FIELD_GRASSY_TERRAIN     0x40
-#define STATUS_FIELD_MISTY_TERRAIN      0x80
-#define STATUS_FIELD_ELECTRIC_TERRAIN   0x100
-#define STATUS_FIELD_PSYCHIC_TERRAIN    0x200
+#define STATUS_FIELD_GRAVITY            0x8
+#define STATUS_FIELD_GRASSY_TERRAIN     0x10
+#define STATUS_FIELD_MISTY_TERRAIN      0x20
+#define STATUS_FIELD_ELECTRIC_TERRAIN   0x40
+#define STATUS_FIELD_PSYCHIC_TERRAIN    0x80
+#define STATUS_FIELD_MUDSPORT           0x100
+#define STATUS_FIELD_WATERSPORT         0x200
 #define STATUS_FIELD_ION_DELUGE         0x400
 #define STATUS_FIELD_FAIRY_LOCK         0x800
 
@@ -231,7 +233,7 @@
 #define MOVE_RESULT_SUPER_EFFECTIVE    (1 << 1)
 #define MOVE_RESULT_NOT_VERY_EFFECTIVE (1 << 2)
 #define MOVE_RESULT_DOESNT_AFFECT_FOE  (1 << 3)
-#define MOVE_RESULT_ONE_HIT_KO         (1 << 4)
+#define MOVE_RESULT_TYPE_BROKE_PROTECT (1 << 4)
 #define MOVE_RESULT_FAILED             (1 << 5)
 #define MOVE_RESULT_FOE_ENDURED        (1 << 6)
 #define MOVE_RESULT_FOE_HUNG_ON        (1 << 7)
@@ -239,20 +241,27 @@
 #define MOVE_RESULT_NO_EFFECT          (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE | MOVE_RESULT_FAILED)
 
 // Battle Weather flags
-#define WEATHER_RAIN_TEMPORARY      (1 << 0)
-#define WEATHER_RAIN_DOWNPOUR       (1 << 1)  // unused
-#define WEATHER_RAIN_PERMANENT      (1 << 2)
-#define WEATHER_RAIN_ANY            (WEATHER_RAIN_TEMPORARY | WEATHER_RAIN_DOWNPOUR | WEATHER_RAIN_PERMANENT)
-#define WEATHER_SANDSTORM_TEMPORARY (1 << 3)
-#define WEATHER_SANDSTORM_PERMANENT (1 << 4)
-#define WEATHER_SANDSTORM_ANY       (WEATHER_SANDSTORM_TEMPORARY | WEATHER_SANDSTORM_PERMANENT)
-#define WEATHER_SUN_TEMPORARY       (1 << 5)
-#define WEATHER_SUN_PERMANENT       (1 << 6)
-#define WEATHER_SUN_ANY             (WEATHER_SUN_TEMPORARY | WEATHER_SUN_PERMANENT)
-#define WEATHER_HAIL_TEMPORARY      (1 << 7)
-#define WEATHER_HAIL_PERMANENT      (1 << 8)
-#define WEATHER_HAIL_ANY            (WEATHER_HAIL_TEMPORARY | WEATHER_HAIL_PERMANENT)
-#define WEATHER_ANY                 (WEATHER_RAIN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_SUN_ANY | WEATHER_HAIL_ANY)
+#define WEATHER_RAIN_TEMPORARY            (1 << 0)
+#define WEATHER_RAIN_OVERWORLD            (1 << 1)
+#define WEATHER_RAIN_PRIMORDIAL           (1 << 2)
+#define WEATHER_RAIN_FORECAST             (1 << 3)
+#define WEATHER_SUN_TEMPORARY             (1 << 4)
+#define WEATHER_SUN_OVERWORLD             (1 << 5)
+#define WEATHER_SUN_DESOLATE              (1 << 6)
+#define WEATHER_SUN_FORECAST              (1 << 7)
+#define WEATHER_SANDSTORM_TEMPORARY       (1 << 8)
+#define WEATHER_SANDSTORM_OVERWORLD       (1 << 9)
+#define WEATHER_HAIL_TEMPORARY            (1 << 10)
+#define WEATHER_HAIL_OVERWORLD            (1 << 11)
+#define WEATHER_HAIL_FORECAST             (1 << 12)
+#define WEATHER_DELTA_STREAM              (1 << 13)
+#define WEATHER_RAIN_ANY                  (WEATHER_RAIN_TEMPORARY | WEATHER_RAIN_OVERWORLD | WEATHER_RAIN_PRIMORDIAL | WEATHER_RAIN_FORECAST)
+#define WEATHER_SUN_ANY                   (WEATHER_SUN_TEMPORARY | WEATHER_SUN_OVERWORLD | WEATHER_SUN_DESOLATE | WEATHER_SUN_FORECAST)
+#define WEATHER_SANDSTORM_ANY             (WEATHER_SANDSTORM_TEMPORARY | WEATHER_SANDSTORM_OVERWORLD)
+#define WEATHER_HAIL_ANY                  (WEATHER_HAIL_TEMPORARY | WEATHER_HAIL_OVERWORLD | WEATHER_HAIL_FORECAST)
+#define WEATHER_FORECAST_ANY              (WEATHER_RAIN_FORECAST | WEATHER_SUN_FORECAST | WEATHER_HAIL_FORECAST)
+#define WEATHER_IMMUTABLES                (WEATHER_RAIN_PRIMORDIAL | WEATHER_SUN_DESOLATE | WEATHER_DELTA_STREAM)
+#define WEATHER_ANY                       (WEATHER_RAIN_ANY | WEATHER_SUN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_HAIL_ANY | WEATHER_DELTA_STREAM)
 
 // Battle Weather as enum
 #define ENUM_WEATHER_NONE           0
@@ -263,10 +272,10 @@
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               0x1
-#define MOVE_EFFECT_POISON              0x2
-#define MOVE_EFFECT_BURN                0x3
-#define MOVE_EFFECT_FREEZE              0x4
-#define MOVE_EFFECT_PARALYSIS           0x5
+#define MOVE_EFFECT_FREEZE              0x2
+#define MOVE_EFFECT_PARALYSIS           0x3
+#define MOVE_EFFECT_BURN                0x4
+#define MOVE_EFFECT_POISON              0x5
 #define MOVE_EFFECT_TOXIC               0x6
 #define MOVE_EFFECT_CONFUSION           0x7
 #define MOVE_EFFECT_FLINCH              0x8
@@ -275,7 +284,7 @@
 #define MOVE_EFFECT_PAYDAY              0xB
 #define MOVE_EFFECT_CHARGING            0xC
 #define MOVE_EFFECT_WRAP                0xD
-#define MOVE_EFFECT_RECOIL_25           0xE
+#define MOVE_EFFECT_NEEDLE_ARM          0xE
 #define MOVE_EFFECT_ATK_PLUS_1          0xF
 #define MOVE_EFFECT_DEF_PLUS_1          0x10
 #define MOVE_EFFECT_SPD_PLUS_1          0x11
@@ -290,7 +299,7 @@
 #define MOVE_EFFECT_SP_DEF_MINUS_1      0x1A
 #define MOVE_EFFECT_ACC_MINUS_1         0x1B
 #define MOVE_EFFECT_EVS_MINUS_1         0x1C
-#define MOVE_EFFECT_RECHARGE            0x1D
+#define MOVE_EFFECT_ATK_DOWN_3          0x1D
 #define MOVE_EFFECT_RAGE                0x1E
 #define MOVE_EFFECT_STEAL_ITEM          0x1F
 #define MOVE_EFFECT_PREVENT_ESCAPE      0x20
@@ -299,7 +308,7 @@
 #define MOVE_EFFECT_RAPIDSPIN           0x23
 #define MOVE_EFFECT_REMOVE_STATUS       0x24
 #define MOVE_EFFECT_ATK_DEF_DOWN        0x25
-#define MOVE_EFFECT_RECOIL_33           0x26
+#define MOVE_EFFECT_DEF_SPDEF_DOWN      0x26
 #define MOVE_EFFECT_ATK_PLUS_2          0x27
 #define MOVE_EFFECT_DEF_PLUS_2          0x28
 #define MOVE_EFFECT_SPD_PLUS_2          0x29
@@ -316,23 +325,44 @@
 #define MOVE_EFFECT_EVS_MINUS_2         0x34
 #define MOVE_EFFECT_THRASH              0x35
 #define MOVE_EFFECT_KNOCK_OFF           0x36
-#define MOVE_EFFECT_DEF_SPDEF_DOWN      0x37
-#define MOVE_EFFECT_RECOIL_33_STATUS    0x38
+#define MOVE_EFFECT_RECOIL_25           0x37
+#define MOVE_EFFECT_RECOIL_33           0x38
 #define MOVE_EFFECT_RECOIL_50           0x39
 #define MOVE_EFFECT_CLEAR_SMOG          0x3A
-#define MOVE_EFFECT_SP_ATK_TWO_DOWN     0x3B
+#define MOVE_EFFECT_LICK                0x3B
 #define MOVE_EFFECT_SMACK_DOWN          0x3C
 #define MOVE_EFFECT_FLAME_BURST         0x3D
 #define MOVE_EFFECT_FEINT               0x3E
 #define MOVE_EFFECT_SPECTRAL_THIEF      0x3F
-#define MOVE_EFFECT_V_CREATE            0x40
+#define MOVE_EFFECT_SET_ARG_TERRAIN     0x40
 #define MOVE_EFFECT_HAPPY_HOUR          0x41
 #define MOVE_EFFECT_CORE_ENFORCER       0x42
 #define MOVE_EFFECT_THROAT_CHOP         0x43
-#define MOVE_EFFECT_INCINERATE          0x44
-#define MOVE_EFFECT_BUG_BITE            0x45
+#define MOVE_EFFECT_BUG_BITE            0x44
 #define MOVE_EFFECT_AFFECTS_USER        0x4000
 #define MOVE_EFFECT_CERTAIN             0x8000
+
+// Z-Move effects
+#define Z_STATUS_EFFECT_ATK_PLUS_1        0x1
+#define Z_STATUS_EFFECT_DEF_PLUS_1        0x2
+#define Z_STATUS_EFFECT_SP_ATK_PLUS_1     0x3
+#define Z_STATUS_EFFECT_SP_DEF_PLUS_1     0x4
+#define Z_STATUS_EFFECT_SPD_PLUS_1        0x5
+#define Z_STATUS_EFFECT_ACC_PLUS_1        0x6
+#define Z_STATUS_EFFECT_EVS_PLUS_1        0x7
+#define Z_STATUS_EFFECT_ATK_PLUS_2        0x8
+#define Z_STATUS_EFFECT_DEF_PLUS_2        0x9
+#define Z_STATUS_EFFECT_SP_ATK_PLUS_2     0xA
+#define Z_STATUS_EFFECT_SP_DEF_PLUS_2     0xB
+#define Z_STATUS_EFFECT_SPD_PLUS_2        0xC
+#define Z_STATUS_EFFECT_ATK_PLUS_3        0xD
+#define Z_STATUS_EFFECT_ALL_STATS_UP      0xE
+#define Z_STATUS_EFFECT_RESET_STATS       0xF
+#define Z_STATUS_EFFECT_FOCUS_ENERGY      0x10
+#define Z_STATUS_EFFECT_RESTORE_HP        0x11
+#define Z_STATUS_EFFECT_SWITCH_RESTORE_HP 0x12
+#define Z_STATUS_EFFECT_FOLLOW_ME         0x13
+#define Z_STATUS_EFFECT_METRONOME         0x14
 
 // Battle terrain defines for gBattleTerrain.
 #define BATTLE_TERRAIN_GRASS        0

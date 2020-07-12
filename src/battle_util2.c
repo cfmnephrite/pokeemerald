@@ -131,7 +131,7 @@ u32 sub_805725C(u8 battlerId)
             {
                 if (UproarWakeUpCheck(battlerId))
                 {
-                    gBattleMons[battlerId].status1 &= ~(STATUS1_SLEEP);
+                    gBattleMons[battlerId].status1 &= ~(STATUS1_SLEEP | STATUS1_SLP_FRZ_TIMER);
                     gBattleMons[battlerId].status2 &= ~(STATUS2_NIGHTMARE);
                     BattleScriptPushCursor();
                     gBattleCommunication[MULTISTRING_CHOOSER] = 1;
@@ -148,7 +148,7 @@ u32 sub_805725C(u8 battlerId)
                         toSub = 1;
 
                     if ((gBattleMons[battlerId].status1 & STATUS1_SLEEP) < toSub)
-                        gBattleMons[battlerId].status1 &= ~(STATUS1_SLEEP);
+                        gBattleMons[battlerId].status1 &= ~(STATUS1_SLEEP | STATUS1_SLP_FRZ_TIMER);
                     else
                         gBattleMons[battlerId].status1 -= toSub;
 
@@ -178,7 +178,7 @@ u32 sub_805725C(u8 battlerId)
                 }
                 else
                 {
-                    gBattleMons[battlerId].status1 &= ~(STATUS1_FREEZE);
+                    gBattleMons[battlerId].status1 &= ~(STATUS1_FREEZE | STATUS1_THAW | STATUS1_SLP_FRZ_TIMER);
                     BattleScriptPushCursor();
                     gBattlescriptCurrInstr = BattleScript_MoveUsedUnfroze;
                     gBattleCommunication[MULTISTRING_CHOOSER] = 0;

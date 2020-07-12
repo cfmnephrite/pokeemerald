@@ -151,7 +151,7 @@ gBattleAnims_Moves::
 	.4byte Move_AMNESIA
 	.4byte Move_KINESIS
 	.4byte Move_SOFT_BOILED
-	.4byte Move_HI_JUMP_KICK
+	.4byte MOVE_HIGH_JUMP_KICK
 	.4byte Move_GLARE
 	.4byte Move_DREAM_EATER
 	.4byte Move_POISON_GAS
@@ -3984,40 +3984,21 @@ Move_DEFEND_ORDER:
 	end
 	
 Move_HEAL_ORDER:
-	loadspritegfx ANIM_TAG_ATTACK_ORDER 
-	loadspritegfx ANIM_TAG_IMPACT 
-	loadspritegfx ANIM_TAG_ROCKS 
-	monbg ANIM_DEF_PARTNER 
-	monbgprio_28 ANIM_TARGET  
-	playsewithpan SE_W230, SOUND_PAN_TARGET 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 70, 5, 70, 30  
-	delay 1 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 6, 60, 25  
-	delay 1 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 60, 7, 60, 30  
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 10, 60, 30  
-	delay 3 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 100, 50, 4, 50, 26  
-	delay 1 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 25, 8, 60, 20  
-	delay 1 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 40, 10, 48, 30  
-	delay 3 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 30, 6, 45, 25  
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 35, 10, 60, 30  
-	delay 3 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 20, 8, 40, 0  
-	delay 3 
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 20, 255, 15, 32, 0  
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 110, 10, 8, 32, 20  
-	waitforvisualfinish 
-	loadspritegfx ANIM_TAG_BLUE_STAR 
-	waitforvisualfinish 
-	clearmonbg ANIM_ATK_PARTNER 
-	blendoff 
-	delay 1 
-	call HealingEffect 
-	waitforvisualfinish 
+	loadspritegfx ANIM_TAG_ORBS
+	loadspritegfx ANIM_TAG_BLUE_STAR
+	monbg ANIM_ATK_PARTNER
+	setalpha 12, 8
+	loopsewithpan SE_W025, SOUND_PAN_ATTACKER, 13, 3
+	createvisualtask AnimTask_BlendColorCycle, 2, 2, 0, 6, 0, 11, RGB(31, 31, 11)
+	call RecoverAbsorbEffect
+	call RecoverAbsorbEffect
+	call RecoverAbsorbEffect
+	waitforvisualfinish
+	clearmonbg ANIM_ATK_PARTNER
+	blendoff
+	delay 1
+	call HealingEffect
+	waitforvisualfinish
 	end
 	
 Move_HEAD_SMASH:
@@ -20108,7 +20089,7 @@ Move_JUMP_KICK:
 	blendoff
 	end
 
-Move_HI_JUMP_KICK:
+MOVE_HIGH_JUMP_KICK:
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER

@@ -14,6 +14,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "pokedex.h"
+#include "constants/pokemon.h"
 #include "pokedex_area_screen.h"
 #include "pokedex_cry_screen.h"
 #include "scanline_effect.h"
@@ -1377,23 +1378,24 @@ static const struct SearchOptionText sDexSearchColorOptions[] =
 static const struct SearchOptionText sDexSearchTypeOptions[] =
 {
     {gText_DexEmptyString, gText_DexSearchTypeNone},
-    {gText_DexEmptyString, gTypeNames[TYPE_NORMAL]},
-    {gText_DexEmptyString, gTypeNames[TYPE_FIGHTING]},
-    {gText_DexEmptyString, gTypeNames[TYPE_FLYING]},
-    {gText_DexEmptyString, gTypeNames[TYPE_POISON]},
-    {gText_DexEmptyString, gTypeNames[TYPE_GROUND]},
-    {gText_DexEmptyString, gTypeNames[TYPE_ROCK]},
     {gText_DexEmptyString, gTypeNames[TYPE_BUG]},
-    {gText_DexEmptyString, gTypeNames[TYPE_GHOST]},
-    {gText_DexEmptyString, gTypeNames[TYPE_STEEL]},
-    {gText_DexEmptyString, gTypeNames[TYPE_FIRE]},
-    {gText_DexEmptyString, gTypeNames[TYPE_WATER]},
-    {gText_DexEmptyString, gTypeNames[TYPE_GRASS]},
-    {gText_DexEmptyString, gTypeNames[TYPE_ELECTRIC]},
-    {gText_DexEmptyString, gTypeNames[TYPE_PSYCHIC]},
-    {gText_DexEmptyString, gTypeNames[TYPE_ICE]},
-    {gText_DexEmptyString, gTypeNames[TYPE_DRAGON]},
     {gText_DexEmptyString, gTypeNames[TYPE_DARK]},
+    {gText_DexEmptyString, gTypeNames[TYPE_DRAGON]},
+    {gText_DexEmptyString, gTypeNames[TYPE_ELECTRIC]},
+    {gText_DexEmptyString, gTypeNames[TYPE_FAIRY]},
+    {gText_DexEmptyString, gTypeNames[TYPE_FIGHTING]},
+    {gText_DexEmptyString, gTypeNames[TYPE_FIRE]},
+    {gText_DexEmptyString, gTypeNames[TYPE_FLYING]},
+    {gText_DexEmptyString, gTypeNames[TYPE_GHOST]},
+    {gText_DexEmptyString, gTypeNames[TYPE_GRASS]},
+    {gText_DexEmptyString, gTypeNames[TYPE_GROUND]},
+    {gText_DexEmptyString, gTypeNames[TYPE_ICE]},
+    {gText_DexEmptyString, gTypeNames[TYPE_NORMAL]},
+    {gText_DexEmptyString, gTypeNames[TYPE_POISON]},
+    {gText_DexEmptyString, gTypeNames[TYPE_PSYCHIC]},
+    {gText_DexEmptyString, gTypeNames[TYPE_ROCK]},
+    {gText_DexEmptyString, gTypeNames[TYPE_STEEL]},
+    {gText_DexEmptyString, gTypeNames[TYPE_WATER]},
     {},
 };
 
@@ -1410,24 +1412,26 @@ static const u8 sOrderOptions[] =
 
 static const u8 sDexSearchTypeIds[] =
 {
-    TYPE_NONE,
-    TYPE_NORMAL,
-    TYPE_FIGHTING,
-    TYPE_FLYING,
-    TYPE_POISON,
-    TYPE_GROUND,
-    TYPE_ROCK,
+    TYPE_MYSTERY,
     TYPE_BUG,
-    TYPE_GHOST,
-    TYPE_STEEL,
-    TYPE_FIRE,
-    TYPE_WATER,
-    TYPE_GRASS,
-    TYPE_ELECTRIC,
-    TYPE_PSYCHIC,
-    TYPE_ICE,
-    TYPE_DRAGON,
     TYPE_DARK,
+    TYPE_DRAGON,
+    TYPE_ELECTRIC,
+    TYPE_FAIRY,
+    TYPE_FIGHTING,
+    TYPE_FIRE,
+    TYPE_FLYING,
+    TYPE_GHOST,
+    TYPE_GRASS,
+    TYPE_GROUND,
+    TYPE_ICE,
+    TYPE_NORMAL,
+    TYPE_POISON,
+    TYPE_PSYCHIC,
+    TYPE_ROCK,
+    TYPE_STEEL,
+    TYPE_WATER,
+    NUMBER_OF_MON_TYPES,
 };
 
 // Number pairs are the task data for tracking the cursor pos and scroll offset of each option list
@@ -4674,15 +4678,15 @@ static int DoPokedexSearch(u8 dexMode, u8 order, u8 abcGroup, u8 bodyColor, u8 t
     }
 
     // Search by type
-    if (type1 != TYPE_NONE || type2 != TYPE_NONE)
+    if (type1 != TYPE_MYSTERY || type2 != TYPE_MYSTERY)
     {
-        if (type1 == TYPE_NONE)
+        if (type1 == TYPE_MYSTERY)
         {
             type1 = type2;
-            type2 = TYPE_NONE;
+            type2 = TYPE_MYSTERY;
         }
 
-        if (type2 == TYPE_NONE)
+        if (type2 == TYPE_MYSTERY)
         {
             for (i = 0, resultsCount = 0; i < sPokedexView->pokemonListCount; i++)
             {

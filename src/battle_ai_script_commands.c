@@ -309,15 +309,12 @@ static const BattleAICmdFunc sBattleAICmdTable[] =
 static const u16 sDiscouragedPowerfulMoveEffects[] =
 {
     EFFECT_EXPLOSION,
-    EFFECT_DREAM_EATER,
-    EFFECT_RECHARGE,
     EFFECT_SKULL_BASH,
     EFFECT_SOLARBEAM,
     EFFECT_SPIT_UP,
     EFFECT_FOCUS_PUNCH,
-    EFFECT_SUPERPOWER,
+    EFFECT_SELF_STAT_DROP_ARG,
     EFFECT_ERUPTION,
-    EFFECT_OVERHEAT,
     EFFECT_MIND_BLOWN,
     0xFFFF
 };
@@ -901,7 +898,8 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef)
     SetBattlerData(battlerDef);
 
     gBattleStruct->dynamicMoveType = 0;
-    SetTypeBeforeUsingMove(move, battlerAtk);
+    gBattleStruct->dynamicMoveSplit = 0;
+    SetTypeAndSplitBeforeUsingMove(move, battlerAtk);
     GET_MOVE_TYPE(move, moveType);
     dmg = CalculateMoveDamage(move, battlerAtk, battlerDef, moveType, 0, AI_GetIfCrit(move, battlerAtk, battlerDef), FALSE, FALSE);
 
@@ -1405,34 +1403,23 @@ static u32 WhichMoveBetter(u32 move1, u32 move2)
         if (((gBattleMoves[move1].effect == EFFECT_RECOIL_25
                 || gBattleMoves[move1].effect == EFFECT_RECOIL_IF_MISS
                 || gBattleMoves[move1].effect == EFFECT_RECOIL_50
-                || gBattleMoves[move1].effect == EFFECT_RECOIL_33
-                || gBattleMoves[move1].effect == EFFECT_RECOIL_33_STATUS)
+                || gBattleMoves[move1].effect == EFFECT_RECOIL_33)
             && (gBattleMoves[move2].effect != EFFECT_RECOIL_25
                  && gBattleMoves[move2].effect != EFFECT_RECOIL_IF_MISS
                  && gBattleMoves[move2].effect != EFFECT_RECOIL_50
-                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33
-                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33_STATUS
-                 && gBattleMoves[move2].effect != EFFECT_RECHARGE)))
+                 && gBattleMoves[move2].effect != EFFECT_RECOIL_33)))
             return 1;
 
         if (((gBattleMoves[move2].effect == EFFECT_RECOIL_25
                 || gBattleMoves[move2].effect == EFFECT_RECOIL_IF_MISS
                 || gBattleMoves[move2].effect == EFFECT_RECOIL_50
-                || gBattleMoves[move2].effect == EFFECT_RECOIL_33
-                || gBattleMoves[move2].effect == EFFECT_RECOIL_33_STATUS)
+                || gBattleMoves[move2].effect == EFFECT_RECOIL_33)
             && (gBattleMoves[move1].effect != EFFECT_RECOIL_25
                  && gBattleMoves[move1].effect != EFFECT_RECOIL_IF_MISS
                  && gBattleMoves[move1].effect != EFFECT_RECOIL_50
-                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33
-                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33_STATUS
-                 && gBattleMoves[move1].effect != EFFECT_RECHARGE)))
+                 && gBattleMoves[move1].effect != EFFECT_RECOIL_33)))
             return 0;
     }
-    // Check recharge
-    if (gBattleMoves[move1].effect == EFFECT_RECHARGE && gBattleMoves[move2].effect != EFFECT_RECHARGE)
-        return 1;
-    if (gBattleMoves[move2].effect == EFFECT_RECHARGE && gBattleMoves[move1].effect != EFFECT_RECHARGE)
-        return 0;
     // Check additional effect.
     if (gBattleMoves[move1].effect == 0 && gBattleMoves[move2].effect != 0)
         return 1;
@@ -1709,6 +1696,7 @@ static void Cmd_get_highest_type_effectiveness(void)
     u8 *dynamicMoveType;
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     AI_THINKING_STRUCT->funcResult = 0;
 
@@ -1756,6 +1744,7 @@ static void Cmd_if_type_effectiveness(void)
     u32 effectivenessMultiplier;
 
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveSplit = 0;
     gMoveResultFlags = 0;
     gCurrentMove = AI_THINKING_STRUCT->moveConsidered;
 
@@ -2535,9 +2524,6 @@ static void Cmd_get_hazards_count(void)
     case EFFECT_SPIKES:
         AI_THINKING_STRUCT->funcResult = gSideTimers[side].spikesAmount;
         break;
-    case EFFECT_TOXIC_SPIKES:
-        AI_THINKING_STRUCT->funcResult = gSideTimers[side].toxicSpikesAmount;
-        break;
     }
 
     gAIScriptPtr += 4;
@@ -2636,7 +2622,7 @@ static bool32 MovesWithSplitUnusable(u32 attacker, u32 target, u32 split)
              && gBattleMoves[moves[i]].split == split
              && !(unusable & gBitTable[i]))
         {
-            SetTypeBeforeUsingMove(moves[i], attacker);
+            SetTypeAndSplitBeforeUsingMove(moves[i], attacker);
             GET_MOVE_TYPE(moves[i], moveType);
             if (CalcTypeEffectivenessMultiplier(moves[i], moveType, attacker, target, FALSE) != 0)
                 usable |= gBitTable[i];
@@ -2699,7 +2685,7 @@ static void Cmd_if_has_move_with_type(void)
         if (moves[i] == MOVE_NONE)
             continue;
 
-        SetTypeBeforeUsingMove(moves[i], battler);
+        SetTypeAndSplitBeforeUsingMove(moves[i], battler);
         GET_MOVE_TYPE(moves[i], moveType);
         if (moveType == gAIScriptPtr[2])
             break;

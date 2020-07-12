@@ -106,13 +106,26 @@ u16 CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u8 ability
 u16 GetTypeModifier(u8 atkType, u8 defType);
 s32 GetStealthHazardDamage(u8 hazardType, u8 battlerId);
 u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
+bool32 RandomChance(u8 num, u8 denom);
+u8 GetHigherOffStat(u8 battlerId);
+u8 GetHigherDefStat(u8 battlerId);
+u8 GetMoveType(u8 battlerId, u16 move, bool32 omnitype);
+u8 GetMoveSplit(u8 battlerId, u16 move, bool32 magic);
+u16 GetZMove(u8 battlerId, u16 move);
+u16 PrepareZMove(u8 battlerId, u16 move);
 bool32 CanMegaEvolve(u8 battlerId);
+bool32 CanUseZMove(u8 battlerId);
+bool8 MultiStatSameBoost(u8 battlerId, u8 statBits, s8 amount);
+bool8 CanChangeStat(u8 battlerId, u8 statId, s8 amount);
 void UndoMegaEvolution(u32 monId);
 void UndoFormChange(u32 monId, u32 side);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
 bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId);
+bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability);
+void UndoCastform(u8 battlerId);
 struct Pokemon *GetIllusionMonPtr(u32 battlerId);
 void ClearIllusionMon(u32 battlerId);
 bool32 SetIllusionMon(struct Pokemon *mon, u32 battlerId);
+void UpdateUnburden(void);
 
 #endif // GUARD_BATTLE_UTIL_H
