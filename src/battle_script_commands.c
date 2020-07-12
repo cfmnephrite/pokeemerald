@@ -242,7 +242,7 @@ static void Cmd_setsubstitute(void);
 static void Cmd_mimicattackcopy(void);
 static void Cmd_metronome(void);
 static void Cmd_dmgtolevel(void);
-static void Cmd_psywavedamageeffect(void);
+static void Cmd_jumpifspecies(void);
 static void Cmd_counterdamagecalculator(void);
 static void Cmd_mirrorcoatdamagecalculator(void);
 static void Cmd_disablelastusedattack(void);
@@ -501,7 +501,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
 	Cmd_mimicattackcopy, // 0x9D
 	Cmd_metronome, // 0x9E
 	Cmd_dmgtolevel, // 0x9F
-	Cmd_psywavedamageeffect, // 0xA0
+	Cmd_jumpifspecies, // 0xA0
 	Cmd_counterdamagecalculator, // 0xA1
 	Cmd_mirrorcoatdamagecalculator, // 0xA2
 	Cmd_disablelastusedattack, // 0xA3
@@ -4237,10 +4237,10 @@ static void Cmd_setroost(void)
 
 static void Cmd_jumpifabilitypresent(void)
 {
-    if (gBattleMons[GetBattlerForBattleScript(gBattlescriptCurrInstr[1])].species == gBattlescriptCurrInstr[2])
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 4);
+    if (IsAbilityOnField(gBattlescriptCurrInstr[1]))
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 2);
     else
-        gBattlescriptCurrInstr += 8;
+        gBattlescriptCurrInstr += 6;
 }
 
 static void Cmd_endselectionscript(void)
@@ -8258,12 +8258,6 @@ static void Cmd_various(void)
 		else
 			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 1, FALSE);
 		break;
-	case VARIOUS_JUMP_IF_LEAF_GUARD:
-		if (GetBattlerAbility(gBattlerTarget) == ABILITY_LEAF_GUARD && (gBattleWeather & WEATHER_SUN_ANY))
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		else
-			gBattlescriptCurrInstr += 7;
-		return;
 	case VARIOUS_TRY_ACTIVATE_SYMBIOSIS:
 		gLastUsedItem = gBattleMons[BATTLE_PARTNER(gActiveBattler)].item;
 
@@ -10126,15 +10120,12 @@ static void Cmd_dmgtolevel(void)
     gBattlescriptCurrInstr++;
 }
 
-static void Cmd_psywavedamageeffect(void)
+static void Cmd_jumpifspecies(void)
 {
-    s32 randDamage;
-    if (B_PSYWAVE_DMG >= GEN_6)
-        randDamage = (Random() % 101);
+    if (gBattleMons[GetBattlerForBattleScript(gBattlescriptCurrInstr[1])].species == gBattlescriptCurrInstr[2])
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 4);
     else
-        randDamage = (Random() % 11) * 10;
-    gBattleMoveDamage = gBattleMons[gBattlerAttacker].level * (randDamage + 50) / 100;
-    gBattlescriptCurrInstr++;
+        gBattlescriptCurrInstr += 8;
 }
 
 static void Cmd_counterdamagecalculator(void)

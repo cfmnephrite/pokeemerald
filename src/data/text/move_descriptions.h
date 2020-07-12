@@ -594,8 +594,8 @@ static const u8 sFlashDescription[] = _(
     "light that cuts accuracy.");
 
 static const u8 sPsywaveDescription[] = _(
-    "Attacks with a psychic\n"
-    "wave of varying intensity.");
+    "Inflicts damage identical\n"
+    "to the user's level.");
 
 static const u8 sSplashDescription[] = _(
     "It's just a splash...\n"
@@ -2986,7 +2986,7 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_LEECH_LIFE - 1] = sLeechLifeDescription,
     [MOVE_LEECH_SEED - 1] = sLeechSeedDescription,
     [MOVE_LEER - 1] = sLeerDescription,
-    [MOVE_LET_S_SNUGGLE_FOREVER - 1] = sNotDoneYetDescription,
+    [MOVE_LETS_SNUGGLE_FOREVER - 1] = sNotDoneYetDescription,
     [MOVE_LICK - 1] = sLickDescription,
     [MOVE_LIGHT_OF_RUIN - 1] = sLIGHT_OF_RUINDescription,
     [MOVE_LIGHT_SCREEN - 1] = sLightScreenDescription,

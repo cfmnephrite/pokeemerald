@@ -2001,6 +2001,7 @@ BattleScript_EffectPlaceholder:
 	printstring STRINGID_NOTDONEYET
 	goto BattleScript_MoveEnd
 
+BattleScript_EffectPsywave::
 BattleScript_EffectUnused38:
 BattleScript_EffectAcrobatics:
 BattleScript_EffectAeroblast:
@@ -3024,7 +3025,7 @@ BattleScript_PowerHerbActivation:
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_POWERHERB
 	waitmessage 0x40
-	removeitem BS_ATTACKER
+	consumeitem BS_ATTACKER
 	return
 
 BattleScript_EffectTwoTurnsAttack::
@@ -3232,17 +3233,6 @@ BattleScript_EffectLevelDamage::
 	typecalc
 	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
 	dmgtolevel
-	adjustdamage
-	goto BattleScript_HitFromAtkAnimation
-
-BattleScript_EffectPsywave::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	typecalc
-	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	psywavedamageeffect
 	adjustdamage
 	goto BattleScript_HitFromAtkAnimation
 
@@ -3828,7 +3818,7 @@ BattleScript_EffectThunder:
 BattleScript_EffectSolarbeam::
 	jumpifabilitypresent ABILITY_CLOUD_NINE, BattleScript_SolarbeamDecideTurn
 	jumpifabilitypresent ABILITY_AIR_LOCK, BattleScript_SolarbeamDecideTurn
-	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_SUN_TEMPORARY | WEATHER_SUN_PERMANENT, BattleScript_SolarbeamOnFirstTurn
+	jumpifhalfword CMP_COMMON_BITS, gBattleWeather, WEATHER_SUN_ANY, BattleScript_SolarbeamOnFirstTurn
 BattleScript_SolarbeamDecideTurn::
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_TwoTurnMovesSecondTurn
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
@@ -5449,19 +5439,19 @@ BattleScript_WeaknessPolicyAtk:
 	waitmessage 0x40
 BattleScript_WeaknessPolicySpAtk:
 	setstatchanger STAT_SPATK, 2, FALSE
-	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_WeaknessPolicyRemoveItem
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_WeaknessPolicyRemoveItem
+	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_WeaknessPolicyconsumeitem
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_WeaknessPolicyconsumeitem
 	printstring STRINGID_USINGXTHEYOFZN
 	waitmessage 0x40
-BattleScript_WeaknessPolicyRemoveItem:
+BattleScript_WeaknessPolicyconsumeitem:
 	consumeitem BS_TARGET
 BattleScript_WeaknessPolicyEnd:
 	return
 
 BattleScript_TargetItemStatRaise::
 	copybyte sBATTLER, gBattlerTarget
-	statbuffchange 0, BattleScript_TargetItemStatRaiseRemoveItemRet
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TargetItemStatRaiseRemoveItemRet
+	statbuffchange 0, BattleScript_TargetItemStatRaiseconsumeitemRet
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TargetItemStatRaiseconsumeitemRet
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT, NULL
 	waitanimation
 	setgraphicalstatchangevalues
@@ -5470,7 +5460,7 @@ BattleScript_TargetItemStatRaise::
 	printstring STRINGID_USINGXTHEYOFZN
 	waitmessage 0x40
 	consumeitem BS_TARGET
-BattleScript_TargetItemStatRaiseRemoveItemRet:
+BattleScript_TargetItemStatRaiseconsumeitemRet:
 	return
 
 BattleScript_MistProtected::
@@ -6625,7 +6615,7 @@ BattleScript_TryAdrenalineOrb:
 	setlastuseditem BS_TARGET
 	printstring STRINGID_USINGXTHEYOFZN
 	waitmessage 0x40
-	removeitem BS_TARGET
+	consumeitem BS_TARGET
 BattleScript_TryAdrenalineOrbRet:
 	return
 
@@ -6734,14 +6724,6 @@ BattleScript_BadDreamsIncrement:
 	goto BattleScript_BadDreamsLoop
 BattleScript_BadDreamsEnd:
 	end3
-	
-BattleScript_ReceiverActivates::
-	call BattleScript_AbilityPopUp
-	waitmessage 0x20
-	printstring STRINGID_PKMNSABILITYTAKENOVER
-	waitmessage 0x40
-	settracedability BS_ABILITY_BATTLER
-	return
 
 BattleScript_TookAttack::
 	attackstring
@@ -7494,19 +7476,6 @@ BattleScript_AbilityCuredStatus::
 	updatestatusicon BS_SCRIPTING
 	return
 
-BattleScript_HealerActivates::
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_HEALERACTIVATES
-	waitmessage 0x40
-	updatestatusicon BS_ATTACKER
-	end3
-
-BattleScript_DancerActivates::
-	call BattleScript_AbilityPopUp
-	waitmessage 0x20
-	printstring STRINGID_FREEDFROMSKYDROP
-	return
-
 BattleScript_GooeyActivates::
 	setgraphicalstatchangevalues
 	call BattleScript_AbilityPopUp
@@ -7675,16 +7644,16 @@ BattleScript_WhiteHerbRet::
 	consumeitem BS_SCRIPTING
 	return
 	
-BattleScript_ItemHealHP_RemoveItemRet::
+BattleScript_ItemHealHP_consumeitemRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
 	waitmessage 0x40
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
-	removeitem BS_SCRIPTING
+	consumeitem BS_SCRIPTING
 	return
-BattleScript_ItemHealHP_RemoveItemEnd2::
+BattleScript_ItemHealHP_consumeitemEnd2::
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
 	waitmessage 0x40
@@ -7760,7 +7729,7 @@ BattleScript_HangedOnMsg::
 	printstring STRINGID_PKMNHUNGONWITHX
 	waitmessage 0x40
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_FOCUS_SASH, BattleScript_HangedOnMsgRet
-	removeitem BS_TARGET
+	consumeitem BS_TARGET
 BattleScript_HangedOnMsgRet:
 	return
 
