@@ -370,7 +370,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 BattleScript_EffectSleepHit:
 	setmoveeffect MOVE_EFFECT_SLEEP
 	goto BattleScript_EffectHit
-	
+
 BattleScript_EffectAllySwitch:
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -382,7 +382,7 @@ BattleScript_EffectAllySwitch:
 	printstring STRINGID_ALLYSWITCHPOSITION
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
-	
+
 BattleScript_EffectFairyLock:
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -394,7 +394,7 @@ BattleScript_EffectFairyLock:
 	printstring STRINGID_NOONEWILLBEABLETORUNAWAY
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
-	
+
 BattleScript_EffectBurnUp:
 	attackcanceler
 	attackstring
@@ -422,7 +422,7 @@ BattleScript_BurnUpWorks:
 	waitmessage 0x40
 	tryfaintmon BS_TARGET, FALSE, NULL
 	goto BattleScript_MoveEnd
-	
+
 BattleScript_EffectPurify:
 	attackcanceler
 	attackstring
@@ -439,7 +439,7 @@ BattleScript_PurifyWorks:
 	waitmessage 0x40
 	tryhealhalfhealth BattleScript_AlreadyAtFullHp, BS_ATTACKER
 	goto BattleScript_RestoreHp
-	
+
 BattleScript_EffectStrengthSap:
 	setstatchanger STAT_ATK, 1, TRUE
 	attackcanceler
@@ -489,7 +489,7 @@ BattleScript_StrengthSapMustLower:
 BattleScript_EffectBugBite:
 	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
-	
+
 BattleScript_MoveEffectBugBite::
 	printstring STRINGID_BUGBITE
 	waitmessage 0x40
@@ -1909,7 +1909,7 @@ BattleScript_GravityLoopDrop:
 	bringdownairbornebattler BS_TARGET
 	printstring STRINGID_GRAVITYGROUNDING
 	waitmessage 0x40
-BattleScript_GravityLoopEnd:	
+BattleScript_GravityLoopEnd:
 	moveendto MOVEEND_NEXT_TARGET
 	jumpifnexttargetvalid BattleScript_GravityLoop
 	end
@@ -2262,7 +2262,7 @@ BattleScript_ExplosionDoAnimStartLoop:
 BattleScript_ExplosionLoop:
 	movevaluescleanup
 	jumpiftargetally BattleScript_CheckLunarDance
-BattleScript_ExplosionLoopContinue:	
+BattleScript_ExplosionLoopContinue:
 	critcalc
 	damagecalc
 	adjustdamage
@@ -3017,7 +3017,7 @@ BattleScript_EffectSpecialDefenseDownHit2::
 BattleScript_EffectAccuracyDownHit::
 	setmoveeffect MOVE_EFFECT_ACC_MINUS_1
 	goto BattleScript_EffectHit
-	
+
 BattleScript_PowerHerbActivation:
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_POWERHERB
@@ -3597,7 +3597,7 @@ BattleScript_FuryCutterHit:
 	jumpifmovehadnoeffect BattleScript_FuryCutterHit
 	adjustdamage
 	goto BattleScript_HitFromAtkAnimation
-	
+
 BattleScript_TryDestinyKnotTarget:
 	jumpifnoholdeffect BS_ATTACKER, HOLD_EFFECT_DESTINY_KNOT, BattleScript_TryDestinyKnotTargetRet
 	infatuatewithbattler BS_TARGET, BS_ATTACKER
@@ -3609,7 +3609,7 @@ BattleScript_TryDestinyKnotTarget:
 	waitmessage 0x40
 BattleScript_TryDestinyKnotTargetRet:
 	return
-	
+
 BattleScript_TryDestinyKnotAttacker:
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_DESTINY_KNOT, BattleScript_TryDestinyKnotAttackerRet
 	infatuatewithbattler BS_ATTACKER, BS_TARGET
@@ -3844,7 +3844,6 @@ BattleScript_EffectHurricaneHail:
 	jumpifnottype BS_ATTACKER, TYPE_ICE, BattleScript_EffectHurricaneNormal
 	setmoveeffect MOVE_EFFECT_FREEZE
 	goto BattleScript_EffectHit
-
 
 BattleScript_EffectTeleport:
 	attackcanceler
@@ -5816,7 +5815,7 @@ BattleScript_ThroatChopEndTurn::
 	printstring STRINGID_THROATCHOPENDS
 	waitmessage 0x40
 	end2
-	
+
 BattleScript_SlowStartEnds::
 	pause 0x5
 	copybyte gBattlerAbility, gBattlerAttacker
@@ -6063,7 +6062,7 @@ BattleScript_AttackerFormChange::
 	waitanimation
 	handleformchange BS_ATTACKER, 2 
 	return
-	
+
 BattleScript_AttackerFormChangeEnd3::
 	call BattleScript_AttackerFormChange
 	end3
@@ -6474,11 +6473,11 @@ BattleScript_SpeedBoostActivates::
 	printstring STRINGID_PKMNRAISEDSPEED
 	waitmessage 0x40
 	end3
-	
+
 @ Can't compare directly to a value, have to compare to value at pointer
 sZero:
 .byte 0
-	
+
 BattleScript_MoodyActivates::
 	call BattleScript_AbilityPopUp
 	jumpifbyteequal sSTATCHANGER, sZero, BattleScript_MoodyLower
@@ -6546,7 +6545,7 @@ BattleScript_SolarPowerActivates::
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	jumpifability BS_ATTACKER, ABILITY_RKS_SYSTEM, BattleScript_IntimidateActivatesReturn
 	end3
-	
+
 BattleScript_HealerActivates::
 	call BattleScript_AbilityPopUp
 	curestatus BS_SCRIPTING
@@ -6582,7 +6581,7 @@ BattleScript_WeatherFormChangesLoop::
 BattleScript_CastformChange::
 	call BattleScript_82DB4AF
 	end3
-	
+
 BattleScript_SlowStartEnd::
 	printstring STRINGID_SLOWSTARTEND
 	waitmessage 0x40
@@ -6596,7 +6595,7 @@ BattleScript_82DB4AF::
 	printstring STRINGID_PKMNTRANSFORMED
 	waitmessage 0x40
 	return
-	
+
 BattleScript_TryAdrenalineOrb:
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_ADRENALINE_ORB, BattleScript_TryAdrenalineOrbRet
 	jumpifstat BS_TARGET, CMP_EQUAL, STAT_SPEED, 12, BattleScript_TryAdrenalineOrbRet
@@ -6781,7 +6780,7 @@ BattleScript_MonMadeMoveUseless::
 	waitmessage 0x40
 	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
 	goto BattleScript_MoveEnd
-	
+
 BattleScript_MonStatusedByAttackImmune_PPLoss::
 	ppreduce
 BattleScript_MonStatusedByAttackImmune::
@@ -6949,7 +6948,7 @@ BattleScript_TargetAbilityStatRaise::
 BattleScript_BattleArmorBroke::
 	printstring STRINGID_ARMORBROKE
 	waitmessage 0x40
-	
+
 BattleScript_ScriptingAbilityStatRaise::
 	copybyte gBattlerAbility, sBATTLER
 	call BattleScript_AbilityPopUp
@@ -7014,7 +7013,7 @@ BattleScript_AttackerAbilityStatRaise::
 	printstring STRINGID_ATTACKERABILITYSTATRAISE
 	waitmessage 0x40
 	return
-	
+
 BattleScript_RKSSystemBoosts::
 	call BattleScript_AbilityPopUp
 	jumpiftype BS_ABILITY_BATTLER, TYPE_BUG, BattleScript_RKSBugFire
@@ -7331,7 +7330,7 @@ BattleScript_SwitchInAbilityMsg::
 	printfromtable gSwitchInAbilityStringIds
 	waitmessage 0x40
 	end3
-	
+
 BattleScript_FriskMsgWithPopup::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
@@ -7339,7 +7338,7 @@ BattleScript_FriskMsg::
 	printstring STRINGID_FRISKACTIVATES
 	waitmessage 0x40
 	return
-	
+
 BattleScript_FriskActivates::
 	tryfriskmsg BS_ATTACKER
 	end3
@@ -7500,7 +7499,7 @@ BattleScript_82DB6C7::
 	printfromtable gInobedientStringIds
 	waitmessage 0x40
 	moveendto MOVEEND_NEXT_TARGET
-	end	
+	end
 BattleScript_TruantLoafingAround::
 	call BattleScript_AbilityPopUp
 	goto BattleScript_82DB6C7
@@ -7637,7 +7636,7 @@ BattleScript_WhiteHerbRet::
 	waitmessage 0x40
 	consumeitem BS_SCRIPTING
 	return
-	
+
 BattleScript_ItemHealHP_RemoveItemRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
@@ -7702,7 +7701,7 @@ BattleScript_ItemHealHP_Ret::
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	return
-	
+
 BattleScript_SymbiosisActivates::
 	tryactivatesymbiosis BS_SCRIPTING
 	call BattleScript_AbilityPopUp
