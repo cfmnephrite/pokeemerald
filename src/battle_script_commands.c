@@ -1143,7 +1143,7 @@ static void Cmd_attackcanceler(void)
 
     // Check Protean activation.
     GET_MOVE_TYPE(gCurrentMove, moveType);
-    if (GetBattlerAbility(gBattlerAttacker) == ABILITY_PROTEAN
+    if ((GetBattlerAbility(gBattlerAttacker) == ABILITY_PROTEAN || GetBattlerAbility(gBattlerAbility) == ABILITY_LIBERO)
         && (gBattleMons[gBattlerAttacker].type1 != moveType || gBattleMons[gBattlerAttacker].type2 != moveType ||
             (gBattleMons[gBattlerAttacker].type3 != moveType && gBattleMons[gBattlerAttacker].type3 != TYPE_MYSTERY))
         && gCurrentMove != MOVE_STRUGGLE)
@@ -1374,10 +1374,11 @@ static bool32 AccuracyCalcHelper(u16 move)
     return FALSE;
 }
 
-u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u16 type)
+u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move)
 {
     u32 calc, moveAcc, atkHoldEffect, atkParam, defHoldEffect, defParam, atkAbility, defAbility;
     s8 buff, accStage, evasionStage;
+    u8 type = GetMoveType(battlerAtk, move, TRUE);
 
     atkAbility = GetBattlerAbility(battlerAtk);
     atkHoldEffect = GetBattlerHoldEffect(battlerAtk, TRUE);
@@ -1472,7 +1473,7 @@ static void Cmd_accuracycheck(void)
             return;
 
         // final calculation
-        if (RandomChance(GetTotalAccuracy(gBattlerAttacker, gBattlerTarget, move, 16), 100))
+        if (!RandomChance(GetTotalAccuracy(gBattlerAttacker, gBattlerTarget, move), 100))
         {
             gMoveResultFlags |= MOVE_RESULT_MISSED;
             if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE &&
@@ -8252,28 +8253,37 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr += 7;
         }
         return;
-	case VARIOUS_BOOST_HIGHER_OFFENSE:
-		if(gBattleMons[gActiveBattler].type1 == TYPE_ICE && GetBattlerAbility(gActiveBattler) == ABILITY_RKS_SYSTEM)
-			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 2, FALSE);
-		else
-			SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 1, FALSE);
-		break;
-	case VARIOUS_TRY_ACTIVATE_SYMBIOSIS:
-		gLastUsedItem = gBattleMons[BATTLE_PARTNER(gActiveBattler)].item;
+    case VARIOUS_BOOST_HIGHER_OFFENSE:
+        if(gBattleMons[gActiveBattler].type1 == TYPE_ICE && GetBattlerAbility(gActiveBattler) == ABILITY_RKS_SYSTEM)
+            SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 2, FALSE);
+        else
+            SET_STATCHANGER(GetHigherOffStat(gActiveBattler), 1, FALSE);
+        break;
+    case VARIOUS_TRY_ACTIVATE_SYMBIOSIS:
+        gLastUsedItem = gBattleMons[BATTLE_PARTNER(gActiveBattler)].item;
 
-		gActiveBattler = BATTLE_PARTNER(gActiveBattler);
-		gBattleMons[gActiveBattler].item = ITEM_NONE;
-		BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
-		MarkBattlerForControllerExec(gActiveBattler);
+        gActiveBattler = BATTLE_PARTNER(gActiveBattler);
+        gBattleMons[gActiveBattler].item = ITEM_NONE;
+        BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+        MarkBattlerForControllerExec(gActiveBattler);
 
-		gActiveBattler = gBattleScripting.battler;
-		gBattleMons[gActiveBattler].item = gLastUsedItem;
-		BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
-		MarkBattlerForControllerExec(gActiveBattler);
+        gActiveBattler = gBattleScripting.battler;
+        gBattleMons[gActiveBattler].item = gLastUsedItem;
+        BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+        MarkBattlerForControllerExec(gActiveBattler);
 
-		gBattlerAbility = gBattlerAttacker = BATTLE_PARTNER(gActiveBattler);
-		//gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
-		break;
+        gBattlerAbility = gBattlerAttacker = BATTLE_PARTNER(gActiveBattler);
+        //gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
+        break;
+    case VARIOUS_CHECK_BALL_FETCH:
+        if(gBattleMons[gActiveBattler].item == ITEM_NONE && (GetBattlerAbility(gActiveBattler) == ABILITY_BALL_FETCH)
+            && gLastUsedItem != ITEM_SAFARI_BALL)
+        {
+            gBattleMons[gActiveBattler].item = gLastUsedItem;
+            BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+        break;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -9202,16 +9212,16 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                  || GetBattlerAbility(gActiveBattler) == ABILITY_WHITE_SMOKE
                  || GetBattlerAbility(gActiveBattler) == ABILITY_FULL_METAL_BODY)
         {
-            if (flags == STAT_BUFF_ALLOW_PTR)
+            if (flags == STAT_BUFF_ALLOW_PTR) //CFM allows abilities that lower stats to also prevent self-inflicted drops
             {
-                if (gSpecialStatuses[gActiveBattler].statLowered || gActiveBattler == gBattlerAttacker)
+                /*if (gSpecialStatuses[gActiveBattler].statLowered || gActiveBattler == gBattlerAttacker)
                 {
                     gBattlescriptCurrInstr = BS_ptr;
                     gLastUsedAbility = GetBattlerAbility(gActiveBattler);
                     RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
                 }
                 else
-                {
+                {*/
                     BattleScriptPush(BS_ptr);
                     gBattleScripting.battler = gActiveBattler;
                     gBattlerAbility = gActiveBattler;
@@ -9219,7 +9229,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                     gLastUsedAbility = GetBattlerAbility(gActiveBattler);
                     RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
                     gSpecialStatuses[gActiveBattler].statLowered = 1;
-                }
+               // }
             }
             return STAT_CHANGE_DIDNT_WORK;
         }

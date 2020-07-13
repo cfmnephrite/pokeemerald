@@ -3130,7 +3130,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITY_UNNERVE:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
-                gBattleCommunication[MULTISTRING_CHOOSER] = 4;
+				u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+                u8 mon1 = GetBattlerAtPosition(side);
+                u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
+                u8 oppBattlers[2] = {mon1, mon2};
+                for (i = 0; i < 2; i++) 
+                {
+                    u8 oppBattler = oppBattlers[i];
+                    if (IsBattlerAlive(oppBattler) && gDisableStructs[oppBattler].tauntTimer == 0)
+						gDisableStructs[oppBattler].tauntTimer = 1;
+				}
+				gBattleCommunication[MULTISTRING_CHOOSER] = 4;
                 gSpecialStatuses[battler].switchInAbilityDone = 1;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
@@ -3180,7 +3190,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (gBattleMons[battler].statStages[statId] != 12)
                 {
                     gBattlerAttacker = battler;
-                    //gBattleMons[battler].statStages[statId]++;
+                    gBattleMons[battler].statStages[statId]++;
                     SET_STATCHANGER(statId, 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
@@ -3196,6 +3206,28 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				BattleScriptPushCursorAndCallback(BattleScript_RKSSystemBoosts);
 				effect++;
 			}
+			break;
+		case ABILITY_INTREPID_SWORD:
+			if (gBattleMons[battler].statStages[STAT_ATK] != 12)
+            {
+                gBattlerAttacker = battler;
+				gBattleMons[battler].statStages[STAT_ATK]++;
+                SET_STATCHANGER(STAT_ATK, 1, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_ATK);
+                BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
+                effect++;
+            }
+			break;
+		case ABILITY_DAUNTLESS_SHIELD:
+			if (gBattleMons[battler].statStages[STAT_DEF] != 12)
+            {
+                gBattlerAttacker = battler;
+				gBattleMons[battler].statStages[STAT_DEF]++;
+                SET_STATCHANGER(STAT_DEF, 1, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_DEF);
+                BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
+                effect++;
+            }
 			break;
         case ABILITY_DRIZZLE:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_RAIN, TRUE))
@@ -3729,6 +3761,10 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 if (moveType == TYPE_ELECTRIC)
                     effect = 2, statId = GetHigherDefStat(battler);
                 break;
+			case ABILITY_WATER_COMPACTION:
+				if (moveType == TYPE_WATER)
+					effect = 2, statId = GetHigherDefStat(battler);
+				break;
             case ABILITY_IMMUNITY:
                 if (gBattleMoves[move].effect == EFFECT_POISON
                     || gBattleMoves[move].effect == EFFECT_POISON_POWDER
@@ -7466,7 +7502,7 @@ bool32 RandomChance(u8 num, u8 denom)
 {
     if(!denom)
         return FALSE;
-    if (Random() < (0x10000*num)/denom)
+    if (Random() <= (0x10000*num)/denom)
         return TRUE;
     else
         return FALSE;
@@ -7543,7 +7579,7 @@ bool32 CanMegaEvolve(u8 battlerId)
     return TRUE;
 }
 
-u8 GetMoveType(u8 battlerId, u16 move, bool32 omnitype)
+u8 GetMoveType(u32 battlerId, u32 move, bool32 omnitype)
 {
     if (omnitype && gBattleMoves[move].flags & FLAG_OMNITYPE)
     {

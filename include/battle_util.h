@@ -109,7 +109,7 @@ u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId);
 bool32 RandomChance(u8 num, u8 denom);
 u8 GetHigherOffStat(u8 battlerId);
 u8 GetHigherDefStat(u8 battlerId);
-u8 GetMoveType(u8 battlerId, u16 move, bool32 omnitype);
+u8 GetMoveType(u32 battlerId, u32 move, bool32 omnitype);
 u8 GetMoveSplit(u8 battlerId, u16 move, bool32 magic);
 u16 GetZMove(u8 battlerId, u16 move);
 u16 PrepareZMove(u8 battlerId, u16 move);
