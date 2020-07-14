@@ -6325,7 +6325,6 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     }
     else
     {
-        BoxMonRestorePP(&sPSSData->movingMon.box);
         SetBoxMonAt(boxId, position, &sPSSData->movingMon.box);
     }
 }
