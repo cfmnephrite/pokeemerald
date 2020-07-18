@@ -34,8 +34,8 @@ struct BattleWindowText
     u8 fontId;
     u8 x;
     u8 y;
-    u8 letterSpacing;
-    u8 lineSpacing;
+    s8 letterSpacing;
+    s8 lineSpacing;
     u8 speed;
     u8 fgColor;
     u8 bgColor;
@@ -1802,60 +1802,60 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 3 Top left move
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
-        .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
+    { // 3 First move desc
+        .fillValue = 0,
+        .fontId = 5,
+        .x = 4,
+        .y = 0,
+        .letterSpacing = -2,
+        .lineSpacing = -5,
         .speed = 0,
         .fgColor = 13,
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 4 Top right move
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
-        .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
+    { // 4 Second move desc
+        .fillValue = 0,
+        .fontId = 5,
+        .x = 4,
+        .y = 0,
+        .letterSpacing = -2,
+        .lineSpacing = -5,
         .speed = 0,
         .fgColor = 13,
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 5 Bottom left move
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
-        .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
+    { // 5 Third Top move desc
+        .fillValue = 0,
+        .fontId = 5,
+        .x = 4,
+        .y = 0,
+        .letterSpacing = -2,
+        .lineSpacing = -5,
         .speed = 0,
         .fgColor = 13,
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 6 Bottom right move
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
-        .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
+    { // 6 Fourth move desc
+        .fillValue = 0,
+        .fontId = 5,
+        .x = 4,
+        .y = 0,
+        .letterSpacing = -2,
+        .lineSpacing = -5,
         .speed = 0,
         .fgColor = 13,
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 7 "PP"
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+    { // 7 Move BP
+        .fillValue = 0,
+        .fontId = 3,
         .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
+        .y = 6,
+        .letterSpacing = -2,
         .lineSpacing = 0,
         .speed = 0,
         .fgColor = 12,
@@ -1874,24 +1874,24 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = 14,
         .shadowColor = 15,
     },
-    { // 9 PP remaining
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
-        .x = 2,
-        .y = 1,
-        .letterSpacing = 0,
+    { // 9 Move accuracy
+        .fillValue = 0,
+        .fontId = 3,
+        .x = 5,
+        .y = 6,
+        .letterSpacing = -2,
         .lineSpacing = 0,
         .speed = 0,
         .fgColor = 12,
         .bgColor = 14,
         .shadowColor = 11,
     },
-    { // 10 "type"
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
-        .x = 0,
-        .y = 1,
-        .letterSpacing = 0,
+    { // 10 HP Number
+        .fillValue = 0,
+        .fontId = 3,
+        .x = 2,
+        .y = 6,
+        .letterSpacing = -2,
         .lineSpacing = 0,
         .speed = 0,
         .fgColor = 13,
@@ -3596,7 +3596,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
     printerTemplate.currentY = printerTemplate.y;
     printerTemplate.letterSpacing = textInfo[windowId].letterSpacing;
     printerTemplate.lineSpacing = textInfo[windowId].lineSpacing;
-    printerTemplate.unk = 0;
+    printerTemplate.shift = 0;
     printerTemplate.fgColor = textInfo[windowId].fgColor;
     printerTemplate.bgColor = textInfo[windowId].bgColor;
     printerTemplate.shadowColor = textInfo[windowId].shadowColor;

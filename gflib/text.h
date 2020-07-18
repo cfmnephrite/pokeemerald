@@ -179,6 +179,11 @@
 #define CHAR_NEWLINE           0xFE
 #define EOS                    0xFF // end of string
 
+#define MAGIC_S             0x9A //Magic s
+#define BLANK               0x9B //Empty character
+#define PLUS_256            0x9C //Shifts the chars of the whole string by 256
+#define PLUS_512            0x9D //Shifts the chars of the whole string by 512
+
 // Special F9 chars
 #define CHAR_UP_ARROW_2    0x00
 #define CHAR_DOWN_ARROW_2  0x01
@@ -274,9 +279,9 @@ struct TextPrinterTemplate
     u8 y;
     u8 currentX;        // 0x8
     u8 currentY;
-    u8 letterSpacing;
-    u8 lineSpacing;
-    u8 unk:4;   // 0xC
+    s8 letterSpacing;
+    s8 lineSpacing;
+    u8 shift:4;   // 0xC
     u8 fgColor:4;
     u8 bgColor:4;
     u8 shadowColor:4;
@@ -303,8 +308,8 @@ struct FontInfo
     u16 (*fontFunction)(struct TextPrinter *x);
     u8 maxLetterWidth;
     u8 maxLetterHeight;
-    u8 letterSpacing;
-    u8 lineSpacing;
+    s8 letterSpacing;
+    s8 lineSpacing;
     u8 unk:4;
     u8 fgColor:4;
     u8 bgColor:4;
@@ -339,8 +344,8 @@ struct Struct_03002F90
     u32 unk20[8];
     u32 unk40[8];
     u32 unk60[8];
-    u8 unk80;
-    u8 unk81;
+    u8 glyphWidth;
+    u8 glyphHeight;
 };
 
 extern TextFlags gTextFlags;
@@ -381,7 +386,7 @@ bool16 TextPrinterWaitWithDownArrow(struct TextPrinter *textPrinter);
 bool16 TextPrinterWait(struct TextPrinter *textPrinter);
 void DrawDownArrow(u8 windowId, u16 x, u16 y, u8 bgColor, bool8 drawArrow, u8 *counter, u8 *yCoordIndex);
 u16 RenderText(struct TextPrinter *textPrinter);
-u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 letterSpacing);
+u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, s8 letterSpacing);
 u32 (*GetFontWidthFunc(u8 glyphId))(u16, bool32);
 s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing);
 u8 RenderTextFont9(u8 *pixels, u8 fontId, u8 *str);
@@ -403,6 +408,10 @@ u32 GetGlyphWidthFont2(u16 glyphId, bool32 isJapanese);
 void DecompressGlyphFont1(u16 glyphId, bool32 isJapanese);
 u32 GetGlyphWidthFont1(u16 glyphId, bool32 isJapanese);
 void DecompressGlyphFont9(u16 glyphId);
+u32 GetHPBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese);
+u32 GetMoveBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese);
+u32 GetDescBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese);
+void ForceTextWrapping(u8 *textPtr, u8 fontId, u8 allowedWidth, s8 letterSpacing);
 
 // unk_text_util_2.c
 u16 Font6Func(struct TextPrinter *textPrinter);

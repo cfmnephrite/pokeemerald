@@ -44,7 +44,6 @@ static void BuildSpritePriorities(void);
 static void SortSprites(void);
 static void CopyMatricesToOamBuffer(void);
 static void AddSpritesToOamBuffer(void);
-static u8 CreateSpriteAt(u8 index, const struct SpriteTemplate *template, s16 x, s16 y, u8 subpriority);
 static void ResetOamMatrices(void);
 static void ResetSprite(struct Sprite *sprite);
 static s16 AllocSpriteTiles(u16 tileCount);
@@ -1541,6 +1540,17 @@ void FreeSpriteTileRanges(void)
         sSpriteTileRangeTags[i] = 0xFFFF;
         SET_SPRITE_TILE_RANGE(i, 0, 0);
     }
+}
+
+u8 GetSpriteIndexByTileTag(u16 tag)
+{
+    u8 i;
+    
+    for (i = 0; i < MAX_SPRITES; i++)
+        if (gSprites[i].template->tileTag == tag)
+            return i;
+    
+    return 0xFF;
 }
 
 u16 GetSpriteTileStartByTag(u16 tag)

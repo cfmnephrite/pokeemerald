@@ -6521,7 +6521,7 @@ static void PutLevelAndGenderOnLvlUpBox(void)
     printerTemplate.currentY = 0;
     printerTemplate.letterSpacing = 0;
     printerTemplate.lineSpacing = 0;
-    printerTemplate.unk = 0;
+    printerTemplate.shift = 0;
     printerTemplate.fgColor = TEXT_COLOR_WHITE;
     printerTemplate.bgColor = TEXT_COLOR_TRANSPARENT;
     printerTemplate.shadowColor = TEXT_COLOR_DARK_GREY;
@@ -12517,29 +12517,29 @@ void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags)
             if (destY == yStart)
             {
                 if (destX == xStart)
-                    var = 0x1022;
+                    var = 0x1016;
                 else if (destX == xEnd)
-                    var = 0x1024;
+                    var = 0x1018;
                 else
-                    var = 0x1023;
+                    var = 0x1017;
             }
             else if (destY == yEnd)
             {
                 if (destX == xStart)
-                    var = 0x1028;
+                    var = 0x101c;
                 else if (destX == xEnd)
-                    var = 0x102A;
+                    var = 0x101e;
                 else
-                    var = 0x1029;
+                    var = 0x101d;
             }
             else
             {
                 if (destX == xStart)
-                    var = 0x1025;
+                    var = 0x1019;
                 else if (destX == xEnd)
-                    var = 0x1027;
+                    var = 0x101B;
                 else
-                    var = 0x1026;
+                    var = 0x101A;
             }
 
             if (flags & WINDOW_CLEAR)

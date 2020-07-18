@@ -181,8 +181,8 @@ struct MessageWindowInfo
     u8 boxType;
     u8 x;
     u8 y;
-    u8 letterSpacing;
-    u8 lineSpacing;
+    s8 letterSpacing;
+    s8 lineSpacing;
     bool8 hasPlaceholders;
     bool8 useWiderBox;
 };

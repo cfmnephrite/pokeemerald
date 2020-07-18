@@ -75,8 +75,8 @@ static void PyramidBag_CopyItemName(u8 *dst, u16 itemId);
 static void sub_81C6FF8(u8 arg0);
 static void PrintItemDescription(s32 listMenuId);
 static void sub_81C5AB8(u8 y, u8 arg1);
-static void PrintOnWindow_Font1(u8 windowId, const u8 *src, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorTableId);
-static void PrintOnWindow_Font7(u8 windowId, const u8 *src, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorTableId);
+static void PrintOnWindow_Font1(u8 windowId, const u8 *src, u8 x, u8 y, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 colorTableId);
+static void PrintOnWindow_Font7(u8 windowId, const u8 *src, u8 x, u8 y, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 colorTableId);
 static u8 sub_81C6D24(u8 windowArrayId);
 static void sub_81C6D6C(u8 windowArrayId);
 static void sub_81C5EAC(u8 windowId);
@@ -1404,12 +1404,12 @@ static void sub_81C6BD8(void)
     ScheduleBgCopyTilemapToVram(1);
 }
 
-static void PrintOnWindow_Font1(u8 windowId, const u8 *src, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorTableId)
+static void PrintOnWindow_Font1(u8 windowId, const u8 *src, u8 x, u8 y, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 colorTableId)
 {
     AddTextPrinterParameterized4(windowId, 1, x, y, letterSpacing, lineSpacing, sColorTable[colorTableId], speed, src);
 }
 
-static void PrintOnWindow_Font7(u8 windowId, const u8 *src, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorTableId)
+static void PrintOnWindow_Font7(u8 windowId, const u8 *src, u8 x, u8 y, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 colorTableId)
 {
     AddTextPrinterParameterized4(windowId, 7, x, y, letterSpacing, lineSpacing, sColorTable[colorTableId], speed, src);
 }

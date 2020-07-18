@@ -157,13 +157,16 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
             }
         }
         break;
+    case 20:
+        ResetMoveBoxes();
+        gBattleMoveScreenReset = 0xFF;
+        break;
     default:
         SetVBlankCallback(VBlankCB_Battle);
         sub_80A95F4();
         BeginHardwarePaletteFade(0xFF, 0, 0x10, 0, 1);
         gPaletteFade.bufferTransferDisabled = 0;
         SetMainCallback2(BattleMainCB2);
-        sub_805EF14();
         break;
     }
 

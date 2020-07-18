@@ -51,15 +51,28 @@ const u8 gUnusedFRLGBlankedDownArrow[] = INCBIN_U8("graphics/fonts/unused_frlg_b
 const u8 gUnusedFRLGDownArrow[] = INCBIN_U8("graphics/fonts/unused_frlg_down_arrow.4bpp");
 const u8 gDownArrowYCoords[] = { 0x0, 0x1, 0x2, 0x1 };
 const u8 gWindowVerticalScrollSpeeds[] = { 0x1, 0x2, 0x4, 0x0 };
+const u8 gHpBoxFont[] = INCBIN_U8("graphics/battle_interface/hpboxfont.4bpp");
+const u8 gMoveBoxFont[] = INCBIN_U8("graphics/battle_interface/moveboxfont.4bpp");
+const u8 gDescBoxFont[] = INCBIN_U8("graphics/battle_interface/descboxfont.4bpp");
+
+const u8 *const gCustomFontPtrs[] =
+{
+    0,
+    0,
+    0,
+    gHpBoxFont,
+    gMoveBoxFont,
+    gDescBoxFont
+};
 
 const struct GlyphWidthFunc gGlyphWidthFuncs[] =
 {
     { 0x0, GetGlyphWidthFont0 },
     { 0x1, GetGlyphWidthFont1 },
     { 0x2, GetGlyphWidthFont2 },
-    { 0x3, GetGlyphWidthFont2 },
-    { 0x4, GetGlyphWidthFont2 },
-    { 0x5, GetGlyphWidthFont2 },
+    { 0x3, GetHPBoxFontGlyphWidth },
+    { 0x4, GetMoveBoxFontGlyphWidth },
+    { 0x5, GetDescBoxFontGlyphWidth },
     { 0x6, GetGlyphWidthFont6 },
     { 0x7, GetGlyphWidthFont7 },
     { 0x8, GetGlyphWidthFont8 }
@@ -89,9 +102,9 @@ const struct FontInfo gFontInfos[] =
     { Font0Func, 0x5,  0xC, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
     { Font1Func, 0x6, 0x10, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
     { Font2Func, 0x6,  0xE, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
-    { Font3Func, 0x6,  0xE, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
-    { Font4Func, 0x6,  0xE, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
-    { Font5Func, 0x6,  0xE, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
+    { Font3Func, 0x5,  0xC, -1,  0x0, 0x0, 0x2, 0x1, 0x3 },
+    { Font4Func, 0x8, 0x10, -2,  0x0, 0x0, 0x2, 0x1, 0x3 },
+    { Font5Func, 0x8, 0x10, -2,  0x0, 0x0, 0x2, 0x1, 0x3 },
     { Font6Func, 0x8, 0x10, 0x0, 0x8, 0x0, 0x2, 0x1, 0x3 },
     { Font7Func, 0x5, 0x10, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
     { Font8Func, 0x5,  0x8, 0x0, 0x0, 0x0, 0x2, 0x1, 0x3 },
@@ -128,6 +141,9 @@ extern const u16 gFont0JapaneseGlyphs[];
 extern const u16 gFont1JapaneseGlyphs[];
 extern const u16 gFont2JapaneseGlyphs[];
 extern const u8 gFont2JapaneseGlyphWidths[];
+extern const u8 gHPBoxFontGlyphWidths[];
+extern const u8 gMoveBoxFontGlyphWidths[];
+extern const u8 gDescBoxFontGlyphWidths[];
 
 void SetFontsPointer(const struct FontInfo *fonts)
 {
@@ -154,7 +170,7 @@ u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 
     printerTemplate.currentY = y;
     printerTemplate.letterSpacing = gFonts[fontId].letterSpacing;
     printerTemplate.lineSpacing = gFonts[fontId].lineSpacing;
-    printerTemplate.unk = gFonts[fontId].unk;
+    printerTemplate.shift = gFonts[fontId].unk;
     printerTemplate.fgColor = gFonts[fontId].fgColor;
     printerTemplate.bgColor = gFonts[fontId].bgColor;
     printerTemplate.shadowColor = gFonts[fontId].shadowColor;
@@ -255,6 +271,8 @@ u32 RenderFont(struct TextPrinter *textPrinter)
 
 void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
 {
+    u8 cols[] = {bgColor, fgColor, shadowColor};
+    u8 i, j, k;    
     u32 fg12, bg12, shadow12;
     u32 temp;
 
@@ -268,140 +286,19 @@ void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
     fg12 = fgColor << 12;
     shadow12 = shadowColor << 12;
 
-    temp = (bgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            for (k = 0; k <3; k++)
+            {
+                temp = (cols[k] << 8) | (cols[j] << 4) | cols[i];
+                *(current++) = (bg12) | temp;
+                *(current++) = (fg12) | temp;
+                *(current++) = (shadow12) | temp;
+            }
+        }
+    }
 }
 
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)
@@ -418,33 +315,15 @@ void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)
 
 void DecompressGlyphTile(const void *src_, void *dest_)
 {
-    u32 temp;
+    u32 temp, i;
     const u16 *src = src_;
     u32 *dest = dest_;
 
-    temp = *(src++);
-    *(dest)++ = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
-
-    temp = *(src++);
-    *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
+    for (i = 0; i < 9; i++)
+    {
+        temp = *(src++);
+        *(dest++) = ((gFontHalfRowLookupTable[gFontHalfRowOffsets[temp & 0xFF]]) << 16) | (gFontHalfRowLookupTable[gFontHalfRowOffsets[temp >> 8]]);
+    }
 }
 
 u8 GetLastTextColor(u8 colorType)
@@ -506,12 +385,12 @@ void CopyGlyphToWindow(struct TextPrinter *textPrinter)
     winTempl = &win->window;
 
     r4 = (winTempl->width * 8) - textPrinter->printerTemplate.currentX;
-    if (r4 > gUnknown_03002F90.unk80)
-        r4 = gUnknown_03002F90.unk80;
+    if (r4 > gUnknown_03002F90.glyphWidth)
+        r4 = gUnknown_03002F90.glyphWidth;
 
     r0 = (winTempl->height * 8) - textPrinter->printerTemplate.currentY;
-    if (r0 > gUnknown_03002F90.unk81)
-        r0 = gUnknown_03002F90.unk81;
+    if (r0 > gUnknown_03002F90.glyphHeight)
+        r0 = gUnknown_03002F90.glyphHeight;
 
     currX = textPrinter->printerTemplate.currentX;
     currY = textPrinter->printerTemplate.currentY;
@@ -1283,7 +1162,7 @@ void ClearTextSpan(struct TextPrinter *textPrinter, u32 width)
         pixels_data.height = window->window.height << 3;
 
         gUnk = &gUnknown_03002F90;
-        glyphHeight = &gUnk->unk81;
+        glyphHeight = &gUnk->glyphHeight;
 
         FillBitmapRect4Bit(
             &pixels_data,
@@ -1745,9 +1624,20 @@ u16 RenderText(struct TextPrinter *textPrinter)
             break;
         case CHAR_SPECIAL_F8:
             currChar = *textPrinter->printerTemplate.currentChar++;
-            gUnknown_03002F90.unk80 = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
-            textPrinter->printerTemplate.currentX += gUnknown_03002F90.unk80 + textPrinter->printerTemplate.letterSpacing;
+            gUnknown_03002F90.glyphWidth = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
+            textPrinter->printerTemplate.currentX += gUnknown_03002F90.glyphWidth + textPrinter->printerTemplate.letterSpacing;
             return 0;
+        case MAGIC_S:
+            if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                currChar = CHAR_s;
+            else
+                return 2;
+            break;
+        case PLUS_256:
+        case PLUS_512:
+            textPrinter->printerTemplate.shift = currChar - 0x9B;
+        case BLANK:
+            return 2;
         case EOS:
             return 1;
         }
@@ -1761,9 +1651,6 @@ u16 RenderText(struct TextPrinter *textPrinter)
             DecompressGlyphFont1(currChar, textPrinter->japanese);
             break;
         case 2:
-        case 3:
-        case 4:
-        case 5:
             DecompressGlyphFont2(currChar, textPrinter->japanese);
             break;
         case 7:
@@ -1776,12 +1663,41 @@ u16 RenderText(struct TextPrinter *textPrinter)
             break;
         }
 
-        CopyGlyphToWindow(textPrinter);
+        switch (subStruct->glyphId)
+        {
+            case 3:
+            case 4:
+            case 5:
+            {
+                u32 (*func)(u16 glyphId, bool32 isJapanese);
+                
+                func = GetFontWidthFunc(subStruct->glyphId);
+                currChar += textPrinter->printerTemplate.shift * 0x100;
+
+                gUnknown_03002F90.glyphWidth = func(currChar, textPrinter->japanese);
+                gUnknown_03002F90.glyphHeight = gFontInfos[subStruct->glyphId].maxLetterHeight;
+
+                BlitBitmapRectToWindow(
+                textPrinter->printerTemplate.windowId,
+                gCustomFontPtrs[subStruct->glyphId] + ((currChar + (currChar / 0x10) * 0x10) * 0x40),
+                0,
+                0,
+                0x100,
+                0x200,
+                textPrinter->printerTemplate.currentX,
+                textPrinter->printerTemplate.currentY,
+                gUnknown_03002F90.glyphWidth,
+                0x10);
+                break;
+            }
+            default:
+                CopyGlyphToWindow(textPrinter);
+        }
 
         if (textPrinter->minLetterSpacing)
         {
-            textPrinter->printerTemplate.currentX += gUnknown_03002F90.unk80;
-            width = textPrinter->minLetterSpacing - gUnknown_03002F90.unk80;
+            textPrinter->printerTemplate.currentX += gUnknown_03002F90.glyphWidth;
+            width = textPrinter->minLetterSpacing - gUnknown_03002F90.glyphWidth;
             if (width > 0)
             {
                 ClearTextSpan(textPrinter, width);
@@ -1790,10 +1706,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
         }
         else
         {
-            if (textPrinter->japanese)
-                textPrinter->printerTemplate.currentX += (gUnknown_03002F90.unk80 + textPrinter->printerTemplate.letterSpacing);
-            else
-                textPrinter->printerTemplate.currentX += gUnknown_03002F90.unk80;
+            textPrinter->printerTemplate.currentX += (gUnknown_03002F90.glyphWidth + textPrinter->printerTemplate.letterSpacing);
         }
         return 0;
     case 1:
@@ -1855,7 +1768,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
     return 1;
 }
 
-u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, u8 letterSpacing)
+u32 GetStringWidthFixedWidthFont(const u8 *str, u8 fontId, s8 letterSpacing)
 {
     int i;
     u8 width;
@@ -2325,15 +2238,15 @@ void DecompressGlyphFont0(u16 glyphId, bool32 isJapanese)
         glyphs = gFont0JapaneseGlyphs + (0x100 * (glyphId >> 0x4)) + (0x8 * (glyphId & 0xF));
         DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
         DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);    // gUnknown_03002F90 + 0x40
-        gUnknown_03002F90.unk80 = 8;     // gGlyphWidth
-        gUnknown_03002F90.unk81 = 12;    // gGlyphHeight
+        gUnknown_03002F90.glyphWidth = 8;     // gGlyphWidth
+        gUnknown_03002F90.glyphHeight = 12;    // gGlyphHeight
     }
     else
     {
         glyphs = gFont0LatinGlyphs + (0x20 * glyphId);
-        gUnknown_03002F90.unk80 = gFont0LatinGlyphWidths[glyphId];
+        gUnknown_03002F90.glyphWidth = gFont0LatinGlyphWidths[glyphId];
 
-        if (gUnknown_03002F90.unk80 <= 8)
+        if (gUnknown_03002F90.glyphWidth <= 8)
         {
             DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
             DecompressGlyphTile(glyphs + 0x10, gUnknown_03002F90.unk40);
@@ -2346,7 +2259,7 @@ void DecompressGlyphFont0(u16 glyphId, bool32 isJapanese)
             DecompressGlyphTile(glyphs + 0x18, gUnknown_03002F90.unk60);
         }
 
-        gUnknown_03002F90.unk81 = 13;
+        gUnknown_03002F90.glyphHeight = 13;
     }
 }
 
@@ -2368,15 +2281,15 @@ void DecompressGlyphFont7(u16 glyphId, bool32 isJapanese)
         glyphs = gFont1JapaneseGlyphs + (0x100 * (glyphId >> 0x4)) + (0x8 * (glyphId & (eff = 0xF)));  // shh, no questions, only matching now
         DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
         DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);    // gUnknown_03002F90 + 0x40
-        gUnknown_03002F90.unk80 = 8;     // gGlyphWidth
-        gUnknown_03002F90.unk81 = 15;    // gGlyphHeight
+        gUnknown_03002F90.glyphWidth = 8;     // gGlyphWidth
+        gUnknown_03002F90.glyphHeight = 15;    // gGlyphHeight
     }
     else
     {
         glyphs = gFont7LatinGlyphs + (0x20 * glyphId);
-        gUnknown_03002F90.unk80 = gFont7LatinGlyphWidths[glyphId];
+        gUnknown_03002F90.glyphWidth = gFont7LatinGlyphWidths[glyphId];
 
-        if (gUnknown_03002F90.unk80 <= 8)
+        if (gUnknown_03002F90.glyphWidth <= 8)
         {
             DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
             DecompressGlyphTile(glyphs + 0x10, gUnknown_03002F90.unk40);
@@ -2389,7 +2302,7 @@ void DecompressGlyphFont7(u16 glyphId, bool32 isJapanese)
             DecompressGlyphTile(glyphs + 0x18, gUnknown_03002F90.unk60);
         }
 
-        gUnknown_03002F90.unk81 = 15;
+        gUnknown_03002F90.glyphHeight = 15;
     }
 }
 
@@ -2410,15 +2323,15 @@ void DecompressGlyphFont8(u16 glyphId, bool32 isJapanese)
         glyphs = gFont0JapaneseGlyphs + (0x100 * (glyphId >> 0x4)) + (0x8 * (glyphId & 0xF));
         DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
         DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);    // gUnknown_03002F90 + 0x40
-        gUnknown_03002F90.unk80 = 8;     // gGlyphWidth
-        gUnknown_03002F90.unk81 = 12;    // gGlyphHeight
+        gUnknown_03002F90.glyphWidth = 8;     // gGlyphWidth
+        gUnknown_03002F90.glyphHeight = 12;    // gGlyphHeight
     }
     else
     {
         glyphs = gFont8LatinGlyphs + (0x20 * glyphId);
-        gUnknown_03002F90.unk80 = gFont8LatinGlyphWidths[glyphId];
+        gUnknown_03002F90.glyphWidth = gFont8LatinGlyphWidths[glyphId];
 
-        if (gUnknown_03002F90.unk80 <= 8)
+        if (gUnknown_03002F90.glyphWidth <= 8)
         {
             DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
             DecompressGlyphTile(glyphs + 0x10, gUnknown_03002F90.unk40);
@@ -2431,7 +2344,7 @@ void DecompressGlyphFont8(u16 glyphId, bool32 isJapanese)
             DecompressGlyphTile(glyphs + 0x18, gUnknown_03002F90.unk60);
         }
 
-        gUnknown_03002F90.unk81 = 12;
+        gUnknown_03002F90.glyphHeight = 12;
     }
 }
 
@@ -2454,15 +2367,15 @@ void DecompressGlyphFont2(u16 glyphId, bool32 isJapanese)
         DecompressGlyphTile(glyphs + 0x8, gUnknown_03002F90.unk20);    // gUnknown_03002F90 + 0x40
         DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);    // gUnknown_03002F90 + 0x20
         DecompressGlyphTile(glyphs + 0x88, gUnknown_03002F90.unk60);    // gUnknown_03002F90 + 0x60
-        gUnknown_03002F90.unk80 = gFont2JapaneseGlyphWidths[glyphId];     // gGlyphWidth
-        gUnknown_03002F90.unk81 = 14;    // gGlyphHeight
+        gUnknown_03002F90.glyphWidth = gFont2JapaneseGlyphWidths[glyphId];     // gGlyphWidth
+        gUnknown_03002F90.glyphHeight = 14;    // gGlyphHeight
     }
     else
     {
         glyphs = gFont2LatinGlyphs + (0x20 * glyphId);
-        gUnknown_03002F90.unk80 = gFont2LatinGlyphWidths[glyphId];
+        gUnknown_03002F90.glyphWidth = gFont2LatinGlyphWidths[glyphId];
 
-        if (gUnknown_03002F90.unk80 <= 8)
+        if (gUnknown_03002F90.glyphWidth <= 8)
         {
             DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
             DecompressGlyphTile(glyphs + 0x10, gUnknown_03002F90.unk40);
@@ -2475,7 +2388,7 @@ void DecompressGlyphFont2(u16 glyphId, bool32 isJapanese)
             DecompressGlyphTile(glyphs + 0x18, gUnknown_03002F90.unk60);
         }
 
-        gUnknown_03002F90.unk81 = 14;
+        gUnknown_03002F90.glyphHeight = 14;
     }
 }
 
@@ -2497,15 +2410,15 @@ void DecompressGlyphFont1(u16 glyphId, bool32 isJapanese)
         glyphs = gFont1JapaneseGlyphs + (0x100 * (glyphId >> 0x4)) + (0x8 * (glyphId & (eff = 0xF)));  // shh, no questions, only matching now
         DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
         DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);    // gUnknown_03002F90 + 0x40
-        gUnknown_03002F90.unk80 = 8;     // gGlyphWidth
-        gUnknown_03002F90.unk81 = 15;    // gGlyphHeight
+        gUnknown_03002F90.glyphWidth = 8;     // gGlyphWidth
+        gUnknown_03002F90.glyphHeight = 15;    // gGlyphHeight
     }
     else
     {
         glyphs = gFont1LatinGlyphs + (0x20 * glyphId);
-        gUnknown_03002F90.unk80 = gFont1LatinGlyphWidths[glyphId];
+        gUnknown_03002F90.glyphWidth = gFont1LatinGlyphWidths[glyphId];
 
-        if (gUnknown_03002F90.unk80 <= 8)
+        if (gUnknown_03002F90.glyphWidth <= 8)
         {
             DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
             DecompressGlyphTile(glyphs + 0x10, gUnknown_03002F90.unk40);
@@ -2518,7 +2431,7 @@ void DecompressGlyphFont1(u16 glyphId, bool32 isJapanese)
             DecompressGlyphTile(glyphs + 0x18, gUnknown_03002F90.unk60);
         }
 
-        gUnknown_03002F90.unk81 = 15;
+        gUnknown_03002F90.glyphHeight = 15;
     }
 }
 
@@ -2530,6 +2443,66 @@ u32 GetGlyphWidthFont1(u16 glyphId, bool32 isJapanese)
         return gFont1LatinGlyphWidths[glyphId];
 }
 
+u32 GetHPBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese)
+{
+    return gHPBoxFontGlyphWidths[glyphId];
+}
+
+u32 GetMoveBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese)
+{
+    return gMoveBoxFontGlyphWidths[glyphId];
+}
+
+u32 GetDescBoxFontGlyphWidth(u16 glyphId, bool32 isJapanese)
+{
+    return gDescBoxFontGlyphWidths[glyphId];
+}
+
+void ForceTextWrapping(u8 *textPtr, u8 fontId, u8 allowedWidth, s8 letterSpacing)
+{
+    u32 (*func)(u16 glyphId, bool32 isJapanese) = GetFontWidthFunc(fontId);
+    u8 i, shift = 0, currWidth = 0, spaceIndex;
+    
+    for (i = 0; i < 400; i++)
+    {
+        if (currWidth > 0)
+            currWidth += letterSpacing;
+
+        switch(*(textPtr + i))
+        {
+        case EOS:
+            return;
+        case CHAR_SPACE:
+            spaceIndex = i;
+            break;
+        case PLUS_256:
+            shift = 1;
+            break;
+        case PLUS_512:
+            shift = 2;
+            break;
+        case CHAR_NEWLINE:
+            *(textPtr + i) = CHAR_SPACE;
+            spaceIndex = i;
+            break;
+        case MAGIC_S:
+            if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                *(textPtr + i) = CHAR_s;
+            else
+                i++;
+            break;
+        }
+        currWidth += func(*(textPtr + i) + shift * 0x100, 0);
+        
+        if (currWidth > allowedWidth)
+        {
+            *(textPtr + spaceIndex) = CHAR_NEWLINE;
+            currWidth = 0;
+            i = spaceIndex;
+        }
+    }
+}
+
 void DecompressGlyphFont9(u16 glyphId)
 {
     const u16* glyphs;
@@ -2537,6 +2510,6 @@ void DecompressGlyphFont9(u16 glyphId)
     glyphs = gFont9JapaneseGlyphs + (0x100 * (glyphId >> 4)) + (0x8 * (glyphId & 0xF));
     DecompressGlyphTile(glyphs, gUnknown_03002F90.unk0);
     DecompressGlyphTile(glyphs + 0x80, gUnknown_03002F90.unk40);
-    gUnknown_03002F90.unk80 = 8;
-    gUnknown_03002F90.unk81 = 12;
+    gUnknown_03002F90.glyphWidth = 8;
+    gUnknown_03002F90.glyphHeight = 12;
 }

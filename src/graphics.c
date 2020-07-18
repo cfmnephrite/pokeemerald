@@ -666,28 +666,13 @@ const u16 gBattleInterface_BallStatusBarPal[] = INCBIN_U16("graphics/battle_inte
 const u16 gBattleInterface_BallDisplayPal[] = INCBIN_U16("graphics/battle_interface/ball_display.gbapal");
 
 //Originally an array?
-const u8 gHealthboxElementsGfxTable[] = INCBIN_U8("graphics/battle_interface/hpbar.4bpp",
-                                                  "graphics/battle_interface/expbar.4bpp",
-                                                  "graphics/battle_interface/status_psn.4bpp",
-                                                  "graphics/battle_interface/status_par.4bpp",
-                                                  "graphics/battle_interface/status_slp.4bpp",
-                                                  "graphics/battle_interface/status_frz.4bpp",
-                                                  "graphics/battle_interface/status_brn.4bpp",
-                                                  "graphics/battle_interface/misc.4bpp",
-                                                  "graphics/battle_interface/hpbar_anim.4bpp",
-                                                  "graphics/battle_interface/misc_frameend.4bpp");
-
+const u8 gHealthboxElementsGfxTable[] = INCBIN_U8("graphics/battle_interface/hpbar.4bpp");
+const u8 gHealthboxElementsGfxTable_ExpBar[] = INCBIN_U8("graphics/battle_interface/expbar.4bpp");
+const u8 gHealthboxElementsGfxTable_StatusSymbols[] = INCBIN_U8("graphics/battle_interface/status_syms.4bpp");
+const u8 gHealthboxElementsGfxTable_StatusSymbols2[] = INCBIN_U8("graphics/battle_interface/status_syms2.4bpp");
+const u8 gHealthboxElementsGfxTable_HpBarAnim[] = INCBIN_U8("graphics/battle_interface/hpbar_anim.4bpp");
+const u8 gHealthboxElementsGfxTable_CaughtMarker[] = INCBIN_U8("graphics/battle_interface/ball_owned.4bpp");
 const u8 gBattleInterface_BallDisplayGfx[] = INCBIN_U8("graphics/battle_interface/ball_display.4bpp");
-
-//Originally an array?
-const u8 gUnknown_08C1249C[] = INCBIN_U8("graphics/battle_interface/ball_display_unused_extra.4bpp");
-const u8 gBattleInterfaceGfx_Status2[] = INCBIN_U8("graphics/battle_interface/status2.4bpp"); // these three duplicate sets of graphics are for the opponent pokemon
-const u8 gBattleInterfaceGfx_Status3[] = INCBIN_U8("graphics/battle_interface/status3.4bpp"); // and are also for use in double battles. they use dynamic palettes so
-const u8 gBattleInterfaceGfx_Status4[] = INCBIN_U8("graphics/battle_interface/status4.4bpp"); // coloring them is an extreme headache and wont be done for now
-const u8 gUnknown_D12FEC[] = INCBIN_U8("graphics/unknown/unknown_D12FEC.4bpp");
-const u8 gUnknown_D1300C[] = INCBIN_U8("graphics/unknown/unknown_D1300C.4bpp");
-const u32 gBattleInterfaceGfx_UnusedWindow3[] = INCBIN_U32("graphics/battle_interface/unused_window3.4bpp.lz");
-const u32 gBattleInterfaceGfx_UnusedWindow4[] = INCBIN_U32("graphics/battle_interface/unused_window4.4bpp.lz");
 
 const u32 gBattleAnimSpriteGfx_FurySwipes[] = INCBIN_U32("graphics/battle_anims/sprites/fury_swipes.4bpp.lz");
 const u32 gBattleAnimSpritePal_FurySwipes[] = INCBIN_U32("graphics/battle_anims/sprites/fury_swipes.gbapal.lz");
@@ -951,10 +936,8 @@ const u32 gBattleAnimSpritePal_Eye[] = INCBIN_U32("graphics/battle_anims/sprites
 const u32 gBattleAnimSpriteGfx_Tendrils[] = INCBIN_U32("graphics/battle_anims/sprites/tendrils.4bpp.lz");
 const u32 gBattleAnimSpritePal_Tendrils[] = INCBIN_U32("graphics/battle_anims/sprites/tendrils.gbapal.lz");
 
-const u32 gHealthboxSinglesPlayerGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_singles_player.4bpp.lz");
-const u32 gHealthboxSinglesOpponentGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_singles_opponent.4bpp.lz");
-const u32 gHealthboxDoublesPlayerGfx[] = INCBIN_U32( "graphics/battle_interface/healthbox_doubles_player.4bpp.lz");
-const u32 gHealthboxDoublesOpponentGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_doubles_opponent.4bpp.lz");
+const u32 gHealthboxPlayerGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_player.4bpp.lz");
+const u32 gHealthboxOpponentGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_opponent.4bpp.lz");
 const u32 gHealthboxSafariGfx[] = INCBIN_U32("graphics/battle_interface/healthbox_safari.4bpp.lz");
 
 const u32 gUnusedGfx_Shadow[] = INCBIN_U32("graphics/unused/shadow.4bpp.lz");
@@ -1650,6 +1633,85 @@ const u32 gMoveTypes_Pal[] = INCBIN_U32("graphics/types/move_types.gbapal.lz");
 
 const u32 gSummaryMoveSelect_Gfx[] = INCBIN_U32("graphics/interface/summary_frames.4bpp.lz");
 const u32 gSummaryMoveSelect_Pal[] = INCBIN_U32("graphics/interface/summary_frames.gbapal.lz");
+
+const u32 gBattleMoveBoxMystery_Gfx[] = INCBIN_U32("graphics/battle_interface/box_typeless.4bpp");
+const u32 gBattleMoveBoxBug_Gfx[] = INCBIN_U32("graphics/battle_interface/box_bug_gfx.4bpp");
+const u32 gBattleMoveBoxDark_Gfx[] = INCBIN_U32("graphics/battle_interface/box_dark_gfx.4bpp");
+const u32 gBattleMoveBoxDragon_Gfx[] = INCBIN_U32("graphics/battle_interface/box_dragon_gfx.4bpp");
+const u32 gBattleMoveBoxElectric_Gfx[] = INCBIN_U32("graphics/battle_interface/box_electric_gfx.4bpp");
+const u32 gBattleMoveBoxFairy_Gfx[] = INCBIN_U32("graphics/battle_interface/box_fairy_gfx.4bpp");
+const u32 gBattleMoveBoxFighting_Gfx[] = INCBIN_U32("graphics/battle_interface/box_fighting_gfx.4bpp");
+const u32 gBattleMoveBoxFire_Gfx[] = INCBIN_U32("graphics/battle_interface/box_fire_gfx.4bpp");
+const u32 gBattleMoveBoxFlying_Gfx[] = INCBIN_U32("graphics/battle_interface/box_flying_gfx.4bpp");
+const u32 gBattleMoveBoxGhost_Gfx[] = INCBIN_U32("graphics/battle_interface/box_ghost_gfx.4bpp");
+const u32 gBattleMoveBoxGrass_Gfx[] = INCBIN_U32("graphics/battle_interface/box_grass_gfx.4bpp");
+const u32 gBattleMoveBoxGround_Gfx[] = INCBIN_U32("graphics/battle_interface/box_ground_gfx.4bpp");
+const u32 gBattleMoveBoxIce_Gfx[] = INCBIN_U32("graphics/battle_interface/box_ice_gfx.4bpp");
+const u32 gBattleMoveBoxNormal_Gfx[] = INCBIN_U32("graphics/battle_interface/box_normal_gfx.4bpp");
+const u32 gBattleMoveBoxPoison_Gfx[] = INCBIN_U32("graphics/battle_interface/box_poison_gfx.4bpp");
+const u32 gBattleMoveBoxPsychic_Gfx[] = INCBIN_U32("graphics/battle_interface/box_psychic_gfx.4bpp");
+const u32 gBattleMoveBoxRock_Gfx[] = INCBIN_U32("graphics/battle_interface/box_rock_gfx.4bpp");
+const u32 gBattleMoveBoxSteel_Gfx[] = INCBIN_U32("graphics/battle_interface/box_steel_gfx.4bpp");
+const u32 gBattleMoveBoxWater_Gfx[] = INCBIN_U32("graphics/battle_interface/box_water_gfx.4bpp");
+const u32 gBattleMoveBoxRightHalf_Gfx[] = INCBIN_U32("graphics/battle_interface/box_righthalf.4bpp");
+const u32 gBattleMoveBoxCursor[] = INCBIN_U32("graphics/battle_interface/movebox_cursor.4bpp");
+
+const u16 gBattleMoveBoxBug_Pal[] = INCBIN_U16("graphics/battle_interface/box_bug_pal.gbapal");
+const u16 gBattleMoveBoxDark_Pal[] = INCBIN_U16("graphics/battle_interface/box_dark_pal.gbapal");
+const u16 gBattleMoveBoxDragon_Pal[] = INCBIN_U16("graphics/battle_interface/box_dragon_pal.gbapal");
+const u16 gBattleMoveBoxElectric_Pal[] = INCBIN_U16("graphics/battle_interface/box_electric_pal.gbapal");
+const u16 gBattleMoveBoxFairy_Pal[] = INCBIN_U16("graphics/battle_interface/box_fairy_pal.gbapal");
+const u16 gBattleMoveBoxFighting_Pal[] = INCBIN_U16("graphics/battle_interface/box_fighting_pal.gbapal");
+const u16 gBattleMoveBoxFire_Pal[] = INCBIN_U16("graphics/battle_interface/box_fire_pal.gbapal");
+const u16 gBattleMoveBoxFlying_Pal[] = INCBIN_U16("graphics/battle_interface/box_flying_pal.gbapal");
+const u16 gBattleMoveBoxGhost_Pal[] = INCBIN_U16("graphics/battle_interface/box_ghost_pal.gbapal");
+const u16 gBattleMoveBoxGrass_Pal[] = INCBIN_U16("graphics/battle_interface/box_grass_pal.gbapal");
+const u16 gBattleMoveBoxGround_Pal[] = INCBIN_U16("graphics/battle_interface/box_ground_pal.gbapal");
+const u16 gBattleMoveBoxIce_Pal[] = INCBIN_U16("graphics/battle_interface/box_ice_pal.gbapal");
+const u16 gBattleMoveBoxNormal_Pal[] = INCBIN_U16("graphics/battle_interface/box_normal_pal.gbapal");
+const u16 gBattleMoveBoxPoison_Pal[] = INCBIN_U16("graphics/battle_interface/box_poison_pal.gbapal");
+const u16 gBattleMoveBoxPsychic_Pal[] = INCBIN_U16("graphics/battle_interface/box_psychic_pal.gbapal");
+const u16 gBattleMoveBoxRock_Pal[] = INCBIN_U16("graphics/battle_interface/box_rock_pal.gbapal");
+const u16 gBattleMoveBoxSteel_Pal[] = INCBIN_U16("graphics/battle_interface/box_steel_pal.gbapal");
+const u16 gBattleMoveBoxWater_Pal[] = INCBIN_U16("graphics/battle_interface/box_water_pal.gbapal");
+
+const u32 gTypeBgBug_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_bug.4bpp");
+const u32 gTypeBgDark_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_dark.4bpp");
+const u32 gTypeBgDragon_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_dragon.4bpp");
+const u32 gTypeBgElectric_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_electric.4bpp");
+const u32 gTypeBgFairy_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_fairy.4bpp");
+const u32 gTypeBgFighting_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_fighting.4bpp");
+const u32 gTypeBgFire_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_fire.4bpp");
+const u32 gTypeBgFlying_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_flying.4bpp");
+const u32 gTypeBgGhost_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_ghost.4bpp");
+const u32 gTypeBgGrass_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_grass.4bpp");
+const u32 gTypeBgGround_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_ground.4bpp");
+const u32 gTypeBgIce_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_ice.4bpp");
+const u32 gTypeBgNormal_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_normal.4bpp");
+const u32 gTypeBgPoison_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_poison.4bpp");
+const u32 gTypeBgPsychic_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_psychic.4bpp");
+const u32 gTypeBgRock_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_rock.4bpp");
+const u32 gTypeBgSteel_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_steel.4bpp");
+const u32 gTypeBgWater_Gfx[] = INCBIN_U32("graphics/battle_interface/bg_water.4bpp");
+
+const u16 gTypeBgBug_Pal[] = INCBIN_U16("graphics/battle_interface/bg_bug.gbapal");
+const u16 gTypeBgDark_Pal[] = INCBIN_U16("graphics/battle_interface/bg_dark.gbapal");
+const u16 gTypeBgDragon_Pal[] = INCBIN_U16("graphics/battle_interface/bg_dragon.gbapal");
+const u16 gTypeBgElectric_Pal[] = INCBIN_U16("graphics/battle_interface/bg_electric.gbapal");
+const u16 gTypeBgFairy_Pal[] = INCBIN_U16("graphics/battle_interface/bg_fairy.gbapal");
+const u16 gTypeBgFighting_Pal[] = INCBIN_U16("graphics/battle_interface/bg_fighting.gbapal");
+const u16 gTypeBgFire_Pal[] = INCBIN_U16("graphics/battle_interface/bg_fire.gbapal");
+const u16 gTypeBgFlying_Pal[] = INCBIN_U16("graphics/battle_interface/bg_flying.gbapal");
+const u16 gTypeBgGhost_Pal[] = INCBIN_U16("graphics/battle_interface/bg_ghost.gbapal");
+const u16 gTypeBgGrass_Pal[] = INCBIN_U16("graphics/battle_interface/bg_grass.gbapal");
+const u16 gTypeBgGround_Pal[] = INCBIN_U16("graphics/battle_interface/bg_ground.gbapal");
+const u16 gTypeBgIce_Pal[] = INCBIN_U16("graphics/battle_interface/bg_ice.gbapal");
+const u16 gTypeBgNormal_Pal[] = INCBIN_U16("graphics/battle_interface/bg_normal.gbapal");
+const u16 gTypeBgPoison_Pal[] = INCBIN_U16("graphics/battle_interface/bg_poison.gbapal");
+const u16 gTypeBgPsychic_Pal[] = INCBIN_U16("graphics/battle_interface/bg_psychic.gbapal");
+const u16 gTypeBgRock_Pal[] = INCBIN_U16("graphics/battle_interface/bg_rock.gbapal");
+const u16 gTypeBgSteel_Pal[] = INCBIN_U16("graphics/battle_interface/bg_steel.gbapal");
+const u16 gTypeBgWater_Pal[] = INCBIN_U16("graphics/battle_interface/bg_water.gbapal");
 
 const u32 gStatusScreenBitmap[] = INCBIN_U32("graphics/interface/status_screen.4bpp.lz");
 const u32 gStatusScreenPalette[] = INCBIN_U32("graphics/interface/status_screen.gbapal.lz");
