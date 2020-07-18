@@ -4396,7 +4396,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTournamentId)
     textPrinter.currentY = textPrinter.y;
     textPrinter.letterSpacing = 2;
     textPrinter.lineSpacing = 0;
-    textPrinter.unk = 0;
+    textPrinter.shift = 0;
     textPrinter.fgColor = 14;
     textPrinter.bgColor = 0;
     textPrinter.shadowColor = 13;
@@ -4896,7 +4896,7 @@ static void DisplayMatchInfoOnCard(u8 flags, u8 matchNo)
     textPrinter.currentY = textPrinter.y;
     textPrinter.letterSpacing = 0;
     textPrinter.lineSpacing = 0;
-    textPrinter.unk = 0;
+    textPrinter.shift = 0;
     textPrinter.fgColor = 14;
     textPrinter.bgColor = 0;
     textPrinter.shadowColor = 13;
@@ -5353,7 +5353,7 @@ static void Task_ShowTourneyTree(u8 taskId)
         textPrinter.lineSpacing = 0;
         textPrinter.currentX = GetStringCenterAlignXOffsetWithLetterSpacing(textPrinter.fontId, textPrinter.currentChar, 0x70, textPrinter.letterSpacing);
         textPrinter.currentY = 1;
-        textPrinter.unk = 0;
+        textPrinter.shift = 0;
         textPrinter.fgColor = 14;
         textPrinter.bgColor = 0;
         textPrinter.shadowColor = 13;
@@ -5527,7 +5527,7 @@ static void sub_8194950(u8 taskId)
             textPrinter.y = 0;
             textPrinter.letterSpacing = 2;
             textPrinter.lineSpacing = 0;
-            textPrinter.unk = 0;
+            textPrinter.shift = 0;
             textPrinter.fgColor = 11;
             textPrinter.bgColor = 0;
             textPrinter.shadowColor = 13;

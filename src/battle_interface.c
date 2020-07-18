@@ -1,6 +1,7 @@
 #include "global.h"
 #include "alloc.h"
 #include "battle.h"
+#include "bg.h"
 #include "pokemon.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
@@ -32,138 +33,89 @@
 enum
 {   // Corresponds to gHealthboxElementsGfxTable (and the tables after it) in graphics.c
     // These are indexes into the tables, which are filled with 8x8 square pixel data.
-    HEALTHBOX_GFX_0, //hp bar [black section]
-    HEALTHBOX_GFX_1, //hp bar "H"
-    HEALTHBOX_GFX_2, //hp bar "P"
     HEALTHBOX_GFX_HP_BAR_GREEN, //hp bar [0 pixels]
-    HEALTHBOX_GFX_4,  //hp bar [1 pixels]
-    HEALTHBOX_GFX_5,  //hp bar [2 pixels]
-    HEALTHBOX_GFX_6,  //hp bar [3 pixels]
-    HEALTHBOX_GFX_7,  //hp bar [4 pixels]
-    HEALTHBOX_GFX_8,  //hp bar [5 pixels]
-    HEALTHBOX_GFX_9,  //hp bar [6 pixels]
-    HEALTHBOX_GFX_10, //hp bar [7 pixels]
-    HEALTHBOX_GFX_11, //hp bar [8 pixels]
-    HEALTHBOX_GFX_12, //exp bar [0 pixels]
-    HEALTHBOX_GFX_13, //exp bar [1 pixels]
-    HEALTHBOX_GFX_14, //exp bar [2 pixels]
-    HEALTHBOX_GFX_15, //exp bar [3 pixels]
-    HEALTHBOX_GFX_16, //exp bar [4 pixels]
-    HEALTHBOX_GFX_17, //exp bar [5 pixels]
-    HEALTHBOX_GFX_18, //exp bar [6 pixels]
-    HEALTHBOX_GFX_19, //exp bar [7 pixels]
-    HEALTHBOX_GFX_20, //exp bar [8 pixels]
-    HEALTHBOX_GFX_STATUS_PSN_BATTLER0,  //status psn "(P"
-    HEALTHBOX_GFX_22,                   //status psn "SN"
-    HEALTHBOX_GFX_23,                   //status psn "|)""
-    HEALTHBOX_GFX_STATUS_PRZ_BATTLER0,  //status prz
+    HEALTHBOX_GFX_1,  //hp bar [1 pixels]
+    HEALTHBOX_GFX_2,  //hp bar [2 pixels]
+    HEALTHBOX_GFX_3,  //hp bar [3 pixels]
+    HEALTHBOX_GFX_4,  //hp bar [4 pixels]
+    HEALTHBOX_GFX_5,  //hp bar [5 pixels]
+    HEALTHBOX_GFX_6,  //hp bar [6 pixels]
+    HEALTHBOX_GFX_7, //hp bar [7 pixels]
+    HEALTHBOX_GFX_8, //hp bar [8 pixels]
+    HEALTHBOX_GFX_EXP_BAR, //exp bar [0 pixels]
+    HEALTHBOX_GFX_10, //exp bar [1 pixels]
+    HEALTHBOX_GFX_11, //exp bar [2 pixels]
+    HEALTHBOX_GFX_12, //exp bar [3 pixels]
+    HEALTHBOX_GFX_13, //exp bar [4 pixels]
+    HEALTHBOX_GFX_14, //exp bar [5 pixels]
+    HEALTHBOX_GFX_15, //exp bar [6 pixels]
+    HEALTHBOX_GFX_16, //exp bar [7 pixels]
+    HEALTHBOX_GFX_17, //exp bar [8 pixels]
+    HEALTHBOX_GFX_18, //exp bar [9 pixels]
+    HEALTHBOX_GFX_19, //exp bar [10 pixels]
+    HEALTHBOX_GFX_STATUS_SLP,
+    HEALTHBOX_GFX_21,
+    HEALTHBOX_GFX_STATUS_FRZ,
+    HEALTHBOX_GFX_23,
+    HEALTHBOX_GFX_STATUS_PAR,
     HEALTHBOX_GFX_25,
-    HEALTHBOX_GFX_26,
-    HEALTHBOX_GFX_STATUS_SLP_BATTLER0,  //status slp
-    HEALTHBOX_GFX_28,
+    HEALTHBOX_GFX_STATUS_BRN,
+    HEALTHBOX_GFX_27,
+    HEALTHBOX_GFX_STATUS_PSN,
     HEALTHBOX_GFX_29,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER0,  //status frz
+    HEALTHBOX_GFX_STATUS_TOX,
     HEALTHBOX_GFX_31,
-    HEALTHBOX_GFX_32,
-    HEALTHBOX_GFX_STATUS_BRN_BATTLER0,  //status brn
-    HEALTHBOX_GFX_34,
-    HEALTHBOX_GFX_35,
-    HEALTHBOX_GFX_36, //misc [Black section]
-    HEALTHBOX_GFX_37, //misc [Black section]
-    HEALTHBOX_GFX_38, //misc [Black section]
-    HEALTHBOX_GFX_39, //misc [Blank Health Window?]
-    HEALTHBOX_GFX_40, //misc [Blank Health Window?]
-    HEALTHBOX_GFX_41, //misc [Blank Health Window?]
-    HEALTHBOX_GFX_42, //misc [Blank Health Window?]
-    HEALTHBOX_GFX_43, //misc [Top of Health Window?]
-    HEALTHBOX_GFX_44, //misc [Top of Health Window?]
-    HEALTHBOX_GFX_45, //misc [Top of Health Window?]
-    HEALTHBOX_GFX_46, //misc [Blank Health Window?]
+    HEALTHBOX_GFX_STATUS_NONE,
+    HEALTHBOX_GFX_33,
+    HEALTHBOX_GFX_STATUS_SLP2, 
+    HEALTHBOX_GFX_35, 
+    HEALTHBOX_GFX_STATUS_FRZ2, 
+    HEALTHBOX_GFX_37, 
+    HEALTHBOX_GFX_STATUS_PAR2, 
+    HEALTHBOX_GFX_39, 
+    HEALTHBOX_GFX_STATUS_BRN2, 
+    HEALTHBOX_GFX_41, 
+    HEALTHBOX_GFX_STATUS_PSN2, 
+    HEALTHBOX_GFX_43, 
+    HEALTHBOX_GFX_STATUS_TOX2, 
+    HEALTHBOX_GFX_45, 
+    HEALTHBOX_GFX_STATUS_NONE2, 
+    HEALTHBOX_GFX_47, 
     HEALTHBOX_GFX_HP_BAR_YELLOW, //hp bar yellow [0 pixels]
-    HEALTHBOX_GFX_48, //hp bar yellow [1 pixels]
-    HEALTHBOX_GFX_49, //hp bar yellow [2 pixels]
-    HEALTHBOX_GFX_50, //hp bar yellow [3 pixels]
-    HEALTHBOX_GFX_51, //hp bar yellow [4 pixels]
-    HEALTHBOX_GFX_52, //hp bar yellow [5 pixels]
-    HEALTHBOX_GFX_53, //hp bar yellow [6 pixels]
-    HEALTHBOX_GFX_54, //hp bar yellow [7 pixels]
-    HEALTHBOX_GFX_55, //hp bar yellow [8 pixels]
+    HEALTHBOX_GFX_49, //hp bar yellow [1 pixels]
+    HEALTHBOX_GFX_50, //hp bar yellow [2 pixels]
+    HEALTHBOX_GFX_51, //hp bar yellow [3 pixels]
+    HEALTHBOX_GFX_52, //hp bar yellow [4 pixels]
+    HEALTHBOX_GFX_53, //hp bar yellow [5 pixels]
+    HEALTHBOX_GFX_54, //hp bar yellow [6 pixels]
+    HEALTHBOX_GFX_55, //hp bar yellow [7 pixels]
+    HEALTHBOX_GFX_56, //hp bar yellow [8 pixels]
     HEALTHBOX_GFX_HP_BAR_RED,  //hp bar red [0 pixels]
-    HEALTHBOX_GFX_57, //hp bar red [1 pixels]
-    HEALTHBOX_GFX_58, //hp bar red [2 pixels]
-    HEALTHBOX_GFX_59, //hp bar red [3 pixels]
-    HEALTHBOX_GFX_60, //hp bar red [4 pixels]
-    HEALTHBOX_GFX_61, //hp bar red [5 pixels]
-    HEALTHBOX_GFX_62, //hp bar red [6 pixels]
-    HEALTHBOX_GFX_63, //hp bar red [7 pixels]
-    HEALTHBOX_GFX_64, //hp bar red [8 pixels]
-    HEALTHBOX_GFX_65, //hp bar frame end
-    HEALTHBOX_GFX_66, //status ball [full]
-    HEALTHBOX_GFX_67, //status ball [empty]
-    HEALTHBOX_GFX_68, //status ball [fainted]
-    HEALTHBOX_GFX_69, //status ball [statused]
-    HEALTHBOX_GFX_70, //status ball [unused extra]
-    HEALTHBOX_GFX_STATUS_PSN_BATTLER1, //status2 "PSN"
-    HEALTHBOX_GFX_72,
-    HEALTHBOX_GFX_73,
-    HEALTHBOX_GFX_STATUS_PRZ_BATTLER1, //status2 "PRZ"
-    HEALTHBOX_GFX_75,
-    HEALTHBOX_GFX_76,
-    HEALTHBOX_GFX_STATUS_SLP_BATTLER1, //status2 "SLP"
-    HEALTHBOX_GFX_78,
-    HEALTHBOX_GFX_79,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER1, //status2 "FRZ"
-    HEALTHBOX_GFX_81,
-    HEALTHBOX_GFX_82,
-    HEALTHBOX_GFX_STATUS_BRN_BATTLER1, //status2 "BRN"
-    HEALTHBOX_GFX_84,
-    HEALTHBOX_GFX_85,
-    HEALTHBOX_GFX_STATUS_PSN_BATTLER2, //status3 "PSN"
-    HEALTHBOX_GFX_87,
-    HEALTHBOX_GFX_88,
-    HEALTHBOX_GFX_STATUS_PRZ_BATTLER2, //status3 "PRZ"
-    HEALTHBOX_GFX_90,
-    HEALTHBOX_GFX_91,
-    HEALTHBOX_GFX_STATUS_SLP_BATTLER2, //status3 "SLP"
-    HEALTHBOX_GFX_93,
-    HEALTHBOX_GFX_94,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER2, //status3 "FRZ"
-    HEALTHBOX_GFX_96,
-    HEALTHBOX_GFX_97,
-    HEALTHBOX_GFX_STATUS_BRN_BATTLER2, //status3 "BRN"
-    HEALTHBOX_GFX_99,
-    HEALTHBOX_GFX_100,
-    HEALTHBOX_GFX_STATUS_PSN_BATTLER3, //status4 "PSN"
-    HEALTHBOX_GFX_102,
-    HEALTHBOX_GFX_103,
-    HEALTHBOX_GFX_STATUS_PRZ_BATTLER3, //status4 "PRZ"
-    HEALTHBOX_GFX_105,
-    HEALTHBOX_GFX_106,
-    HEALTHBOX_GFX_STATUS_SLP_BATTLER3, //status4 "SLP"
-    HEALTHBOX_GFX_108,
-    HEALTHBOX_GFX_109,
-    HEALTHBOX_GFX_STATUS_FRZ_BATTLER3, //status4 "FRZ"
-    HEALTHBOX_GFX_111,
-    HEALTHBOX_GFX_112,
-    HEALTHBOX_GFX_STATUS_BRN_BATTLER3, //status4 "BRN"
-    HEALTHBOX_GFX_114,
-    HEALTHBOX_GFX_115,
-    HEALTHBOX_GFX_116, //unknown_D12FEC
-    HEALTHBOX_GFX_117, //unknown_D1300C
+    HEALTHBOX_GFX_58, //hp bar red [1 pixels]
+    HEALTHBOX_GFX_59, //hp bar red [2 pixels]
+    HEALTHBOX_GFX_60, //hp bar red [3 pixels]
+    HEALTHBOX_GFX_61, //hp bar red [4 pixels]
+    HEALTHBOX_GFX_62, //hp bar red [5 pixels]
+    HEALTHBOX_GFX_63, //hp bar red [6 pixels]
+    HEALTHBOX_GFX_64, //hp bar red [7 pixels]
+    HEALTHBOX_GFX_65, //hp bar red [8 pixels]
+    HEALTHBOX_GFX_CAUGHT_MARKER, //caught marker
 };
+
+#define HEALTHBOX_GFX_0 HEALTHBOX_GFX_HP_BAR_GREEN
 
 // strings
 extern const u8 gText_Slash[];
 extern const u8 gText_HighlightDarkGrey[];
 extern const u8 gText_DynColor2[];
-extern const u8 gText_DynColor2Male[];
-extern const u8 gText_DynColor1Female[];
+extern const u8 gText_RedFemaleSymbol[];
+extern const u8 gText_BlueMaleSymbol[];
 
 // this file's functions
 
 static const u8 *GetHealthboxElementGfxPtr(u8 elementId);
 static u8* AddTextPrinterAndCreateWindowOnHealthbox(const u8 *str, u32 x, u32 y, u32 bgColor, u32 *windowId);
-
+static u8* AddTextPrinterAndCreateWindowOnMovebox(const u8 *str, u32 x, u32 y, u32 *windowId, u8 fontId, u8 winTemplate);
 static void RemoveWindowOnHealthbox(u32 windowId);
 static void UpdateHpTextInHealthboxInDoubles(u8 healthboxSpriteId, s16 value, u8 maxOrCurrent);
 static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId);
@@ -188,17 +140,17 @@ static void SpriteCB_StatusSummaryBallsOnSwitchout(struct Sprite *sprite);
 static void SpriteCb_MegaTrigger(struct Sprite *sprite);
 static void SpriteCb_MegaIndicator(struct Sprite *sprite);
 
-static u8 GetStatusIconForBattlerId(u8 statusElementId, u8 battlerId);
-static s32 CalcNewBarValue(s32 maxValue, s32 currValue, s32 receivedValue, s32 *arg3, u8 arg4, u16 arg5);
+static s32 CalcNewBarValue(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 scale, u16 toAdd);
 static u8 GetScaledExpFraction(s32 currValue, s32 receivedValue, s32 maxValue, u8 scale);
 static void MoveBattleBarGraphically(u8 battlerId, u8 whichBar);
 static u8 CalcBarFilledPixels(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 *arg4, u8 scale);
+static void CalcExpBarFilledPixels(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 *arg4, u8 totalPixels);
 
 static void SpriteCb_AbilityPopUp(struct Sprite *sprite);
 static void Task_FreeAbilityPopUpGfx(u8 taskId);
 
 // const rom data
-static const struct OamData sUnknown_0832C138 =
+static const struct OamData sOamData_HealthBox =
 {
     .y = 0,
     .affineMode = 0,
@@ -215,12 +167,21 @@ static const struct OamData sUnknown_0832C138 =
     .affineParam = 0,
 };
 
-static const struct SpriteTemplate sHealthboxPlayerSpriteTemplates[2] =
+static const struct SpriteTemplate sHealthboxSpriteTemplates[MAX_BATTLERS_COUNT] =
 {
     {
         .tileTag = TAG_HEALTHBOX_PLAYER1_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sUnknown_0832C138,
+        .oam = &sOamData_HealthBox,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_HEALTHBOX_OPPONENT1_TILE,
+        .paletteTag = TAG_HEALTHBOX_PAL,
+        .oam = &sOamData_HealthBox,
         .anims = gDummySpriteAnimTable,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
@@ -229,20 +190,7 @@ static const struct SpriteTemplate sHealthboxPlayerSpriteTemplates[2] =
     {
         .tileTag = TAG_HEALTHBOX_PLAYER2_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sUnknown_0832C138,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy
-    }
-};
-
-static const struct SpriteTemplate sHealthboxOpponentSpriteTemplates[2] =
-{
-    {
-        .tileTag = TAG_HEALTHBOX_OPPONENT1_TILE,
-        .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sUnknown_0832C138,
+        .oam = &sOamData_HealthBox,
         .anims = gDummySpriteAnimTable,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
@@ -251,7 +199,7 @@ static const struct SpriteTemplate sHealthboxOpponentSpriteTemplates[2] =
     {
         .tileTag = TAG_HEALTHBOX_OPPONENT2_TILE,
         .paletteTag = TAG_HEALTHBOX_PAL,
-        .oam = &sUnknown_0832C138,
+        .oam = &sOamData_HealthBox,
         .anims = gDummySpriteAnimTable,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
@@ -263,13 +211,23 @@ static const struct SpriteTemplate sHealthboxSafariSpriteTemplate =
 {
     .tileTag = TAG_HEALTHBOX_SAFARI_TILE,
     .paletteTag = TAG_HEALTHBOX_PAL,
-    .oam = &sUnknown_0832C138,
+    .oam = &sOamData_HealthBox,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
 
+static const struct Subsprite sHealthBox_Subsprites[] =
+{
+    {0,     0,  SPRITE_SHAPE(64x32),  SPRITE_SIZE(64x32),  0,      1},
+    {64,    0,  SPRITE_SHAPE(64x32),  SPRITE_SIZE(64x32),  32,     1}
+};
+
+static const struct SubspriteTable sHealthBox_SubspriteTable[] =
+{
+    {ARRAY_COUNT(sHealthBox_Subsprites), sHealthBox_Subsprites}
+};
 static const struct OamData sOamData_Healthbar =
 {
     .y = 0,
@@ -327,23 +285,15 @@ static const struct SpriteTemplate sHealthbarSpriteTemplates[MAX_BATTLERS_COUNT]
     }
 };
 
-static const struct Subsprite sUnknown_0832C258[] =
+static const struct Subsprite sHealthBar_Subsprites[] =
 {
     {240,   0,  1,  1,  0,      1},
     {16,    0,  1,  1,  4,      1}
 };
 
-static const struct Subsprite sUnknown_0832C260[] =
+static const struct SubspriteTable sHealthBar_SubspriteTable[] =
 {
-    {240,   0,  1,  1,  0,      1},
-    {16,    0,  1,  1,  4,      1},
-    {224,   0,  0,  0,  8,      1}
-};
-
-static const struct SubspriteTable sUnknown_0832C28C[] =
-{
-    {ARRAY_COUNT(sUnknown_0832C258), sUnknown_0832C258},
-    {ARRAY_COUNT(sUnknown_0832C260), sUnknown_0832C260}
+    {ARRAY_COUNT(sHealthBar_Subsprites), sHealthBar_Subsprites},
 };
 
 static const struct Subsprite sStatusSummaryBar_Subsprites_0[] =
@@ -416,7 +366,7 @@ static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
     {
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sUnknown_0832C138,
+        .oam = &sOamData_HealthBox,
         .anims = gDummySpriteAnimTable,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
@@ -425,7 +375,7 @@ static const struct SpriteTemplate sStatusSummaryBarSpriteTemplates[2] =
     {
         .tileTag = TAG_STATUS_SUMMARY_BAR_TILE,
         .paletteTag = TAG_STATUS_SUMMARY_BAR_PAL,
-        .oam = &sUnknown_0832C138,
+        .oam = &sOamData_HealthBox,
         .anims = gDummySpriteAnimTable,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
@@ -454,6 +404,922 @@ static const struct SpriteTemplate sStatusSummaryBallsSpriteTemplates[2] =
         .callback = SpriteCB_StatusSummaryBallsOnBattleStart
     }
 };
+
+// Move boxes
+
+static const struct OamData sOamData_BattleMoveBoxes =
+{
+    .y = 0,
+    .affineMode = 0,
+    .objMode = 0,
+    .mosaic = 0,
+    .bpp = 0,
+    .shape = SPRITE_SHAPE(64x64),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x64),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] = 
+{
+    {gBattleMoveBoxMystery_Gfx, 0x400, TAG_MOVE_BOX_MYSTERY_TILE},
+    {gBattleMoveBoxBug_Gfx, 0x400, TAG_MOVE_BOX_BUG_TILE},
+    {gBattleMoveBoxDark_Gfx, 0x400, TAG_MOVE_BOX_DARK_TILE},
+    {gBattleMoveBoxDragon_Gfx, 0x400, TAG_MOVE_BOX_DRAGON_TILE},
+    {gBattleMoveBoxElectric_Gfx, 0x400, TAG_MOVE_BOX_ELECTRIC_TILE},
+    {gBattleMoveBoxFairy_Gfx, 0x400, TAG_MOVE_BOX_FAIRY_TILE},
+    {gBattleMoveBoxFighting_Gfx, 0x400, TAG_MOVE_BOX_FIGHTING_TILE},
+    {gBattleMoveBoxFire_Gfx, 0x400, TAG_MOVE_BOX_FIRE_TILE},
+    {gBattleMoveBoxFlying_Gfx, 0x400, TAG_MOVE_BOX_FLYING_TILE},
+    {gBattleMoveBoxGhost_Gfx, 0x400, TAG_MOVE_BOX_GHOST_TILE},
+    {gBattleMoveBoxGrass_Gfx, 0x400, TAG_MOVE_BOX_GRASS_TILE},
+    {gBattleMoveBoxGround_Gfx, 0x400, TAG_MOVE_BOX_GROUND_TILE},
+    {gBattleMoveBoxIce_Gfx, 0x400, TAG_MOVE_BOX_ICE_TILE},
+    {gBattleMoveBoxNormal_Gfx, 0x400, TAG_MOVE_BOX_NORMAL_TILE},
+    {gBattleMoveBoxPoison_Gfx, 0x400, TAG_MOVE_BOX_POISON_TILE},
+    {gBattleMoveBoxPsychic_Gfx, 0x400, TAG_MOVE_BOX_PSYCHIC_TILE},
+    {gBattleMoveBoxRock_Gfx, 0x400, TAG_MOVE_BOX_ROCK_TILE},
+    {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE},
+    {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE},
+    {gBattleMoveBoxMystery_Gfx, 0x400, TAG_MOVE_BOX_MYSTERY_TILE2},
+    {gBattleMoveBoxBug_Gfx, 0x400, TAG_MOVE_BOX_BUG_TILE2},
+    {gBattleMoveBoxDark_Gfx, 0x400, TAG_MOVE_BOX_DARK_TILE2},
+    {gBattleMoveBoxDragon_Gfx, 0x400, TAG_MOVE_BOX_DRAGON_TILE2},
+    {gBattleMoveBoxElectric_Gfx, 0x400, TAG_MOVE_BOX_ELECTRIC_TILE2},
+    {gBattleMoveBoxFairy_Gfx, 0x400, TAG_MOVE_BOX_FAIRY_TILE2},
+    {gBattleMoveBoxFighting_Gfx, 0x400, TAG_MOVE_BOX_FIGHTING_TILE2},
+    {gBattleMoveBoxFire_Gfx, 0x400, TAG_MOVE_BOX_FIRE_TILE2},
+    {gBattleMoveBoxFlying_Gfx, 0x400, TAG_MOVE_BOX_FLYING_TILE2},
+    {gBattleMoveBoxGhost_Gfx, 0x400, TAG_MOVE_BOX_GHOST_TILE2},
+    {gBattleMoveBoxGrass_Gfx, 0x400, TAG_MOVE_BOX_GRASS_TILE2},
+    {gBattleMoveBoxGround_Gfx, 0x400, TAG_MOVE_BOX_GROUND_TILE2},
+    {gBattleMoveBoxIce_Gfx, 0x400, TAG_MOVE_BOX_ICE_TILE2},
+    {gBattleMoveBoxNormal_Gfx, 0x400, TAG_MOVE_BOX_NORMAL_TILE2},
+    {gBattleMoveBoxPoison_Gfx, 0x400, TAG_MOVE_BOX_POISON_TILE2},
+    {gBattleMoveBoxPsychic_Gfx, 0x400, TAG_MOVE_BOX_PSYCHIC_TILE2},
+    {gBattleMoveBoxRock_Gfx, 0x400, TAG_MOVE_BOX_ROCK_TILE2},
+    {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE2},
+    {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE2},
+    {gBattleMoveBoxMystery_Gfx, 0x400, TAG_MOVE_BOX_MYSTERY_TILE3},
+    {gBattleMoveBoxBug_Gfx, 0x400, TAG_MOVE_BOX_BUG_TILE3},
+    {gBattleMoveBoxDark_Gfx, 0x400, TAG_MOVE_BOX_DARK_TILE3},
+    {gBattleMoveBoxDragon_Gfx, 0x400, TAG_MOVE_BOX_DRAGON_TILE3},
+    {gBattleMoveBoxElectric_Gfx, 0x400, TAG_MOVE_BOX_ELECTRIC_TILE3},
+    {gBattleMoveBoxFairy_Gfx, 0x400, TAG_MOVE_BOX_FAIRY_TILE3},
+    {gBattleMoveBoxFighting_Gfx, 0x400, TAG_MOVE_BOX_FIGHTING_TILE3},
+    {gBattleMoveBoxFire_Gfx, 0x400, TAG_MOVE_BOX_FIRE_TILE3},
+    {gBattleMoveBoxFlying_Gfx, 0x400, TAG_MOVE_BOX_FLYING_TILE3},
+    {gBattleMoveBoxGhost_Gfx, 0x400, TAG_MOVE_BOX_GHOST_TILE3},
+    {gBattleMoveBoxGrass_Gfx, 0x400, TAG_MOVE_BOX_GRASS_TILE3},
+    {gBattleMoveBoxGround_Gfx, 0x400, TAG_MOVE_BOX_GROUND_TILE3},
+    {gBattleMoveBoxIce_Gfx, 0x400, TAG_MOVE_BOX_ICE_TILE3},
+    {gBattleMoveBoxNormal_Gfx, 0x400, TAG_MOVE_BOX_NORMAL_TILE3},
+    {gBattleMoveBoxPoison_Gfx, 0x400, TAG_MOVE_BOX_POISON_TILE3},
+    {gBattleMoveBoxPsychic_Gfx, 0x400, TAG_MOVE_BOX_PSYCHIC_TILE3},
+    {gBattleMoveBoxRock_Gfx, 0x400, TAG_MOVE_BOX_ROCK_TILE3},
+    {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE3},
+    {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE3},
+    {gBattleMoveBoxMystery_Gfx, 0x400, TAG_MOVE_BOX_MYSTERY_TILE4},
+    {gBattleMoveBoxBug_Gfx, 0x400, TAG_MOVE_BOX_BUG_TILE4},
+    {gBattleMoveBoxDark_Gfx, 0x400, TAG_MOVE_BOX_DARK_TILE4},
+    {gBattleMoveBoxDragon_Gfx, 0x400, TAG_MOVE_BOX_DRAGON_TILE4},
+    {gBattleMoveBoxElectric_Gfx, 0x400, TAG_MOVE_BOX_ELECTRIC_TILE4},
+    {gBattleMoveBoxFairy_Gfx, 0x400, TAG_MOVE_BOX_FAIRY_TILE4},
+    {gBattleMoveBoxFighting_Gfx, 0x400, TAG_MOVE_BOX_FIGHTING_TILE4},
+    {gBattleMoveBoxFire_Gfx, 0x400, TAG_MOVE_BOX_FIRE_TILE4},
+    {gBattleMoveBoxFlying_Gfx, 0x400, TAG_MOVE_BOX_FLYING_TILE4},
+    {gBattleMoveBoxGhost_Gfx, 0x400, TAG_MOVE_BOX_GHOST_TILE4},
+    {gBattleMoveBoxGrass_Gfx, 0x400, TAG_MOVE_BOX_GRASS_TILE4},
+    {gBattleMoveBoxGround_Gfx, 0x400, TAG_MOVE_BOX_GROUND_TILE4},
+    {gBattleMoveBoxIce_Gfx, 0x400, TAG_MOVE_BOX_ICE_TILE4},
+    {gBattleMoveBoxNormal_Gfx, 0x400, TAG_MOVE_BOX_NORMAL_TILE4},
+    {gBattleMoveBoxPoison_Gfx, 0x400, TAG_MOVE_BOX_POISON_TILE4},
+    {gBattleMoveBoxPsychic_Gfx, 0x400, TAG_MOVE_BOX_PSYCHIC_TILE4},
+    {gBattleMoveBoxRock_Gfx, 0x400, TAG_MOVE_BOX_ROCK_TILE4},
+    {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE4},
+    {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE4},
+    {gBattleMoveBoxRightHalf_Gfx, 0x400, TAG_MOVE_BOX_RIGHTHALF_TILE},
+    {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR}
+};
+
+static const struct SpritePalette sSpritePalettes_BattleMoveBoxes[] = 
+{
+    {gBattleMoveBoxNormal_Pal, TAG_MOVE_BOX_MYSTERY_PAL},
+    {gBattleMoveBoxBug_Pal, TAG_MOVE_BOX_BUG_PAL},
+    {gBattleMoveBoxDark_Pal, TAG_MOVE_BOX_DARK_PAL},
+    {gBattleMoveBoxDragon_Pal, TAG_MOVE_BOX_DRAGON_PAL},
+    {gBattleMoveBoxElectric_Pal, TAG_MOVE_BOX_ELECTRIC_PAL},
+    {gBattleMoveBoxFairy_Pal, TAG_MOVE_BOX_FAIRY_PAL},
+    {gBattleMoveBoxFighting_Pal, TAG_MOVE_BOX_FIGHTING_PAL},
+    {gBattleMoveBoxFire_Pal, TAG_MOVE_BOX_FIRE_PAL},
+    {gBattleMoveBoxFlying_Pal, TAG_MOVE_BOX_FLYING_PAL},
+    {gBattleMoveBoxGhost_Pal, TAG_MOVE_BOX_GHOST_PAL},
+    {gBattleMoveBoxGrass_Pal, TAG_MOVE_BOX_GRASS_PAL},
+    {gBattleMoveBoxGround_Pal, TAG_MOVE_BOX_GROUND_PAL},
+    {gBattleMoveBoxIce_Pal, TAG_MOVE_BOX_ICE_PAL},
+    {gBattleMoveBoxNormal_Pal, TAG_MOVE_BOX_NORMAL_PAL},
+    {gBattleMoveBoxPoison_Pal, TAG_MOVE_BOX_POISON_PAL},
+    {gBattleMoveBoxPsychic_Pal, TAG_MOVE_BOX_PSYCHIC_PAL},
+    {gBattleMoveBoxRock_Pal, TAG_MOVE_BOX_ROCK_PAL},
+    {gBattleMoveBoxSteel_Pal, TAG_MOVE_BOX_STEEL_PAL},
+    {gBattleMoveBoxWater_Pal, TAG_MOVE_BOX_WATER_PAL}
+};
+
+static const struct SpriteTemplate sBattleMoveBoxSpriteTemplates[] =
+{
+    {
+        .tileTag = TAG_MOVE_BOX_MYSTERY_TILE,
+        .paletteTag = TAG_MOVE_BOX_MYSTERY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_BUG_TILE,
+        .paletteTag = TAG_MOVE_BOX_BUG_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DARK_TILE,
+        .paletteTag = TAG_MOVE_BOX_DARK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DRAGON_TILE,
+        .paletteTag = TAG_MOVE_BOX_DRAGON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ELECTRIC_TILE,
+        .paletteTag = TAG_MOVE_BOX_ELECTRIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FAIRY_TILE,
+        .paletteTag = TAG_MOVE_BOX_FAIRY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIGHTING_TILE,
+        .paletteTag = TAG_MOVE_BOX_FIGHTING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIRE_TILE,
+        .paletteTag = TAG_MOVE_BOX_FIRE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FLYING_TILE,
+        .paletteTag = TAG_MOVE_BOX_FLYING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GHOST_TILE,
+        .paletteTag = TAG_MOVE_BOX_GHOST_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GRASS_TILE,
+        .paletteTag = TAG_MOVE_BOX_GRASS_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GROUND_TILE,
+        .paletteTag = TAG_MOVE_BOX_GROUND_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ICE_TILE,
+        .paletteTag = TAG_MOVE_BOX_ICE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_NORMAL_TILE,
+        .paletteTag = TAG_MOVE_BOX_NORMAL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_POISON_TILE,
+        .paletteTag = TAG_MOVE_BOX_POISON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_PSYCHIC_TILE,
+        .paletteTag = TAG_MOVE_BOX_PSYCHIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ROCK_TILE,
+        .paletteTag = TAG_MOVE_BOX_ROCK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_STEEL_TILE,
+        .paletteTag = TAG_MOVE_BOX_STEEL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_WATER_TILE,
+        .paletteTag = TAG_MOVE_BOX_WATER_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_MYSTERY_TILE2,
+        .paletteTag = TAG_MOVE_BOX_MYSTERY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_BUG_TILE2,
+        .paletteTag = TAG_MOVE_BOX_BUG_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DARK_TILE2,
+        .paletteTag = TAG_MOVE_BOX_DARK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DRAGON_TILE2,
+        .paletteTag = TAG_MOVE_BOX_DRAGON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ELECTRIC_TILE2,
+        .paletteTag = TAG_MOVE_BOX_ELECTRIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FAIRY_TILE2,
+        .paletteTag = TAG_MOVE_BOX_FAIRY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIGHTING_TILE2,
+        .paletteTag = TAG_MOVE_BOX_FIGHTING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIRE_TILE2,
+        .paletteTag = TAG_MOVE_BOX_FIRE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FLYING_TILE2,
+        .paletteTag = TAG_MOVE_BOX_FLYING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GHOST_TILE2,
+        .paletteTag = TAG_MOVE_BOX_GHOST_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GRASS_TILE2,
+        .paletteTag = TAG_MOVE_BOX_GRASS_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GROUND_TILE2,
+        .paletteTag = TAG_MOVE_BOX_GROUND_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ICE_TILE2,
+        .paletteTag = TAG_MOVE_BOX_ICE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_NORMAL_TILE2,
+        .paletteTag = TAG_MOVE_BOX_NORMAL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_POISON_TILE2,
+        .paletteTag = TAG_MOVE_BOX_POISON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_PSYCHIC_TILE2,
+        .paletteTag = TAG_MOVE_BOX_PSYCHIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ROCK_TILE2,
+        .paletteTag = TAG_MOVE_BOX_ROCK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_STEEL_TILE2,
+        .paletteTag = TAG_MOVE_BOX_STEEL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_WATER_TILE2,
+        .paletteTag = TAG_MOVE_BOX_WATER_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_MYSTERY_TILE3,
+        .paletteTag = TAG_MOVE_BOX_MYSTERY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_BUG_TILE3,
+        .paletteTag = TAG_MOVE_BOX_BUG_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DARK_TILE3,
+        .paletteTag = TAG_MOVE_BOX_DARK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DRAGON_TILE3,
+        .paletteTag = TAG_MOVE_BOX_DRAGON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ELECTRIC_TILE3,
+        .paletteTag = TAG_MOVE_BOX_ELECTRIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FAIRY_TILE3,
+        .paletteTag = TAG_MOVE_BOX_FAIRY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIGHTING_TILE3,
+        .paletteTag = TAG_MOVE_BOX_FIGHTING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIRE_TILE3,
+        .paletteTag = TAG_MOVE_BOX_FIRE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FLYING_TILE3,
+        .paletteTag = TAG_MOVE_BOX_FLYING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GHOST_TILE3,
+        .paletteTag = TAG_MOVE_BOX_GHOST_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GRASS_TILE3,
+        .paletteTag = TAG_MOVE_BOX_GRASS_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GROUND_TILE3,
+        .paletteTag = TAG_MOVE_BOX_GROUND_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ICE_TILE3,
+        .paletteTag = TAG_MOVE_BOX_ICE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_NORMAL_TILE3,
+        .paletteTag = TAG_MOVE_BOX_NORMAL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_POISON_TILE3,
+        .paletteTag = TAG_MOVE_BOX_POISON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_PSYCHIC_TILE3,
+        .paletteTag = TAG_MOVE_BOX_PSYCHIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ROCK_TILE3,
+        .paletteTag = TAG_MOVE_BOX_ROCK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_STEEL_TILE3,
+        .paletteTag = TAG_MOVE_BOX_STEEL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_WATER_TILE3,
+        .paletteTag = TAG_MOVE_BOX_WATER_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_MYSTERY_TILE4,
+        .paletteTag = TAG_MOVE_BOX_MYSTERY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_BUG_TILE4,
+        .paletteTag = TAG_MOVE_BOX_BUG_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DARK_TILE4,
+        .paletteTag = TAG_MOVE_BOX_DARK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_DRAGON_TILE4,
+        .paletteTag = TAG_MOVE_BOX_DRAGON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ELECTRIC_TILE4,
+        .paletteTag = TAG_MOVE_BOX_ELECTRIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FAIRY_TILE4,
+        .paletteTag = TAG_MOVE_BOX_FAIRY_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIGHTING_TILE4,
+        .paletteTag = TAG_MOVE_BOX_FIGHTING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FIRE_TILE4,
+        .paletteTag = TAG_MOVE_BOX_FIRE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_FLYING_TILE4,
+        .paletteTag = TAG_MOVE_BOX_FLYING_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GHOST_TILE4,
+        .paletteTag = TAG_MOVE_BOX_GHOST_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GRASS_TILE4,
+        .paletteTag = TAG_MOVE_BOX_GRASS_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_GROUND_TILE4,
+        .paletteTag = TAG_MOVE_BOX_GROUND_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ICE_TILE4,
+        .paletteTag = TAG_MOVE_BOX_ICE_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_NORMAL_TILE4,
+        .paletteTag = TAG_MOVE_BOX_NORMAL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_POISON_TILE4,
+        .paletteTag = TAG_MOVE_BOX_POISON_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_PSYCHIC_TILE4,
+        .paletteTag = TAG_MOVE_BOX_PSYCHIC_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_ROCK_TILE4,
+        .paletteTag = TAG_MOVE_BOX_ROCK_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_STEEL_TILE4,
+        .paletteTag = TAG_MOVE_BOX_STEEL_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    },
+    {
+        .tileTag = TAG_MOVE_BOX_WATER_TILE4,
+        .paletteTag = TAG_MOVE_BOX_WATER_PAL,
+        .oam = &sOamData_BattleMoveBoxes,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy
+    }
+};
+
+static const struct Subsprite sBattleMoveBoxSubsprites[] =
+{
+    {0,     0,  SPRITE_SHAPE(64x32),  SPRITE_SIZE(64x32),  0,      1},
+    {64,    0,  SPRITE_SHAPE(64x32),  SPRITE_SIZE(64x32),  32,     1}
+};
+
+static const struct SubspriteTable sBattleMoveBoxSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleMoveBoxSubsprites), sBattleMoveBoxSubsprites}
+};
+
+// Movebox cursor
+
+static const struct OamData sOamData_BattleMoveBoxCursor =
+{
+    .y = 0,
+    .affineMode = 0,
+    .objMode = 0,
+    .mosaic = 0,
+    .bpp = 0,
+    .shape = SPRITE_SHAPE(16x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(16x16),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const union AnimCmd sBattleMoveBoxCursorAnim[] =
+{
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(4, 20),
+    ANIMCMD_JUMP(0)
+};
+
+static const union AnimCmd sBattleMoveBoxCursorPause[] =
+{
+    ANIMCMD_FRAME(0, 0),
+    ANIMCMD_END
+};
+
+static const union AnimCmd *const sBattleMoveBoxCursorAnimTable[] =
+{
+    sBattleMoveBoxCursorAnim,
+    sBattleMoveBoxCursorPause
+};
+
+static void SpriteCallback_MoveBoxCursor(struct Sprite *sprite)
+{
+    if ((sprite->pos1.y - 113) > 23 * sprite->oam.affineParam)
+    {
+        sprite->pos1.y -= 2;
+        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
+            sprite->pos1.y--;
+            
+    }
+    else if ((sprite->pos1.y - 113) < 23 * sprite->oam.affineParam)
+    {
+        sprite->pos1.y += 2;
+        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
+            sprite->pos1.y++;
+    }
+}
+
+static const struct SpriteTemplate sBattleMoveBoxCursor =
+{
+    .tileTag = TAG_MOVE_BOX_CURSOR,
+    .paletteTag = TAG_HEALTHBOX_PAL,
+    .oam = &sOamData_BattleMoveBoxCursor,
+    .anims = sBattleMoveBoxCursorAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallback_MoveBoxCursor
+};
+
+static const struct Subsprite sBattleMoveBoxCursorSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      0},
+    {120,   0,  0,  0,  1,      0},
+    {0,    14,  0,  0,  2,      0},
+    {120,  14,  0,  0,  3,      0}
+};
+
+static const struct Subsprite sBattleMoveBoxCursorPausedSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      1},
+    {120,   0,  0,  0,  1,      1},
+    {0,    14,  0,  0,  2,      1},
+    {120,  14,  0,  0,  3,      1}
+};
+
+static const struct SubspriteTable sBattleMoveBoxCursorSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleMoveBoxCursorSubsprites), sBattleMoveBoxCursorSubsprites},
+};
+
+static const struct SubspriteTable sBattleMoveBoxCursorPausedSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleMoveBoxCursorPausedSubsprites), sBattleMoveBoxCursorPausedSubsprites}
+};
+
 
 // possibly text
 static const u8 sUnknown_0832C3C4[] =
@@ -613,89 +1479,31 @@ static const struct SpriteTemplate sSpriteTemplate_MegaIndicator =
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
 {
     s16 data6 = 0;
-    u8 healthboxLeftSpriteId, healthboxRightSpriteId;
+    u8 healthboxSpriteId;
     u8 healthbarSpriteId;
-    struct Sprite *healthBarSpritePtr;
 
-    if (!IsDoubleBattle())
-    {
-        if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-        {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[0], 240, 160, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[0], 240, 160, 1);
+    healthboxSpriteId = CreateSprite(&sHealthboxSpriteTemplates[battlerId], 240, 160, 1);
+    SetSubspriteTables(&gSprites[healthboxSpriteId], sHealthBox_SubspriteTable);
+    
+    healthbarSpriteId = CreateSpriteAtEnd(&sHealthbarSpriteTemplates[gBattlerPositions[battlerId]], 240, 160, 0);
+    SetSubspriteTables(&gSprites[healthbarSpriteId], sHealthBar_SubspriteTable);
+    
+    gSprites[healthbarSpriteId].subspriteMode = 2;
+    gSprites[healthbarSpriteId].oam.priority = 1;
 
-            gSprites[healthboxLeftSpriteId].oam.shape = 0;
+    gSprites[healthboxSpriteId].hMain_HealthBarSpriteId = healthbarSpriteId;
+    gSprites[healthboxSpriteId].hMain_Battler = battlerId;
+    gSprites[healthboxSpriteId].invisible = TRUE;
 
-            gSprites[healthboxRightSpriteId].oam.shape = 0;
-            gSprites[healthboxRightSpriteId].oam.tileNum += 64;
-        }
-        else
-        {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[0], 240, 160, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[0], 240, 160, 1);
-
-            gSprites[healthboxRightSpriteId].oam.tileNum += 32;
-
-            data6 = 2;
-        }
-        gSprites[healthboxLeftSpriteId].oam.affineParam = healthboxRightSpriteId;
-
-        gSprites[healthboxRightSpriteId].hOther_HealthBoxSpriteId = healthboxLeftSpriteId;
-        gSprites[healthboxRightSpriteId].callback = SpriteCB_HealthBoxOther;
-    }
-    else
-    {
-        if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-        {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], 240, 160, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], 240, 160, 1);
-
-            gSprites[healthboxLeftSpriteId].oam.affineParam = healthboxRightSpriteId;
-
-            gSprites[healthboxRightSpriteId].hOther_HealthBoxSpriteId = healthboxLeftSpriteId;
-            gSprites[healthboxRightSpriteId].oam.tileNum += 32;
-            gSprites[healthboxRightSpriteId].callback = SpriteCB_HealthBoxOther;
-
-            data6 = 1;
-        }
-        else
-        {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], 240, 160, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], 240, 160, 1);
-
-            gSprites[healthboxLeftSpriteId].oam.affineParam = healthboxRightSpriteId;
-
-            gSprites[healthboxRightSpriteId].hOther_HealthBoxSpriteId = healthboxLeftSpriteId;
-            gSprites[healthboxRightSpriteId].oam.tileNum += 32;
-            gSprites[healthboxRightSpriteId].callback = SpriteCB_HealthBoxOther;
-
-            data6 = 2;
-        }
-    }
-
-    healthbarSpriteId = CreateSpriteAtEnd(&sHealthbarSpriteTemplates[gBattlerPositions[battlerId]], 140, 60, 0);
-    healthBarSpritePtr = &gSprites[healthbarSpriteId];
-    SetSubspriteTables(healthBarSpritePtr, &sUnknown_0832C28C[GetBattlerSide(battlerId)]);
-    healthBarSpritePtr->subspriteMode = 2;
-    healthBarSpritePtr->oam.priority = 1;
-
-    CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_1), (void*)(OBJ_VRAM0 + healthBarSpritePtr->oam.tileNum * TILE_SIZE_4BPP), 64);
-
-    gSprites[healthboxLeftSpriteId].hMain_HealthBarSpriteId = healthbarSpriteId;
-    gSprites[healthboxLeftSpriteId].hMain_Battler = battlerId;
-    gSprites[healthboxLeftSpriteId].invisible = TRUE;
-
-    gSprites[healthboxRightSpriteId].invisible = TRUE;
-
-    healthBarSpritePtr->hBar_HealthBoxSpriteId = healthboxLeftSpriteId;
-    healthBarSpritePtr->hBar_Data6 = data6;
-    healthBarSpritePtr->invisible = TRUE;
+    gSprites[healthbarSpriteId].hBar_HealthBoxSpriteId = healthboxSpriteId;
+    gSprites[healthbarSpriteId].hBar_Data6 = GetBattlerSide(battlerId);
+    gSprites[healthbarSpriteId].invisible = TRUE;
 
     // Create mega indicator sprite if is a mega evolved mon.
     if (gBattleStruct->mega.evolvedPartyIds[GetBattlerSide(battlerId)] & gBitTable[gBattlerPartyIndexes[battlerId]])
         CreateMegaIndicatorSprite(battlerId, 0);
 
-    return healthboxLeftSpriteId;
+    return healthboxSpriteId;
 }
 
 u8 CreateSafariPlayerHealthboxSprites(void)
@@ -731,17 +1539,12 @@ static void SpriteCB_HealthBar(struct Sprite *sprite)
     switch (sprite->hBar_Data6)
     {
     case 0:
-        sprite->pos1.x = gSprites[healthboxSpriteId].pos1.x + 16;
-        sprite->pos1.y = gSprites[healthboxSpriteId].pos1.y;
+        sprite->pos1.x = gSprites[healthboxSpriteId].pos1.x + 42;
+        sprite->pos1.y = gSprites[healthboxSpriteId].pos1.y + 16;
         break;
     case 1:
-        sprite->pos1.x = gSprites[healthboxSpriteId].pos1.x + 16;
-        sprite->pos1.y = gSprites[healthboxSpriteId].pos1.y;
-        break;
-    case 2:
-    default:
-        sprite->pos1.x = gSprites[healthboxSpriteId].pos1.x + 8;
-        sprite->pos1.y = gSprites[healthboxSpriteId].pos1.y;
+        sprite->pos1.x = gSprites[healthboxSpriteId].pos1.x + 61;
+        sprite->pos1.y = gSprites[healthboxSpriteId].pos1.y + 16;
         break;
     }
 
@@ -781,14 +1584,12 @@ void SetHealthboxSpriteInvisible(u8 healthboxSpriteId)
     DestroyMegaIndicatorSprite(gSprites[healthboxSpriteId].hMain_Battler);
     gSprites[healthboxSpriteId].invisible = TRUE;
     gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId].invisible = TRUE;
-    gSprites[gSprites[healthboxSpriteId].oam.affineParam].invisible = TRUE;
 }
 
 void SetHealthboxSpriteVisible(u8 healthboxSpriteId)
 {
     gSprites[healthboxSpriteId].invisible = FALSE;
     gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId].invisible = FALSE;
-    gSprites[gSprites[healthboxSpriteId].oam.affineParam].invisible = FALSE;
 }
 
 static void UpdateSpritePos(u8 spriteId, s16 x, s16 y)
@@ -800,7 +1601,6 @@ static void UpdateSpritePos(u8 spriteId, s16 x, s16 y)
 void DestoryHealthboxSprite(u8 healthboxSpriteId)
 {
     DestroyMegaIndicatorSprite(gSprites[healthboxSpriteId].hMain_Battler);
-    DestroySprite(&gSprites[gSprites[healthboxSpriteId].oam.affineParam]);
     DestroySprite(&gSprites[gSprites[healthboxSpriteId].hMain_HealthBarSpriteId]);
     DestroySprite(&gSprites[healthboxSpriteId]);
 }
@@ -817,11 +1617,9 @@ void UpdateOamPriorityInAllHealthboxes(u8 priority)
     for (i = 0; i < gBattlersCount; i++)
     {
         u8 healthboxLeftSpriteId = gHealthboxSpriteIds[i];
-        u8 healthboxRightSpriteId = gSprites[gHealthboxSpriteIds[i]].oam.affineParam;
         u8 healthbarSpriteId = gSprites[gHealthboxSpriteIds[i]].hMain_HealthBarSpriteId;
 
         gSprites[healthboxLeftSpriteId].oam.priority = priority;
-        gSprites[healthboxRightSpriteId].oam.priority = priority;
         gSprites[healthbarSpriteId].oam.priority = priority;
     }
 }
@@ -833,25 +1631,25 @@ void GetBattlerHealthboxCoords(u8 battler, s16 *x, s16 *y)
     if (!IsDoubleBattle())
     {
         if (GetBattlerSide(battler) != B_SIDE_PLAYER)
-            *x = 44, *y = 30;
+            *x = -22, *y = 10;
         else
-            *x = 158, *y = 88;
+            *x = 134, *y = 83;
     }
     else
     {
         switch (GetBattlerPosition(battler))
         {
         case B_POSITION_PLAYER_LEFT:
-            *x = 159, *y = 76;
+            *x = 130, *y = 83;
             break;
         case B_POSITION_PLAYER_RIGHT:
-            *x = 171, *y = 101;
+            *x = 134, *y = 60;
             break;
         case B_POSITION_OPPONENT_LEFT:
-            *x = 44, *y = 19;
+            *x = -18, *y = 23;
             break;
         case B_POSITION_OPPONENT_RIGHT:
-            *x = 32, *y = 44;
+            *x = -22, *y = 0;
             break;
         }
     }
@@ -871,222 +1669,24 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
     u8 *windowTileData;
     u8 text[16];
     u32 xPos, var1;
-    void *objVram;
     u8 battler = gSprites[healthboxSpriteId].hMain_Battler;
+    u8 side = GetBattlerSide(battler) == B_SIDE_PLAYER;
 
-    // Don't print Lv char if mon is mega evolved.
-    if (gBattleStruct->mega.evolvedPartyIds[GetBattlerSide(battler)] & gBitTable[gBattlerPartyIndexes[battler]])
-    {
-        xPos = (u32) ConvertIntToDecimalStringN(text, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
-    }
-    else
-    {
-        text[0] = 0xF9;
-        text[1] = 5;
-
-        xPos = (u32) ConvertIntToDecimalStringN(text + 2, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
-    }
-
-    // Alright, that part was unmatchable. It's basically doing:
-    // xPos = 5 * (3 - (u32)(&text[2]));
-    xPos--;
-    xPos--;
-    xPos -= ((u32)(text));
-    var1 = (3 - xPos);
-    xPos = 4 * var1;
-    xPos += var1;
-
-    windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, xPos, 3, 2, &windowId);
+    text[0] = 0xF9;
+    text[1] = 5;
+    ConvertIntToDecimalStringN(text + 2, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
+    windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 7, 2, 2, &windowId);
     spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
-
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
-    {
-        objVram = (void*)(OBJ_VRAM0);
-        if (!IsDoubleBattle())
-            objVram += spriteTileNum + 0x820;
-        else
-            objVram += spriteTileNum + 0x420;
-    }
-    else
-    {
-        objVram = (void*)(OBJ_VRAM0);
-        objVram += spriteTileNum + 0x400;
-    }
-    TextIntoHealthboxObject(objVram, windowTileData, 3);
+    
+    TextIntoHealthboxObject((void*)(OBJ_VRAM0 + spriteTileNum + 34 * 32), windowTileData, 3);
     RemoveWindowOnHealthbox(windowId);
 }
 
 void UpdateHpTextInHealthbox(u8 healthboxSpriteId, s16 value, u8 maxOrCurrent)
-{
-    u32 windowId, spriteTileNum;
-    u8 *windowTileData;
-    u8 text[32];
-    void *objVram;
-
-    if (GetBattlerSide(gSprites[healthboxSpriteId].hMain_Battler) == B_SIDE_PLAYER && !IsDoubleBattle())
-    {
-        spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
-        if (maxOrCurrent != HP_CURRENT) // singles, max
-        {
-            ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 0, 5, 2, &windowId);
-            objVram = (void*)(OBJ_VRAM0);
-            objVram += spriteTileNum + 0xB40;
-            HpTextIntoHealthboxObject(objVram, windowTileData, 2);
-            RemoveWindowOnHealthbox(windowId);
-        }
-        else // singles, current
-        {
-            ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            text[3] = CHAR_SLASH;
-            text[4] = EOS;
-            windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 4, 5, 2, &windowId);
-            objVram = (void*)(OBJ_VRAM0);
-            objVram += spriteTileNum + 0x3E0;
-            HpTextIntoHealthboxObject(objVram, windowTileData, 1);
-            objVram = (void*)(OBJ_VRAM0);
-            objVram += spriteTileNum + 0xB00;
-            HpTextIntoHealthboxObject(objVram, windowTileData + 0x20, 2);
-            RemoveWindowOnHealthbox(windowId);
-        }
-    }
-    else
-    {
-        u8 battler;
-
-        memcpy(text, sUnknown_0832C3C4, sizeof(sUnknown_0832C3C4));
-        battler = gSprites[healthboxSpriteId].hMain_Battler;
-        if (IsDoubleBattle() == TRUE)
-        {
-            UpdateHpTextInHealthboxInDoubles(healthboxSpriteId, value, maxOrCurrent);
-        }
-        else if (gBattleSpritesDataPtr->battlerData[battler].hpNumbersNoBars) // don't print text if only bars are visible
-        {
-            u32 var;
-            u8 i;
-
-            if (GetBattlerSide(gSprites[healthboxSpriteId].data[6]) == B_SIDE_PLAYER)
-            {
-                if (maxOrCurrent == HP_CURRENT)
-                    var = 29;
-                else
-                    var = 89;
-            }
-            else
-            {
-                if (maxOrCurrent == HP_CURRENT)
-                    var = 21;
-                else
-                    var = 49;
-            }
-
-            ConvertIntToDecimalStringN(text + 6, value, STR_CONV_MODE_LEADING_ZEROS, 3);
-            RenderTextFont9(gMonSpritesGfxPtr->barFontGfx, 9, text);
-
-            for (i = 0; i < 3; i++)
-            {
-                CpuCopy32(&gMonSpritesGfxPtr->barFontGfx[i * 64 + 32],
-                          (void*)((OBJ_VRAM0) + TILE_SIZE_4BPP * (gSprites[healthboxSpriteId].oam.tileNum + var + i)),
-                          0x20);
-            }
-        }
-    }
-}
+{}
 
 static void UpdateHpTextInHealthboxInDoubles(u8 healthboxSpriteId, s16 value, u8 maxOrCurrent)
-{
-    u32 windowId, spriteTileNum;
-    u8 *windowTileData;
-    u8 text[32];
-    void *objVram;
-
-    if (GetBattlerSide(gSprites[healthboxSpriteId].hMain_Battler) == B_SIDE_PLAYER)
-    {
-        if (gBattleSpritesDataPtr->battlerData[gSprites[healthboxSpriteId].data[6]].hpNumbersNoBars) // don't print text if only bars are visible
-        {
-            spriteTileNum = gSprites[gSprites[healthboxSpriteId].data[5]].oam.tileNum * TILE_SIZE_4BPP;
-            objVram = (void*)(OBJ_VRAM0) + spriteTileNum;
-
-            if (maxOrCurrent != HP_CURRENT) // doubles, max hp
-            {
-                ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
-                windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 0, 5, 0, &windowId);
-                HpTextIntoHealthboxObject((void*)(OBJ_VRAM0) + spriteTileNum + 0xC0, windowTileData, 2);
-                RemoveWindowOnHealthbox(windowId);
-                CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_116),
-                          (void*)(OBJ_VRAM0 + 0x680) + (gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP),
-                           0x20);
-            }
-            else
-            {
-                ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
-                text[3] = CHAR_SLASH;
-                text[4] = EOS;
-                windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 4, 5, 0, &windowId);
-                FillHealthboxObject(objVram, 0, 3); // Erases HP bar leftover.
-                HpTextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x60) + spriteTileNum, windowTileData, 3);
-                RemoveWindowOnHealthbox(windowId);
-            }
-        }
-    }
-    else
-    {
-        u8 battlerId;
-
-        memcpy(text, sUnknown_0832C3D8, sizeof(sUnknown_0832C3D8));
-        battlerId = gSprites[healthboxSpriteId].hMain_Battler;
-
-        if (gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars) // don't print text if only bars are visible
-        {
-            u8 var = 4;
-            u8 r7;
-            u8 *txtPtr;
-            u8 i;
-
-            if (maxOrCurrent == HP_CURRENT)
-                var = 0;
-
-            r7 = gSprites[healthboxSpriteId].data[5];
-            txtPtr = ConvertIntToDecimalStringN(text + 6, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            if (!maxOrCurrent)
-                StringCopy(txtPtr, gText_Slash);
-            RenderTextFont9(gMonSpritesGfxPtr->barFontGfx, 9, text);
-
-            for (i = var; i < var + 3; i++)
-            {
-                if (i < 3)
-                {
-                    CpuCopy32(&gMonSpritesGfxPtr->barFontGfx[((i - var) * 64) + 32],
-                          (void*)((OBJ_VRAM0) + 32 * (1 + gSprites[r7].oam.tileNum + i)),
-                          0x20);
-                }
-                else
-                {
-                    CpuCopy32(&gMonSpritesGfxPtr->barFontGfx[((i - var) * 64) + 32],
-                          (void*)((OBJ_VRAM0 + 0x20) + 32 * (i + gSprites[r7].oam.tileNum)),
-                          0x20);
-                }
-            }
-
-            if (maxOrCurrent == HP_CURRENT)
-            {
-                CpuCopy32(&gMonSpritesGfxPtr->barFontGfx[224],
-                          (void*)((OBJ_VRAM0) + ((gSprites[r7].oam.tileNum + 4) * TILE_SIZE_4BPP)),
-                          0x20);
-                CpuFill32(0, (void*)((OBJ_VRAM0) + (gSprites[r7].oam.tileNum * TILE_SIZE_4BPP)), 0x20);
-            }
-            else
-            {
-                if (GetBattlerSide(battlerId) == B_SIDE_PLAYER) // Impossible to reach part, because the battlerId is from the opponent's side.
-                {
-                    CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_116),
-                          (void*)(OBJ_VRAM0) + ((gSprites[healthboxSpriteId].oam.tileNum + 52) * TILE_SIZE_4BPP),
-                           0x20);
-                }
-            }
-        }
-    }
-}
+{}
 
 // Prints mon's nature, catch and flee rate. Probably used to test pokeblock-related features.
 static void PrintSafariMonInfo(u8 healthboxSpriteId, struct Pokemon *mon)
@@ -1154,72 +1754,7 @@ static void PrintSafariMonInfo(u8 healthboxSpriteId, struct Pokemon *mon)
 }
 
 void SwapHpBarsWithHpText(void)
-{
-    s32 i;
-    u8 healthBarSpriteId;
-
-    for (i = 0; i < gBattlersCount; i++)
-    {
-        if (gSprites[gHealthboxSpriteIds[i]].callback == SpriteCallbackDummy
-         && GetBattlerSide(i) != B_SIDE_OPPONENT
-         && (IsDoubleBattle() || GetBattlerSide(i) != B_SIDE_PLAYER))
-        {
-            bool8 noBars;
-
-            gBattleSpritesDataPtr->battlerData[i].hpNumbersNoBars ^= 1;
-            noBars = gBattleSpritesDataPtr->battlerData[i].hpNumbersNoBars;
-            if (GetBattlerSide(i) == B_SIDE_PLAYER)
-            {
-                if (!IsDoubleBattle())
-                    continue;
-                if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
-                    continue;
-
-                if (noBars == TRUE) // bars to text
-                {
-                    healthBarSpriteId = gSprites[gHealthboxSpriteIds[i]].hMain_HealthBarSpriteId;
-
-                    CpuFill32(0, (void*)(OBJ_VRAM0 + gSprites[healthBarSpriteId].oam.tileNum * TILE_SIZE_4BPP), 0x100);
-                    UpdateHpTextInHealthboxInDoubles(gHealthboxSpriteIds[i], GetMonData(&gPlayerParty[gBattlerPartyIndexes[i]], MON_DATA_HP), HP_CURRENT);
-                    UpdateHpTextInHealthboxInDoubles(gHealthboxSpriteIds[i], GetMonData(&gPlayerParty[gBattlerPartyIndexes[i]], MON_DATA_MAX_HP), HP_MAX);
-                }
-                else // text to bars
-                {
-                    UpdateStatusIconInHealthbox(gHealthboxSpriteIds[i]);
-                    UpdateHealthboxAttribute(gHealthboxSpriteIds[i], &gPlayerParty[gBattlerPartyIndexes[i]], HEALTHBOX_HEALTH_BAR);
-                    CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_117), (void*)(OBJ_VRAM0 + 0x680 + gSprites[gHealthboxSpriteIds[i]].oam.tileNum * TILE_SIZE_4BPP), 32);
-                }
-            }
-            else
-            {
-                if (noBars == TRUE) // bars to text
-                {
-                    if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
-                    {
-                        // Most likely a debug function.
-                        PrintSafariMonInfo(gHealthboxSpriteIds[i], &gEnemyParty[gBattlerPartyIndexes[i]]);
-                    }
-                    else
-                    {
-                        healthBarSpriteId = gSprites[gHealthboxSpriteIds[i]].hMain_HealthBarSpriteId;
-
-                        CpuFill32(0, (void *)(OBJ_VRAM0 + gSprites[healthBarSpriteId].oam.tileNum * 32), 0x100);
-                        UpdateHpTextInHealthboxInDoubles(gHealthboxSpriteIds[i], GetMonData(&gEnemyParty[gBattlerPartyIndexes[i]], MON_DATA_HP), HP_CURRENT);
-                        UpdateHpTextInHealthboxInDoubles(gHealthboxSpriteIds[i], GetMonData(&gEnemyParty[gBattlerPartyIndexes[i]], MON_DATA_MAX_HP), HP_MAX);
-                    }
-                }
-                else // text to bars
-                {
-                    UpdateStatusIconInHealthbox(gHealthboxSpriteIds[i]);
-                    UpdateHealthboxAttribute(gHealthboxSpriteIds[i], &gEnemyParty[gBattlerPartyIndexes[i]], HEALTHBOX_HEALTH_BAR);
-                    if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
-                        UpdateHealthboxAttribute(gHealthboxSpriteIds[i], &gEnemyParty[gBattlerPartyIndexes[i]], HEALTHBOX_NICK);
-                }
-            }
-            gSprites[gHealthboxSpriteIds[i]].hMain_Data7 ^= 1;
-        }
-    }
-}
+{}
 
 // Mega Evolution gfx functions.
 void ChangeMegaTriggerSprite(u8 spriteId, u8 animId)
@@ -1288,6 +1823,313 @@ void CreateZMoveTriggerSprite(u8 battlerId, u8 palId)
     gSprites[gBattleStruct->zMove.triggerSpriteId].tHide = FALSE;
 
     ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, palId);
+}
+
+// Move box functions
+
+void CreateAllMoveBoxes(void)
+{
+    u8 type, i;
+    if (gBattleMoveBoxReset != gActiveBattler || gBattleMoveBoxReset == 0xFF)
+    {
+        DestroyMoveBoxes();
+        for (i = 0; i < 4; i++)
+        {
+            if (gBattleMons[gActiveBattler].moves[i] == MOVE_NONE)
+                break;
+            GET_MOVE_TYPE(gBattleMons[gActiveBattler].moves[i], type)
+            CreateMoveBox(type, i);
+            StringCopy(gDisplayedStringBattle, gMoveDescriptionPointers[gBattleMons[gActiveBattler].moves[i] - 1]);
+            ForceTextWrapping((u8*)gDisplayedStringBattle, 5, 100, -2);
+            BattlePutTextOnWindow(gDisplayedStringBattle, 3 + i);
+        }
+        gBattleMoveBoxReset = gActiveBattler;
+    }
+    SetMoveScreenSplitIcons();
+    PutWindowTilemap(3 + gMoveSelectionCursor[gActiveBattler]);
+}
+
+const u32 gMoveScreenPalette[] = INCBIN_U32("graphics/battle_interface/move_screen.gbapal.lz");
+const u32 gMoveScreenTilemap[] = INCBIN_U32("graphics/battle_interface/move_screen.bin.lz");
+const u32 gMoveScreenSplitIconsGfx[] = INCBIN_U32("graphics/battle_interface/split_icons.4bpp");
+const u32 gMoveScreenScrollBarGfx[] = INCBIN_U32("graphics/battle_interface/move_screen_scroll_bar.4bpp");
+
+void CreateMoveScreen(void)
+{   
+    if (gBattleMoveScreenReset)
+    {
+        CopyToBgTilemapBuffer(2, gMoveScreenTilemap, 0, 0);
+        CopyBgTilemapBufferToVram(2);
+        LoadCompressedPalette(gMoveScreenPalette, 0xC0, 0x20);
+        gBattleMoveScreenReset = 0;
+    }
+}
+
+void DestroyMoveScreen(void)
+{
+    gBattleMoveScreenReset = 0xFF;
+}
+
+void SetMoveScreenSplitIcons(void)
+{
+    u8 splitA, splitB;
+    u8 *src = (u8*)gMoveScreenSplitIconsGfx;
+    
+    splitA = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]], 1);
+    if (gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1] == MOVE_NONE)
+        splitB = 3;
+    else
+        splitB = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1], 1);
+    
+    RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 99 * TILE_SIZE_4BPP), 0x40);
+    RequestSpriteCopy((src + 0x40 * (3 + splitB)), (u8*)(VRAM + 101 * TILE_SIZE_4BPP), 0x40);
+}
+
+void UpdateScrollBar(u8 totalMoveNo)
+{
+    u8 *src = (u8*)gMoveScreenScrollBarGfx;
+    
+    if (totalMoveNo == 3)
+        src += 0xE0 * (1 + gMoveSelectionState[gActiveBattler]);
+    else if (totalMoveNo == 4)
+        src += 0xE0 * (3 + gMoveSelectionState[gActiveBattler]);
+    
+    RequestSpriteCopy(src, (u8*)(VRAM + 104 * TILE_SIZE_4BPP), 0xE0);
+        
+}
+
+void UpdateTypeBg(void)
+{
+    u8 type = GetMoveType(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]], 1);
+    
+    if (type)
+    {
+        LoadPalette((u8*)gTypeBgBug_Pal + (type - 1) * 0x20, 0xD0, 0x20);
+        RequestSpriteCopy((u8*)gTypeBgBug_Gfx + (type - 1) * 0x320, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+    }
+    else
+    {
+        LZDecompressWram(gBattleTextboxTiles, gDecompressionBuffer);
+        LoadPalette(&gTypeBgNormal_Pal, 0xD0, 0x20);
+        RequestSpriteCopy((u8*)gDecompressionBuffer + 0x940, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+    }
+}
+
+void ResetMoveBoxes(void)
+{
+    u8 i;
+    gBattleMoveBoxReset = 0xFF;
+    for (i = 0; i < 4; i++)
+    {
+        gBattleMoveBoxSpriteIds[i] = 0;
+    }
+}
+
+void DestroyMoveBoxes(void)
+{    
+    u8 i;
+    for (i = 0; i < 4; i++)
+    {
+        if (gBattleMoveBoxSpriteIds[i])
+        {
+            FreeSpritePaletteByTag(gSprites[gBattleMoveBoxSpriteIds[i]].template->paletteTag);
+            FreeSpriteTilesByTag(gSprites[gBattleMoveBoxSpriteIds[i]].template->tileTag);
+            FreeSpriteTilesByTag(TAG_MOVE_BOX_RIGHTHALF_TILE);
+            DestroySprite(&gSprites[gBattleMoveBoxSpriteIds[i]]);
+            gBattleMoveBoxSpriteIds[i] = 0;
+        }
+    }
+}
+
+void DestroyMoveBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        FreeSpriteTilesByTag(TAG_MOVE_BOX_CURSOR);
+        DestroySprite(&gSprites[cursorId]);
+    }
+}
+
+void CreateMoveBox(u8 type, u8 index)
+{
+    LoadSpritePalette(&sSpritePalettes_BattleMoveBoxes[type]);
+    LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[type + index * 19]);
+    LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[76]);
+    gBattleMoveBoxSpriteIds[index] = CreateSprite(&sBattleMoveBoxSpriteTemplates[type + index * 19], 2, 108 + (index % 2) * 23, 0);
+    switch(index)
+    {
+    case 1:
+        gSprites[gBattleMoveBoxSpriteIds[1]].pos1.y = 131 - (23 * gMoveSelectionState[gActiveBattler]);
+        break;
+    case 2:
+        gSprites[gBattleMoveBoxSpriteIds[2]].pos1.y = 154 - (23 * gMoveSelectionState[gActiveBattler]);
+        break;
+    }
+    SetSubspriteTables(&gSprites[gBattleMoveBoxSpriteIds[index]], sBattleMoveBoxSubspriteTable);
+    gSprites[gBattleMoveBoxSpriteIds[index]].invisible = !(index == gMoveSelectionState[gActiveBattler] || index == gMoveSelectionState[gActiveBattler] + 1);
+    MoveBox_PrintMoveName(index);
+    MoveBox_PrintMovePP(index);
+}
+
+void CreateMoveBoxCursor(void)
+{
+    u8 index = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    if (index == 0xFF)
+    {
+        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
+        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113, 0);
+    }
+    SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
+    StartSpriteAnim(&gSprites[index], 0);
+}
+
+void ConfirmMoveBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        StartSpriteAnim(&gSprites[cursorId], 1);
+        SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
+    }    
+}
+
+void UpdateMoveBoxList(void)
+{
+    if (gBattleMoveBoxSpriteIds[0])
+        gSprites[gBattleMoveBoxSpriteIds[0]].invisible = (gMoveSelectionState[gActiveBattler] > 0);
+    
+    if (gBattleMoveBoxSpriteIds[1])
+    {
+        gSprites[gBattleMoveBoxSpriteIds[1]].invisible = (gMoveSelectionState[gActiveBattler] > 1);
+        gSprites[gBattleMoveBoxSpriteIds[1]].pos1.y = 131 - (23 * gMoveSelectionState[gActiveBattler]);
+    }
+    
+    if (gBattleMoveBoxSpriteIds[2])
+    {
+        gSprites[gBattleMoveBoxSpriteIds[2]].invisible = (gMoveSelectionState[gActiveBattler] < 1);
+        gSprites[gBattleMoveBoxSpriteIds[2]].pos1.y = 154 - (23 * gMoveSelectionState[gActiveBattler]);
+    }
+    
+    if (gBattleMoveBoxSpriteIds[3])
+        gSprites[gBattleMoveBoxSpriteIds[3]].invisible = (gMoveSelectionState[gActiveBattler] < 2);
+}
+
+void MoveBox_PrintMoveName(u8 index)
+{
+    u8 movename[MOVE_NAME_LENGTH + 1];
+    u32 windowId, spriteTileNum;
+    u8 *windowTileData;
+    u16 *vramPtr, *src, *vramPtr2, *src2, *vramPtr3, *src3, *vramPtr4, *src4;
+    u8 i, j;
+    
+    StringCopy(gDisplayedStringBattle, gMoveNames[gBattleMons[gActiveBattler].moves[index]]);
+    windowTileData = AddTextPrinterAndCreateWindowOnMovebox(gDisplayedStringBattle, 4, 1, &windowId, 4, 0);
+    spriteTileNum = gSprites[gBattleMoveBoxSpriteIds[index]].oam.tileNum * TILE_SIZE_4BPP;
+    
+    src = (u16*)windowTileData;
+    src2 = src + 0x60;
+    src3 = src + 0xD0;
+    src4 = src + 0x130;
+    
+    vramPtr = (u16*)(OBJ_VRAM0 + spriteTileNum + 0x140);
+    vramPtr2 = vramPtr + 0x1E0;
+    vramPtr3 = vramPtr + 0x80;
+    vramPtr4 = vramPtr + 0x260;
+
+    for (i = 0; i < 112; i++)
+    {
+        if (i < 96)
+        {
+            for (j = 0; j < 13; j += 4)
+            {
+                if (*src & (0xF << j))
+                {
+                    *vramPtr |= (0xF << j);
+                    *vramPtr &= ((*src & (0xF << j)) + 0xFFFF - (0xF << j));
+                }
+                if (*src3 & (0xF << j))
+                {
+                    *vramPtr3 |= (0xF << j);
+                    *vramPtr3 &= ((*src3 & (0xF << j)) + 0xFFFF - (0xF << j));
+                }
+            }
+            src++;
+            src3++;
+            vramPtr++;
+            vramPtr3++;
+        }
+        for (j = 0; j < 13; j += 4)
+        {
+            if (*src2 & (0xF << j))
+            {
+                *vramPtr2 |= (0xF << j);
+                *vramPtr2 &= ((*src2 & (0xF << j)) + 0xFFFF - (0xF << j));
+            }
+            if (*src4 & (0xF << j))
+            {
+                *vramPtr4 |= (0xF << j);
+                *vramPtr4 &= ((*src4 & (0xF << j)) + 0xFFFF - (0xF << j));
+            }
+        }
+        src2++;
+        src4++;
+        vramPtr2++;
+        vramPtr4++;
+    }
+    RemoveWindow(windowId);
+    
+}
+
+void MoveBox_PrintMovePP(u8 index)
+{
+    u8 text[5];
+    u32 windowId, spriteTileNum;
+    u8 *windowTileData;
+    u16 *vramPtr, *src;
+    u8 i, j;
+    
+    text[0] = 0x9C;
+    ConvertIntToDecimalStringN(text + 1, gBattleMons[gActiveBattler].pp[index], STR_CONV_MODE_RIGHT_ALIGN, 3);
+    windowTileData = AddTextPrinterAndCreateWindowOnMovebox(text, 5, 0, &windowId, 3, 1);
+    spriteTileNum = gSprites[gBattleMoveBoxSpriteIds[index]].oam.tileNum * TILE_SIZE_4BPP;
+    
+    src = (u16*)windowTileData;    
+    vramPtr = (u16*)(OBJ_VRAM0 + spriteTileNum + 0x6A0);
+
+    for (i = 0; i < 32; i++)
+    {
+        for (j = 0; j < 13; j += 4)
+        {
+            if (*src & (0xF << j))
+            {
+                *vramPtr |= (0xF << j);
+                *vramPtr &= ((*src & (0xF << j)) + 0xFFFF - (0xF << j));
+            }
+        }
+        src++;
+        vramPtr++;
+    }
+    RemoveWindow(windowId);
+    
+}
+
+const struct WindowTemplate sMoveBoxWindowTemplates[2] =
+{
+    {0, 0, 0, 13, 2, 0, 0},
+    {0, 0, 0,  2, 1, 0, 0}
+};
+
+static u8* AddTextPrinterAndCreateWindowOnMovebox(const u8 *str, u32 x, u32 y, u32 *windowId, u8 fontId, u8 winTemplateId)
+{
+    u16 winId, printer;
+    struct WindowTemplate winTemplate = sMoveBoxWindowTemplates[winTemplateId];
+
+    winId = AddWindow(&winTemplate);
+    AddTextPrinterParameterized4(winId, fontId, x, y, -2, 0, 0, -1, str);
+
+    *windowId = winId;
+    return (u8*)(GetWindowAttribute(winId, WINDOW_TILE_DATA));
 }
 
 static void SpriteCb_MegaTrigger(struct Sprite *sprite)
@@ -1938,45 +2780,25 @@ static void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
     if ((species == SPECIES_NIDORAN_F || species == SPECIES_NIDORAN_M) && StringCompare(nickname, gSpeciesNames[species]) == 0)
         gender = 100;
 
-    // AddTextPrinterAndCreateWindowOnHealthbox's arguments are the same in all 3 cases.
-    // It's possible they may have been different in early development phases.
     switch (gender)
     {
-    default:
-        StringCopy(ptr, gText_DynColor2);
-        windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gDisplayedStringBattle, 0, 3, 2, &windowId);
-        break;
     case MON_MALE:
-        StringCopy(ptr, gText_DynColor2Male);
-        windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gDisplayedStringBattle, 0, 3, 2, &windowId);
+        StringCopy(ptr, gText_BlueMaleSymbol);
         break;
     case MON_FEMALE:
-        StringCopy(ptr, gText_DynColor1Female);
-        windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gDisplayedStringBattle, 0, 3, 2, &windowId);
+        StringCopy(ptr, gText_RedFemaleSymbol);
         break;
     }
+    windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gDisplayedStringBattle, 0, 2, 0, &windowId);
 
     spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
 
-    if (GetBattlerSide(gSprites[healthboxSpriteId].data[6]) == B_SIDE_PLAYER)
-    {
-        TextIntoHealthboxObject((void*)(VRAM + 0x10040 + spriteTileNum), windowTileData, 6);
-        ptr = (void*)(OBJ_VRAM0);
-        if (!IsDoubleBattle())
-            ptr += spriteTileNum + 0x800;
-        else
-            ptr += spriteTileNum + 0x400;
-        TextIntoHealthboxObject(ptr, windowTileData + 0xC0, 1);
-    }
-    else
-    {
-        TextIntoHealthboxObject((void*)(VRAM + 0x10020 + spriteTileNum), windowTileData, 7);
-    }
-
+    TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x60 + spriteTileNum), windowTileData, 5);
+    TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x400 + spriteTileNum), windowTileData + 5 * 32, 2);
     RemoveWindowOnHealthbox(windowId);
 }
 
-static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
+static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId)
 {
     u8 battlerId, healthBarSpriteId;
 
@@ -1991,153 +2813,56 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
     if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_SPECIES)), FLAG_GET_CAUGHT))
         return;
 
-    healthBarSpriteId = gSprites[healthboxSpriteId].hMain_HealthBarSpriteId;
-
-    if (noStatus)
-        CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_70), (void*)(OBJ_VRAM0 + (gSprites[healthBarSpriteId].oam.tileNum + 8) * TILE_SIZE_4BPP), 32);
-    else
-        CpuFill32(0, (void*)(OBJ_VRAM0 + (gSprites[healthBarSpriteId].oam.tileNum + 8) * TILE_SIZE_4BPP), 32);
+    CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_CAUGHT_MARKER), (void*)(OBJ_VRAM0 + (gSprites[healthboxSpriteId].oam.tileNum + 53) * TILE_SIZE_4BPP), 32);
 }
 
 static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId)
 {
-    s32 i;
-    u8 battlerId, healthBarSpriteId;
-    u32 status, pltAdder;
-    const u8 *statusGfxPtr;
-    s16 tileNumAdder;
-    u8 statusPalId;
+    u8 battlerId, side, i, offset;
+    u32 status, spriteTileNum;
+    const u8 *statusGfxPtr, *statusGfxPtr2;
 
     battlerId = gSprites[healthboxSpriteId].hMain_Battler;
-    healthBarSpriteId = gSprites[healthboxSpriteId].hMain_HealthBarSpriteId;
-    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-    {
+    spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
+    side = GetBattlerSide(battlerId);
+
+    if (side == B_SIDE_PLAYER)
         status = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_STATUS);
-        if (!IsDoubleBattle())
-            tileNumAdder = 0x1A;
-        else
-            tileNumAdder = 0x12;
-    }
     else
     {
         status = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_STATUS);
-        tileNumAdder = 0x11;
+        TryAddPokeballIconToHealthbox(healthboxSpriteId);
     }
 
     if (status & STATUS1_SLEEP)
-    {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_SLP_BATTLER0, battlerId));
-        statusPalId = PAL_STATUS_SLP;
-    }
-    else if (status & STATUS1_PSN_ANY)
-    {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_PSN_BATTLER0, battlerId));
-        statusPalId = PAL_STATUS_PSN;
-    }
-    else if (status & STATUS1_BURN)
-    {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_BRN_BATTLER0, battlerId));
-        statusPalId = PAL_STATUS_BRN;
-    }
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_SLP + side * 14);
     else if (status & STATUS1_FREEZE)
-    {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_FRZ_BATTLER0, battlerId));
-        statusPalId = PAL_STATUS_FRZ;
-    }
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_FRZ + side * 14);
     else if (status & STATUS1_PARALYSIS)
-    {
-        statusGfxPtr = GetHealthboxElementGfxPtr(GetStatusIconForBattlerId(HEALTHBOX_GFX_STATUS_PRZ_BATTLER0, battlerId));
-        statusPalId = PAL_STATUS_PAR;
-    }
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_PAR + side * 14);
+    else if (status & STATUS1_BURN)
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_BRN + side * 14);
+    else if (status & STATUS1_POISON)
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_PSN + side * 14);
+    else if (status & STATUS1_TOXIC_POISON)
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_TOX + side * 14);
     else
+        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_NONE + side * 14);
+    
+    statusGfxPtr2 = statusGfxPtr + 0x20;
+    
+    if (side == B_SIDE_PLAYER) 
+        offset = 50;
+    else
+        offset = 19;
+        
+    for (i = 1; i < 8; i++)
     {
-        statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_39);
-
-        for (i = 0; i < 3; i++)
-            CpuCopy32(statusGfxPtr, (void*)(OBJ_VRAM0 + (gSprites[healthboxSpriteId].oam.tileNum + tileNumAdder + i) * TILE_SIZE_4BPP), 32);
-
-        if (!gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars)
-            CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_1), (void *)(OBJ_VRAM0 + gSprites[healthBarSpriteId].oam.tileNum * TILE_SIZE_4BPP), 64);
-
-        TryAddPokeballIconToHealthbox(healthboxSpriteId, TRUE);
-        return;
+        CpuCopy16(statusGfxPtr + i * 4, (void*)(OBJ_VRAM0 + spriteTileNum + offset * TILE_SIZE_4BPP + i * 4 + 2), 2);
+        CpuCopy16(statusGfxPtr + i * 4 + 2, (void*)(OBJ_VRAM0 + spriteTileNum + (offset + 1) * TILE_SIZE_4BPP + i * 4), 2);
+        CpuCopy16(statusGfxPtr2 + i * 4, (void*)(OBJ_VRAM0 + spriteTileNum + (offset + 1) * TILE_SIZE_4BPP + i * 4 + 2), 2);
+        CpuCopy16(statusGfxPtr2 + i * 4 + 2, (void*)(OBJ_VRAM0 + spriteTileNum + (offset + 2) * TILE_SIZE_4BPP + i * 4), 2);
     }
-
-    pltAdder = gSprites[healthboxSpriteId].oam.paletteNum * 16;
-    pltAdder += battlerId + 12;
-
-    FillPalette(sStatusIconColors[statusPalId], pltAdder + 0x100, 2);
-    CpuCopy16(gPlttBufferUnfaded + 0x100 + pltAdder, (void*)(OBJ_PLTT + pltAdder * 2), 2);
-    CpuCopy32(statusGfxPtr, (void*)(OBJ_VRAM0 + (gSprites[healthboxSpriteId].oam.tileNum + tileNumAdder) * TILE_SIZE_4BPP), 96);
-    if (IsDoubleBattle() == TRUE || GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
-    {
-        if (!gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars)
-        {
-            CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_0), (void*)(OBJ_VRAM0 + gSprites[healthBarSpriteId].oam.tileNum * TILE_SIZE_4BPP), 32);
-            CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_65), (void*)(OBJ_VRAM0 + (gSprites[healthBarSpriteId].oam.tileNum + 1) * TILE_SIZE_4BPP), 32);
-        }
-    }
-    TryAddPokeballIconToHealthbox(healthboxSpriteId, FALSE);
-}
-
-static u8 GetStatusIconForBattlerId(u8 statusElementId, u8 battlerId)
-{
-    u8 ret = statusElementId;
-
-    switch (statusElementId)
-    {
-    case HEALTHBOX_GFX_STATUS_PSN_BATTLER0:
-        if (battlerId == 0)
-            ret = HEALTHBOX_GFX_STATUS_PSN_BATTLER0;
-        else if (battlerId == 1)
-            ret = HEALTHBOX_GFX_STATUS_PSN_BATTLER1;
-        else if (battlerId == 2)
-            ret = HEALTHBOX_GFX_STATUS_PSN_BATTLER2;
-        else
-            ret = HEALTHBOX_GFX_STATUS_PSN_BATTLER3;
-        break;
-    case HEALTHBOX_GFX_STATUS_PRZ_BATTLER0:
-        if (battlerId == 0)
-            ret = HEALTHBOX_GFX_STATUS_PRZ_BATTLER0;
-        else if (battlerId == 1)
-            ret = HEALTHBOX_GFX_STATUS_PRZ_BATTLER1;
-        else if (battlerId == 2)
-            ret = HEALTHBOX_GFX_STATUS_PRZ_BATTLER2;
-        else
-            ret = HEALTHBOX_GFX_STATUS_PRZ_BATTLER3;
-        break;
-    case HEALTHBOX_GFX_STATUS_SLP_BATTLER0:
-        if (battlerId == 0)
-            ret = HEALTHBOX_GFX_STATUS_SLP_BATTLER0;
-        else if (battlerId == 1)
-            ret = HEALTHBOX_GFX_STATUS_SLP_BATTLER1;
-        else if (battlerId == 2)
-            ret = HEALTHBOX_GFX_STATUS_SLP_BATTLER2;
-        else
-            ret = HEALTHBOX_GFX_STATUS_SLP_BATTLER3;
-        break;
-    case HEALTHBOX_GFX_STATUS_FRZ_BATTLER0:
-        if (battlerId == 0)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER0;
-        else if (battlerId == 1)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER1;
-        else if (battlerId == 2)
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER2;
-        else
-            ret = HEALTHBOX_GFX_STATUS_FRZ_BATTLER3;
-        break;
-    case HEALTHBOX_GFX_STATUS_BRN_BATTLER0:
-        if (battlerId == 0)
-            ret = HEALTHBOX_GFX_STATUS_BRN_BATTLER0;
-        else if (battlerId == 1)
-            ret = HEALTHBOX_GFX_STATUS_BRN_BATTLER1;
-        else if (battlerId == 2)
-            ret = HEALTHBOX_GFX_STATUS_BRN_BATTLER2;
-        else
-            ret = HEALTHBOX_GFX_STATUS_BRN_BATTLER3;
-        break;
-    }
-    return ret;
 }
 
 static void UpdateSafariBallsTextOnHealthbox(u8 healthboxSpriteId)
@@ -2192,8 +2917,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR, 0);
         }
-        isDoubles = IsDoubleBattle();
-        if (!isDoubles && (elementId == HEALTHBOX_EXP_BAR || elementId == HEALTHBOX_ALL))
+        if (elementId == HEALTHBOX_EXP_BAR || elementId == HEALTHBOX_ALL)
         {
             u16 species;
             u32 exp, currLevelExp;
@@ -2207,7 +2931,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             currLevelExp = gExperienceTables[gBaseStats[species].growthRate][level];
             currExpBarValue = exp - currLevelExp;
             maxExpBarValue = gExperienceTables[gBaseStats[species].growthRate][level + 1] - currLevelExp;
-            SetBattleBarStruct(battlerId, healthboxSpriteId, maxExpBarValue, currExpBarValue, isDoubles);
+            SetBattleBarStruct(battlerId, healthboxSpriteId, maxExpBarValue, currExpBarValue, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, EXP_BAR, 0);
         }
         if (elementId == HEALTHBOX_NICK || elementId == HEALTHBOX_ALL)
@@ -2242,7 +2966,7 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
     }
 }
 
-#define B_EXPBAR_PIXELS 64
+#define B_EXPBAR_PIXELS 50
 #define B_HEALTHBAR_PIXELS 48
 
 s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar, u8 unused)
@@ -2255,13 +2979,13 @@ s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar, u8 unused)
                     gBattleSpritesDataPtr->battleBars[battlerId].oldValue,
                     gBattleSpritesDataPtr->battleBars[battlerId].receivedValue,
                     &gBattleSpritesDataPtr->battleBars[battlerId].currValue,
-                    B_HEALTHBAR_PIXELS / 8, 1);
+                    B_HEALTHBAR_PIXELS, 1);
     }
     else // exp bar
     {
         u16 expFraction = GetScaledExpFraction(gBattleSpritesDataPtr->battleBars[battlerId].oldValue,
                     gBattleSpritesDataPtr->battleBars[battlerId].receivedValue,
-                    gBattleSpritesDataPtr->battleBars[battlerId].maxValue, 8);
+                    gBattleSpritesDataPtr->battleBars[battlerId].maxValue, 50);
         if (expFraction == 0)
             expFraction = 1;
         expFraction = abs(gBattleSpritesDataPtr->battleBars[battlerId].receivedValue / expFraction);
@@ -2270,7 +2994,7 @@ s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar, u8 unused)
                     gBattleSpritesDataPtr->battleBars[battlerId].oldValue,
                     gBattleSpritesDataPtr->battleBars[battlerId].receivedValue,
                     &gBattleSpritesDataPtr->battleBars[battlerId].currValue,
-                    B_EXPBAR_PIXELS / 8, expFraction);
+                    B_EXPBAR_PIXELS, expFraction);
     }
 
     if (whichBar == EXP_BAR || (whichBar == HEALTH_BAR && !gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars))
@@ -2285,7 +3009,7 @@ s32 MoveBattleBar(u8 battlerId, u8 healthboxSpriteId, u8 whichBar, u8 unused)
 static void MoveBattleBarGraphically(u8 battlerId, u8 whichBar)
 {
     u8 array[8];
-    u8 filledPixelsCount, level;
+    u8 filledPixelsCount, level, healthbarSpriteId;
     u8 barElementId;
     u8 i;
 
@@ -2307,36 +3031,47 @@ static void MoveBattleBarGraphically(u8 battlerId, u8 whichBar)
 
         for (i = 0; i < 6; i++)
         {
-            u8 healthbarSpriteId = gSprites[gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId].hMain_HealthBarSpriteId;
-            if (i < 2)
-                CpuCopy32(GetHealthboxElementGfxPtr(barElementId) + array[i] * 32,
-                          (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 2 + i) * TILE_SIZE_4BPP), 32);
-            else
-                CpuCopy32(GetHealthboxElementGfxPtr(barElementId) + array[i] * 32,
-                          (void*)(OBJ_VRAM0 + 64 + (i + gSprites[healthbarSpriteId].oam.tileNum) * TILE_SIZE_4BPP), 32);
+            healthbarSpriteId = gSprites[gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId].hMain_HealthBarSpriteId;
+            CpuCopy32(GetHealthboxElementGfxPtr(barElementId) + array[i] * 32 + 12,
+                      (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 1 + i) * TILE_SIZE_4BPP + 12), 8);
         }
         break;
     case EXP_BAR:
-        CalcBarFilledPixels(gBattleSpritesDataPtr->battleBars[battlerId].maxValue,
+        CalcExpBarFilledPixels(gBattleSpritesDataPtr->battleBars[battlerId].maxValue,
                     gBattleSpritesDataPtr->battleBars[battlerId].oldValue,
                     gBattleSpritesDataPtr->battleBars[battlerId].receivedValue,
                     &gBattleSpritesDataPtr->battleBars[battlerId].currValue,
-                    array, B_EXPBAR_PIXELS / 8);
+                    array, B_EXPBAR_PIXELS);
         level = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_LEVEL);
         if (level == MAX_LEVEL)
         {
             for (i = 0; i < 8; i++)
                 array[i] = 0;
         }
-        for (i = 0; i < 8; i++)
+        healthbarSpriteId = gSprites[gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId].hMain_HealthBarSpriteId;
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 9 * 32 + 8 + array[0] * 2,
+                  (void*)(OBJ_VRAM0 + gSprites[healthbarSpriteId].oam.tileNum * TILE_SIZE_4BPP + 10), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 9 * 32 + 12 + array[0] * 2,
+                  (void*)(OBJ_VRAM0 + gSprites[healthbarSpriteId].oam.tileNum * TILE_SIZE_4BPP + 14), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 9 * 32 + 16 + array[0] * 2,
+                  (void*)(OBJ_VRAM0 + gSprites[healthbarSpriteId].oam.tileNum * TILE_SIZE_4BPP + 18), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 9 * 32 + 20 + array[0] * 2,
+                  (void*)(OBJ_VRAM0 + gSprites[healthbarSpriteId].oam.tileNum * TILE_SIZE_4BPP + 22), 2);
+        for (i = 1; i < 7; i++)
         {
-            if (i < 4)
-                CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_12) + array[i] * 32,
-                          (void*)(OBJ_VRAM0 + (gSprites[gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId].oam.tileNum + 0x24 + i) * TILE_SIZE_4BPP), 32);
-            else
-                CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_12) + array[i] * 32,
-                          (void*)(OBJ_VRAM0 + 0xB80 + (i + gSprites[gBattleSpritesDataPtr->battleBars[battlerId].healthboxSpriteId].oam.tileNum) * TILE_SIZE_4BPP), 32);
+            CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + array[i] * 32 + 8,
+                      (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + i) * TILE_SIZE_4BPP + 8), 4);
+            CpuCopy32(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + array[i] * 32 + 20,
+                      (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + i) * TILE_SIZE_4BPP + 20), 4);
         }
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 10 * 32 + 8 + array[7] * 2,
+                  (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 7) * TILE_SIZE_4BPP + 8), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 10 * 32 + 12 + array[7] * 2,
+                  (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 7) * TILE_SIZE_4BPP + 12), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 10 * 32 + 16 + array[7] * 2,
+                  (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 7) * TILE_SIZE_4BPP + 16), 2);
+        CpuCopy16(GetHealthboxElementGfxPtr(HEALTHBOX_GFX_EXP_BAR) + 10 * 32 + 20 + array[7] * 2,
+                  (void*)(OBJ_VRAM0 + (gSprites[healthbarSpriteId].oam.tileNum + 7) * TILE_SIZE_4BPP + 20), 2);
         break;
     }
 }
@@ -2344,7 +3079,6 @@ static void MoveBattleBarGraphically(u8 battlerId, u8 whichBar)
 static s32 CalcNewBarValue(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 scale, u16 toAdd)
 {
     s32 ret, newValue;
-    scale *= 8;
 
     if (*currValue == -32768) // first function call
     {
@@ -2468,12 +3202,55 @@ static u8 CalcBarFilledPixels(s32 maxValue, s32 oldValue, s32 receivedValue, s32
     return filledPixels;
 }
 
+static void CalcExpBarFilledPixels(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 *arg4, u8 totalPixels)
+{
+    u8 i, pixels, filledPixels;
+
+    s32 newValue = oldValue - receivedValue;
+    if (newValue < 0)
+        newValue = 0;
+    else if (newValue > maxValue)
+        newValue = maxValue;
+
+    for (i = 0; i < 8; i++)
+        arg4[i] = 0;
+
+    if (maxValue < totalPixels)
+        pixels = (*currValue * totalPixels / maxValue) >> 8;
+    else
+        pixels = *currValue * totalPixels / maxValue;
+
+    filledPixels = pixels;
+
+    if (newValue > 0)
+    {
+        arg4[0] = 1;
+        if (filledPixels == 0)
+            return;
+        pixels--;
+        for (i = 1; i < 7; i++)
+        {
+            if (pixels >= 8)
+            {
+                arg4[i] = 8;
+            }
+            else
+            {
+                arg4[i] = pixels;
+                return;
+            }
+            pixels -= 8;
+        }
+        if (pixels >= 1)
+            arg4[7] = 1;
+    }
+}
+
 static u8 GetScaledExpFraction(s32 oldValue, s32 receivedValue, s32 maxValue, u8 scale)
 {
     s32 newVal, result;
     s8 oldToMax, newToMax;
 
-    scale *= 8;
     newVal = oldValue - receivedValue;
 
     if (newVal < 0)
@@ -2529,13 +3306,13 @@ static u8* AddTextPrinterAndCreateWindowOnHealthbox(const u8 *str, u32 x, u32 y,
     struct WindowTemplate winTemplate = sHealthboxWindowTemplate;
 
     winId = AddWindow(&winTemplate);
-    FillWindowPixelBuffer(winId, PIXEL_FILL(bgColor));
+    //FillWindowPixelBuffer(winId, PIXEL_FILL(bgColor));
 
     color[0] = bgColor;
     color[1] = 1;
     color[2] = 3;
 
-    AddTextPrinterParameterized4(winId, 0, x, y, 0, 0, color, -1, str);
+    AddTextPrinterParameterized4(winId, 3, x, y, -1, 0, 0, -1, str);
 
     *windowId = winId;
     return (u8*)(GetWindowAttribute(winId, WINDOW_TILE_DATA));
@@ -2558,13 +3335,13 @@ static void HpTextIntoHealthboxObject(void *dest, u8 *windowTileData, u32 window
 
 static void TextIntoHealthboxObject(void *dest, u8 *windowTileData, s32 windowWidth)
 {
-    CpuCopy32(windowTileData + 256, dest + 256, windowWidth * TILE_SIZE_4BPP);
+    CpuCopy32(windowTileData, dest, windowWidth * TILE_SIZE_4BPP);
 // + 256 as that prevents the top 4 blank rows of sHealthboxWindowTemplate from being copied
     if (windowWidth > 0)
     {
         do
         {
-            CpuCopy32(windowTileData + 20, dest + 20, 12);
+            CpuCopy32(windowTileData + 256, dest + 256, 28);
             dest += 32, windowTileData += 32;
             windowWidth--;
         } while (windowWidth != 0);

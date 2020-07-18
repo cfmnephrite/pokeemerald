@@ -73,7 +73,7 @@ u16 ItemIdToBattleMoveId(u16);
 u16 BagGetItemIdByPocketPosition(u8, u16);
 void BagMenu_PrintDescription(int);
 void BagMenu_PrintCursor(u8, u8);
-void BagMenu_Print(u8, u8, const u8*, u8, u8, u8, u8, u8, u8);
+void BagMenu_Print(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 h);
 bool8 ItemId_GetImportance(u16);
 u16 BagGetQuantityByPocketPosition(u8, u16);
 void sub_81AB89C(void);
@@ -2290,7 +2290,7 @@ void SetupBagMenu_Textboxes(void)
     schedule_bg_copy_tilemap_to_vram(1);
 }
 
-void BagMenu_Print(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 h)
+void BagMenu_Print(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, s8 letterSpacing, s8 lineSpacing, u8 speed, u8 h)
 {
     AddTextPrinterParameterized4(windowId, fontId, left, top, letterSpacing, lineSpacing, sFontColorTable[h], speed, str);
 }

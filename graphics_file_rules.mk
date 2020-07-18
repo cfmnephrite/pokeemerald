@@ -273,7 +273,10 @@ $(TILESETGFXDIR)/secondary/mystery_events_house/tiles.4bpp: %.4bpp: %.png
 
 ### Fonts ###
 
-$(FONTGFXDIR)/font0.4bpp: $(FONTGFXDIR)/font0_latin.png
+$(FONTGFXDIR)/hpboxfont.4bpp: $(FONTGFXDIR)/hpboxfont.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font0.latfont: $(FONTGFXDIR)/font0_latin.png
 	$(GFX) $< $@
 
 $(FONTGFXDIR)/font1.latfont: $(FONTGFXDIR)/font1_latin.png

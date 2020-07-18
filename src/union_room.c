@@ -4624,7 +4624,7 @@ void sub_80173E0(u8 windowId, u8 arg1, const u8 *str, u8 arg3, u8 arg4, u8 arg5)
     sp0.y = arg4;
     sp0.currentX = arg3;
     sp0.currentY = arg4;
-    sp0.unk = 0;
+    sp0.shift = 0;
 
     gTextFlags.useAlternateDownArrow = FALSE;
     switch (arg5)

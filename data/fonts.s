@@ -13,7 +13,7 @@ gFont8LatinGlyphWidths:: @ 8633AE4
 
 	.align 2
 gFont0LatinGlyphs:: @ 8633CE4
-	.incbin "data/graphics/fonts/font0.4bpp.lz"
+	.incbin "data/graphics/fonts/font0.latfont"
 
 	.align 2
 gFont0LatinGlyphWidths:: @ 863BCE4
@@ -42,6 +42,21 @@ gFont1LatinGlyphs:: @ 864C2E4
 	.align 2
 gFont1LatinGlyphWidths:: @ 86542E4
 	.include "data/graphics/fonts/font1_latin_widths.inc"
+
+@ HP box font
+	.align 2
+gHPBoxFontGlyphWidths:: @ 86542E4
+	.include "data/graphics/fonts/hpbox_widths.inc"
+
+@ Movebox font
+	.align 2
+gMoveBoxFontGlyphWidths:: @ 86542E4
+	.include "data/graphics/fonts/movebox_widths.inc"
+
+@ Description box font
+	.align 2
+gDescBoxFontGlyphWidths:: @ 86542E4
+	.include "data/graphics/fonts/descbox_widths.inc"    
 
 	.align 2
 gFont0JapaneseGlyphs:: @ 86544E4

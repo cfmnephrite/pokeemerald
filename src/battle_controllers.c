@@ -54,6 +54,8 @@ void SetUpBattleVarsAndBirchZigzagoon(void)
         gBattlerPositions[i] = 0xFF;
         gActionSelectionCursor[i] = 0;
         gMoveSelectionCursor[i] = 0;
+        gMoveSelectionState[i] = 0;
+        gBattleMoveBoxSpriteIds[i] = 0;
     }
 
     HandleLinkBattleSetup();
@@ -74,6 +76,8 @@ void SetUpBattleVarsAndBirchZigzagoon(void)
 
     gUnknown_02022FF4 = 0;
     gUnknown_0202428C = 0;
+    gBattleMoveBoxReset = 0xFF;
+    gBattleMoveScreenReset = 0xFF;
 }
 
 void sub_8032768(void)

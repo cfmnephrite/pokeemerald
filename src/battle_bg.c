@@ -175,7 +175,7 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
         .width = 14,
         .height = 4,
         .paletteNum = 0,
-        .baseBlock = 0x01c0,
+        .baseBlock = 0x01C0,
     },
     { // 2 "Fight/Pokemon/Bag/Run"
         .bg = 0,
@@ -186,77 +186,69 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
         .paletteNum = 5,
         .baseBlock = 0x0190,
     },
-    { // 3 Top left move
+    { // 3 Move desc1
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 55,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
+        .tilemapLeft = 17,
+        .tilemapTop = 56,
+        .width = 14,
+        .height = 5,
+        .paletteNum = 13,
+        .baseBlock = 0x022e,
+    },
+    {// 4 Move desc2
+        .bg = 0,
+        .tilemapLeft = 17,
+        .tilemapTop = 56,
+        .width = 14,
+        .height = 5,
+        .paletteNum = 13,
+        .baseBlock = 0x0274,
+    },
+    {// 5 Move desc3
+        .bg = 0,
+        .tilemapLeft = 17,
+        .tilemapTop = 56,
+        .width = 14,
+        .height = 5,
+        .paletteNum = 13,
+        .baseBlock = 0x02ba,
+    },
+    {// 6 Move desc4
+        .bg = 0,
+        .tilemapLeft = 17,
+        .tilemapTop = 56,
+        .width = 14,
+        .height = 5,
+        .paletteNum = 13,
         .baseBlock = 0x0300,
     },
-    { // 4 Top right move
+    {   // 7 Move BP
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 55,
-        .width = 8,
+        .tilemapLeft = 19,
+        .tilemapTop = 54,
+        .width = 3,
         .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0310,
+        .paletteNum = 12,
+        .baseBlock = 0x01f8,
     },
-    { // 5 Bottom left move
+    {0},
+    {   // 9 Move Accuracy
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 57,
-        .width = 8,
+        .tilemapLeft = 22,
+        .tilemapTop = 54,
+        .width = 3,
         .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0320,
+        .paletteNum = 12,
+        .baseBlock = 0x01fe,
     },
-    { // 6 Bottom right move
+    {   // 10 HP number
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 57,
-        .width = 8,
+        .tilemapLeft = 26,
+        .tilemapTop = 54,
+        .width = 5,
         .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0330,
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 21,
-        .tilemapTop = 55,
-        .width = 4,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0290,
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 21,
-        .tilemapTop = 57,
-        .width = 0,
-        .height = 0,
-        .paletteNum = 5,
-        .baseBlock = 0x0298,
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 25,
-        .tilemapTop = 55,
-        .width = 4,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x0298,
-    },
-    {
-        .bg = 0,
-        .tilemapLeft = 21,
-        .tilemapTop = 57,
-        .width = 8,
-        .height = 2,
-        .paletteNum = 5,
-        .baseBlock = 0x02a0,
+        .paletteNum = 12,
+        .baseBlock = 0x0204,
     },
     {
         .bg = 0,
@@ -265,7 +257,7 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
         .width = 8,
         .height = 4,
         .paletteNum = 5,
-        .baseBlock = 0x02b0,
+        .baseBlock = 0x020e,
     },
     {
         .bg = 0,
@@ -710,7 +702,7 @@ void BattleInitBgsAndWindows(void)
     DeactivateAllTextPrinters();
 }
 
-void sub_80356D0(void)
+void LoadBattleBgsAndWindows(void)
 {
     DisableInterrupts(INTR_FLAG_HBLANK);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_VCOUNT | INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
@@ -723,8 +715,8 @@ void sub_80356D0(void)
 
 void LoadBattleMenuWindowGfx(void)
 {
-    LoadUserWindowBorderGfx(2, 0x12, 0x10);
-    LoadUserWindowBorderGfx(2, 0x22, 0x10);
+    LoadUserWindowBorderGfx(2, 0x6, 0x10);
+    LoadUserWindowBorderGfx(2, 0x16, 0x10);
     LoadCompressedPalette(gUnknown_08D85600, 0x50, 0x20);
 
     if (gBattleTypeFlags & BATTLE_TYPE_ARENA)

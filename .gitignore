@@ -33,3 +33,4 @@ porymap.project.cfg
 *.bak
 .vscode/
 samples/
+*.lnk

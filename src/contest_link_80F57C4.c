@@ -2498,7 +2498,7 @@ static void sub_80F7ED0(int windowId, u8 *str, int arg2)
     textPrinter.currentY = 2;
     textPrinter.letterSpacing = 0;
     textPrinter.lineSpacing = 0;
-    textPrinter.unk = 0;
+    textPrinter.shift = 0;
     textPrinter.fgColor = 1;
     textPrinter.bgColor = 0;
     textPrinter.shadowColor = 8;

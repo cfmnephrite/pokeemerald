@@ -226,9 +226,13 @@ EWRAM_DATA struct BattleStruct *gBattleStruct = NULL;
 EWRAM_DATA u8 *gLinkBattleSendBuffer = NULL;
 EWRAM_DATA u8 *gLinkBattleRecvBuffer = NULL;
 EWRAM_DATA struct BattleResources *gBattleResources = NULL;
+EWRAM_DATA u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gActionSelectionCursor[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gMoveSelectionCursor[MAX_BATTLERS_COUNT] = {0};
-EWRAM_DATA u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT] = {0};
+EWRAM_DATA u8 gMoveSelectionState[MAX_BATTLERS_COUNT] = {0};
+EWRAM_DATA u8 gBattleMoveBoxSpriteIds[4] = {0};
+EWRAM_DATA u8 gBattleMoveBoxReset = 0;
+EWRAM_DATA u8 gBattleMoveScreenReset = 0;
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
 EWRAM_DATA u32 gTransformedPersonalities[MAX_BATTLERS_COUNT] = {0};
@@ -547,7 +551,7 @@ static void CB2_InitBattleInternal(void)
     if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
         gBattleTerrain = BATTLE_TERRAIN_BUILDING;
 
-    sub_80356D0();
+    LoadBattleBgsAndWindows();
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
@@ -837,7 +841,6 @@ static void CB2_HandleStartBattle(void)
             ShowBg(1);
             ShowBg(2);
             ShowBg(3);
-            sub_805EF14();
             gBattleCommunication[MULTIUSE_STATE] = 1;
         }
         if (gWirelessCommType)
@@ -1032,7 +1035,6 @@ static void CB2_HandleStartMultiPartnerBattle(void)
             ShowBg(1);
             ShowBg(2);
             ShowBg(3);
-            sub_805EF14();
             gBattleCommunication[MULTIUSE_STATE] = 1;
         }
         if (gWirelessCommType)
@@ -1432,7 +1434,6 @@ static void CB2_HandleStartMultiBattle(void)
             ShowBg(1);
             ShowBg(2);
             ShowBg(3);
-            sub_805EF14();
             gBattleCommunication[MULTIUSE_STATE] = 1;
         }
         if (gWirelessCommType)
@@ -2104,7 +2105,7 @@ void sub_8038D64(void)
         gBattle_BG3_X = 0;
         gBattle_BG3_Y = 0;
 
-        sub_80356D0();
+        LoadBattleBgsAndWindows();
         LoadCompressedPalette(gBattleTextboxPalette, 0, 64);
         LoadBattleMenuWindowGfx();
         ResetSpriteData();
@@ -2300,7 +2301,7 @@ static void sub_80392A8(void)
     gBattle_BG2_Y = 0;
     gBattle_BG3_X = 0;
     gBattle_BG3_Y = 0;
-    sub_80356D0();
+    LoadBattleBgsAndWindows();
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     LoadBattleMenuWindowGfx();
 
@@ -3012,6 +3013,7 @@ void SwitchInClearSetData(void)
 
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
+    gMoveSelectionState[gActiveBattler] = 0;
 
     memset(&gDisableStructs[gActiveBattler], 0, sizeof(struct DisableStruct));
 
@@ -3087,6 +3089,7 @@ void FaintClearSetData(void)
 
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
+    gMoveSelectionState[gActiveBattler] = 0;
 
     memset(&gDisableStructs[gActiveBattler], 0, sizeof(struct DisableStruct));
 
@@ -5424,6 +5427,7 @@ static void HandleAction_Switch(void)
     gBattle_BG0_Y = 0;
     gActionSelectionCursor[gBattlerAttacker] = 0;
     gMoveSelectionCursor[gBattlerAttacker] = 0;
+    gMoveSelectionState[gBattlerAttacker] = 0;
 
     PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, gBattlerAttacker, *(gBattleStruct->field_58 + gBattlerAttacker))
 
