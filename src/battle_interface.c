@@ -2007,11 +2007,12 @@ void CreateMoveBox(u8 type, u8 index)
 void CreateMoveBoxCursor(void)
 {
     u8 index = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    u8 cursorParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
     if (index == 0xFF)
     {
         LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
-        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113, 0);
-        gSprites[index].oam.affineParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
+        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113 + 23 * cursorParam, 0);
+        gSprites[index].oam.affineParam = cursorParam;
     }
     SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
