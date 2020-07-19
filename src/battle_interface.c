@@ -67,20 +67,20 @@ enum
     HEALTHBOX_GFX_31,
     HEALTHBOX_GFX_STATUS_NONE,
     HEALTHBOX_GFX_33,
-    HEALTHBOX_GFX_STATUS_SLP2, 
-    HEALTHBOX_GFX_35, 
-    HEALTHBOX_GFX_STATUS_FRZ2, 
-    HEALTHBOX_GFX_37, 
-    HEALTHBOX_GFX_STATUS_PAR2, 
-    HEALTHBOX_GFX_39, 
-    HEALTHBOX_GFX_STATUS_BRN2, 
-    HEALTHBOX_GFX_41, 
-    HEALTHBOX_GFX_STATUS_PSN2, 
-    HEALTHBOX_GFX_43, 
-    HEALTHBOX_GFX_STATUS_TOX2, 
-    HEALTHBOX_GFX_45, 
-    HEALTHBOX_GFX_STATUS_NONE2, 
-    HEALTHBOX_GFX_47, 
+    HEALTHBOX_GFX_STATUS_SLP2,
+    HEALTHBOX_GFX_35,
+    HEALTHBOX_GFX_STATUS_FRZ2,
+    HEALTHBOX_GFX_37,
+    HEALTHBOX_GFX_STATUS_PAR2,
+    HEALTHBOX_GFX_39,
+    HEALTHBOX_GFX_STATUS_BRN2,
+    HEALTHBOX_GFX_41,
+    HEALTHBOX_GFX_STATUS_PSN2,
+    HEALTHBOX_GFX_43,
+    HEALTHBOX_GFX_STATUS_TOX2,
+    HEALTHBOX_GFX_45,
+    HEALTHBOX_GFX_STATUS_NONE2,
+    HEALTHBOX_GFX_47,
     HEALTHBOX_GFX_HP_BAR_YELLOW, //hp bar yellow [0 pixels]
     HEALTHBOX_GFX_49, //hp bar yellow [1 pixels]
     HEALTHBOX_GFX_50, //hp bar yellow [2 pixels]
@@ -424,7 +424,7 @@ static const struct OamData sOamData_BattleMoveBoxes =
     .affineParam = 0,
 };
 
-static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] = 
+static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] =
 {
     {gBattleMoveBoxMystery_Gfx, 0x400, TAG_MOVE_BOX_MYSTERY_TILE},
     {gBattleMoveBoxBug_Gfx, 0x400, TAG_MOVE_BOX_BUG_TILE},
@@ -506,7 +506,7 @@ static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] =
     {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR}
 };
 
-static const struct SpritePalette sSpritePalettes_BattleMoveBoxes[] = 
+static const struct SpritePalette sSpritePalettes_BattleMoveBoxes[] =
 {
     {gBattleMoveBoxNormal_Pal, TAG_MOVE_BOX_MYSTERY_PAL},
     {gBattleMoveBoxBug_Pal, TAG_MOVE_BOX_BUG_PAL},
@@ -1287,7 +1287,7 @@ static void SpriteCallback_MoveBoxCursor(struct Sprite *sprite)
         sprite->pos1.y -= 2;
         if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
             sprite->pos1.y--;
-            
+
     }
     else if ((sprite->pos1.y - 113) < 23 * sprite->oam.affineParam)
     {
@@ -1708,7 +1708,7 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
     ConvertIntToDecimalStringN(text + 2, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
     windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 7, 2, 2, &windowId);
     spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
-    
+
     TextIntoHealthboxObject((void*)(OBJ_VRAM0 + spriteTileNum + 34 * 32), windowTileData, 3);
     RemoveWindowOnHealthbox(windowId);
 }
@@ -1886,7 +1886,7 @@ const u32 gMoveScreenSplitIconsGfx[] = INCBIN_U32("graphics/battle_interface/spl
 const u32 gMoveScreenScrollBarGfx[] = INCBIN_U32("graphics/battle_interface/move_screen_scroll_bar.4bpp");
 
 void CreateMoveScreen(void)
-{   
+{
     if (gBattleMoveScreenReset)
     {
         CopyToBgTilemapBuffer(2, gMoveScreenTilemap, 0, 0);
@@ -1905,13 +1905,13 @@ void SetMoveScreenSplitIcons(void)
 {
     u8 splitA, splitB;
     u8 *src = (u8*)gMoveScreenSplitIconsGfx;
-    
+
     splitA = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]], 1);
     if (gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1] == MOVE_NONE)
         splitB = 3;
     else
         splitB = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1], 1);
-    
+
     RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 99 * TILE_SIZE_4BPP), 0x40);
     RequestSpriteCopy((src + 0x40 * (3 + splitB)), (u8*)(VRAM + 101 * TILE_SIZE_4BPP), 0x40);
 }
@@ -1919,20 +1919,20 @@ void SetMoveScreenSplitIcons(void)
 void UpdateScrollBar(u8 totalMoveNo)
 {
     u8 *src = (u8*)gMoveScreenScrollBarGfx;
-    
+
     if (totalMoveNo == 3)
         src += 0xE0 * (1 + gMoveSelectionState[gActiveBattler]);
     else if (totalMoveNo == 4)
         src += 0xE0 * (3 + gMoveSelectionState[gActiveBattler]);
-    
+
     RequestSpriteCopy(src, (u8*)(VRAM + 104 * TILE_SIZE_4BPP), 0xE0);
-        
+
 }
 
 void UpdateTypeBg(void)
 {
     u8 type = GetMoveType(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]], 1);
-    
+
     if (type)
     {
         LoadPalette((u8*)gTypeBgBug_Pal + (type - 1) * 0x20, 0xD0, 0x20);
@@ -1957,7 +1957,7 @@ void ResetMoveBoxes(void)
 }
 
 void DestroyMoveBoxes(void)
-{    
+{
     u8 i;
     for (i = 0; i < 4; i++)
     {
@@ -1970,6 +1970,7 @@ void DestroyMoveBoxes(void)
             gBattleMoveBoxSpriteIds[i] = 0;
         }
     }
+    gBattleMoveBoxReset = 0xFF;
 }
 
 void DestroyMoveBoxCursor(void)
@@ -2010,6 +2011,7 @@ void CreateMoveBoxCursor(void)
     {
         LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
         index = CreateSprite(&sBattleMoveBoxCursor, 3, 113, 0);
+        gSprites[index].oam.affineParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
     }
     SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
@@ -2022,26 +2024,26 @@ void ConfirmMoveBoxCursor(void)
     {
         StartSpriteAnim(&gSprites[cursorId], 1);
         SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
-    }    
+    }
 }
 
 void UpdateMoveBoxList(void)
 {
     if (gBattleMoveBoxSpriteIds[0])
         gSprites[gBattleMoveBoxSpriteIds[0]].invisible = (gMoveSelectionState[gActiveBattler] > 0);
-    
+
     if (gBattleMoveBoxSpriteIds[1])
     {
         gSprites[gBattleMoveBoxSpriteIds[1]].invisible = (gMoveSelectionState[gActiveBattler] > 1);
         gSprites[gBattleMoveBoxSpriteIds[1]].pos1.y = 131 - (23 * gMoveSelectionState[gActiveBattler]);
     }
-    
+
     if (gBattleMoveBoxSpriteIds[2])
     {
         gSprites[gBattleMoveBoxSpriteIds[2]].invisible = (gMoveSelectionState[gActiveBattler] < 1);
         gSprites[gBattleMoveBoxSpriteIds[2]].pos1.y = 154 - (23 * gMoveSelectionState[gActiveBattler]);
     }
-    
+
     if (gBattleMoveBoxSpriteIds[3])
         gSprites[gBattleMoveBoxSpriteIds[3]].invisible = (gMoveSelectionState[gActiveBattler] < 2);
 }
@@ -2053,16 +2055,16 @@ void MoveBox_PrintMoveName(u8 index)
     u8 *windowTileData;
     u16 *vramPtr, *src, *vramPtr2, *src2, *vramPtr3, *src3, *vramPtr4, *src4;
     u8 i, j;
-    
+
     StringCopy(gDisplayedStringBattle, gMoveNames[gBattleMons[gActiveBattler].moves[index]]);
     windowTileData = AddTextPrinterAndCreateWindowOnMovebox(gDisplayedStringBattle, 4, 1, &windowId, 4, 0);
     spriteTileNum = gSprites[gBattleMoveBoxSpriteIds[index]].oam.tileNum * TILE_SIZE_4BPP;
-    
+
     src = (u16*)windowTileData;
     src2 = src + 0x60;
     src3 = src + 0xD0;
     src4 = src + 0x130;
-    
+
     vramPtr = (u16*)(OBJ_VRAM0 + spriteTileNum + 0x140);
     vramPtr2 = vramPtr + 0x1E0;
     vramPtr3 = vramPtr + 0x80;
@@ -2109,7 +2111,7 @@ void MoveBox_PrintMoveName(u8 index)
         vramPtr4++;
     }
     RemoveWindow(windowId);
-    
+
 }
 
 void MoveBox_PrintMovePP(u8 index)
@@ -2119,13 +2121,13 @@ void MoveBox_PrintMovePP(u8 index)
     u8 *windowTileData;
     u16 *vramPtr, *src;
     u8 i, j;
-    
+
     text[0] = 0x9C;
     ConvertIntToDecimalStringN(text + 1, gBattleMons[gActiveBattler].pp[index], STR_CONV_MODE_RIGHT_ALIGN, 3);
     windowTileData = AddTextPrinterAndCreateWindowOnMovebox(text, 5, 0, &windowId, 3, 1);
     spriteTileNum = gSprites[gBattleMoveBoxSpriteIds[index]].oam.tileNum * TILE_SIZE_4BPP;
-    
-    src = (u16*)windowTileData;    
+
+    src = (u16*)windowTileData;
     vramPtr = (u16*)(OBJ_VRAM0 + spriteTileNum + 0x6A0);
 
     for (i = 0; i < 32; i++)
@@ -2142,7 +2144,7 @@ void MoveBox_PrintMovePP(u8 index)
         vramPtr++;
     }
     RemoveWindow(windowId);
-    
+
 }
 
 const struct WindowTemplate sMoveBoxWindowTemplates[2] =
@@ -2881,14 +2883,14 @@ static void UpdateStatusIconInHealthbox(u8 healthboxSpriteId)
         statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_TOX + side * 14);
     else
         statusGfxPtr = GetHealthboxElementGfxPtr(HEALTHBOX_GFX_STATUS_NONE + side * 14);
-    
+
     statusGfxPtr2 = statusGfxPtr + 0x20;
-    
-    if (side == B_SIDE_PLAYER) 
+
+    if (side == B_SIDE_PLAYER)
         offset = 50;
     else
         offset = 19;
-        
+
     for (i = 1; i < 8; i++)
     {
         CpuCopy16(statusGfxPtr + i * 4, (void*)(OBJ_VRAM0 + spriteTileNum + offset * TILE_SIZE_4BPP + i * 4 + 2), 2);

@@ -3069,8 +3069,7 @@ void SwitchInClearSetData(void)
 void FaintClearSetData(void)
 {
     s32 i;
-	
-	
+
     for (i = 0; i < NUM_BATTLE_STATS; i++)
         gBattleMons[gActiveBattler].statStages[i] = 6;
 
@@ -3083,9 +3082,9 @@ void FaintClearSetData(void)
             gBattleMons[i].status2 &= ~STATUS2_ESCAPE_PREVENTION;
         if (gDisableStructs[i].skyDrop && gDisableStructs[i].skyDropTrappingBattler == gActiveBattler)
             gDisableStructs[i].skyDrop = 0;
-			gDisableStructs[i].skyDropTrappingBattler = 0;
-            gStatuses3[i] &= ~STATUS3_ON_AIR;		
-			//BattleScriptExecute(BattleScript_FreedSkyDropMsg);
+            gDisableStructs[i].skyDropTrappingBattler = 0;
+            gStatuses3[i] &= ~STATUS3_ON_AIR;
+            //BattleScriptExecute(BattleScript_FreedSkyDropMsg);
         if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(gActiveBattler))
             gBattleMons[i].status2 &= ~(STATUS2_INFATUATED_WITH(gActiveBattler));
         if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && *(gBattleStruct->wrappedBy + i) == gActiveBattler)
@@ -3153,7 +3152,7 @@ void FaintClearSetData(void)
 
         gBattleStruct->lastTakenMoveFrom[i][gActiveBattler] = 0;
     }
-    
+
 
     //if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_FORECAST_ANY && gBattleMons[gActiveBattler].species == SPECIES_CASTFORM) have to figure out Castform's forms first...
     if (gBattleWeather & WEATHER_FORECAST_ANY && gBattleMons[gActiveBattler].ability == ABILITY_FORECAST)
@@ -3184,12 +3183,12 @@ void FaintClearSetData(void)
             s32 i;
             bool32 continueWeather = FALSE;
             gBattleCommunication[MULTISTRING_CHOOSER]--;
-            
+
             for (i = 0; i < MAX_BATTLERS_COUNT; i++)
             {
                 if (gBattleMons[i].hp && i != gActiveBattler && ((GetBattlerAbility(i) == ABILITY_FORECAST && gBattleMons[i].moves[0] == gBattleMons[gActiveBattler].moves[0])
                                                              || (gBattleWeather & WEATHER_SUN_FORECAST && GetBattlerAbility(i) == ABILITY_FLOWER_GIFT && gBattleMons[i].moves[0] == MOVE_SUNNY_DAY)))
-                {    
+                {
                     continueWeather = TRUE;
                     break;
                 }
@@ -4641,7 +4640,7 @@ static void CheckMegaEvolutionBeforeTurn(void)
                 BattleScriptExecute(BattleScript_MegaEvolution);
                 return;
             }
-        }      
+        }
     }
 
     gBattleMainFunc = CheckFocusPunch_ClearVarsBeforeTurnStarts;
@@ -5110,7 +5109,7 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                 )
              )
     {
-		if((attackerAbility == ABILITY_DARK_AURA 
+		if((attackerAbility == ABILITY_DARK_AURA
 		 || attackerAbility == ABILITY_FAIRY_AURA)
 		 && IsAbilityOnField(ABILITY_AURA_BREAK))
 		 {
@@ -5384,7 +5383,7 @@ static void HandleAction_UseMove(void)
             }
         }
     }
- 
+
     // Choose battlescript.
     if (gBattleTypeFlags & BATTLE_TYPE_PALACE
         && gProtectStructs[gBattlerAttacker].palaceUnableToUseMove)

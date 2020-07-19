@@ -722,7 +722,7 @@ static void HandleInputChooseMove(void)
             gBattleStruct->zMove.playerSelect ^= 1;
             ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, gBattleStruct->zMove.playerSelect);
             PlaySE(SE_SELECT);
-        }        
+        }
     }
 }
 
@@ -1344,14 +1344,14 @@ static void MoveSelectionDisplayBPAndAccuracy(void)
     accuracy[0] = 0x9C;
     ConvertIntToDecimalStringN(power + 1, gBattleMoves[gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]]].power, STR_CONV_MODE_RIGHT_ALIGN, 4);
     if (gBattleMoves[gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]]].power == 0)
-    {   
+    {
         power[2] = 0xAE;
         power[3] = 0xFF;
     }
     BattlePutTextOnWindow(power, 7);
     ConvertIntToDecimalStringN(accuracy + 1, gBattleMoves[gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]]].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 4);
     if (gBattleMoves[gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]]].accuracy == 0)
-    {   
+    {
         accuracy[2] = 0xAE;
         accuracy[3] = 0xFF;
     }
@@ -2509,6 +2509,7 @@ static void PlayerHandleChooseMove(void)
     else
     {
         InitMoveSelectionsVarsAndStrings();
+        CreateMoveBoxCursor();
         gBattleStruct->mega.playerSelect = FALSE;
         gBattleStruct->zMove.playerSelect = FALSE;
         // Mega
@@ -2529,7 +2530,6 @@ void InitMoveSelectionsVarsAndStrings(void)
 {
     MoveSelectionFindNumberOfMoves();
     UpdateScrollBar(gNumberOfMovesToChoose);
-    CreateMoveBoxCursor();
     gMultiUsePlayerCursor = 0xFF;
     //MoveSelectionCreateCursorAt(gMoveSelectionCursor[gActiveBattler], 0);
     MoveScreenDisplayMonHP();
