@@ -632,9 +632,8 @@ extern const struct SpriteTemplate gMiniTwinklingStarSpriteTemplate;
 void unref_sub_8170478(u8 taskId)
 {
     struct BattleAnimBgData unknownStruct;
-    u8 healthBoxSpriteId;
+    u8 healthBoxSpriteId, healthBarId, invisibleSpriteWithCallBack;
     u8 battler;
-    u8 spriteId1, spriteId2, spriteId3, spriteId4;
 
     battler = gBattleAnimAttacker;
     gBattle_WIN0H = 0;
@@ -650,36 +649,29 @@ void unref_sub_8170478(u8 taskId)
     SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
 
     healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
-    spriteId3 = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
-    spriteId4 = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
+    healthBarId = gSprites[healthBoxSpriteId].data[5];
+    invisibleSpriteWithCallBack = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
     gSprites[healthBoxSpriteId].oam.priority = 1;
-    gSprites[spriteId1].oam.priority = 1;
-    gSprites[spriteId2].oam.priority = 1;
-    gSprites[spriteId3] = gSprites[healthBoxSpriteId];
-    gSprites[spriteId4] = gSprites[spriteId1];
-    gSprites[spriteId3].oam.objMode = ST_OAM_OBJ_WINDOW;
-    gSprites[spriteId4].oam.objMode = ST_OAM_OBJ_WINDOW;
-    gSprites[spriteId3].callback = SpriteCallbackDummy;
-    gSprites[spriteId4].callback = SpriteCallbackDummy;
+    gSprites[healthBarId].oam.priority = 1;
+    gSprites[invisibleSpriteWithCallBack] = gSprites[healthBoxSpriteId];
+    gSprites[invisibleSpriteWithCallBack].oam.objMode = ST_OAM_OBJ_WINDOW;
+    gSprites[invisibleSpriteWithCallBack].callback = SpriteCallbackDummy;
 
     sub_80A6B30(&unknownStruct);
     AnimLoadCompressedBgTilemap(unknownStruct.bgId, gUnknown_08C2EA9C);
     AnimLoadCompressedBgGfx(unknownStruct.bgId, gUnknown_08C2EA50, unknownStruct.tilesOffset);
     LoadCompressedPalette(gCureBubblesPal, unknownStruct.paletteId << 4, 32);
 
-    gBattle_BG1_X = -gSprites[spriteId3].pos1.x + 32;
-    gBattle_BG1_Y = -gSprites[spriteId3].pos1.y - 32;
+    gBattle_BG1_X = -gSprites[invisibleSpriteWithCallBack].pos1.x + 32;
+    gBattle_BG1_Y = -gSprites[invisibleSpriteWithCallBack].pos1.y - 32;
     gTasks[taskId].data[1] = 640;
-    gTasks[taskId].data[0] = spriteId3;
-    gTasks[taskId].data[2] = spriteId4;
+    gTasks[taskId].data[0] = invisibleSpriteWithCallBack;
     gTasks[taskId].func = sub_8170660;
 }
 
 static void sub_8170660(u8 taskId)
 {
-    u8 spriteId1, spriteId2;
+    u8 healthBarId;
     u8 battler;
 
     battler = gBattleAnimAttacker;
@@ -723,13 +715,10 @@ static void sub_8170660(u8 taskId)
                 SetGpuReg(REG_OFFSET_BLDCNT, 0);
                 SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
                 DestroySprite(&gSprites[gTasks[taskId].data[0]]);
-                DestroySprite(&gSprites[gTasks[taskId].data[2]]);
                 SetAnimBgAttribute(1, BG_ANIM_AREA_OVERFLOW_MODE, 0);
-                spriteId1 = gSprites[gHealthboxSpriteIds[battler]].oam.affineParam;
-                spriteId2 = gSprites[gHealthboxSpriteIds[battler]].data[5];
+                healthBarId = gSprites[gHealthboxSpriteIds[battler]].data[5];
                 gSprites[gHealthboxSpriteIds[battler]].oam.priority = 1;
-                gSprites[spriteId1].oam.priority = 1;
-                gSprites[spriteId2].oam.priority = 1;
+                gSprites[healthBarId].oam.priority = 1;
                 DestroyAnimVisualTask(taskId);
             }
         }
@@ -739,24 +728,21 @@ static void sub_8170660(u8 taskId)
 
 static void LoadHealthboxPalsForLevelUp(u8 *paletteId1, u8 *paletteId2, u8 battler)
 {
-    u8 healthBoxSpriteId;
-    u8 spriteId1, spriteId2;
+    u8 healthBoxSpriteId, healthBarId;
     u16 offset1, offset2;
 
     healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
+    healthBarId = gSprites[healthBoxSpriteId].data[5];
     *paletteId1 = AllocSpritePalette(0xD709);
     *paletteId2 = AllocSpritePalette(0xD70A);
 
     offset1 = (gSprites[healthBoxSpriteId].oam.paletteNum * 16) + 0x100;
-    offset2 = (gSprites[spriteId2].oam.paletteNum * 16) + 0x100;
+    offset2 = (gSprites[healthBarId].oam.paletteNum * 16) + 0x100;
     LoadPalette(&gPlttBufferUnfaded[offset1], *paletteId1 * 16 + 0x100, 0x20);
     LoadPalette(&gPlttBufferUnfaded[offset2], *paletteId2 * 16 + 0x100, 0x20);
 
     gSprites[healthBoxSpriteId].oam.paletteNum = *paletteId1;
-    gSprites[spriteId1].oam.paletteNum = *paletteId1;
-    gSprites[spriteId2].oam.paletteNum = *paletteId2;
+    gSprites[healthBarId].oam.paletteNum = *paletteId2;
 }
 
 void AnimTask_LoadHealthboxPalsForLevelUp(u8 taskId)
@@ -768,21 +754,18 @@ void AnimTask_LoadHealthboxPalsForLevelUp(u8 taskId)
 
 static void FreeHealthboxPalsForLevelUp(u8 battler)
 {
-    u8 healthBoxSpriteId;
-    u8 spriteId1, spriteId2;
+    u8 healthBoxSpriteId, healthBarId;
     u8 paletteId1, paletteId2;
 
     healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
+    healthBarId = gSprites[healthBoxSpriteId].data[5];
 
     FreeSpritePaletteByTag(0xD709);
     FreeSpritePaletteByTag(0xD70A);
     paletteId1 = IndexOfSpritePaletteTag(0xD6FF);
     paletteId2 = IndexOfSpritePaletteTag(0xD704);
     gSprites[healthBoxSpriteId].oam.paletteNum = paletteId1;
-    gSprites[spriteId1].oam.paletteNum = paletteId1;
-    gSprites[spriteId2].oam.paletteNum = paletteId2;
+    gSprites[healthBarId].oam.paletteNum = paletteId2;
 }
 
 void AnimTask_FreeHealthboxPalsForLevelUp(u8 taskId)

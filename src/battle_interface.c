@@ -1481,11 +1481,11 @@ static const struct SpriteTemplate sSpriteTemplate_MegaIndicator =
 // oam.affineParam holds healthboxRight spriteId
 #define hMain_HealthBarSpriteId     data[5]
 #define hMain_Battler               data[6]
-#define hMain_Data7                 data[7]
+#define hOther_IndicatorSpriteId    data[7] // For Mega Evo
 
 // data fields for healthboxRight
 #define hOther_HealthBoxSpriteId    data[5]
-#define hOther_IndicatorSpriteId    data[6] // For Mega Evo
+#define hOther_Data6                data[6] // WAS For Mega Evo
 
 // data fields for healthbar
 #define hBar_HealthBoxSpriteId      data[5]
@@ -1493,17 +1493,15 @@ static const struct SpriteTemplate sSpriteTemplate_MegaIndicator =
 
 u8 GetMegaIndicatorSpriteId(u32 healthboxSpriteId)
 {
-    u8 spriteId = gSprites[healthboxSpriteId].oam.affineParam;
-    if (spriteId >= MAX_SPRITES)
+    if (healthboxSpriteId >= MAX_SPRITES)
         return 0xFF;
-    return gSprites[spriteId].hOther_IndicatorSpriteId;
+    return gSprites[healthboxSpriteId].hOther_IndicatorSpriteId;
 }
 
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
 {
     s16 data6 = 0;
-    u8 healthboxSpriteId;
-    u8 healthbarSpriteId, megaIndicatorSpriteId;
+    u8 healthboxSpriteId, healthbarSpriteId, megaIndicatorSpriteId;
 
     healthboxSpriteId = CreateSprite(&sHealthboxSpriteTemplates[battlerId], 240, 160, 1);
     SetSubspriteTables(&gSprites[healthboxSpriteId], sHealthBox_SubspriteTable);
@@ -1516,6 +1514,7 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
 
     gSprites[healthboxSpriteId].hMain_HealthBarSpriteId = healthbarSpriteId;
     gSprites[healthboxSpriteId].hMain_Battler = battlerId;
+    gSprites[healthboxSpriteId].hOther_IndicatorSpriteId = 0xFF;
     gSprites[healthboxSpriteId].invisible = TRUE;
 
     gSprites[healthbarSpriteId].hBar_HealthBoxSpriteId = healthboxSpriteId;
@@ -1581,19 +1580,12 @@ static void SpriteCB_HealthBar(struct Sprite *sprite)
 static void SpriteCB_HealthBoxOther(struct Sprite *sprite)
 {
     u8 healthboxMainSpriteId = sprite->hOther_HealthBoxSpriteId;
-    u8 megaSpriteId = sprite->hOther_IndicatorSpriteId;
 
     sprite->pos1.x = gSprites[healthboxMainSpriteId].pos1.x + 64;
     sprite->pos1.y = gSprites[healthboxMainSpriteId].pos1.y;
 
     sprite->pos2.x = gSprites[healthboxMainSpriteId].pos2.x;
     sprite->pos2.y = gSprites[healthboxMainSpriteId].pos2.y;
-
-    if (megaSpriteId != 0xFF)
-    {
-        gSprites[megaSpriteId].pos2.x = sprite->pos2.x;
-        gSprites[megaSpriteId].pos2.y = sprite->pos2.y;
-    }
 }
 
 void SetBattleBarStruct(u8 battlerId, u8 healthboxSpriteId, s32 maxVal, s32 oldVal, s32 receivedValue)
@@ -2307,7 +2299,7 @@ u32 CreateMegaIndicatorSprite(u32 battlerId, u32 which)
         y += sIndicatorPosSingles[position][1];
     }
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_MegaIndicator, x, y, 0);
-    gSprites[gSprites[gHealthboxSpriteIds[battlerId]].oam.affineParam].hOther_IndicatorSpriteId = spriteId;
+    gSprites[gHealthboxSpriteIds[battlerId]].hOther_IndicatorSpriteId = spriteId;
 
     gSprites[spriteId].tBattler = battlerId;
     return spriteId;
@@ -2316,7 +2308,7 @@ u32 CreateMegaIndicatorSprite(u32 battlerId, u32 which)
 void DestroyMegaIndicatorSprite(u32 healthboxSpriteId)
 {
     u32 i;
-    s16 *spriteId = &gSprites[gSprites[healthboxSpriteId].oam.affineParam].hOther_IndicatorSpriteId;
+    s16 *spriteId = &gSprites[healthboxSpriteId].hOther_IndicatorSpriteId;
 
     if (*spriteId != 0xFF)
     {
@@ -2326,7 +2318,7 @@ void DestroyMegaIndicatorSprite(u32 healthboxSpriteId)
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        if (gSprites[gSprites[gHealthboxSpriteIds[i]].oam.affineParam].hOther_IndicatorSpriteId != 0xFF)
+        if (gSprites[gHealthboxSpriteIds[i]].hOther_IndicatorSpriteId != 0xFF)
             break;
     }
     // Free Sprite pal/tiles only if no indicator sprite is active for all battlers.
