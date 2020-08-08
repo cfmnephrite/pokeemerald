@@ -5237,10 +5237,9 @@ static void HandleAction_UseMove(void)
 
     // choose target
     side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-    if (gSideTimers[side].followmeTimer != 0
+    if (FollowMeTargetOnOppSide()
         && gBattleMoves[gCurrentMove].target == MOVE_TARGET_SELECTED
-        && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gSideTimers[side].followmeTarget)
-        && gBattleMons[gSideTimers[side].followmeTarget].hp != 0)
+        && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gSideTimers[side].followmeTarget))
     {
         gBattlerTarget = gSideTimers[side].followmeTarget;
     }

@@ -7254,7 +7254,7 @@ static void Cmd_various(void)
     case VARIOUS_SET_MAGIC_COAT_TARGET:
         gBattlerAttacker = gBattlerTarget;
         side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-        if (gSideTimers[side].followmeTimer != 0 && gBattleMons[gSideTimers[side].followmeTarget].hp != 0)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[side].followmeTarget;
         else
             gBattlerTarget = gActiveBattler;
@@ -10149,7 +10149,7 @@ static void Cmd_counterdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 2;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
@@ -10172,7 +10172,7 @@ static void Cmd_mirrorcoatdamagecalculator(void) // a copy of atkA1 with the phy
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 2;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;
@@ -11212,8 +11212,11 @@ static void Cmd_jumpifattackandspecialattackcannotfall(void) // memento
 
 static void Cmd_setforcedtarget(void) // follow me
 {
-    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer = 1;
-    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget = gBattlerAttacker;
+	if(gBattleMoves[gCurrentMove].flags & FLAG_POWDER)
+		gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer++; //for Rage Powder
+    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer++;
+	if (!(gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget)) //first mon using Follow Me takes priority
+		gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget = gBattlerAttacker;
     gBattlescriptCurrInstr++;
 }
 
@@ -12778,7 +12781,7 @@ static void Cmd_metalburstdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 150 / 100;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
@@ -12791,7 +12794,7 @@ static void Cmd_metalburstdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 150 / 100;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;

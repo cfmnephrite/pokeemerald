@@ -4010,6 +4010,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+        case ABILITY_COTTON_DOWN:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+			 && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+			 && TARGET_TURN_DAMAGED)
+        	{
+        		PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptPushCursor();
+				gBattlescriptCurrInstr = BattleScript_CottonDown;
+				effect++;
+        	}
+        	break;
         case ABILITY_ROUGH_SKIN:
         case ABILITY_IRON_BARBS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
@@ -5745,29 +5756,32 @@ u8 GetMoveTarget(u16 move, u8 setTarget)
     {
     case MOVE_TARGET_SELECTED:
         side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-        if (gSideTimers[side].followmeTimer && gBattleMons[gSideTimers[side].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
         {
             targetBattler = gSideTimers[side].followmeTarget;
         }
         else
         {
             targetBattler = SetRandomTarget(gBattlerAttacker);
-            if (gBattleMoves[move].type == TYPE_ELECTRIC
-                && IsAbilityOnOpposingSide(gBattlerAttacker, ABILITY_LIGHTNING_ROD)
-                && gBattleMons[targetBattler].ability != ABILITY_LIGHTNING_ROD)
-            {
-                targetBattler ^= BIT_FLANK;
-                RecordAbilityBattle(targetBattler, gBattleMons[targetBattler].ability);
-                gSpecialStatuses[targetBattler].lightningRodRedirected = 1;
-            }
-            else if (gBattleMoves[move].type == TYPE_WATER
-                && IsAbilityOnOpposingSide(gBattlerAttacker, ABILITY_STORM_DRAIN)
-                && gBattleMons[targetBattler].ability != ABILITY_STORM_DRAIN)
-            {
-                targetBattler ^= BIT_FLANK;
-                RecordAbilityBattle(targetBattler, gBattleMons[targetBattler].ability);
-                gSpecialStatuses[targetBattler].stormDrainRedirected = 1;
-            }
+			if (!(GetBattlerAbility(gBattlerAttacker) == ABILITY_PROPELLER_TAIL || GetBattlerAbility(gBattlerAttacker) == ABILITY_STALWART))
+			{
+				if (gBattleMoves[move].type == TYPE_ELECTRIC
+					&& IsAbilityOnOpposingSide(gBattlerAttacker, ABILITY_LIGHTNING_ROD)
+					&& gBattleMons[targetBattler].ability != ABILITY_LIGHTNING_ROD)
+				{
+					targetBattler ^= BIT_FLANK;
+					RecordAbilityBattle(targetBattler, gBattleMons[targetBattler].ability);
+					gSpecialStatuses[targetBattler].lightningRodRedirected = 1;
+				}
+				else if (gBattleMoves[move].type == TYPE_WATER
+					&& IsAbilityOnOpposingSide(gBattlerAttacker, ABILITY_STORM_DRAIN)
+					&& gBattleMons[targetBattler].ability != ABILITY_STORM_DRAIN)
+				{
+					targetBattler ^= BIT_FLANK;
+					RecordAbilityBattle(targetBattler, gBattleMons[targetBattler].ability);
+					gSpecialStatuses[targetBattler].stormDrainRedirected = 1;
+				}
+			}
         }
         break;
     case MOVE_TARGET_DEPENDS:
@@ -5780,7 +5794,7 @@ u8 GetMoveTarget(u16 move, u8 setTarget)
         break;
     case MOVE_TARGET_RANDOM:
         side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-        if (gSideTimers[side].followmeTimer && gBattleMons[gSideTimers[side].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             targetBattler = gSideTimers[side].followmeTarget;
         else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && moveTarget & MOVE_TARGET_RANDOM)
             targetBattler = SetRandomTarget(gBattlerAttacker);
@@ -8044,4 +8058,18 @@ void UpdateUnburden(void)
 				gBattleResources->flags->flags[battlers[i]] |= RESOURCE_FLAG_UNBURDEN;
 		}
 	}
+}
+
+bool8 FollowMeTargetOnOppSide(void)
+{
+	u8 side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
+	if (gSideTimers[side].followmeTimer && gBattleMons[gSideTimers[side].followmeTarget].hp 
+	 && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_PROPELLER_TAIL || GetBattlerAbility(gBattlerAttacker) == ABILITY_STALWART))
+	{
+		if (gSideTimers[side].followmeTimer == 2 
+		 && (IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_GRASS) || GetBattlerAbility(gBattlerAttacker) == ABILITY_OVERCOAT || GetBattlerHoldEffect(gBattlerTarget, TRUE) == HOLD_EFFECT_SAFETY_GOOGLES))
+			return FALSE;
+		return TRUE;
+	}
+	return FALSE;
 }
