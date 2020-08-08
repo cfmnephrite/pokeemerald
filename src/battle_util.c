@@ -2990,7 +2990,7 @@ static u8 ForewarnChooseMove(u32 battler)
     free(data);
 }
 
-u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveArg)
+u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 moveArg)
 {
     u8 effect = 0;
     u32 speciesAtk, speciesDef;
@@ -7930,7 +7930,7 @@ bool32 CanBattlerGetOrLoseItem(u8 battlerId, u16 itemId)
         return TRUE;
 }
 
-bool32 IsPartnerAbilityAffecting(u8 battler, u8 ability)
+bool32 IsPartnerAbilityAffecting(u8 battler, u16 ability)
 {
     if(GetBattlerAbility(battler) == ability || (IsBattlerAlive(BATTLE_PARTNER(battler)) && GetBattlerAbility(BATTLE_PARTNER(battler)) == ability))
     {
