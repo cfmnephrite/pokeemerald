@@ -4409,14 +4409,18 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
 
     speedBattler1 = GetBattlerTotalSpeedStat(battler1);
     holdEffectBattler1 = GetBattlerHoldEffect(battler1, TRUE);
-    if (holdEffectBattler1 == HOLD_EFFECT_QUICK_CLAW
+    if ((holdEffectBattler1 == HOLD_EFFECT_QUICK_CLAW
         && gRandomTurnNumber < (0xFFFF * GetBattlerHoldEffectParam(battler1)) / 100)
+        || (GetBattlerAbility(battler1) == ABILITY_QUICK_DRAW
+        && gRandomTurnNumber < (0xFFFF * 20 / 100)))
         quickClawBattler1 = TRUE;
 
     speedBattler2 = GetBattlerTotalSpeedStat(battler2);
     holdEffectBattler2 = GetBattlerHoldEffect(battler2, TRUE);
-    if (holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW
+    if ((holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW
         && gRandomTurnNumber < (0xFFFF * GetBattlerHoldEffectParam(battler2)) / 100)
+        || (GetBattlerAbility(battler2) == ABILITY_QUICK_DRAW
+        && gRandomTurnNumber < (0xFFFF * 20 / 100)))
         quickClawBattler2 = TRUE;
 
     if (!ignoreChosenMoves)
