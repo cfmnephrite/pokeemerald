@@ -1489,7 +1489,7 @@ s32 GetDrainedBigRootHp(u32 battler, s32 hp)
     return hp * -1;
 }
 
-#define MAGIC_GAURD_CHECK \
+#define MAGIC_GUARD_CHECK \
 if (ability == ABILITY_MAGIC_GUARD) \
 {\
     RecordAbilityBattle(gActiveBattler, ability);\
@@ -1564,7 +1564,7 @@ u8 DoBattlerEndTurnEffects(void)
              && gBattleMons[gStatuses3[gActiveBattler] & STATUS3_LEECHSEED_BATTLER].hp != 0
              && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
 
                 gBattlerTarget = gStatuses3[gActiveBattler] & STATUS3_LEECHSEED_BATTLER; // Notice gBattlerTarget is actually the HP receiver.
                 gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
@@ -1581,7 +1581,7 @@ u8 DoBattlerEndTurnEffects(void)
             if ((gBattleMons[gActiveBattler].status1 & STATUS1_POISON)
                 && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
 
                 if (ability == ABILITY_POISON_HEAL)
                 {
@@ -1613,7 +1613,7 @@ u8 DoBattlerEndTurnEffects(void)
             if ((gBattleMons[gActiveBattler].status1 & STATUS1_TOXIC_POISON)
                 && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
 
                 if (ability == ABILITY_POISON_HEAL)
                 {
@@ -1646,7 +1646,7 @@ u8 DoBattlerEndTurnEffects(void)
             if (gBattleMons[gActiveBattler].status1 & STATUS1_BURN
                 && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
                 gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
                 if (ability == ABILITY_HEATPROOF || ability == ABILITY_QUICK_FEET || ability == ABILITY_FLARE_BOOST)
                     gBattleMoveDamage /= 2;
@@ -1661,7 +1661,7 @@ u8 DoBattlerEndTurnEffects(void)
             if ((gBattleMons[gActiveBattler].status2 & STATUS2_NIGHTMARE)
                 && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
                 // R/S does not perform this sleep check, which causes the nightmare effect to
                 // persist even after the affected Pokemon has been awakened by Shed Skin.
                 if (gBattleMons[gActiveBattler].status1 & STATUS1_SLEEP)
@@ -1683,7 +1683,7 @@ u8 DoBattlerEndTurnEffects(void)
             if ((gBattleMons[gActiveBattler].status2 & STATUS2_CURSED)
                 && gBattleMons[gActiveBattler].hp != 0)
             {
-                MAGIC_GAURD_CHECK;
+                MAGIC_GUARD_CHECK;
                 gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 4;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
@@ -1697,7 +1697,7 @@ u8 DoBattlerEndTurnEffects(void)
             {
                 if (--gDisableStructs[gActiveBattler].wrapTurns != 0)  // damaged by wrap
                 {
-                    MAGIC_GAURD_CHECK;
+                    MAGIC_GUARD_CHECK;
 
                     gBattleScripting.animArg1 = gBattleStruct->wrappedMove[gActiveBattler];
                     gBattleScripting.animArg2 = gBattleStruct->wrappedMove[gActiveBattler] >> 8;

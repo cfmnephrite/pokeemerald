@@ -2180,6 +2180,19 @@ BattleScript_AromaVeilProtects:
 	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
 	goto BattleScript_MoveEnd
 
+	
+BattleScript_PastelVeilProtectsRet::
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PASTELVEILPROTECTED
+	waitmessage 0x40
+	return
+
+BattleScript_PastelVeilProtects:
+	call BattleScript_PastelVeilProtectsRet
+	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	goto BattleScript_MoveEnd
+
 BattleScript_AbilityPreventsSleep::
 	copybyte gEffectBattler, gBattlerTarget
 	setbyte cMULTISTRING_CHOOSER, 0x3
@@ -2863,6 +2876,7 @@ BattleScript_EffectPoison::
 	attackstring
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_AbilityPreventsPoison
+	jumpifability BS_TARGET_SIDE, ABILITY_PASTEL_VEIL, BattleScript_PastelVeilProtects
 	jumpifleafguard BattleScript_AbilityPreventsPoison
 	jumpifshieldsdown BS_TARGET, BattleScript_AbilityPreventsPoison
 	jumpifsubstituteblocks BattleScript_ButItFailed
@@ -2889,6 +2903,7 @@ BattleScript_EffectPoisonPowder:
 	attackstring
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_AbilityPreventsPoison
+	jumpifability BS_TARGET_SIDE, ABILITY_PASTEL_VEIL, BattleScript_PastelVeilProtects
 	jumpifleafguard BattleScript_AbilityPreventsPoison
 	jumpifshieldsdown BS_TARGET, BattleScript_AbilityPreventsPoison
 	jumpifsubstituteblocks BattleScript_ButItFailed
@@ -2907,6 +2922,7 @@ BattleScript_EffectToxic::
 	attackstring
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_AbilityPreventsPoison
+	jumpifability BS_TARGET_SIDE, ABILITY_PASTEL_VEIL, BattleScript_PastelVeilProtects
 	jumpifleafguard BattleScript_AbilityPreventsPoison
 	jumpifshieldsdown BS_TARGET, BattleScript_AbilityPreventsPoison
 	jumpifsubstituteblocks BattleScript_ButItFailed
