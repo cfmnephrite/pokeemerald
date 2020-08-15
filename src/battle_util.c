@@ -37,7 +37,7 @@
 
 // rom const data
 
-static const u8 sAbilitiesAffectedByMoldBreaker[] =
+static const u16 sAbilitiesAffectedByMoldBreaker[] =
 {   [ABILITY_AROMA_VEIL] = 1,
     [ABILITY_BATTLE_ARMOR] = 1,
     [ABILITY_BIG_PECKS] = 1,
@@ -105,7 +105,7 @@ static const u8 sAbilitiesAffectedByMoldBreaker[] =
 
 };
 
-static const u8 sAbilitiesAffectedByAuraBreak[] =
+static const u16 sAbilitiesAffectedByAuraBreak[] =
 {
 	[ABILITY_ADAPTABILITY] = 1,
 	[ABILITY_AERILATE] = 1,
@@ -137,7 +137,7 @@ static const u8 sAbilitiesAffectedByAuraBreak[] =
 	[ABILITY_WATER_BUBBLE] = 1,
 };
 
-static const u8 sAbilitiesNotTraced[ABILITIES_COUNT] =
+static const u16 sAbilitiesNotTraced[] =
 {
     [ABILITY_BATTLE_BOND] = 1,
     [ABILITY_COMATOSE] = 1,
@@ -157,6 +157,28 @@ static const u8 sAbilitiesNotTraced[ABILITIES_COUNT] =
     [ABILITY_STANCE_CHANGE] = 1,
     [ABILITY_TRACE] = 1,
     [ABILITY_ZEN_MODE] = 1,
+};
+
+static const u16 sUnbreakableAbilities[] =
+{
+    [ABILITY_AURA_BREAK] = 1,
+    [ABILITY_BATTLE_BOND] = 1,
+    [ABILITY_COMATOSE] = 1,
+    [ABILITY_DARK_AURA] = 1,
+    [ABILITY_DELTA_STREAM] = 1,
+    [ABILITY_DESOLATE_LAND] = 1,
+    [ABILITY_FAIRY_AURA] = 1,
+    [ABILITY_FULL_METAL_BODY] = 1,
+    [ABILITY_DISGUISE] = 1,
+    [ABILITY_MULTITYPE] = 1,
+    [ABILITY_POWER_CONSTRUCT] = 1,
+    [ABILITY_PRIMORDIAL_SEA] = 1,
+    [ABILITY_PRISM_ARMOR] = 1,
+    [ABILITY_RKS_SYSTEM] = 1,
+    [ABILITY_SCHOOLING] = 1,
+    [ABILITY_SHADOW_SHIELD] = 1,
+    [ABILITY_SHIELDS_DOWN] = 1,
+    [ABILITY_STANCE_CHANGE] = 1,
 };
 
 static const u8 sHoldEffectToType[][2] =
@@ -3130,7 +3152,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
         case ABILITY_UNNERVE:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
-				u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
+                u8 side = (GetBattlerPosition(battler) ^ BIT_SIDE) & BIT_SIDE;
                 u8 mon1 = GetBattlerAtPosition(side);
                 u8 mon2 = GetBattlerAtPosition(side + BIT_FLANK);
                 u8 oppBattlers[2] = {mon1, mon2};
@@ -3138,9 +3160,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 {
                     u8 oppBattler = oppBattlers[i];
                     if (IsBattlerAlive(oppBattler) && gDisableStructs[oppBattler].tauntTimer == 0)
-						gDisableStructs[oppBattler].tauntTimer = 1;
-				}
-				gBattleCommunication[MULTISTRING_CHOOSER] = 4;
+                        gDisableStructs[oppBattler].tauntTimer = 1;
+                }
+                gBattleCommunication[MULTISTRING_CHOOSER] = 4;
                 gSpecialStatuses[battler].switchInAbilityDone = 1;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
@@ -3198,37 +3220,37 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 }
             }
             break;
-		case ABILITY_RKS_SYSTEM:
-			if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_SILVALLY)
-			{
-				u8 dummy = 12;
-				SET_BATTLER_TYPE(battler, dummy);
-				BattleScriptPushCursorAndCallback(BattleScript_RKSSystemBoosts);
-				effect++;
-			}
-			break;
-		case ABILITY_INTREPID_SWORD:
-			if (gBattleMons[battler].statStages[STAT_ATK] != 12)
+        case ABILITY_RKS_SYSTEM:
+            if (!gSpecialStatuses[battler].switchInAbilityDone && gBattleMons[battler].species == SPECIES_SILVALLY)
+            {
+                u8 dummy = 12;
+                SET_BATTLER_TYPE(battler, dummy);
+                BattleScriptPushCursorAndCallback(BattleScript_RKSSystemBoosts);
+                effect++;
+            }
+            break;
+        case ABILITY_INTREPID_SWORD:
+            if (gBattleMons[battler].statStages[STAT_ATK] != 12)
             {
                 gBattlerAttacker = battler;
-				gBattleMons[battler].statStages[STAT_ATK]++;
+                gBattleMons[battler].statStages[STAT_ATK]++;
                 SET_STATCHANGER(STAT_ATK, 1, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_ATK);
                 BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
                 effect++;
             }
-			break;
-		case ABILITY_DAUNTLESS_SHIELD:
-			if (gBattleMons[battler].statStages[STAT_DEF] != 12)
+            break;
+        case ABILITY_DAUNTLESS_SHIELD:
+            if (gBattleMons[battler].statStages[STAT_DEF] != 12)
             {
                 gBattlerAttacker = battler;
-				gBattleMons[battler].statStages[STAT_DEF]++;
+                gBattleMons[battler].statStages[STAT_DEF]++;
                 SET_STATCHANGER(STAT_DEF, 1, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_DEF);
                 BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
                 effect++;
             }
-			break;
+            break;
         case ABILITY_DRIZZLE:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_RAIN, TRUE))
             {
@@ -3484,6 +3506,11 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 BattleScriptPushCursorAndCallback(BattleScript_AttackerFormChangeEnd3);
                 effect++;
             }
+            break;
+        case ABILITY_NEUTRALIZING_GAS:
+            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityActivates);
+            effect++;
             break;
         }
         break;
@@ -4659,22 +4686,24 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
 
 u32 GetBattlerAbility(u8 battlerId)
 {
-    if (gStatuses3[battlerId] & STATUS3_GASTRO_ACID)
+    if (gStatuses3[battlerId] & STATUS3_GASTRO_ACID
+        || (IsAbilityOnField(ABILITY_AURA_BREAK)
+        && sAbilitiesAffectedByAuraBreak[gBattleMons[battlerId].ability])
+        || (IsAbilityOnField(ABILITY_NEUTRALIZING_GAS)
+        && !sUnbreakableAbilities[gBattleMons[battlerId].ability]))
         return ABILITY_NONE;
     else if ((((((gBattleMons[gBattlerAttacker].ability == ABILITY_MOLD_BREAKER
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TERAVOLT
             || gBattleMons[gBattlerAttacker].ability == ABILITY_TURBOBLAZE)
             && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
             || gBattleMoves[gCurrentMove].flags & FLAG_TARGET_ABILITY_IGNORED)
-            && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability])
-			|| (IsAbilityOnField(ABILITY_AURA_BREAK)
-			&& sAbilitiesAffectedByAuraBreak[gBattleMons[gBattlerAttacker].ability]))
+            && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability]))
             && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
             && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
             && gCurrentTurnActionNumber < gBattlersCount)
         return ABILITY_NONE;
-	else
-		return gBattleMons[battlerId].ability;
+    else
+        return gBattleMons[battlerId].ability;
 }
 
 u32 IsAbilityOnSide(u32 battlerId, u32 ability)

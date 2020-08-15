@@ -5109,21 +5109,21 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                  || (attackerAbility == ABILITY_REFRIGERATE && (ateType = TYPE_ICE))
                  || (attackerAbility == ABILITY_AERILATE && (ateType = TYPE_FLYING))
                  || ((attackerAbility == ABILITY_GALVANIZE) && (ateType = TYPE_ELECTRIC))
-				 || ((attackerAbility == ABILITY_DARK_AURA) && (ateType = TYPE_DARK))
+                 || ((attackerAbility == ABILITY_DARK_AURA) && (ateType = TYPE_DARK))
                 )
              )
     {
-		if((attackerAbility == ABILITY_DARK_AURA
-		 || attackerAbility == ABILITY_FAIRY_AURA)
-		 && IsAbilityOnField(ABILITY_AURA_BREAK))
-		 {
-			 gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
-		 }
-		else
-		{
-			gBattleStruct->dynamicMoveType = ateType;
-			gBattleStruct->ateBoost[battlerAtk] = 1;
-		}
+        if((attackerAbility == ABILITY_DARK_AURA
+            || attackerAbility == ABILITY_FAIRY_AURA)
+            && IsAbilityOnField(ABILITY_AURA_BREAK))
+            {
+                gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
+            }
+        else
+        {
+            gBattleStruct->dynamicMoveType = ateType;
+            gBattleStruct->ateBoost[battlerAtk] = 1;
+        }
     }
     else if (gBattleMoves[move].type != TYPE_NORMAL
              && gBattleMoves[move].effect != EFFECT_HIDDEN_POWER

@@ -6698,6 +6698,13 @@ BattleScript_PsychicSurgeActivates::
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_PSYCHIC, NULL
 	end3
 
+BattleScript_SwitchInAbilityActivates::
+	pause 0x20
+	call BattleScript_AbilityPopUp
+	printfromtable gSwitchInAbilityStringsIds
+	waitmessage 0x40
+	end3
+
 BattleScript_BadDreamsActivates::
 	setbyte gBattlerTarget, 0
 	call BattleScript_AbilityPopUp
