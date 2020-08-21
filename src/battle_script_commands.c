@@ -1722,6 +1722,8 @@ END:
         && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
         && gBattleMons[gBattlerTarget].item)
     {
+		if (GetBattlerAbility(gBattlerTarget) == ABILITY_RIPEN)
+			CreateAbilityPopUp(gBattlerTarget, gBattleMons[gBattlerTarget].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_BerryReduceDmg;
         gLastUsedItem = gBattleMons[gBattlerTarget].item;
@@ -4252,10 +4254,22 @@ static void Cmd_endselectionscript(void)
 static void Cmd_playanimation(void)
 {
     const u16* argumentPtr;
+	u8 value = GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger);
+	
 
     gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     argumentPtr = T2_READ_PTR(gBattlescriptCurrInstr + 3);
-
+	
+	//Change animation target for Mirror Armor
+	if((value & STAT_BUFF_NEGATIVE) 
+	 && gActiveBattler == gBattlerTarget 
+	 && GetBattlerAbility(gActiveBattler) == ABILITY_MIRROR_ARMOR
+	 && gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE)
+	{
+		CreateAbilityPopUp(gBattlerTarget, gBattleMons[gBattlerTarget].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+		gActiveBattler = gBattlerAttacker;
+	}
+	
     if (gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE
         || gBattlescriptCurrInstr[2] == B_ANIM_SNATCH_MOVE
         || gBattlescriptCurrInstr[2] == B_ANIM_MEGA_EVOLUTION
@@ -4388,6 +4402,11 @@ static void Cmd_playstatchangeanimation(void)
     ability = GetBattlerAbility(gActiveBattler);
     statsToCheck = gBattlescriptCurrInstr[2];
 
+	if(ability == ABILITY_MIRROR_ARMOR && gActiveBattler == gBattlerTarget && (flags & STAT_CHANGE_NEGATIVE))
+	{
+		gActiveBattler = gBattlerAttacker;
+		ability = GetBattlerAbility(gActiveBattler);
+	}
     // Handle Contrary and Simple
     if (ability == ABILITY_CONTRARY)
         flags ^= STAT_CHANGE_NEGATIVE;
@@ -8819,6 +8838,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     // Determine if this is a self-inflicted stat boost
     if (flags & MOVE_EFFECT_AFFECTS_USER)
         gActiveBattler = gBattlerAttacker;
+	else if(GetBattlerAbility(gBattlerTarget) == ABILITY_MIRROR_ARMOR && statValue <= -1) //Bounce back stat drops with Mirror Armor
+		gActiveBattler = gBattlerAttacker;
     else
         gActiveBattler = gBattlerTarget;
 

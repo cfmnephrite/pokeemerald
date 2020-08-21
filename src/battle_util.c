@@ -3993,6 +3993,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_STEAM_ENGINE:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+             && IsBattlerAlive(battler)
+			 && (gBattleMoves[move].type == TYPE_WATER || gBattleMoves[move].type == TYPE_FIRE)
+			 && gBattleMons[battler].statStages[STAT_SPEED] != 12)
+			{
+				SET_STATCHANGER(STAT_SPEED, 6, FALSE);
+                PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPEED);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
+                effect++;
+			}
+			break;
         case ABILITY_GOOEY:
         case ABILITY_TANGLING_HAIR:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
@@ -4021,6 +4035,17 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 				effect++;
         	}
         	break;
+		case ABILITY_SAND_SPIT:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+			 && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+			 && TARGET_TURN_DAMAGED
+			 && TryChangeBattleWeather(battler, ENUM_WEATHER_SANDSTORM, TRUE))
+            {
+                BattleScriptPushCursorAndCallback(BattleScript_SandstreamActivates);
+                gBattleScripting.battler = battler;
+                effect++;
+            }
+            break;
         case ABILITY_ROUGH_SKIN:
         case ABILITY_IRON_BARBS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
@@ -4810,6 +4835,11 @@ static u8 HealConfuseBerry(u32 battlerId, u32 itemId, u8 flavorId)
         PREPARE_FLAVOR_BUFFER(gBattleTextBuff1, flavorId);
 
         gBattleMoveDamage = gBattleMons[battlerId].maxHP / GetBattlerHoldEffectParam(battlerId);
+		if (GetBattlerAbility(battlerId) == ABILITY_RIPEN)
+		{
+			CreateAbilityPopUp(battlerId, gBattleMons[battlerId].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+			gBattleMoveDamage *= 2;
+		}
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
         gBattleMoveDamage *= -1;
@@ -4825,13 +4855,18 @@ static u8 HealConfuseBerry(u32 battlerId, u32 itemId, u8 flavorId)
 
 static u8 StatRaiseBerry(u32 battlerId, u32 itemId, u32 statId)
 {
+	u8 statLevel = 1;
     if (gBattleMons[battlerId].statStages[statId] < 0xC && HasEnoughHpToEatBerry(battlerId, GetBattlerHoldEffectParam(battlerId), itemId))
     {
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
-        PREPARE_STRING_BUFFER(gBattleTextBuff2, STRINGID_STATROSE);
+		if (GetBattlerAbility(battlerId) == ABILITY_RIPEN)
+		{
+			CreateAbilityPopUp(battlerId, gBattleMons[battlerId].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+			statLevel *= 2;
+		}
+        PREPARE_STRING_BUFFER(gBattleTextBuff3, STRINGID_STATROSE);
 
         gEffectBattler = battlerId;
-        SET_STATCHANGER(statId, 1, FALSE);
+        SET_STATCHANGER(statId, statLevel, FALSE);
         gBattleScripting.animArg1 = 0xE + statId;
         gBattleScripting.animArg2 = 0;
         BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
@@ -4843,6 +4878,8 @@ static u8 StatRaiseBerry(u32 battlerId, u32 itemId, u32 statId)
 static u8 RandomStatRaiseBerry(u32 battlerId, u32 itemId)
 {
     s32 i;
+	u8 statLevel = 2;
+	u16 stringId = STRINGID_STATSHARPLY;
 
     for (i = 0; i < 5; i++)
     {
@@ -4857,18 +4894,25 @@ static u8 RandomStatRaiseBerry(u32 battlerId, u32 itemId)
         } while (gBattleMons[battlerId].statStages[STAT_ATK + i] == 0xC);
 
         PREPARE_STAT_BUFFER(gBattleTextBuff1, i + 1);
+		
+		if (GetBattlerAbility(battlerId) == ABILITY_RIPEN)
+		{
+			CreateAbilityPopUp(battlerId, gBattleMons[battlerId].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+			statLevel *= 2;
+			stringId = STRINGID_DRASTICALLY;
+		}
 
-        gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-        gBattleTextBuff2[1] = B_BUFF_STRING;
-        gBattleTextBuff2[2] = STRINGID_STATSHARPLY;
-        gBattleTextBuff2[3] = STRINGID_STATSHARPLY >> 8;
-        gBattleTextBuff2[4] = B_BUFF_STRING;
-        gBattleTextBuff2[5] = STRINGID_STATROSE;
-        gBattleTextBuff2[6] = STRINGID_STATROSE >> 8;
-        gBattleTextBuff2[7] = EOS;
+        gBattleTextBuff3[0] = B_BUFF_PLACEHOLDER_BEGIN;
+        gBattleTextBuff3[1] = B_BUFF_STRING;
+        gBattleTextBuff3[2] = stringId;
+        gBattleTextBuff3[3] = stringId >> 8;
+        gBattleTextBuff3[4] = B_BUFF_STRING;
+        gBattleTextBuff3[5] = STRINGID_STATROSE;
+        gBattleTextBuff3[6] = STRINGID_STATROSE >> 8;
+        gBattleTextBuff3[7] = EOS;
 
         gEffectBattler = battlerId;
-        SET_STATCHANGER(i + 1, 2, FALSE);
+        SET_STATCHANGER(i + 1, statLevel, FALSE);
         gBattleScripting.animArg1 = 0x21 + i + 6;
         gBattleScripting.animArg2 = 0;
         BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
@@ -4879,12 +4923,19 @@ static u8 RandomStatRaiseBerry(u32 battlerId, u32 itemId)
 
 static u8 ItemHealHp(u32 battlerId, u32 itemId, bool32 end2, bool32 percentHeal)
 {
+	u16 heal = GetBattlerHoldEffectParam(battlerId);
+	
+	if (GetBattlerAbility(battlerId) == ABILITY_RIPEN && itemId != ITEM_BERRY_JUICE)
+	{
+		CreateAbilityPopUp(battlerId, gBattleMons[battlerId].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+		heal *= 2;
+	}
     if (HasEnoughHpToEatBerry(battlerId, 2, gLastUsedItem))
     {
         if (percentHeal)
-            gBattleMoveDamage = (gBattleMons[battlerId].maxHP * GetBattlerHoldEffectParam(battlerId) / 100) * -1;
+            gBattleMoveDamage = (gBattleMons[battlerId].maxHP * heal / 100) * -1;
         else
-            gBattleMoveDamage = GetBattlerHoldEffectParam(battlerId) * -1;
+            gBattleMoveDamage = heal * -1;
 
         if (end2)
         {
@@ -5151,10 +5202,16 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                     if (i != MAX_MON_MOVES)
                     {
                         u8 maxPP = CalculatePPWithBonus(move, ppBonuses, i);
-                        if (changedPP + GetBattlerHoldEffectParam(battlerId) > maxPP)
+						u16 ppToRestore = GetBattlerHoldEffectParam(battlerId);
+						if (GetBattlerAbility(battlerId) == ABILITY_RIPEN)
+						{
+							CreateAbilityPopUp(battlerId, gBattleMons[battlerId].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+							ppToRestore *= 2;
+						}
+                        if (changedPP + ppToRestore > maxPP)
                             changedPP = maxPP;
                         else
-                            changedPP = changedPP + GetBattlerHoldEffectParam(battlerId);
+                            changedPP = changedPP + ppToRestore;
 
                         PREPARE_MOVE_BUFFER(gBattleTextBuff1, move);
 
@@ -6527,6 +6584,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 			MulModifier(&modifier, UQ_4_12(1.5));
 		break;
 	case ABILITY_OWN_TEMPO:
+	case ABILITY_PUNK_ROCK:
 		if (gBattleMoves[move].flags & FLAG_SOUND)
 			MulModifier(&modifier, UQ_4_12(1.3));
 		break;
@@ -6966,6 +7024,14 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
                 RecordAbilityBattle(battlerDef, ABILITY_FUR_COAT);
         }
         break;
+	case ABILITY_ICE_SCALES:
+		if (!usesDefStat)
+        {
+            MulModifier(&modifier, UQ_4_12(2.0));
+            if (updateFlags)
+                RecordAbilityBattle(battlerDef, ABILITY_ICE_SCALES);
+        }
+        break;
     case ABILITY_GRASS_PELT:
         if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && usesDefStat)
         {
@@ -6980,6 +7046,10 @@ static u32 CalcDefenseStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, 
         break;
 	case ABILITY_STALL:
 		MulModifier(&modifier, UQ_4_12(1.3));
+		break;
+	case ABILITY_PUNK_ROCK:
+		if (gBattleMoves[move].flags & FLAG_SOUND)
+			MulModifier(&modifier, UQ_4_12(2.0));
 		break;
     }
 
@@ -7168,7 +7238,10 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
         if (moveType == GetBattlerHoldEffectParam(battlerDef)
             && (moveType == TYPE_NORMAL || typeEffectivenessModifier >= UQ_4_12(2.0)))
         {
-            MulModifier(&finalModifier, UQ_4_12(0.5));
+			if (GetBattlerAbility(battlerDef) == ABILITY_RIPEN)
+				MulModifier(&finalModifier, UQ_4_12(0.25));
+			else
+				MulModifier(&finalModifier, UQ_4_12(0.5));
             if (updateFlags)
                 gSpecialStatuses[battlerDef].berryReduced = 1;
         }
