@@ -1804,6 +1804,10 @@
 	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
 	.endm
 	
+	.macro trymimicry
+	various BS_ATTACKER, VARIOUS_TRY_MIMICRY
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7

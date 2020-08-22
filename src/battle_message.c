@@ -123,6 +123,7 @@ static const u8 sText_PkmnInLove[] = _("{B_ATK_NAME_WITH_PREFIX} is in love\nwit
 static const u8 sText_PkmnImmobilizedByLove[] = _("{B_ATK_NAME_WITH_PREFIX} is\nimmobilized by love!");
 static const u8 sText_PkmnBlownAway[] = _("{B_DEF_NAME_WITH_PREFIX} was\nblown away!");
 static const u8 sText_PkmnChangedType[] = _("{B_ATK_NAME_WITH_PREFIX} transformed\ninto the {B_BUFF1} type!");
+static const u8 sText_PkmnReturnedToType[] = _("{B_ATK_NAME_WITH_PREFIX}'s returned to its\noriginal type!");
 static const u8 sText_PkmnFlinched[] = _("{B_ATK_NAME_WITH_PREFIX} flinched!");
 static const u8 sText_PkmnRegainedHealth[] = _("{B_DEF_NAME_WITH_PREFIX} regained\nhealth!");
 static const u8 sText_PkmnHPFull[] = _("{B_DEF_NAME_WITH_PREFIX}'s\nHP is full!");
@@ -1261,6 +1262,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 	[STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
 	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
 	[STRINGID_PKMNSSTATSNOTLOWERED - 12] = sText_PkmnsStatsNotLowered,
+	[STRINGID_PKMNRETURNEDTOTYPE - 12] = sText_PkmnReturnedToType,
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =

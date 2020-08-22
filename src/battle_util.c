@@ -1356,7 +1356,7 @@ u8 DoFieldEndTurnEffects(void)
             {
                 if (gFieldTimers.grassyTerrainTimer == 0 || --gFieldTimers.grassyTerrainTimer == 0)
                     gFieldStatuses &= ~(STATUS_FIELD_GRASSY_TERRAIN);
-                BattleScriptExecute(BattleScript_GrassyTerrainHeals);
+                BattleScriptExecute(BattleScript_GrassyTerrainEnds);
                 effect++;
             }
             gBattleStruct->turnCountersTracker++;
@@ -3001,6 +3001,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u8 side;
     u8 target1;
 	u16 typeEffectiveness;
+	u16 terrainType;
+	bool8 terrainActive;
 
     if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
         return 0;
@@ -3029,6 +3031,29 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     GET_MOVE_TYPE(move, moveType);
 	
 	typeEffectiveness = CalcTypeEffectivenessMultiplier(move, moveType, gBattlerAttacker, gBattlerTarget, FALSE);
+	
+	if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
+	{
+		terrainType = TYPE_ELECTRIC;
+		terrainActive = TRUE;
+	}
+	else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+	{
+		terrainType = TYPE_GRASS;
+		terrainActive = TRUE;
+	}
+	else if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN)
+	{
+		terrainType = TYPE_PSYCHIC;
+		terrainActive = TRUE;
+	}
+	else if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
+	{
+		terrainType = TYPE_FAIRY;
+		terrainActive = TRUE;
+	}
+	else
+		terrainActive = FALSE;
 
     switch (caseID)
     {
@@ -3485,6 +3510,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_MIMICRY:
+			if (!gSpecialStatuses[battler].switchInAbilityDone && terrainActive
+			 && (gBattleMons[battler].type1 != terrainType || gBattleMons[battler].type2 != terrainType 
+			 || (gBattleMons[battler].type3 != terrainType && gBattleMons[battler].type3 != TYPE_MYSTERY)))
+			{
+				PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
+				SET_BATTLER_TYPE(battler, terrainType);
+				gBattlerAbility = battler;
+				BattleScriptPushCursor();
+				gBattlescriptCurrInstr = BattleScript_ProteanActivatesEnd2;
+				gSpecialStatuses[battler].switchInAbilityDone = 1;
+				effect++;
+			}
+			break;
         }
         break;
     case ABILITYEFFECT_ENDTURN: // 1
@@ -6618,6 +6657,9 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
             if (IS_MOVE_SPECIAL(move))
                 MulModifier(&modifier, UQ_4_12(1.3));
             break;
+		case ABILITY_POWER_SPOT:
+			MulModifier(&modifier, UQ_4_12(1.3));
+			break;
         }
     }
 
