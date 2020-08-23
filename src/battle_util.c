@@ -3510,20 +3510,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
-		case ABILITY_MIMICRY:
-			if (!gSpecialStatuses[battler].switchInAbilityDone && terrainActive
-			 && (gBattleMons[battler].type1 != terrainType || gBattleMons[battler].type2 != terrainType 
-			 || (gBattleMons[battler].type3 != terrainType && gBattleMons[battler].type3 != TYPE_MYSTERY)))
-			{
-				PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
-				SET_BATTLER_TYPE(battler, terrainType);
-				gBattlerAbility = battler;
-				BattleScriptPushCursor();
-				gBattlescriptCurrInstr = BattleScript_ProteanActivatesEnd2;
-				gSpecialStatuses[battler].switchInAbilityDone = 1;
-				effect++;
-			}
-			break;
         }
         break;
     case ABILITYEFFECT_ENDTURN: // 1

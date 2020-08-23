@@ -1205,9 +1205,10 @@
 	.4byte \param0
 	.endm
 
-	.macro settypetoterrain param0:req
+	.macro settypetoterrain param0:req, param1:req
 	.byte 0xeb
 	.4byte \param0
+	.byte \param1
 	.endm
 
 	.macro pursuitrelated param0:req
@@ -1802,10 +1803,6 @@
 
 	.macro checkballfetch
 	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
-	.endm
-	
-	.macro trymimicry
-	various BS_ATTACKER, VARIOUS_TRY_MIMICRY
 	.endm
 	
 @ helpful macros

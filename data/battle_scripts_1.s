@@ -513,7 +513,7 @@ BattleScript_EffectHitSetTerrain:
 BattleScript_MoveEffectSetTerrain::
 	printfromtable gTerrainStringIds
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	return
 
 BattleScript_EffectLaserFocus:
@@ -1527,7 +1527,7 @@ BattleScript_EffectPsychicTerrain:
 	waitanimation
 	printfromtable gTerrainStringIds
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectTopsyTurvy:
@@ -4743,7 +4743,7 @@ BattleScript_EffectCamouflage::
 	attackcanceler
 	attackstring
 	ppreduce
-	settypetoterrain BattleScript_ButItFailed
+	settypetoterrain BattleScript_ButItFailed, TRUE
 	attackanimation
 	waitanimation
 	printstring STRINGID_PKMNCHANGEDTYPE
@@ -5286,25 +5286,25 @@ BattleScript_MagicRoomEnds::
 BattleScript_ElectricTerrainEnds::
 	printstring STRINGID_ELECTRICTERRAINENDS
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_MistyTerrainEnds::
 	printstring STRINGID_MISTYTERRAINENDS
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_GrassyTerrainEnds::
 	printstring STRINGID_GRASSYTERRAINENDS
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_PsychicTerrainEnds::
 	printstring STRINGID_PSYCHICTERRAINENDS
 	waitmessage 0x40
-	trymimicry
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_MudSportEnds::
@@ -6678,7 +6678,7 @@ BattleScript_ElectricSurgeActivates::
 	printstring STRINGID_TERRAINBECOMESELECTRIC
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_ELECTRIC, NULL
-	trymimicry
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_MistySurgeActivates::
@@ -6687,7 +6687,7 @@ BattleScript_MistySurgeActivates::
 	printstring STRINGID_TERRAINBECOMESMISTY
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_MISTY, NULL
-	trymimicry
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_GrassySurgeActivates::
@@ -6696,7 +6696,7 @@ BattleScript_GrassySurgeActivates::
 	printstring STRINGID_TERRAINBECOMESGRASSY
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_GRASSY, NULL
-	trymimicry
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_PsychicSurgeActivates::
@@ -6705,7 +6705,7 @@ BattleScript_PsychicSurgeActivates::
 	printstring STRINGID_TERRAINBECOMESPSYCHIC
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_PSYCHIC, NULL
-	trymimicry
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_BadDreamsActivates::
@@ -7521,6 +7521,28 @@ BattleScript_CottonDownPrevented::
 	copybyte gBattlerAbility, gBattlerTarget
 	call BattleScript_AbilityNoStatLoss
 	goto BattleScript_CottonDownTargetEnd
+
+BattleScript_Mimicry::
+	selectfirstvalidtarget
+BattleScript_MimicryCheckTarget::
+	jumpifability BS_TARGET, ABILITY_MIMICRY, BattleScript_MimicryLoop
+	goto BattleScript_MimicryTargetEnd
+BattleScript_MimicryLoop::
+	copybyte gBattlerAttacker, gBattlerTarget
+	settypetoterrain BattleScript_MimicryTargetEnd, FALSE
+	copybyte gBattlerAbility, gBattlerTarget
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNCHANGEDTYPE
+	waitmessage 0x30
+BattleScript_MimicryTargetEnd::
+	jumpifnexttargetvalid BattleScript_MimicryCheckTarget
+	return
+	
+BattleScript_MimicryReturnedToType::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNRETURNEDTOTYPE
+	waitmessage 0x30
+	goto BattleScript_MimicryTargetEnd
 
 BattleScript_IgnoresWhileAsleep::
 	printstring STRINGID_PKMNIGNORESASLEEP

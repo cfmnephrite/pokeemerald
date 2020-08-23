@@ -8303,45 +8303,6 @@ static void Cmd_various(void)
             MarkBattlerForControllerExec(gActiveBattler);
         }
         break;
-	case VARIOUS_TRY_MIMICRY:
-		for (i = 0; i < gBattlersCount; i++)
-		{
-			u8 terrainType;
-		
-			if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
-				terrainType = TYPE_ELECTRIC;
-			else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
-				terrainType = TYPE_GRASS;
-			else if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN)
-				terrainType = TYPE_PSYCHIC;
-			else if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
-				terrainType = TYPE_FAIRY;
-			
-			//If terrain was activated
-			if(GetBattlerAbility(i) == ABILITY_MIMICRY && terrainType
-			&& (gBattleMons[i].type1 != terrainType || gBattleMons[i].type2 != terrainType 
-			 || (gBattleMons[i].type3 != terrainType && gBattleMons[i].type3 != TYPE_MYSTERY)))
-			{
-				PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
-				SET_BATTLER_TYPE(i, terrainType);
-				gBattlerAttacker = gBattlerAbility = i;
-				BattleScriptPushCursor();
-				gBattlescriptCurrInstr = BattleScript_ProteanActivates;
-				return;
-			}
-			//If terrain was deactivated
-			else if(GetBattlerAbility(i) == ABILITY_MIMICRY && !terrainType)
-			{
-				SET_BATTLER_TYPE(i, gBaseStats[gBattleMons[i].species].type1);
-				SET_BATTLER_TYPE2(i, gBaseStats[gBattleMons[i].species].type2);
-				gBattlerAttacker = gBattlerAbility = i;
-				BattleScriptPushCursor();
-				BattleScriptExecute(BattleScript_MonReturnedToType);
-				//gBattlescriptCurrInstr = BattleScript_MonReturnedToType;
-				return;
-			}
-		}
-		break;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -12186,12 +12147,34 @@ static void Cmd_tryrecycleitem(void)
 
 static void Cmd_settypetoterrain(void)
 {
-    if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, sTerrainToType[gBattleTerrain]))
+	u8 terrainType;
+	
+	if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
+		terrainType = TYPE_ELECTRIC;
+	else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+		terrainType = TYPE_GRASS;
+	else if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
+		terrainType = TYPE_FAIRY;
+	else if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN)
+		terrainType = TYPE_PSYCHIC;
+	else if (T1_READ_8(gBattlescriptCurrInstr + 5))
+		terrainType = sTerrainToType[gBattleTerrain];
+	else
+		terrainType = TYPE_MYSTERY;
+	
+	if (terrainType == TYPE_MYSTERY)
+	{
+		SET_BATTLER_TYPE(gBattlerAttacker, gBaseStats[gBattleMons[gBattlerAttacker].species].type1);
+		SET_BATTLER_TYPE2(gBattlerAttacker, gBaseStats[gBattleMons[gBattlerAttacker].species].type2);
+		gBattlescriptCurrInstr = BattleScript_MimicryReturnedToType;
+	}
+    else if ((gBattleMons[gBattlerAttacker].type1 != terrainType || gBattleMons[gBattlerAttacker].type2 != terrainType 
+	 || (gBattleMons[gBattlerAttacker].type3 != terrainType && gBattleMons[gBattlerAttacker].type3 != TYPE_MYSTERY)))
     {
-        SET_BATTLER_TYPE(gBattlerAttacker, sTerrainToType[gBattleTerrain]);
-        PREPARE_TYPE_BUFFER(gBattleTextBuff1, sTerrainToType[gBattleTerrain]);
+        SET_BATTLER_TYPE(gBattlerAttacker, terrainType);
+        PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
 
-        gBattlescriptCurrInstr += 5;
+        gBattlescriptCurrInstr += 6;
     }
     else
     {

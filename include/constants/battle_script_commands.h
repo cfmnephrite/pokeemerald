@@ -178,7 +178,6 @@
 #define VARIOUS_PARALYZE_TYPE_IMMUNITY          109
 #define VARIOUS_JUMP_IF_ABSENT                  110
 #define VARIOUS_CHECK_BALL_FETCH                111
-#define VARIOUS_TRY_MIMICRY						112
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0
