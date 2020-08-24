@@ -17,6 +17,16 @@
       "direction": "up",
       "offset": 0,
       "map": "MAP_ROUTE101"
+    },
+    {
+      "direction": "left",
+      "offset": 0,
+      "map": "MAP_LITTLEROOT_WEST"
+    },
+    {
+      "direction": "down",
+      "offset": 0,
+      "map": "MAP_LITTLE_ROOT_SW"
     }
   ],
   "object_events": [
@@ -127,22 +137,22 @@
   ],
   "warp_events": [
     {
-      "x": 14,
-      "y": 8,
+      "x": 12,
+      "y": 6,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F",
       "dest_warp_id": 1
     },
     {
-      "x": 5,
-      "y": 8,
+      "x": 4,
+      "y": 6,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F",
       "dest_warp_id": 1
     },
     {
-      "x": 7,
-      "y": 16,
+      "x": 12,
+      "y": 21,
       "elevation": 0,
       "dest_map": "MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB",
       "dest_warp_id": 0
