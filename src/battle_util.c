@@ -2998,7 +2998,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
     u32 moveType;
     u32 i, j;
     u32 move;
-    u8 side;
+    u8 side, opposingSide;
     u8 target1;
 	u16 typeEffectiveness;
 	u16 terrainType;
@@ -3510,6 +3510,19 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_SCREEN_CLEANER:
+			side = GetBattlerSide(battler);
+			opposingSide = GetBattlerSide(battler) ^ BIT_SIDE;
+			if(!gSpecialStatuses[battler].switchInAbilityDone
+			 && ((gSideTimers[opposingSide].reflectTimer || gSideTimers[opposingSide].lightscreenTimer || gSideTimers[opposingSide].auroraVeilTimer)
+			 || (gSideTimers[side].reflectTimer || gSideTimers[side].lightscreenTimer || gSideTimers[side].auroraVeilTimer)))
+			{
+				gSpecialStatuses[battler].switchInAbilityDone = 1;
+				gBattlerAttacker = battler;
+				BattleScriptPushCursorAndCallback(BattleScript_ScreenCleaner);
+				effect++;
+			}
+			break;
         }
         break;
     case ABILITYEFFECT_ENDTURN: // 1
