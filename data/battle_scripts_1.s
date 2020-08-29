@@ -4460,6 +4460,18 @@ BattleScript_EffectSkillSwap:
 	printstring STRINGID_PKMNSWAPPEDABILITIES
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
+	
+BattleScript_WanderingSpirit::
+	call BattleScript_AbilityPopUp
+	pause 0x20
+	tryswapabilities NULL
+	call BattleScript_AbilityPopUp
+	pause 0x30
+	copybyte gBattlerAbility, gBattlerAttacker
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNSWAPPEDABILITIES
+	waitmessage 0x30
+	return
 
 BattleScript_EffectImprison::
 	attackcanceler
@@ -6953,6 +6965,12 @@ BattleScript_AngerPointActivates::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printstring STRINGID_TARGETABILITYSTATRAISE
 	waitmessage 0x40
+	return
+	
+BattleScript_PerishBodyActivates::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PERISHBODY
+	waitmessage 0x30
 	return
 
 BattleScript_TargetAbilityStatRaise::

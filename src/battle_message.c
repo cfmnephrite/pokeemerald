@@ -514,7 +514,7 @@ static const u8 sText_PkmnsItemRestoredHealth[] = _("{B_SCR_ACTIVE_NAME_WITH_PRE
 static const u8 sText_PkmnsItemRestoredPP[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\nrestored {B_BUFF1}'s PP!");
 static const u8 sText_PkmnsItemRestoredStatus[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\nrestored its status!");
 static const u8 sText_PkmnsItemRestoredHPALittle[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\nrestored its HP a little!");
-static const u8 sText_ItemAllowsOnlyYMove[] = _("{B_LAST_ITEM} allows the\nuse of only {B_CURRENT_MOVE}!\p");
+static const u8 sText_ItemAllowsOnlyYMove[] = _("{B_BUFF1} allows the\nuse of only {B_CURRENT_MOVE}!\p");
 static const u8 sText_PkmnHungOnWithX[] = _("{B_DEF_NAME_WITH_PREFIX} hung on\nusing its {B_LAST_ITEM}!");
 const u8 gText_EmptyString3[] = _("");
 static const u8 sText_YouThrowABallNowRight[] = _("You throw a BALL now, right?\nI… I'll do my best!");
@@ -713,6 +713,7 @@ static const u8 sText_DestinyKnotActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX
 static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin a freezing light!");
 static const u8 sText_PkmnsStatsNotLowered[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s stats were\nnot lowered!");
 static const u8 sText_ScreenCleaner[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} wiped\nall screens from the field!");
+static const u8 sText_PerishBody[] = _("Both Pokémon will faint\nin 3 turns!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1265,6 +1266,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 	[STRINGID_PKMNSSTATSNOTLOWERED - 12] = sText_PkmnsStatsNotLowered,
 	[STRINGID_PKMNRETURNEDTOTYPE - 12] = sText_PkmnReturnedToType,
 	[STRINGID_SCREENCLEANER - 12] = sText_ScreenCleaner,
+	[STRINGID_PERISHBODY - 12] = sText_PerishBody,
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =

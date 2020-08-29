@@ -840,10 +840,20 @@ u8 TrySetCantSelectMoveBattleScript(void)
     }
 
     gPotentialItemEffectBattler = gActiveBattler;
-    if (HOLD_EFFECT_CHOICE(holdEffect) && *choicedMove != 0 && *choicedMove != 0xFFFF && *choicedMove != move)
+    if ((HOLD_EFFECT_CHOICE(holdEffect) || GetBattlerAbility(gActiveBattler) == ABILITY_GORILLA_TACTICS) && *choicedMove != 0 && *choicedMove != 0xFFFF && *choicedMove != move)
     {
         gCurrentMove = *choicedMove;
-        gLastUsedItem = gBattleMons[gActiveBattler].item;
+		if(HOLD_EFFECT_CHOICE(holdEffect))
+		{
+			gLastUsedItem = gBattleMons[gActiveBattler].item;
+			PREPARE_ITEM_BUFFER(gBattleTextBuff1, gLastUsedItem);
+		}
+		else
+		{
+			gLastUsedAbility = GetBattlerAbility(gActiveBattler);
+			PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+		}
+		
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gProtectStructs[gActiveBattler].palaceUnableToUseMove = 1;
@@ -3998,6 +4008,34 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+		case ABILITY_WANDERING_SPIRIT:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && IsBattlerAlive(gBattlerAttacker)
+             && (gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+			{
+				switch (gBattleMons[gBattlerAttacker].ability)
+				{
+					case ABILITY_DISGUISE:
+					case ABILITY_FLOWER_GIFT:
+					case ABILITY_GULP_MISSILE:
+					case ABILITY_ICE_FACE:
+					case ABILITY_IMPOSTER:
+					case ABILITY_RECEIVER:
+					case ABILITY_RKS_SYSTEM:
+					case ABILITY_SCHOOLING:
+					case ABILITY_STANCE_CHANGE:
+					case ABILITY_WONDER_GUARD:
+					case ABILITY_ZEN_MODE:
+					case ABILITY_NONE:
+						break;
+					default:
+						BattleScriptPushCursor();
+						gBattlescriptCurrInstr = BattleScript_WanderingSpirit;
+						effect++;
+						break;
+				}
+			}
+			break;
         case ABILITY_ANGER_POINT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
@@ -4116,6 +4154,28 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 effect++;
             }
             break;
+		case ABILITY_PERISH_BODY:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && IsBattlerAlive(gBattlerAttacker)
+             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && TARGET_TURN_DAMAGED
+             && IsMoveMakingContact(move, gBattlerAttacker)
+			 && !(gStatuses3[gBattlerAttacker] & STATUS3_PERISH_SONG))
+			{
+				if(!(gStatuses3[battler] & STATUS3_PERISH_SONG))
+				{
+					gStatuses3[battler] |= STATUS3_PERISH_SONG;
+					gDisableStructs[battler].perishSongTimer = 3;
+					gDisableStructs[battler].perishSongTimerStartValue = 3;
+				}
+				gStatuses3[gBattlerAttacker] |= STATUS3_PERISH_SONG;
+				gDisableStructs[gBattlerAttacker].perishSongTimer = 3;
+				gDisableStructs[gBattlerAttacker].perishSongTimerStartValue = 3;
+				BattleScriptPushCursor();
+				gBattlescriptCurrInstr = BattleScript_PerishBodyActivates;
+				effect++;
+			}
+			break;
         case ABILITY_INNARDS_OUT:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp == 0)
@@ -6596,6 +6656,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 			MulModifier(&modifier, UQ_4_12(1.5));
 		break;
     case ABILITY_STEELWORKER:
+	case ABILITY_STEELY_SPIRIT:
         if (moveType == TYPE_STEEL)
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
@@ -6671,6 +6732,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
             break;
 		case ABILITY_POWER_SPOT:
 			MulModifier(&modifier, UQ_4_12(1.3));
+			break;
+		case ABILITY_STEELY_SPIRIT:
+			if (moveType == TYPE_STEEL)
+			   MulModifier(&modifier, UQ_4_12(1.5));
 			break;
         }
     }
@@ -6938,6 +7003,7 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
             MulModifier(&modifier, UQ_4_12(1.5));
         break;*/
     case ABILITY_HUSTLE:
+	case ABILITY_GORILLA_TACTICS:
         if (IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(1.5));
         break;
