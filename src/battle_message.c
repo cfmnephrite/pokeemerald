@@ -712,6 +712,7 @@ static const u8 sText_NoOneWillBeAbleToRun[] = _("No one will be able to run awa
 static const u8 sText_DestinyKnotActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love\nfrom the {B_LAST_ITEM}!");
 static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin a freezing light!");
 static const u8 sText_PkmnsStatsNotLowered[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s stats were\nnot lowered!");
+static const u8 sText_ScreenCleaner[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} wiped\nall screens from the field!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1263,6 +1264,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
 	[STRINGID_PKMNSSTATSNOTLOWERED - 12] = sText_PkmnsStatsNotLowered,
 	[STRINGID_PKMNRETURNEDTOTYPE - 12] = sText_PkmnReturnedToType,
+	[STRINGID_SCREENCLEANER - 12] = sText_ScreenCleaner,
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =
@@ -1304,7 +1306,7 @@ const u16 gSwitchInAbilityStringIds[] =
 {
     STRINGID_MOLDBREAKERENTERS, STRINGID_TERAVOLTENTERS, STRINGID_TURBOBLAZEENTERS,
     STRINGID_SLOWSTARTENTERS, STRINGID_UNNERVEENTERS, STRINGID_FOREWARNACTIVATES,
-    STRINGID_FRISKACTIVATES, STRINGID_FRISKDOUBLE
+    STRINGID_FRISKACTIVATES, STRINGID_FRISKDOUBLE, STRINGID_SCREENCLEANER
 };
 
 const u16 gMissStringIds[] =

@@ -378,6 +378,5 @@ extern const u8 BattleScript_CottonDown[];
 extern const u8 BattleScript_CottonDownLoop[];
 extern const u8 BattleScript_CottonDownTargetEnd[];
 extern const u8 BattleScript_MimicryReturnedToType[];
-extern const u8 BattleScript_ScreenCleaner[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

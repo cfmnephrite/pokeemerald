@@ -12219,20 +12219,12 @@ static void Cmd_snatchsetbattlers(void)
 
 static void Cmd_removelightscreenreflect(void) // brick break
 {
-	u32 i;
     u8 opposingSide = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-	u16 screensRemoved[3];
 
     if (gSideTimers[opposingSide].reflectTimer || gSideTimers[opposingSide].lightscreenTimer || gSideTimers[opposingSide].auroraVeilTimer)
     {
-		if(gSideTimers[opposingSide].reflectTimer)
-			screensRemoved[0] = MOVE_REFLECT;
         gSideStatuses[opposingSide] &= ~(SIDE_STATUS_REFLECT);
-		if(gSideTimers[opposingSide].lightscreenTimer)
-			screensRemoved[1] = MOVE_LIGHT_SCREEN;
         gSideStatuses[opposingSide] &= ~(SIDE_STATUS_LIGHTSCREEN);
-		if(gSideTimers[opposingSide].auroraVeilTimer)
-			screensRemoved[2] = MOVE_AURORA_VEIL;
 		gSideStatuses[opposingSide] &= ~(SIDE_STATUS_AURORA_VEIL);
         gSideTimers[opposingSide].reflectTimer = 0;
         gSideTimers[opposingSide].lightscreenTimer = 0;
@@ -12245,20 +12237,7 @@ static void Cmd_removelightscreenreflect(void) // brick break
         gBattleScripting.animTurn = 0;
         gBattleScripting.animTargetsHit = 0;
     }
-
-	if (gBattlescriptCurrInstr[1])
-	{
-		for(i = 0; i < 3; i++)
-		{
-			if (screensRemoved[i])
-			{
-				PREPARE_MOVE_BUFFER(gBattleTextBuff1, screensRemoved[i]);
-				BattleScriptPushCursor();
-				gBattlescriptCurrInstr = BattleScript_SideStatusWoreOff;
-				return;
-			}
-		}
-	}
+	
     gBattlescriptCurrInstr++;
 }
 

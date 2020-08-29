@@ -4375,7 +4375,7 @@ BattleScript_EffectBrickBreak::
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
 	ppreduce
-	removelightscreenreflect FALSE
+	removelightscreenreflect
 	critcalc
 	damagecalc
 	adjustdamage
@@ -4401,11 +4401,6 @@ BattleScript_BrickBreakDoHit::
 	seteffectwithchance
 	tryfaintmon BS_TARGET, FALSE, NULL
 	goto BattleScript_MoveEnd
-	
-BattleScript_ScreenCleaner::
-	call BattleScript_AbilityPopUp
-	removelightscreenreflect FALSE
-	end3
 
 BattleScript_EffectYawn::
 	attackcanceler

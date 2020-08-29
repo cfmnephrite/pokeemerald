@@ -3519,7 +3519,20 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 			{
 				gSpecialStatuses[battler].switchInAbilityDone = 1;
 				gBattlerAttacker = battler;
-				BattleScriptPushCursorAndCallback(BattleScript_ScreenCleaner);
+				gSideStatuses[opposingSide] &= ~(SIDE_STATUS_REFLECT);
+				gSideStatuses[opposingSide] &= ~(SIDE_STATUS_LIGHTSCREEN);
+				gSideStatuses[opposingSide] &= ~(SIDE_STATUS_AURORA_VEIL);
+				gSideTimers[opposingSide].reflectTimer = 0;
+				gSideTimers[opposingSide].lightscreenTimer = 0;
+				gSideTimers[opposingSide].auroraVeilTimer = 0;
+				gSideStatuses[side] &= ~(SIDE_STATUS_REFLECT);
+				gSideStatuses[side] &= ~(SIDE_STATUS_LIGHTSCREEN);
+				gSideStatuses[side] &= ~(SIDE_STATUS_AURORA_VEIL);
+				gSideTimers[side].reflectTimer = 0;
+				gSideTimers[side].lightscreenTimer = 0;
+				gSideTimers[side].auroraVeilTimer = 0;
+				gBattleCommunication[MULTISTRING_CHOOSER] = 8;
+				BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
 				effect++;
 			}
 			break;

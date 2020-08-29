@@ -1220,9 +1220,8 @@
 	.byte 0xed
 	.endm
 
-	.macro removelightscreenreflect param0:req
+	.macro removelightscreenreflect
 	.byte 0xee
-	.byte \param0
 	.endm
 
 	.macro handleballthrow
