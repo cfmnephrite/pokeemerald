@@ -281,6 +281,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
     },
 
+    [MOVE_APPLE_ACID] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
     [MOVE_AQUA_JET] = {
         .effect = EFFECT_HIT,
         .power = 40,
@@ -441,6 +454,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
     },
 
+    [MOVE_AURA_WHEEL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 110,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_AURORA_BEAM] = {
         .effect = EFFECT_ATTACK_DOWN_HIT,
         .power = 65,
@@ -588,6 +614,32 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_BEHEMOTH_BASH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 100,
+        .type = TYPE_STEEL,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_BEHEMOTH_BLADE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 100,
+        .type = TYPE_STEEL,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -766,6 +818,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_BURN,
     },
 
+    [MOVE_BODY_PRESS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_FIGHTING,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_BODY_SLAM] = {
         .effect = EFFECT_HIT_ARG_ONLY_EFFECT,
         .power = 85,
@@ -778,6 +843,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
         .argument = MOVE_EFFECT_PARALYSIS,
+    },
+
+    [MOVE_BOLT_BEAK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 85,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_BOLT_STRIKE] = {
@@ -861,6 +939,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_PARALYSIS,
     },
 
+    [MOVE_BRANCH_POKE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 40,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 40,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_BRAVE_BIRD] = {
         .effect = EFFECT_RECOIL_33,
         .power = 120,
@@ -871,6 +962,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_BREAKING_SWIPE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 60,
+        .type = TYPE_DRAGON,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_BOTH,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -1041,6 +1145,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_THAWS_USER,
+        .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_BURNING_JEALOUSY] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 70,
+        .type = TYPE_FIRE,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_BOTH,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
     },
 
@@ -1222,6 +1339,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_DEF_MINUS_1,
     },
 
+    [MOVE_CLANGOROUS_SOUL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_DRAGON,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .flags = FLAG_SNATCH_AFFECTED | FLAG_SOUND | FLAG_DANCE,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_CLANGOROUS_SOULBLAZE] = {
         .effect = EFFECT_ALL_STATS_UP_HIT,
         .power = 185,
@@ -1260,6 +1390,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
         .argument = MOVE_EFFECT_DEF_SPDEF_DOWN,
+    },
+
+    [MOVE_COACHING] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_FIGHTING,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_ALLY,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_COIL] = {
@@ -1426,6 +1569,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_CORROSIVE_GAS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_POISON,
+        .accuracy = 100,
+        .pp = 40,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_FOES_AND_ALLY,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_COSMIC_POWER] = {
         .effect = EFFECT_COSMIC_POWER,
         .power = 0,
@@ -1479,6 +1635,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = -5,
         .flags = FLAG_MAKES_CONTACT | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_COURT_CHANGE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .flags = FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_COVET] = {
@@ -1664,6 +1833,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_DECORATE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_FAIRY,
+        .accuracy = 0,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_DEFEND_ORDER] = {
@@ -2008,6 +2190,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_RESET_STATS,
     },
 
+    [MOVE_DRAGON_DARTS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 50,
+        .type = TYPE_DRAGON,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_DRAGON_HAMMER] = {
         .effect = EFFECT_RECOIL_33,
         .power = 120,
@@ -2140,6 +2335,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_DRUM_BEATING] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_DUAL_CHOP] = {
         .effect = EFFECT_HIT_ARG_TIMES,
         .power = 40,
@@ -2152,6 +2360,32 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_Z_SPECIAL,
         .split = SPLIT_PHYSICAL,
         .argument = 2,
+    },
+
+    [MOVE_DUAL_WINGBEAT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 40,
+        .type = TYPE_FLYING,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_DYNAMAX_CANNON] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 100,
+        .type = TYPE_DRAGON,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_DYNAMIC_PUNCH] = {
@@ -2397,6 +2631,32 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
     },
 
+    [MOVE_ETERNABEAM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 160,
+        .type = TYPE_DRAGON,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_EXPANDING_FORCE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
     [MOVE_EXPLOSION] = {
         .effect = EFFECT_EXPLOSION,
         .power = 250,
@@ -2528,6 +2788,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
+    },
+
+    [MOVE_FALSE_SURRENDER] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_DARK,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_FALSE_SWIPE] = {
@@ -2703,6 +2976,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_FISHIOUS_REND] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 85,
+        .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_STRONG_JAW_BOOST | FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_FISSURE] = {
         .effect = EFFECT_ATK_DOWN_2_ARG_EFFECT,
         .power = 140,
@@ -2863,6 +3149,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_FLIP_TURN] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 60,
+        .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -3220,8 +3519,8 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_GENESIS_SUPERNOVA] = {
-        .effect = EFFECT_HIT_SET_TERRAIN, 
-        .power = 185,
+        .effect = EFFECT_HIT_SET_TERRAIN,
+         .power = 185,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
         .pp = 1,
@@ -3314,6 +3613,435 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
     },
 
+    [MOVE_G_MAX_BEFUDDLE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_BUG,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_CANNONADE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_CENTIFERNO] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FIRE,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_CHI_STRIKE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FIGHTING,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_CUDDLE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_DEPLETION] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_DRAGON,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_DRUM_SOLO] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 160,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_FINALE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FAIRY,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_FIREBALL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 160,
+        .type = TYPE_FIRE,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_FOAM_BURST] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_GOLD_RUSH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_GRAVITAS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_HYDROSNIPE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 160,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_MALODOR] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_POISON,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_MELTDOWN] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_STEEL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_ONE_BLOW] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_DARK,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_RAPID_FLOW] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_REPLENISH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_RESONANCE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ICE,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_SANDBLAST] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GROUND,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_SMITE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FAIRY,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_SNOOZE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_DARK,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_STEELSURGE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_STEEL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_STONESURGE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_STUN_SHOCK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_SWEETNESS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_TARTNESS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_TERROR] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GHOST,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_VINE_LASH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_VOLCALITH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ROCK,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_VOLT_CRASH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_WILDFIRE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FIRE,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_G_MAX_WIND_RAGE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FLYING,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_GRASS_KNOT] = {
         .effect = EFFECT_LOW_KICK,
         .power = 1,
@@ -3354,6 +4082,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_SLEEP,
     },
 
+    [MOVE_GRASSY_GLIDE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 70,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_GRASSY_TERRAIN] = {
         .effect = EFFECT_GRASSY_TERRAIN,
         .power = 0,
@@ -3366,6 +4107,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = 0,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
+    },
+
+    [MOVE_GRAV_APPLE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_GRAVITY] = {
@@ -3791,19 +4545,6 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
     },
 
-    [MOVE_HIGH_JUMP_KICK] = {
-        .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 130,
-        .type = TYPE_FIGHTING,
-        .accuracy = 90,
-        .pp = 10,
-        .secondaryEffectChance = 0,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST,
-        .split = SPLIT_PHYSICAL,
-    },
-
     [MOVE_HIDDEN_POWER] = {
         .effect = EFFECT_HIDDEN_POWER,
         .power = 60,
@@ -3827,6 +4568,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_ANTI_AIR,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_HIGH_JUMP_KICK] = {
+        .effect = EFFECT_RECOIL_IF_MISS,
+        .power = 130,
+        .type = TYPE_FIGHTING,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
     },
 
@@ -4550,6 +5304,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_JAW_LOCK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_DARK,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_STRONG_JAW_BOOST | FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_JUDGMENT] = {
         .effect = EFFECT_JUDGMENT,
         .power = 100,
@@ -4574,6 +5341,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_JUNGLE_HEALING] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_KARATE_CHOP] = {
@@ -4656,6 +5436,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
+    },
+
+    [MOVE_LASH_OUT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 75,
+        .type = TYPE_DARK,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_LAST_RESORT] = {
@@ -4804,6 +5597,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_OMNITYPE | FLAG_MON_EXCLUSIVE,
         .split = SPLIT_PHYSICAL,
         .argument = MOVE_EFFECT_LICK,
+    },
+
+    [MOVE_LIFE_DEW] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_SNATCH_AFFECTED,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_LIGHT_OF_RUIN] = {
@@ -4993,6 +5799,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_2,
     },
 
+    [MOVE_MAGIC_POWDER] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 100,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_MAGIC_ROOM] = {
         .effect = EFFECT_MAGIC_ROOM,
         .power = 0,
@@ -5112,6 +5931,253 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = 0,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
+    },
+
+    [MOVE_MAX_AIRSTREAM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FLYING,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_DARKNESS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_DARK,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_FLARE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 100,
+        .type = TYPE_FIRE,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_FLUTTERBY] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_BUG,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_GEYSER] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_WATER,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_GUARD] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 4,
+        .flags = 0,
+        .split = SPLIT_STATUS,
+    },
+
+    [MOVE_MAX_HAILSTORM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ICE,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_KNUCKLE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FIGHTING,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_LIGHTNING] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_MINDSTORM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_OOZE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_POISON,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_OVERGROWTH] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GRASS,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_PHANTASM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GHOST,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_QUAKE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_GROUND,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_ROCKFALL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_ROCK,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_STARFALL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_FAIRY,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_STEELSPIKE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_STEEL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_STRIKE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_MAX_WYRMWIND] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 10,
+        .type = TYPE_DRAGON,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_ME_FIRST] = {
@@ -5273,6 +6339,32 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
+    },
+
+    [MOVE_METEOR_ASSAULT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 150,
+        .type = TYPE_FIGHTING,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_METEOR_BEAM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 120,
+        .type = TYPE_ROCK,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_METEOR_MASH] = {
@@ -5448,6 +6540,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC | FLAG_SPECIAL_TYPEMOD,
+        .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_MISTY_EXPLOSION] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 100,
+        .type = TYPE_FAIRY,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_FOES_AND_ALLY,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
     },
 
@@ -5745,6 +6850,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_NIGHTMARE,
     },
 
+    [MOVE_NO_RETREAT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_FIGHTING,
+        .accuracy = 0,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .flags = FLAG_SNATCH_AFFECTED,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_NOBLE_ROAR] = {
         .effect = EFFECT_NOBLE_ROAR,
         .power = 0,
@@ -5787,6 +6905,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = 75, // restores 75% HP instead of 50% HP
     },
 
+    [MOVE_OBSTRUCT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_DARK,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 4,
+        .flags = 0,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_OCEANIC_OPERETTA] = {
         .effect = EFFECT_HIT,
         .power = 180,
@@ -5811,6 +6942,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC | FLAG_MEGA_LAUNCHER_BOOST,
         .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_OCTOLOCK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_FIGHTING,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_ODOR_SLEUTH] = {
@@ -5864,6 +7008,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_OVERDRIVE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_BOTH,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SOUND,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_OVERHEAT] = {
@@ -6190,6 +7347,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_POLTERGEIST] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 110,
+        .type = TYPE_GHOST,
+        .accuracy = 90,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_POUND] = {
@@ -6582,6 +7752,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_PYRO_BALL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 120,
+        .type = TYPE_FIRE,
+        .accuracy = 90,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_BALLISTIC,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_QUASH] = {
         .effect = EFFECT_QUASH,
         .power = 0,
@@ -6892,6 +8075,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_PHYSICAL,
+    },
+
+    [MOVE_RISING_VOLTAGE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 70,
+        .type = TYPE_ELECTRIC,
+        .accuracy = 100,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_ROAR] = {
@@ -7218,6 +8414,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_BURN,
     },
 
+    [MOVE_SCALE_SHOT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 25,
+        .type = TYPE_DRAGON,
+        .accuracy = 90,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_SCARY_FACE] = {
         .effect = EFFECT_SPEED_DOWN_2,
         .power = 0,
@@ -7230,6 +8439,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
+    },
+
+    [MOVE_SCORCHING_SANDS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 70,
+        .type = TYPE_GROUND,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_SCRATCH] = {
@@ -7483,6 +8705,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = MOVE_EFFECT_FREEZE,
     },
 
+    [MOVE_SHELL_SIDE_ARM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 90,
+        .type = TYPE_POISON,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
     [MOVE_SHELL_SMASH] = {
         .effect = EFFECT_SHELL_SMASH,
         .power = 0,
@@ -7645,6 +8880,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SPD_PLUS_1,
+    },
+
+    [MOVE_SKITTER_SMACK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 70,
+        .type = TYPE_BUG,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_SKULL_BASH] = {
@@ -7877,6 +9125,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_EVS_PLUS_1,
     },
 
+    [MOVE_SNAP_TRAP] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 35,
+        .type = TYPE_GRASS,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_SNARL] = {
         .effect = EFFECT_SPECIAL_ATTACK_DOWN_HIT,
         .power = 55,
@@ -7902,6 +9163,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SPD_PLUS_2,
+    },
+
+    [MOVE_SNIPE_SHOT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_SNORE] = {
@@ -8120,6 +9394,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
     },
 
+    [MOVE_SPIRIT_BREAK] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 75,
+        .type = TYPE_FAIRY,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_SPIRIT_SHACKLE] = {
         .effect = EFFECT_HIT_PREVENT_ESCAPE,
         .power = 80,
@@ -8256,6 +9543,32 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_STEEL_BEAM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 140,
+        .type = TYPE_STEEL,
+        .accuracy = 95,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_STEEL_ROLLER] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 130,
+        .type = TYPE_STEEL,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
+    },
+
     [MOVE_STEEL_WING] = {
         .effect = EFFECT_DEFENSE_UP_HIT,
         .power = 80,
@@ -8376,6 +9689,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_STRANGE_STEAM] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 90,
+        .type = TYPE_FAIRY,
+        .accuracy = 95,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_SPECIAL,
+    },
+
     [MOVE_STRENGTH] = {
         .effect = EFFECT_HIT,
         .power = 80,
@@ -8441,6 +9767,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_STUFF_CHEEKS] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .flags = FLAG_SNATCH_AFFECTED,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_STUN_SPORE] = {
@@ -8602,6 +9941,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
+    },
+
+    [MOVE_SURGING_STRIKES] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 25,
+        .type = TYPE_WATER,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_SWAGGER] = {
@@ -8809,6 +10161,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_PHYSICAL,
     },
 
+    [MOVE_TAR_SHOT] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_ROCK,
+        .accuracy = 100,
+        .pp = 20,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_STATUS,
+    },
+
     [MOVE_TAUNT] = {
         .effect = EFFECT_TAUNT,
         .power = 0,
@@ -8835,6 +10200,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_DEF_PLUS_1,
+    },
+
+    [MOVE_TEATIME] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 0,
+        .type = TYPE_NORMAL,
+        .accuracy = 0,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_USER,
+        .priority = 0,
+        .flags = 0,
+        .split = SPLIT_STATUS,
     },
 
     [MOVE_TECHNO_BLAST] = {
@@ -8903,6 +10281,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = 0,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_RESTORE_HP,
+    },
+
+    [MOVE_TERRAIN_PULSE] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 50,
+        .type = TYPE_NORMAL,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_MEGA_LAUNCHER_BOOST,
+        .split = SPLIT_SPECIAL,
     },
 
     [MOVE_THIEF] = {
@@ -9191,6 +10582,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = 0,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_ACC_PLUS_1,
+    },
+
+    [MOVE_TRIPLE_AXEL] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 20,
+        .type = TYPE_ICE,
+        .accuracy = 90,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_TRIPLE_KICK] = {
@@ -9551,7 +10955,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_SPECIAL,
     },
-    
+
     [MOVE_WHIRLWIND] = {
         .effect = EFFECT_ROAR,
         .power = 0,
@@ -9564,6 +10968,19 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .split = SPLIT_STATUS,
         .argument = Z_STATUS_EFFECT_SP_DEF_PLUS_1,
+    },
+
+    [MOVE_WICKED_BLOW] = {
+        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .power = 80,
+        .type = TYPE_DARK,
+        .accuracy = 100,
+        .pp = 5,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED,
+        .split = SPLIT_PHYSICAL,
     },
 
     [MOVE_WIDE_GUARD] = {
