@@ -110,11 +110,11 @@
 #define FLAG_SPECIAL_TYPEMOD        0x400000
 #define FLAG_TARGET_ABILITY_IGNORED 0x800000
 #define FLAG_HEAD                   0x1000000
-#define FLAG_SELF_Z                 0x20000000
-#define FLAG_Z_SPECIAL              0x40000000
-#define FLAG_Z_MOVE                 0x80000000
-#define FLAG_DMG_IN_AIR             0x100000000 // X2 dmg on air, always hits target on air
-#define FLAG_HIT_IN_AIR             0x200000000 // dmg is normal, always hits target on air
+#define FLAG_SELF_Z                 0x2000000
+#define FLAG_Z_SPECIAL              0x4000000
+#define FLAG_Z_MOVE                 0x8000000
+#define FLAG_DMG_IN_AIR             0x10000000 // X2 dmg on air, always hits target on air
+#define FLAG_HIT_IN_AIR             0x20000000 // dmg is normal, always hits target on air
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0
