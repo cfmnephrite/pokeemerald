@@ -282,12 +282,12 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_APPLE_ACID] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_SPECIAL_DEFENSE_DOWN_HIT, // Needs a custom move effect
         .power = 80,
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = 10,
-        .secondaryEffectChance = 0,
+        .secondaryEffectChance = 100,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
@@ -4876,7 +4876,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_JAW_LOCK] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_JAW_LOCK, // Needs a custom move effect
         .power = 80,
         .type = TYPE_DARK,
         .accuracy = 100,
@@ -8737,7 +8737,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_SNIPE_SHOT] = {
-        .effect = EFFECT_HIT, // Needs a custom move effect
+        .effect = EFFECT_HIT,
         .power = 80,
         .type = TYPE_WATER,
         .accuracy = 100,
@@ -8745,7 +8745,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_HIGH_CRIT | FLAG_IGNORE_REDIRECTION,
         .split = SPLIT_SPECIAL,
     },
 

@@ -3077,6 +3077,14 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     gBattlescriptCurrInstr = BattleScript_MoveEffectBugBite;
                 }
                 break;
+			case MOVE_EFFECT_TRAP_BOTH:
+				gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
+                gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
+				gBattleMons[gBattlerAttacker].status2 |= STATUS2_ESCAPE_PREVENTION;
+                gDisableStructs[gBattlerAttacker].battlerPreventingEscape = gBattlerTarget;
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = BattleScript_BothCanNoLongerEscape;
+                break;
             }
         }
     }

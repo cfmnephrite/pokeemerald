@@ -5745,7 +5745,9 @@ u8 GetMoveTarget(u16 move, u8 setTarget)
     {
     case MOVE_TARGET_SELECTED:
         side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-        if (gSideTimers[side].followmeTimer && gBattleMons[gSideTimers[side].followmeTarget].hp)
+		if (gBattleMoves[move].flags & FLAG_IGNORE_REDIRECTION)
+			break;
+        else if (gSideTimers[side].followmeTimer && gBattleMons[gSideTimers[side].followmeTarget].hp)
         {
             targetBattler = gSideTimers[side].followmeTarget;
         }
