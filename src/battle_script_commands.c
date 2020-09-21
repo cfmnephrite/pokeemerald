@@ -58,6 +58,10 @@
 #include "constants/rgb.h"
 #include "data.h"
 #include "constants/party_menu.h"
+#include "printf.h"
+#include "mgba.h"
+#include "../gflib/string_util.h" // for ConvertToAscii()
+
 
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
 
@@ -3077,13 +3081,25 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     gBattlescriptCurrInstr = BattleScript_MoveEffectBugBite;
                 }
                 break;
-			case MOVE_EFFECT_TRAP_BOTH:
-				gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
-                gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
-				gBattleMons[gBattlerAttacker].status2 |= STATUS2_ESCAPE_PREVENTION;
-                gDisableStructs[gBattlerAttacker].battlerPreventingEscape = gBattlerTarget;
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_BothCanNoLongerEscape;
+            case MOVE_EFFECT_TRAP_BOTH:
+                {
+                    bool32 canTargetBeTrapped = CanBattlerBeTrapped(gBattlerTarget),
+                    canAttackerBeTrapped = CanBattlerBeTrapped(gBattlerAttacker);
+
+                    if (canTargetBeTrapped) {
+                        gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
+                        gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
+                    }
+                    if (canAttackerBeTrapped) {
+                        gBattleMons[gBattlerAttacker].status2 |= STATUS2_ESCAPE_PREVENTION;
+                        gDisableStructs[gBattlerAttacker].battlerPreventingEscape = gBattlerTarget;
+                    }
+                    if (canAttackerBeTrapped || canTargetBeTrapped)
+                    {
+                        BattleScriptPush(gBattlescriptCurrInstr + 1);
+                        gBattlescriptCurrInstr = BattleScript_BothCanNoLongerEscape;
+                    }
+                }
                 break;
             }
         }

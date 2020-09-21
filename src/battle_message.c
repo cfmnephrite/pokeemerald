@@ -710,7 +710,7 @@ static const u8 sText_PkmnAbsorbingPower[] = _("{B_ATK_NAME_WITH_PREFIX} is abso
 static const u8 sText_NoOneWillBeAbleToRun[] = _("No one will be able to run away\nduring the next turn!");
 static const u8 sText_DestinyKnotActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love\nfrom the {B_LAST_ITEM}!");
 static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin a freezing light!");
-static const u8 sText_BothCanNoLongerEscape[] = _("Both Pokémon can no\nlonger escape!");
+static const u8 sText_BothCanNoLongerEscape[] = _("Both monsters can no\nlonger escape!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {

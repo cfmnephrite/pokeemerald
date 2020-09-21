@@ -4667,14 +4667,14 @@ u32 GetBattlerAbility(u8 battlerId)
             && !(gStatuses3[gBattlerAttacker] & STATUS3_GASTRO_ACID))
             || gBattleMoves[gCurrentMove].flags & FLAG_TARGET_ABILITY_IGNORED)
             && sAbilitiesAffectedByMoldBreaker[gBattleMons[battlerId].ability])
-			|| (IsAbilityOnField(ABILITY_AURA_BREAK)
-			&& sAbilitiesAffectedByAuraBreak[gBattleMons[gBattlerAttacker].ability]))
+            || (IsAbilityOnField(ABILITY_AURA_BREAK)
+            && sAbilitiesAffectedByAuraBreak[gBattleMons[gBattlerAttacker].ability]))
             && gBattlerByTurnOrder[gCurrentTurnActionNumber] == gBattlerAttacker
             && gActionsByTurnOrder[gBattlerByTurnOrder[gBattlerAttacker]] == B_ACTION_USE_MOVE
             && gCurrentTurnActionNumber < gBattlersCount)
         return ABILITY_NONE;
-	else
-		return gBattleMons[battlerId].ability;
+    else
+        return gBattleMons[battlerId].ability;
 }
 
 u32 IsAbilityOnSide(u32 battlerId, u32 ability)
@@ -4738,14 +4738,20 @@ u32 IsAbilityPreventingEscape(u32 battlerId)
     return 0;
 }
 
-bool32 CanBattlerEscape(u32 battlerId) // no ability check
+bool32 CanBattlerBeTrapped(u32 battlerId)
 {
-    return (GetBattlerHoldEffect(battlerId, TRUE) == HOLD_EFFECT_SHED_SHELL
-             || gBattleMons[gActiveBattler].ability != ABILITY_RUN_AWAY
-             || !((gBattleMons[battlerId].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
-                || gDisableStructs[battlerId].skyDrop
-                || (gStatuses3[battlerId] & STATUS3_ROOTED)
-                || gFieldStatuses & STATUS_FIELD_FAIRY_LOCK));
+    return !(GetBattlerHoldEffect(battlerId, TRUE) == HOLD_EFFECT_SHED_SHELL
+             || GetBattlerAbility(battlerId) == ABILITY_RUN_AWAY)
+             || (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battlerId, TYPE_GHOST));
+}
+
+bool32 CanBattlerEscape(u32 battlerId)
+{
+    return !(CanBattlerBeTrapped(battlerId)
+            || ((gBattleMons[battlerId].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
+            || gDisableStructs[battlerId].skyDrop
+            || (gStatuses3[battlerId] & STATUS3_ROOTED)
+            || gFieldStatuses & STATUS_FIELD_FAIRY_LOCK));
 }
 
 void BattleScriptExecute(const u8 *BS_ptr)
