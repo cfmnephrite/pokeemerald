@@ -8308,6 +8308,12 @@ static void Cmd_various(void)
             MarkBattlerForControllerExec(gActiveBattler);
         }
         break;
+	case VARIOUS_USE_ITEM:
+		if(gBattleMons[gActiveBattler].item == ITEM_NONE)
+			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+		else if(ItemBattleEffects(1, gActiveBattler, FALSE))
+			gBattlescriptCurrInstr += 7;
+		break;
     }
 
     gBattlescriptCurrInstr += 3;

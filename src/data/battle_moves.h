@@ -9341,7 +9341,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_STUFF_CHEEKS] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_STUFF_CHEEKS, // Needs a custom move effect
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,

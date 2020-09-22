@@ -4748,10 +4748,10 @@ bool32 CanBattlerBeTrapped(u32 battlerId)
 bool32 CanBattlerEscape(u32 battlerId)
 {
     return !(CanBattlerBeTrapped(battlerId)
-            || ((gBattleMons[battlerId].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
+            && (((gBattleMons[battlerId].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
             || gDisableStructs[battlerId].skyDrop
             || (gStatuses3[battlerId] & STATUS3_ROOTED)
-            || gFieldStatuses & STATUS_FIELD_FAIRY_LOCK));
+            || gFieldStatuses & STATUS_FIELD_FAIRY_LOCK)));
 }
 
 void BattleScriptExecute(const u8 *BS_ptr)

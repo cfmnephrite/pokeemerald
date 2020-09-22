@@ -1804,6 +1804,11 @@
 	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
 	.endm
 	
+	.macro useitem battler:req, ptr:req
+	various \battler, VARIOUS_USE_ITEM
+	.4byte \ptr
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7
