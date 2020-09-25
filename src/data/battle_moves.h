@@ -2191,7 +2191,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_DRAGON_DARTS] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_DRAGON_DARTS, // Needs a custom move effect
         .power = 50,
         .type = TYPE_DRAGON,
         .accuracy = 100,
@@ -5371,7 +5371,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_MAGIC_POWDER] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_SOAK,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 100,
@@ -5379,7 +5379,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MAGICCOAT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_POWDER,
         .split = SPLIT_STATUS,
     },
 
@@ -6422,7 +6422,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_NO_RETREAT] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_NO_RETREAT,
         .power = 0,
         .type = TYPE_FIGHTING,
         .accuracy = 0,
@@ -9733,11 +9733,11 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_TAR_SHOT] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_TAR_SHOT, // Needs a custom move effect
         .power = 0,
         .type = TYPE_ROCK,
         .accuracy = 100,
-        .pp = 20,
+        .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,

@@ -573,7 +573,7 @@ static const u8 sText_BecameNimble[] =_("{B_ATK_NAME_WITH_PREFIX} became nimble!
 static const u8 sText_HurledIntoTheAir[] =_("{B_DEF_NAME_WITH_PREFIX} was hurled\ninto the air!");
 static const u8 sText_HeldItemsLoseEffects[] =_("It created a bizarra area in which\nPokémon's held items lose their effects!");
 static const u8 sText_FellStraightDown[] =_("{B_DEF_NAME_WITH_PREFIX} fell\nstraight down!");
-static const u8 sText_TransformedIntoWaterType[] =_("{B_DEF_NAME_WITH_PREFIX} transformed\ninto the water type!");
+static const u8 sText_TargetChangedType[] =_("{B_DEF_NAME_WITH_PREFIX} transformed\ninto the {B_BUFF1} type!");
 static const u8 sText_PkmnAcquiredSimple[] =_("{B_DEF_NAME_WITH_PREFIX} acquired\nSimple!");
 static const u8 sText_KindOffer[] =_("{B_DEF_NAME_WITH_PREFIX}\ntook the kind offer!");
 static const u8 sText_ResetsTargetsStatLevels[] =_("{B_DEF_NAME_WITH_PREFIX}'s stat changes\nwere removed!");
@@ -711,6 +711,8 @@ static const u8 sText_NoOneWillBeAbleToRun[] = _("No one will be able to run awa
 static const u8 sText_DestinyKnotActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love\nfrom the {B_LAST_ITEM}!");
 static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin a freezing light!");
 static const u8 sText_BothCanNoLongerEscape[] = _("Both monsters can no\nlonger escape!");
+static const u8 sText_CantEscapeDueToUsedMove[] = _("{B_ATK_NAME_WITH_PREFIX} can no longer escape\nbecause it used {B_CURRENT_MOVE}!");
+static const u8 sText_PkmnBecameWeakerToFire[] = _("{B_DEF_NAME_WITH_PREFIX} became\nweaker to fire!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1152,7 +1154,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_HURLEDINTOTHEAIR - 12] = sText_HurledIntoTheAir,
     [STRINGID_HELDITEMSLOSEEFFECTS - 12] = sText_HeldItemsLoseEffects,
     [STRINGID_FELLSTRAIGHTDOWN - 12] = sText_FellStraightDown,
-    [STRINGID_TRANSFORMEDINTOWATERTYPE - 12] = sText_TransformedIntoWaterType,
+    [STRINGID_TARGETCHANGEDTYPE - 12] = sText_TargetChangedType,
     [STRINGID_PKMNACQUIREDSIMPLE - 12] = sText_PkmnAcquiredSimple,
     [STRINGID_QUASHSUCCESS - 12] = sText_QuashSuccess,
     [STRINGID_KINDOFFER - 12] = sText_KindOffer,
@@ -1261,6 +1263,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 	[STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
 	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
 	[STRINGID_BOTHCANNOLONGERESCAPE - 12] = sText_BothCanNoLongerEscape,
+	[STRINGID_CANTESCAPEDUETOUSEDMOVE - 12] = sText_CantEscapeDueToUsedMove,
+	[STRINGID_PKMNBECAMEWEAKERTOFIRE - 12] = sText_PkmnBecameWeakerToFire,
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =

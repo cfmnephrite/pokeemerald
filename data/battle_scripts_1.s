@@ -366,7 +366,102 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectAllySwitch
 	.4byte BattleScript_EffectJawLock
 	.4byte BattleScript_EffectStuffCheeks
+	.4byte BattleScript_EffectNoRetreat
+	.4byte BattleScript_EffectTarShot
+	.4byte BattleScript_EffectDragonDarts
 	
+BattleScript_EffectDragonDarts:
+	attackcanceler
+	attackstring
+	ppreduce
+	setmultihit 0x2
+BattleScript_DragonDartsLoop:
+	jumpifhalfword CMP_EQUAL, gChosenMove, MOVE_SLEEP_TALK, BattleScript_DragonDartsAccuracyCheck
+	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_DragonDartsResult
+BattleScript_DragonDartsAccuracyCheck:
+	accuracycheck BattleScript_DragonDartsMoveMissed, ACC_CURR_MOVE
+	goto BattleScript_DragonDartsHit
+BattleScript_DragonDartsAccuracyCheck2::
+	movevaluescleanup
+	accuracycheck BattleScript_DragonDartsResult, ACC_CURR_MOVE
+	critcalc
+	damagecalc
+	adjustdamage
+	jumpifmovehadnoeffect BattleScript_DragonDartsResult
+	goto BattleScript_DragonDartsHitFromAnimation
+BattleScript_DragonDartsHit:
+	jumpifhasnohp BS_TARGET, BattleScript_DragonDartsResult
+	movevaluescleanup
+	critcalc
+	damagecalc
+	adjustdamage
+	jumpifmovehadnoeffect BattleScript_DragonDartsMoveMissed
+BattleScript_DragonDartsHitFromAnimation:
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage 0x40
+	resultmessage
+	waitmessage 0x30
+	multihitresultmessage
+	seteffectwithchance
+	printstring STRINGID_EMPTYSTRING3
+	waitmessage 0x1
+	moveendto MOVEEND_NEXT_TARGET
+	decrementmultihit BattleScript_DragonDartsTryNextTarget
+	goto BattleScript_DragonDartsResult
+BattleScript_DragonDartsMoveMissed:
+	jumpifbattletype BATTLE_TYPE_DOUBLE, BattleScript_DragonDartsTryNextTarget
+	goto BattleScript_DragonDartsResult
+BattleScript_DragonDartsTryNextTarget:
+	tryfaintmon BS_TARGET, FALSE, NULL
+	trynextdart BattleScript_DragonDartsHit
+	goto BattleScript_DragonDartsLoop
+BattleScript_DragonDartsResult:
+	resultmessage
+	waitmessage 0x30
+	tryfaintmon BS_TARGET, FALSE, NULL
+	moveendcase MOVEEND_SYNCHRONIZE_TARGET
+	moveendfrom MOVEEND_STATUS_IMMUNITY_ABILITIES
+	end
+	
+BattleScript_EffectTarShot:
+	attackcanceler
+	jumpifsubstituteblocks BattleScript_ButItFailedAtkStringPpReduce
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	setstatchanger STAT_SPEED, 1, TRUE
+	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_TryTarShot
+	setgraphicalstatchangevalues
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x30
+BattleScript_TryTarShot:
+	trytarshot BattleScript_MoveEnd
+	printstring STRINGID_PKMNBECAMEWEAKERTOFIRE
+	waitmessage 0x30
+	goto BattleScript_MoveEnd
+	
+BattleScript_EffectNoRetreat:
+	attackcanceler
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	jumpifselftrapped BS_ATTACKER, BattleScript_ButItFailed
+	attackanimation
+	waitanimation
+	call BattleScript_AllStatsUp
+	trytrapself BS_ATTACKER, BattleScript_MoveEnd
+	printstring STRINGID_CANTESCAPEDUETOUSEDMOVE
+	waitmessage 0x30
+	goto BattleScript_MoveEnd
+
 BattleScript_EffectStuffCheeks:
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -1351,7 +1446,7 @@ BattleScript_EffectSoak:
 	attackanimation
 	waitanimation
 	trysoak BattleScript_ButItFailed
-	printstring STRINGID_TRANSFORMEDINTOWATERTYPE
+	printstring STRINGID_TARGETCHANGEDTYPE
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 
@@ -3399,7 +3494,6 @@ BattleScript_EffectMeanLook::
 	waitanimation
 	setmoveeffect MOVE_EFFECT_PREVENT_ESCAPE
 	seteffectprimary
-	printstring STRINGID_TARGETCANTESCAPENOW
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 

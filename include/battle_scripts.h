@@ -374,5 +374,6 @@ extern const u8 BattleScript_FriskActivates[];
 extern const u8 BattleScript_FriskMsg[];
 extern const u8 BattleScript_FriskMsgWithPopup[];
 extern const u8 BattleScript_BothCanNoLongerEscape[];
+extern const u8 BattleScript_DragonDartsAccuracyCheck2[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

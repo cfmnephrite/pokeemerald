@@ -4741,8 +4741,8 @@ u32 IsAbilityPreventingEscape(u32 battlerId)
 bool32 CanBattlerBeTrapped(u32 battlerId)
 {
     return !(GetBattlerHoldEffect(battlerId, TRUE) == HOLD_EFFECT_SHED_SHELL
-             || GetBattlerAbility(battlerId) == ABILITY_RUN_AWAY)
-             || (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battlerId, TYPE_GHOST));
+             || GetBattlerAbility(battlerId) == ABILITY_RUN_AWAY
+             || (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battlerId, TYPE_GHOST)));
 }
 
 bool32 CanBattlerEscape(u32 battlerId)
@@ -7303,7 +7303,7 @@ static void MulByTypeEffectiveness(u16 *modifier, u16 move, u8 moveType, u8 batt
                 mod = UQ_4_12(2.0);
                 break;
             case MOVE_SYNCHRONOISE:
-                if (defType != gBattleMons[gBattlerAttacker].type1)
+                if (defType != gBattleMons[battlerAtk].type1)
                     break;
                 mod = UQ_4_12(2.0);
                 break;
@@ -7396,6 +7396,8 @@ u16 CalcTypeEffectivenessMultiplier(u16 move, u8 moveType, u8 battlerAtk, u8 bat
         modifier = CalcTypeEffectivenessMultiplierInternal(move, moveType, battlerAtk, battlerDef, recordAbilities, modifier);
         if (gBattleMoves[move].effect == EFFECT_TWO_TYPED_MOVE)
             modifier = CalcTypeEffectivenessMultiplierInternal(move, gBattleMoves[move].argument, battlerAtk, battlerDef, recordAbilities, modifier);
+		else if (moveType == TYPE_FIRE && gDisableStructs[battlerDef].tarShot)
+			modifier = CalcTypeEffectivenessMultiplierInternal(move, moveType, battlerAtk, battlerDef, recordAbilities, UQ_4_12(2.0));
     }
 
     if (recordAbilities)
