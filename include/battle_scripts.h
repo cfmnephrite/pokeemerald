@@ -287,6 +287,7 @@ extern const u8 BattleScript_TrainerSlideMsgRet[];
 extern const u8 BattleScript_TrainerSlideMsgEnd2[];
 extern const u8 BattleScript_MoveEffectFeint[];
 extern const u8 BattleScript_ProteanActivates[];
+extern const u8 BattleScript_ProteanActivatesEnd2[];
 extern const u8 BattleScript_DazzlingProtected[];
 extern const u8 BattleScript_ActiveTerrainPrevents[];
 extern const u8 BattleScript_ActiveTerrainPreventsAtkString[];
@@ -374,5 +375,11 @@ extern const u8 BattleScript_FriskActivates[];
 extern const u8 BattleScript_FriskMsg[];
 extern const u8 BattleScript_FriskMsgWithPopup[];
 extern const u8 BattleScript_SwitchInAbilityActivates[];
+extern const u8 BattleScript_CottonDown[];
+extern const u8 BattleScript_CottonDownLoop[];
+extern const u8 BattleScript_CottonDownTargetEnd[];
+extern const u8 BattleScript_MimicryReturnedToType[];
+extern const u8 BattleScript_PerishBodyActivates[];
+extern const u8 BattleScript_WanderingSpirit[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

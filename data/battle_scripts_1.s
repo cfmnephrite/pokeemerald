@@ -513,6 +513,7 @@ BattleScript_EffectHitSetTerrain:
 BattleScript_MoveEffectSetTerrain::
 	printfromtable gTerrainStringIds
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	return
 
 BattleScript_EffectLaserFocus:
@@ -1526,6 +1527,7 @@ BattleScript_EffectPsychicTerrain:
 	waitanimation
 	printfromtable gTerrainStringIds
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectTopsyTurvy:
@@ -4474,6 +4476,18 @@ BattleScript_EffectSkillSwap:
 	printstring STRINGID_PKMNSWAPPEDABILITIES
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
+	
+BattleScript_WanderingSpirit::
+	call BattleScript_AbilityPopUp
+	pause 0x20
+	tryswapabilities NULL
+	call BattleScript_AbilityPopUp
+	pause 0x30
+	copybyte gBattlerAbility, gBattlerAttacker
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNSWAPPEDABILITIES
+	waitmessage 0x30
+	return
 
 BattleScript_EffectImprison::
 	attackcanceler
@@ -4757,7 +4771,7 @@ BattleScript_EffectCamouflage::
 	attackcanceler
 	attackstring
 	ppreduce
-	settypetoterrain BattleScript_ButItFailed
+	settypetoterrain BattleScript_ButItFailed, TRUE
 	attackanimation
 	waitanimation
 	printstring STRINGID_PKMNCHANGEDTYPE
@@ -5300,21 +5314,25 @@ BattleScript_MagicRoomEnds::
 BattleScript_ElectricTerrainEnds::
 	printstring STRINGID_ELECTRICTERRAINENDS
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_MistyTerrainEnds::
 	printstring STRINGID_MISTYTERRAINENDS
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_GrassyTerrainEnds::
 	printstring STRINGID_GRASSYTERRAINENDS
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_PsychicTerrainEnds::
 	printstring STRINGID_PSYCHICTERRAINENDS
 	waitmessage 0x40
+	call BattleScript_Mimicry
 	end2
 
 BattleScript_MudSportEnds::
@@ -6688,6 +6706,7 @@ BattleScript_ElectricSurgeActivates::
 	printstring STRINGID_TERRAINBECOMESELECTRIC
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_ELECTRIC, NULL
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_MistySurgeActivates::
@@ -6696,6 +6715,7 @@ BattleScript_MistySurgeActivates::
 	printstring STRINGID_TERRAINBECOMESMISTY
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_MISTY, NULL
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_GrassySurgeActivates::
@@ -6704,6 +6724,7 @@ BattleScript_GrassySurgeActivates::
 	printstring STRINGID_TERRAINBECOMESGRASSY
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_GRASSY, NULL
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_PsychicSurgeActivates::
@@ -6712,6 +6733,7 @@ BattleScript_PsychicSurgeActivates::
 	printstring STRINGID_TERRAINBECOMESPSYCHIC
 	waitstate
 	playanimation BS_SCRIPTING, B_ANIM_TERRAIN_PSYCHIC, NULL
+	call BattleScript_Mimicry
 	end3
 
 BattleScript_SwitchInAbilityActivates::
@@ -6824,7 +6846,7 @@ BattleScript_AbilityPreventsPhasingOut::
 BattleScript_AbilityNoStatLoss::
 	pause 0x20
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNPREVENTSSTATLOSSWITH
+	printstring STRINGID_PKMNSSTATSNOTLOWERED
 	waitmessage 0x40
 	return
 
@@ -6931,11 +6953,21 @@ BattleScript_ColorChangeActivates::
 	waitmessage 0x40
 	return
 
+BattleScript_ProteanActivatesEnd2::
+	call BattleScript_ProteanActivates
+	end2
+
 BattleScript_ProteanActivates::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_PKMNCHANGEDTYPE
 	waitmessage 0x40
 	return
+	
+BattleScript_MonReturnedToType::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNRETURNEDTOTYPE
+	waitmessage 0x40
+	end2
 
 BattleScript_CursedBodyActivates::
 	call BattleScript_AbilityPopUp
@@ -6956,6 +6988,12 @@ BattleScript_AngerPointActivates::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printstring STRINGID_TARGETABILITYSTATRAISE
 	waitmessage 0x40
+	return
+	
+BattleScript_PerishBodyActivates::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PERISHBODY
+	waitmessage 0x30
 	return
 
 BattleScript_TargetAbilityStatRaise::
@@ -7500,6 +7538,52 @@ BattleScript_GooeyActivates::
 	printstring STRINGID_TARGETABILITYSTATLOWERFOE
 	waitmessage 0x30
 	return
+
+BattleScript_CottonDown::
+	call BattleScript_AbilityPopUp
+	copybyte gBattlerAttacker, gBattlerTarget
+	selectfirstvalidtarget
+BattleScript_CottonDownLoop::
+	setstatchanger STAT_SPEED, 1, TRUE
+	jumpifability BS_TARGET, ABILITY_CLEAR_BODY, BattleScript_CottonDownPrevented
+	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_CottonDownPrevented
+	jumpifability BS_TARGET, ABILITY_WHITE_SMOKE, BattleScript_CottonDownPrevented
+	jumpifability BS_TARGET, ABILITY_FULL_METAL_BODY, BattleScript_CottonDownPrevented
+	statbuffchange STAT_BUFF_NOT_PROTECT_AFFECTED | STAT_BUFF_ALLOW_PTR, BattleScript_CottonDownTargetEnd
+	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, 0x1, BattleScript_CottonDownTargetEnd
+	setgraphicalstatchangevalues
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatDownStringIds
+	waitmessage 0x20
+BattleScript_CottonDownTargetEnd::
+	jumpifnexttargetvalid BattleScript_CottonDownLoop
+	end2
+BattleScript_CottonDownPrevented::
+	copybyte gBattlerAbility, gBattlerTarget
+	call BattleScript_AbilityNoStatLoss
+	goto BattleScript_CottonDownTargetEnd
+
+BattleScript_Mimicry::
+	selectfirstvalidtarget
+BattleScript_MimicryCheckTarget::
+	jumpifability BS_TARGET, ABILITY_MIMICRY, BattleScript_MimicryLoop
+	goto BattleScript_MimicryTargetEnd
+BattleScript_MimicryLoop::
+	copybyte gBattlerAttacker, gBattlerTarget
+	settypetoterrain BattleScript_MimicryTargetEnd, FALSE
+	copybyte gBattlerAbility, gBattlerTarget
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNCHANGEDTYPE
+	waitmessage 0x30
+BattleScript_MimicryTargetEnd::
+	jumpifnexttargetvalid BattleScript_MimicryCheckTarget
+	return
+	
+BattleScript_MimicryReturnedToType::
+	call BattleScript_AbilityPopUp
+	printstring STRINGID_PKMNRETURNEDTOTYPE
+	waitmessage 0x30
+	goto BattleScript_MimicryTargetEnd
 
 BattleScript_IgnoresWhileAsleep::
 	printstring STRINGID_PKMNIGNORESASLEEP

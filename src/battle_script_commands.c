@@ -1725,6 +1725,8 @@ END:
         && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
         && gBattleMons[gBattlerTarget].item)
     {
+		if (GetBattlerAbility(gBattlerTarget) == ABILITY_RIPEN)
+			CreateAbilityPopUp(gBattlerTarget, gBattleMons[gBattlerTarget].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_BerryReduceDmg;
         gLastUsedItem = gBattleMons[gBattlerTarget].item;
@@ -4257,10 +4259,22 @@ static void Cmd_endselectionscript(void)
 static void Cmd_playanimation(void)
 {
     const u16* argumentPtr;
+	u8 value = GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger);
+	
 
     gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
     argumentPtr = T2_READ_PTR(gBattlescriptCurrInstr + 3);
-
+	
+	//Change animation target for Mirror Armor
+	if((value & STAT_BUFF_NEGATIVE) 
+	 && gActiveBattler == gBattlerTarget 
+	 && GetBattlerAbility(gActiveBattler) == ABILITY_MIRROR_ARMOR
+	 && gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE)
+	{
+		CreateAbilityPopUp(gBattlerTarget, gBattleMons[gBattlerTarget].ability, (gBattleTypeFlags & BATTLE_TYPE_DOUBLE) != 0);
+		gActiveBattler = gBattlerAttacker;
+	}
+	
     if (gBattlescriptCurrInstr[2] == B_ANIM_STATS_CHANGE
         || gBattlescriptCurrInstr[2] == B_ANIM_SNATCH_MOVE
         || gBattlescriptCurrInstr[2] == B_ANIM_MEGA_EVOLUTION
@@ -4393,6 +4407,11 @@ static void Cmd_playstatchangeanimation(void)
     ability = GetBattlerAbility(gActiveBattler);
     statsToCheck = gBattlescriptCurrInstr[2];
 
+	if(ability == ABILITY_MIRROR_ARMOR && gActiveBattler == gBattlerTarget && (flags & STAT_CHANGE_NEGATIVE))
+	{
+		gActiveBattler = gBattlerAttacker;
+		ability = GetBattlerAbility(gActiveBattler);
+	}
     // Handle Contrary and Simple
     if (ability == ABILITY_CONTRARY)
         flags ^= STAT_CHANGE_NEGATIVE;
@@ -4670,7 +4689,7 @@ static void Cmd_moveend(void)
             break;
         case MOVEEND_CHOICE_MOVE: // update choice band move
             if (gHitMarker & HITMARKER_OBEYS
-             && HOLD_EFFECT_CHOICE(holdEffectAtk)
+             && (HOLD_EFFECT_CHOICE(holdEffectAtk) || GetBattlerAbility(gBattlerAttacker) == ABILITY_GORILLA_TACTICS)
              && gChosenMove != MOVE_STRUGGLE
              && (*choicedMoveAtk == 0 || *choicedMoveAtk == 0xFFFF))
             {
@@ -7259,7 +7278,7 @@ static void Cmd_various(void)
     case VARIOUS_SET_MAGIC_COAT_TARGET:
         gBattlerAttacker = gBattlerTarget;
         side = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
-        if (gSideTimers[side].followmeTimer != 0 && gBattleMons[gSideTimers[side].followmeTarget].hp != 0)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[side].followmeTarget;
         else
             gBattlerTarget = gActiveBattler;
@@ -8825,6 +8844,8 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     // Determine if this is a self-inflicted stat boost
     if (flags & MOVE_EFFECT_AFFECTS_USER)
         gActiveBattler = gBattlerAttacker;
+	else if(GetBattlerAbility(gBattlerTarget) == ABILITY_MIRROR_ARMOR && statValue <= -1) //Bounce back stat drops with Mirror Armor
+		gActiveBattler = gBattlerAttacker;
     else
         gActiveBattler = gBattlerTarget;
 
@@ -10155,7 +10176,7 @@ static void Cmd_counterdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 2;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
@@ -10178,7 +10199,7 @@ static void Cmd_mirrorcoatdamagecalculator(void) // a copy of atkA1 with the phy
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 2;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;
@@ -11218,8 +11239,11 @@ static void Cmd_jumpifattackandspecialattackcannotfall(void) // memento
 
 static void Cmd_setforcedtarget(void) // follow me
 {
-    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer = 1;
-    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget = gBattlerAttacker;
+	if(gBattleMoves[gCurrentMove].flags & FLAG_POWDER)
+		gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer++; //for Rage Powder
+    gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTimer++;
+	if (!(gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget)) //first mon using Follow Me takes priority
+		gSideTimers[GetBattlerSide(gBattlerAttacker)].followmeTarget = gBattlerAttacker;
     gBattlescriptCurrInstr++;
 }
 
@@ -12129,12 +12153,34 @@ static void Cmd_tryrecycleitem(void)
 
 static void Cmd_settypetoterrain(void)
 {
-    if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, sTerrainToType[gBattleTerrain]))
+	u8 terrainType;
+	
+	if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
+		terrainType = TYPE_ELECTRIC;
+	else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN)
+		terrainType = TYPE_GRASS;
+	else if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN)
+		terrainType = TYPE_FAIRY;
+	else if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN)
+		terrainType = TYPE_PSYCHIC;
+	else if (T1_READ_8(gBattlescriptCurrInstr + 5))
+		terrainType = sTerrainToType[gBattleTerrain];
+	else
+		terrainType = TYPE_MYSTERY;
+	
+	if (terrainType == TYPE_MYSTERY)
+	{
+		SET_BATTLER_TYPE(gBattlerAttacker, gBaseStats[gBattleMons[gBattlerAttacker].species].type1);
+		SET_BATTLER_TYPE2(gBattlerAttacker, gBaseStats[gBattleMons[gBattlerAttacker].species].type2);
+		gBattlescriptCurrInstr = BattleScript_MimicryReturnedToType;
+	}
+    else if ((gBattleMons[gBattlerAttacker].type1 != terrainType || gBattleMons[gBattlerAttacker].type2 != terrainType 
+	 || (gBattleMons[gBattlerAttacker].type3 != terrainType && gBattleMons[gBattlerAttacker].type3 != TYPE_MYSTERY)))
     {
-        SET_BATTLER_TYPE(gBattlerAttacker, sTerrainToType[gBattleTerrain]);
-        PREPARE_TYPE_BUFFER(gBattleTextBuff1, sTerrainToType[gBattleTerrain]);
+        SET_BATTLER_TYPE(gBattlerAttacker, terrainType);
+        PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
 
-        gBattlescriptCurrInstr += 5;
+        gBattlescriptCurrInstr += 6;
     }
     else
     {
@@ -12181,12 +12227,14 @@ static void Cmd_removelightscreenreflect(void) // brick break
 {
     u8 opposingSide = GetBattlerSide(gBattlerAttacker) ^ BIT_SIDE;
 
-    if (gSideTimers[opposingSide].reflectTimer || gSideTimers[opposingSide].lightscreenTimer)
+    if (gSideTimers[opposingSide].reflectTimer || gSideTimers[opposingSide].lightscreenTimer || gSideTimers[opposingSide].auroraVeilTimer)
     {
         gSideStatuses[opposingSide] &= ~(SIDE_STATUS_REFLECT);
         gSideStatuses[opposingSide] &= ~(SIDE_STATUS_LIGHTSCREEN);
+		gSideStatuses[opposingSide] &= ~(SIDE_STATUS_AURORA_VEIL);
         gSideTimers[opposingSide].reflectTimer = 0;
         gSideTimers[opposingSide].lightscreenTimer = 0;
+		gSideTimers[opposingSide].auroraVeilTimer = 0;
         gBattleScripting.animTurn = 1;
         gBattleScripting.animTargetsHit = 1;
     }
@@ -12195,7 +12243,7 @@ static void Cmd_removelightscreenreflect(void) // brick break
         gBattleScripting.animTurn = 0;
         gBattleScripting.animTargetsHit = 0;
     }
-
+	
     gBattlescriptCurrInstr++;
 }
 
@@ -12784,7 +12832,7 @@ static void Cmd_metalburstdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].physicalDmg * 150 / 100;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].physicalBattlerId;
@@ -12797,7 +12845,7 @@ static void Cmd_metalburstdamagecalculator(void)
     {
         gBattleMoveDamage = gProtectStructs[gBattlerAttacker].specialDmg * 150 / 100;
 
-        if (gSideTimers[sideTarget].followmeTimer && gBattleMons[gSideTimers[sideTarget].followmeTarget].hp)
+        if (FollowMeTargetOnOppSide())
             gBattlerTarget = gSideTimers[sideTarget].followmeTarget;
         else
             gBattlerTarget = gProtectStructs[gBattlerAttacker].specialBattlerId;
