@@ -6690,7 +6690,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         break;
     }
 
-    // various effecs
+    // various effects
     if (gProtectStructs[battlerAtk].helpingHand)
         MulModifier(&modifier, UQ_4_12(1.5));
     if (gStatuses3[battlerAtk] & STATUS3_CHARGED_UP && moveType == TYPE_ELECTRIC)
@@ -6698,13 +6698,13 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     if (gStatuses3[battlerAtk] & STATUS3_ME_FIRST)
         MulModifier(&modifier, UQ_4_12(1.5));
     if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && moveType == TYPE_GRASS && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
-    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_DRAGON && IsBattlerGrounded(battlerDef) && !(gStatuses3[battlerDef] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, UQ_4_12(0.5));
-    if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN && moveType == TYPE_ELECTRIC && IsBattlerGrounded(battlerAtk) && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
-    if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN && moveType == TYPE_PSYCHIC && IsBattlerGrounded(battlerAtk) && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_FAIRY && !(gStatuses3[battlerDef] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN && moveType == TYPE_ELECTRIC && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN && moveType == TYPE_PSYCHIC && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
 
     return ApplyModifier(modifier, basePower);
 }
@@ -6762,10 +6762,10 @@ static u32 CalcAttackStat(u16 move, u8 battlerAtk, u8 battlerDef, u8 moveType, b
         if (IS_MOVE_PHYSICAL(move))
             MulModifier(&modifier, UQ_4_12(2.0));
         break;
-	case ABILITY_PURE_POWER:
-		if ((IS_MOVE_PHYSICAL(move) && GetHigherOffStat(battlerAtk) == STAT_ATK)
-		 || (IS_MOVE_SPECIAL(move) && GetHigherOffStat(battlerAtk) == STAT_SPATK))
-			MulModifier(&modifier, UQ_4_12(2.0));
+    case ABILITY_PURE_POWER:
+        if ((IS_MOVE_PHYSICAL(move) && GetHigherOffStat(battlerAtk) == STAT_ATK)
+            || (IS_MOVE_SPECIAL(move) && GetHigherOffStat(battlerAtk) == STAT_SPATK))
+            MulModifier(&modifier, UQ_4_12(2.0));
     case ABILITY_SLOW_START:
         if (gDisableStructs[battlerAtk].slowStartTimer != 0)
             MulModifier(&modifier, UQ_4_12(0.5));
@@ -7027,7 +7027,7 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
 
     // check crit
     if (isCrit)
-        dmg = ApplyModifier((B_CRIT_MULTIPLIER >= GEN_6 ? UQ_4_12(1.5) : UQ_4_12(2.0)), dmg);
+        dmg = ApplyModifier(UQ_4_12(1.5), dmg);
 
     // check burn
     if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && IS_MOVE_PHYSICAL(move)
@@ -7040,19 +7040,19 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
         if (moveType == TYPE_FIRE && !abilityIgnores)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
         else if (moveType == TYPE_WATER)
-            dmg = ApplyModifier(UQ_4_12(1.25), dmg);
+            dmg = ApplyModifier(UQ_4_12(1.3), dmg);
     }
     else if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
     {
         if (moveType == TYPE_FIRE)
-            dmg = ApplyModifier(UQ_4_12(1.25), dmg);
+            dmg = ApplyModifier(UQ_4_12(1.3), dmg);
         else if (moveType == TYPE_WATER && gBattleMoves[move].effect != EFFECT_SCALD && !abilityIgnores)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
     }
     else if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_HAIL_ANY)
     {
         if (moveType == TYPE_ICE)
-            dmg = ApplyModifier(UQ_4_12(1.25), dmg);
+            dmg = ApplyModifier(UQ_4_12(1.3), dmg);
         else if ((moveType == TYPE_WATER || moveType == TYPE_FIRE) && !abilityIgnores)
             dmg = ApplyModifier(UQ_4_12(0.5), dmg);
     }
