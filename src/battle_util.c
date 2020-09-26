@@ -6385,10 +6385,6 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerAtk].species == SPECIES_UNOWN)
             basePower = 100;
         break;
-    case EFFECT_AEROBLAST:
-        if (gBattleMons[battlerAtk].species == SPECIES_LUGIA)
-            basePower = 100;
-        break;
     case EFFECT_50_PERCENT_BOOST_IN_RAIN:
         if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
             basePower *= 1.5;

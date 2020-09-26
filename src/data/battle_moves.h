@@ -161,15 +161,15 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_AEROBLAST] = {
-        .effect = EFFECT_AEROBLAST,
+        .effect = EFFECT_SPEED_DOWN_HIT,
         .pp = 10,
-        .power = 90,
-        .accuracy = 100,
+        .power = 100,
+        .accuracy = 95,
         .type = TYPE_FLYING,
         .split = SPLIT_SPECIAL,
         .critRate = 0,
         .priority = 0,
-        .secondaryEffectChance = 0,
+        .secondaryEffectChance = 50,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .target = MOVE_TARGET_SELECTED,
     },
@@ -7440,7 +7440,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_POLTERGEIST] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_POLTERGEIST,
         .pp = 5,
         .power = 110,
         .accuracy = 90,
