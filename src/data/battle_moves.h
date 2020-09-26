@@ -232,7 +232,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_ALL_OUT_PUMELLING] = {
+    [MOVE_ALL_OUT_PUMMELING] = {
         .effect = EFFECT_HIT,
         .pp = 1,
         .power = 1,
@@ -4568,7 +4568,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .argument = Z_STATUS_EFFECT_ATK_PLUS_1,
     },
 
-    [MOVE_HP_BUG] = {
+    [MOVE_HIDDEN_POWER_BUG] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4582,7 +4582,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_DARK] = {
+    [MOVE_HIDDEN_POWER_DARK] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4596,7 +4596,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_DRAGON] = {
+    [MOVE_HIDDEN_POWER_DRAGON] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4610,7 +4610,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_ELECTRIC] = {
+    [MOVE_HIDDEN_POWER_ELECTRIC] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4624,7 +4624,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_FAIRY] = {
+    [MOVE_HIDDEN_POWER_FAIRY] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4638,7 +4638,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_FIGHTING] = {
+    [MOVE_HIDDEN_POWER_FIGHTING] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4652,7 +4652,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_FIRE] = {
+    [MOVE_HIDDEN_POWER_FIRE] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4666,7 +4666,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_USER,
     },
 
-    [MOVE_HP_FLYING] = {
+    [MOVE_HIDDEN_POWER_FLYING] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4680,7 +4680,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_GHOST] = {
+    [MOVE_HIDDEN_POWER_GHOST] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4694,7 +4694,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_GRASS] = {
+    [MOVE_HIDDEN_POWER_GRASS] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4708,7 +4708,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_GROUND] = {
+    [MOVE_HIDDEN_POWER_GROUND] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4722,7 +4722,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_ICE] = {
+    [MOVE_HIDDEN_POWER_ICE] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4736,7 +4736,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_POISON] = {
+    [MOVE_HIDDEN_POWER_POISON] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4750,7 +4750,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_ROCK] = {
+    [MOVE_HIDDEN_POWER_ROCK] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4764,7 +4764,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_STEEL] = {
+    [MOVE_HIDDEN_POWER_STEEL] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
@@ -4778,7 +4778,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
     },
 
-    [MOVE_HP_WATER] = {
+    [MOVE_HIDDEN_POWER_WATER] = {
         .effect = EFFECT_PLACEHOLDER,
         .pp = 10,
         .power = 0,
