@@ -990,6 +990,9 @@ bool32 IsBattlerProtected(u8 battlerId, u16 move)
         return FALSE;
     else if (gBattleMoves[move].effect == MOVE_EFFECT_FEINT)
         return FALSE;
+    else if (gBattleMoves[move].flags & FLAG_MAKES_CONTACT
+             && GetBattlerAbility(gBattlerAttacker) == ABILITY_UNSEEN_FIST)
+        return FALSE;
     else if (gProtectStructs[battlerId].protected)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD
@@ -2341,8 +2344,9 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
             break;
         case STATUS1_POISON:
         case STATUS1_TOXIC_POISON:
-            if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN
-                && IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_GRASS)
+            if (((gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN
+                && IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_GRASS))
+                || IsAbilityOnSide(gEffectBattler, ABILITY_PASTEL_VEIL))
                 && !(GetBattlerAbility(gBattleScripting.battler) == ABILITY_MOLD_BREAKER
                     || GetBattlerAbility(gBattleScripting.battler) == ABILITY_TURBOBLAZE
                     || GetBattlerAbility(gBattleScripting.battler) == ABILITY_TERAVOLT))
@@ -3299,7 +3303,7 @@ static void Cmd_jumpifability(void)
 {
     u32 battlerId;
     bool32 hasAbility = FALSE;
-    u32 ability = gBattlescriptCurrInstr[2];
+    u16 ability = T2_READ_16(gBattlescriptCurrInstr + 2);
 
     switch (gBattlescriptCurrInstr[1])
     {
@@ -3329,13 +3333,13 @@ static void Cmd_jumpifability(void)
     if (hasAbility)
     {
         gLastUsedAbility = ability;
-        gBattlescriptCurrInstr = T2_READ_PTR(gBattlescriptCurrInstr + 3);
+        gBattlescriptCurrInstr = T2_READ_PTR(gBattlescriptCurrInstr + 4);
         RecordAbilityBattle(battlerId, gLastUsedAbility);
         gBattlerAbility = battlerId;
     }
     else
     {
-        gBattlescriptCurrInstr += 7;
+        gBattlescriptCurrInstr += 8;
     }
 }
 
@@ -4238,10 +4242,11 @@ static void Cmd_setroost(void)
 
 static void Cmd_jumpifabilitypresent(void)
 {
-    if (IsAbilityOnField(gBattlescriptCurrInstr[1]))
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 2);
+    u16 ability = T2_READ_16(gBattlescriptCurrInstr + 1);
+    if (IsAbilityOnField(ability))
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
     else
-        gBattlescriptCurrInstr += 6;
+        gBattlescriptCurrInstr += 7;
 }
 
 static void Cmd_endselectionscript(void)
@@ -8005,7 +8010,8 @@ static void Cmd_various(void)
         {
             if (GetBattlerAbility(gBattlerTarget) == ABILITY_IMMUNITY
                 || GetBattlerAbility(gBattlerTarget) == ABILITY_WATER_VEIL
-                || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE)
+                || GetBattlerAbility(gBattlerTarget) == ABILITY_COMATOSE
+                || IsAbilityOnSide(gEffectBattler, ABILITY_PASTEL_VEIL))
             {
                 gBattlerAbility = gBattlerTarget;
                 BattleScriptPush(T1_READ_PTR(gBattlescriptCurrInstr + 3));
@@ -10596,7 +10602,7 @@ static void Cmd_healpartystatus(void)
 
             if (species != SPECIES_NONE && species != SPECIES_EGG)
             {
-                u8 ability;
+                u16 ability;
 
                 if (gBattlerPartyIndexes[gBattlerAttacker] == i)
                     ability = gBattleMons[gBattlerAttacker].ability;
@@ -11888,7 +11894,7 @@ static void Cmd_pickup(void)
 {
     s32 i;
     u16 species, heldItem;
-    u8 ability;
+    u16 ability;
     u8 lvlDivBy10;
 
     if (InBattlePike())

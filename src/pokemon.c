@@ -4296,19 +4296,21 @@ u8 GetMonsStateToDoubles_2(void)
     return (aliveCount > 1) ? PLAYER_HAS_TWO_USABLE_MONS : PLAYER_HAS_ONE_USABLE_MON;
 }
 
-u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
+u16 GetAbilityBySpecies(u16 species, u8 abilityNum)
 {
-    if (abilityNum == 2)
-        gLastUsedAbility = gBaseStats[species].abilityHidden;
-    else if (abilityNum == 1)
-        gLastUsedAbility = gBaseStats[species].abilities[1];
-    else
-        gLastUsedAbility = gBaseStats[species].abilities[0];
+    switch (abilityNum) {
+        default:
+            gLastUsedAbility = gBaseStats[species].abilities[abilityNum];
+            break;
+        case 2:
+            gLastUsedAbility = gBaseStats[species].abilityHidden;
+            break;
+    }
 
     return gLastUsedAbility;
 }
 
-u8 GetMonAbility(struct Pokemon *mon)
+u16 GetMonAbility(struct Pokemon *mon)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 abilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM, NULL);

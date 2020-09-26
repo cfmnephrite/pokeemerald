@@ -182,7 +182,7 @@ EWRAM_DATA s32 gBattleMoveDamage = 0;
 EWRAM_DATA s32 gHpDealt = 0;
 EWRAM_DATA s32 gTakenDmg[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gLastUsedItem = 0;
-EWRAM_DATA u8 gLastUsedAbility = 0;
+EWRAM_DATA u16 gLastUsedAbility = 0;
 EWRAM_DATA u8 gBattlerAttacker = 0;
 EWRAM_DATA u8 gBattlerTarget = 0;
 EWRAM_DATA u8 gBattlerFainted = 0;
@@ -4409,14 +4409,18 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
 
     speedBattler1 = GetBattlerTotalSpeedStat(battler1);
     holdEffectBattler1 = GetBattlerHoldEffect(battler1, TRUE);
-    if (holdEffectBattler1 == HOLD_EFFECT_QUICK_CLAW
+    if ((holdEffectBattler1 == HOLD_EFFECT_QUICK_CLAW
         && gRandomTurnNumber < (0xFFFF * GetBattlerHoldEffectParam(battler1)) / 100)
+        || (GetBattlerAbility(battler1) == ABILITY_QUICK_DRAW
+        && gRandomTurnNumber < (0xFFFF * 20 / 100)))
         quickClawBattler1 = TRUE;
 
     speedBattler2 = GetBattlerTotalSpeedStat(battler2);
     holdEffectBattler2 = GetBattlerHoldEffect(battler2, TRUE);
-    if (holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW
+    if ((holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW
         && gRandomTurnNumber < (0xFFFF * GetBattlerHoldEffectParam(battler2)) / 100)
+        || (GetBattlerAbility(battler2) == ABILITY_QUICK_DRAW
+        && gRandomTurnNumber < (0xFFFF * 20 / 100)))
         quickClawBattler2 = TRUE;
 
     if (!ignoreChosenMoves)
@@ -5105,21 +5109,21 @@ void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)
                  || (attackerAbility == ABILITY_REFRIGERATE && (ateType = TYPE_ICE))
                  || (attackerAbility == ABILITY_AERILATE && (ateType = TYPE_FLYING))
                  || ((attackerAbility == ABILITY_GALVANIZE) && (ateType = TYPE_ELECTRIC))
-				 || ((attackerAbility == ABILITY_DARK_AURA) && (ateType = TYPE_DARK))
+                 || ((attackerAbility == ABILITY_DARK_AURA) && (ateType = TYPE_DARK))
                 )
              )
     {
-		if((attackerAbility == ABILITY_DARK_AURA
-		 || attackerAbility == ABILITY_FAIRY_AURA)
-		 && IsAbilityOnField(ABILITY_AURA_BREAK))
-		 {
-			 gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
-		 }
-		else
-		{
-			gBattleStruct->dynamicMoveType = ateType;
-			gBattleStruct->ateBoost[battlerAtk] = 1;
-		}
+        if((attackerAbility == ABILITY_DARK_AURA
+            || attackerAbility == ABILITY_FAIRY_AURA)
+            && IsAbilityOnField(ABILITY_AURA_BREAK))
+            {
+                gBattleStruct->dynamicMoveType = TYPE_MYSTERY;
+            }
+        else
+        {
+            gBattleStruct->dynamicMoveType = ateType;
+            gBattleStruct->ateBoost[battlerAtk] = 1;
+        }
     }
     else if (gBattleMoves[move].type != TYPE_NORMAL
              && gBattleMoves[move].effect != EFFECT_HIDDEN_POWER

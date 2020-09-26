@@ -245,7 +245,7 @@ struct WishFutureKnock
 
 struct AI_SavedBattleMon
 {
-    u8 ability;
+    u16 ability;
     u16 moves[4];
     u16 heldItem;
     u16 species;
@@ -794,7 +794,7 @@ extern s32 gBattleMoveDamage;
 extern s32 gHpDealt;
 extern s32 gTakenDmg[MAX_BATTLERS_COUNT];
 extern u16 gLastUsedItem;
-extern u8 gLastUsedAbility;
+extern u16 gLastUsedAbility;
 extern u8 gBattlerAttacker;
 extern u8 gBattlerTarget;
 extern u8 gBattlerFainted;

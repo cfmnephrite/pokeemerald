@@ -50,7 +50,7 @@ static void ChooseTypeOfMoveUsedString(u8 *dst);
 static void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
 // EWRAM vars
-static EWRAM_DATA u8 sBattlerAbilities[MAX_BATTLERS_COUNT] = {0};
+static EWRAM_DATA u16 sBattlerAbilities[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct BattleMsgData *gBattleMsgDataPtr = NULL;
 
 // const rom data
@@ -710,6 +710,8 @@ static const u8 sText_PkmnAbsorbingPower[] = _("{B_ATK_NAME_WITH_PREFIX} is abso
 static const u8 sText_NoOneWillBeAbleToRun[] = _("No one will be able to run away\nduring the next turn!");
 static const u8 sText_DestinyKnotActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love\nfrom the {B_LAST_ITEM}!");
 static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin a freezing light!");
+static const u8 sText_NeutralizingGasActivates[] = _("Neutralising gas filled the area!");
+static const u8 sText_PastelVeilProtected[] = _("{B_DEF_NAME_WITH_PREFIX} is protected\nby a pastel veil!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 {
@@ -1257,8 +1259,15 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_FRISKDOUBLE - 12] = sText_FriskDouble,
     [STRINGID_TARGETABILITYSTATLOWERFOE - 12] = sText_TargetAbilityLoweredFoeStat,
     [STRINGID_HEALERACTIVATES - 12] = sText_HealerActivates,
-	[STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
-	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
+    [STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
+    [STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
+    [STRINGID_NEUTRALIZINGGASACTIVATES - 12] = sText_NeutralizingGasActivates,
+    [STRINGID_PASTELVEILPROTECTED - 12] = sText_PastelVeilProtected,
+};
+
+const u16 gSwitchInAbilityStringsIds [] =
+{
+    STRINGID_NEUTRALIZINGGASACTIVATES
 };
 
 const u16 gCantUseExclusiveMoveStringIds[] =
