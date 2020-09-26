@@ -181,8 +181,8 @@
 
 #define MAGIC_S             0x9A //Magic s
 #define BLANK               0x9B //Empty character
-#define PLUS_256            0x9C //Shifts the chars of the whole string by 256
-#define PLUS_512            0x9D //Shifts the chars of the whole string by 512
+#define SKINNY            0x9C //Shifts the chars of the whole string by 256
+#define V_SKINNY            0x9D //Shifts the chars of the whole string by 512
 
 // Special F9 chars
 #define CHAR_UP_ARROW_2    0x00
