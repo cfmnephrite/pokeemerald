@@ -1499,7 +1499,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_COACHING] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_COACHING,
         .pp = 10,
         .power = 0,
         .accuracy = 0,
@@ -2541,7 +2541,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_DUAL_WINGBEAT] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_HIT_ARG_TIMES,
         .pp = 10,
         .power = 40,
         .accuracy = 90,
@@ -2552,6 +2552,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .target = MOVE_TARGET_SELECTED,
+        .argument = 2,
     },
 
     [MOVE_DYNAMAX_CANNON] = {
@@ -3390,7 +3391,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_FLIP_TURN] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_HIT_ESCAPE,
         .pp = 20,
         .power = 60,
         .accuracy = 100,
@@ -8612,7 +8613,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_SCORCHING_SANDS] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_HIT_ARG_ONLY_EFFECT,
         .pp = 10,
         .power = 70,
         .accuracy = 100,
@@ -8620,9 +8621,10 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .split = SPLIT_SPECIAL,
         .critRate = 0,
         .priority = 0,
-        .secondaryEffectChance = 0,
+        .secondaryEffectChance = 30,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .target = MOVE_TARGET_SELECTED,
+        .argument = MOVE_EFFECT_BURN,
     },
 
     [MOVE_SCRATCH] = {

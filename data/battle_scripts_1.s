@@ -114,7 +114,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectConversion2
 	.4byte BattleScript_EffectLockOn
 	.4byte BattleScript_EffectSketch
-	.4byte BattleScript_EffectAlwaysCrit
+	.4byte BattleScript_EffectCoaching
 	.4byte BattleScript_EffectSleepTalk
 	.4byte BattleScript_EffectDestinyBond
 	.4byte BattleScript_EffectFlail
@@ -369,7 +369,11 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectNoRetreat
 	.4byte BattleScript_EffectTarShot
 	.4byte BattleScript_EffectDragonDarts
-	
+
+@todo
+BattleScript_EffectCoaching:
+	goto BattleScript_EffectPlaceholder
+
 BattleScript_EffectDragonDarts:
 	attackcanceler
 	attackstring
@@ -2126,7 +2130,6 @@ BattleScript_EffectPsywave::
 BattleScript_EffectUnused38:
 BattleScript_EffectAcrobatics:
 BattleScript_EffectAeroblast:
-BattleScript_EffectAlwaysCrit:
 BattleScript_EffectAssurance:
 BattleScript_EffectBelch:
 BattleScript_EffectBrine:
