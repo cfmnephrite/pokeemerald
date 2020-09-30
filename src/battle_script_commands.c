@@ -1569,15 +1569,9 @@ static void Cmd_ppreduce(void)
 }
 
 // The chance is 1/N for each stage.
-#if B_CRIT_CHANCE >= GEN_7
-    static const u8 sCriticalHitChance[] = {24, 8, 2, 1, 1};
-#elif B_CRIT_CHANCE == GEN_6
-    static const u8 sCriticalHitChance[] = {16, 8, 2, 1, 1};
-#else
-    static const u8 sCriticalHitChance[] = {16, 8, 4, 3, 2}; // Gens 2,3,4,5
-#endif // B_CRIT_CHANCE
+static const u8 sCriticalHitChance[] = {24, 8, 2, 1};
 
-s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility)
+static s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility)
 {
     s32 critChance = 0;
     u32 abilityAtk = GetBattlerAbility(gBattlerAttacker);
@@ -1594,24 +1588,21 @@ s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbi
             RecordAbilityBattle(battlerDef, abilityDef);
         critChance = -1;
     }
-    else if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS
-             || gBattleMoves[move].effect == EFFECT_ALWAYS_CRIT
-             || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_ANY))
+    else if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_ANY))
     {
-        critChance = -2;
+        critChance = 3;
     }
     else
     {
         u32 holdEffectAtk = GetBattlerHoldEffect(battlerAtk, TRUE);
 
-        critChance    = 2 * ((gBattleMons[gBattlerAttacker].status2 & STATUS2_FOCUS_ENERGY) != 0)
-                    + ((gBattleMoves[gCurrentMove].flags & FLAG_HIGH_CRIT) != 0)
+        critChance  = 2 * ((gBattleMons[gBattlerAttacker].status2 & STATUS2_FOCUS_ENERGY) != 0)
+                    + gBattleMoves[gCurrentMove].critRate
                     + (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
                     + 2 * (holdEffectAtk == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBattlerAttacker].species == SPECIES_CHANSEY)
                     + 2 * (holdEffectAtk == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD)
-                    + 2 * (gBattleMoves[gCurrentMove].effect == EFFECT_AEROBLAST && gBattleMons[gBattlerAttacker].species == SPECIES_LUGIA) // CFM Lugia's Aeroblast: +2 crit rate
                     + (abilityAtk == ABILITY_SUPER_LUCK)
-					+ (abilityAtk == ABILITY_ROCK_HEAD && ((gBattleMoves[gCurrentMove].flags & FLAG_RECKLESS_BOOST) || (gBattleMoves[gCurrentMove].flags & FLAG_HEAD)));
+                    + (abilityAtk == ABILITY_ROCK_HEAD && ((gBattleMoves[gCurrentMove].flags & FLAG_RECKLESS_BOOST) || (gBattleMoves[gCurrentMove].flags & FLAG_HEAD)));
 
         if (critChance >= ARRAY_COUNT(sCriticalHitChance))
             critChance = ARRAY_COUNT(sCriticalHitChance) - 1;
@@ -1620,21 +1611,23 @@ s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbi
     return critChance;
 }
 
+s32 CalcIfMoveCrit(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility)
+{
+    s32 critStage = CalcCritChanceStage(battlerAtk, battlerDef, move, recordAbility);
+    if (critStage == -1)
+        return FALSE;
+    else
+        return (Random() % sCriticalHitChance[critStage] == 0);
+}
+
 static void Cmd_critcalc(void)
 {
-    s32 critChance = CalcCritChanceStage(gBattlerAttacker, gBattlerTarget, gCurrentMove, TRUE);
     gPotentialItemEffectBattler = gBattlerAttacker;
 
     if (gBattleTypeFlags & (BATTLE_TYPE_WALLY_TUTORIAL | BATTLE_TYPE_FIRST_BATTLE))
         gIsCriticalHit = FALSE;
-    else if (critChance == -1)
-        gIsCriticalHit = FALSE;
-    else if (critChance == -2)
-        gIsCriticalHit = TRUE;
-    else if (Random() % sCriticalHitChance[critChance] == 0)
-        gIsCriticalHit = TRUE;
     else
-        gIsCriticalHit = FALSE;
+        gIsCriticalHit = CalcIfMoveCrit(gBattlerAttacker, gBattlerTarget, gCurrentMove, TRUE);
 
     gBattlescriptCurrInstr++;
 }
@@ -8308,22 +8301,22 @@ static void Cmd_various(void)
             MarkBattlerForControllerExec(gActiveBattler);
         }
         break;
-	case VARIOUS_USE_ITEM:
-		if(gBattleMons[gActiveBattler].item == ITEM_NONE)
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		else if(ItemBattleEffects(1, gActiveBattler, FALSE))
-			gBattlescriptCurrInstr += 7;
-		break;
-	case VARIOUS_JUMP_IF_SELF_TRAPPED: //Ingrain does not count
-		if(gBattleMons[gActiveBattler].status2 & STATUS2_ESCAPE_PREVENTION && gDisableStructs[gActiveBattler].battlerPreventingEscape == gActiveBattler)
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		else
-			gBattlescriptCurrInstr += 7;
-		return;
-	case VARIOUS_TRY_TRAP_SELF:
-		if(CanBattlerEscape(gActiveBattler))
-		{
-			gBattleMons[gActiveBattler].status2 |= STATUS2_ESCAPE_PREVENTION;
+    case VARIOUS_USE_ITEM:
+        if(gBattleMons[gActiveBattler].item == ITEM_NONE)
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        else if(ItemBattleEffects(1, gActiveBattler, FALSE))
+            gBattlescriptCurrInstr += 7;
+        break;
+    case VARIOUS_JUMP_IF_SELF_TRAPPED: //Ingrain does not count
+        if(gBattleMons[gActiveBattler].status2 & STATUS2_ESCAPE_PREVENTION && gDisableStructs[gActiveBattler].battlerPreventingEscape == gActiveBattler)
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        else
+            gBattlescriptCurrInstr += 7;
+        return;
+    case VARIOUS_TRY_TRAP_SELF:
+        if(CanBattlerEscape(gActiveBattler))
+        {
+            gBattleMons[gActiveBattler].status2 |= STATUS2_ESCAPE_PREVENTION;
             gDisableStructs[gActiveBattler].battlerPreventingEscape = gActiveBattler;
 			gBattlescriptCurrInstr += 7;
 		}
@@ -8383,6 +8376,17 @@ static void Cmd_various(void)
         else
             SET_STATCHANGER(STAT_SPATK, boost, FALSE);
         break;
+    case VARIOUS_CHECK_POLTERGEIST:
+        if(gBattleMons[gBattlerTarget].item == ITEM_NONE
+         || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
+         || GetBattlerAbility(gBattlerTarget) == ABILITY_KLUTZ)
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        else
+        {
+            PREPARE_ITEM_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerTarget].item);
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -11480,13 +11484,13 @@ static void Cmd_tryswapitems(void) // trick
 
             gBattleStruct->choicedMove[gBattlerTarget] = 0;
             gBattleStruct->choicedMove[gBattlerAttacker] = 0;
-			
+
 
             gBattlescriptCurrInstr += 5;
 
             PREPARE_ITEM_BUFFER(gBattleTextBuff1, *newItemAtk)
             PREPARE_ITEM_BUFFER(gBattleTextBuff2, oldItemAtk)
-			UpdateUnburden();
+            UpdateUnburden();
 
             if (oldItemAtk != 0 && *newItemAtk != 0)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 2; // attacker's item -> <- target's item

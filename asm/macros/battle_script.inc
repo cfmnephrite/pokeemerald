@@ -1838,6 +1838,11 @@
 	various BS_TARGET, VARIOUS_SET_DEFIANT_STAT_VALUES
 	.endm
 	
+	.macro checkpoltergeist ptr:req
+	various BS_ATTACKER, VARIOUS_CHECK_POLTERGEIST
+	.4byte \ptr
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7

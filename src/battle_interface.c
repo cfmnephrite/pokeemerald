@@ -2051,7 +2051,7 @@ void UpdateMoveBoxList(void)
 
 void MoveBox_PrintMoveName(u8 index)
 {
-    u8 movename[MOVE_NAME_LENGTH + 1];
+    u8 movename[MOVE_NAME_LENGTH];
     u32 windowId, spriteTileNum;
     u8 *windowTileData;
     u16 *vramPtr, *src, *vramPtr2, *src2, *vramPtr3, *src3, *vramPtr4, *src4;

@@ -183,8 +183,9 @@
 #define VARIOUS_TRY_TRAP_SELF					114
 #define VARIOUS_TRY_TAR_SHOT					115
 #define VARIOUS_TRY_NEXT_DART					116
-#define VARIOUS_SET_OCTOLOCK                    117
-#define VARIOUS_SET_DEFIANT_STAT_VALUES         118
+#define VARIOUS_CHECK_POLTERGEIST               117
+#define VARIOUS_SET_OCTOLOCK                    118
+#define VARIOUS_SET_DEFIANT_STAT_VALUES         119
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0

@@ -297,7 +297,7 @@ static const u16 sZMovesTable[] =
     MOVE_DEVASTATING_DRAKE,
     MOVE_GIGAVOLT_HAVOC,
     MOVE_TWINKLE_TACKLE,
-    MOVE_ALL_OUT_PUMELLING,
+    MOVE_ALL_OUT_PUMMELING,
     MOVE_INFERNO_OVERDRIVE,
     MOVE_SUPERSONIC_SKYSTRIKE,
     MOVE_NEVER_ENDING_NIGHTMARE,
@@ -6396,10 +6396,6 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerAtk].species == SPECIES_UNOWN)
             basePower = 100;
         break;
-    case EFFECT_AEROBLAST:
-        if (gBattleMons[battlerAtk].species == SPECIES_LUGIA)
-            basePower = 100;
-        break;
     case EFFECT_50_PERCENT_BOOST_IN_RAIN:
         if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_RAIN_ANY)
             basePower *= 1.5;
@@ -6717,13 +6713,13 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
     if (gStatuses3[battlerAtk] & STATUS3_ME_FIRST)
         MulModifier(&modifier, UQ_4_12(1.5));
     if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && moveType == TYPE_GRASS && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
-    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_DRAGON && IsBattlerGrounded(battlerDef) && !(gStatuses3[battlerDef] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, UQ_4_12(0.5));
-    if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN && moveType == TYPE_ELECTRIC && IsBattlerGrounded(battlerAtk) && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
-    if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN && moveType == TYPE_PSYCHIC && IsBattlerGrounded(battlerAtk) && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
-        MulModifier(&modifier, (B_TERRAIN_TYPE_BOOST >= GEN_8) ? UQ_4_12(1.3) : UQ_4_12(1.5));
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_FAIRY && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN && moveType == TYPE_ELECTRIC && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
+    if (gFieldStatuses & STATUS_FIELD_PSYCHIC_TERRAIN && moveType == TYPE_PSYCHIC && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
+        MulModifier(&modifier, UQ_4_12(1.3));
 
     return ApplyModifier(modifier, basePower);
 }
@@ -7046,7 +7042,7 @@ static u32 CalcFinalDmg(u32 dmg, u16 move, u8 battlerAtk, u8 battlerDef, u8 move
 
     // check crit
     if (isCrit)
-        dmg = ApplyModifier((B_CRIT_MULTIPLIER >= GEN_6 ? UQ_4_12(1.5) : UQ_4_12(2.0)), dmg);
+        dmg = ApplyModifier(UQ_4_12(1.5), dmg);
 
     // check burn
     if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && IS_MOVE_PHYSICAL(move)

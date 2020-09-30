@@ -114,7 +114,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectConversion2
 	.4byte BattleScript_EffectLockOn
 	.4byte BattleScript_EffectSketch
-	.4byte BattleScript_EffectAlwaysCrit
+	.4byte BattleScript_EffectCoaching
 	.4byte BattleScript_EffectSleepTalk
 	.4byte BattleScript_EffectDestinyBond
 	.4byte BattleScript_EffectFlail
@@ -252,7 +252,7 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectBrine
 	.4byte BattleScript_EffectVenoshock
 	.4byte BattleScript_EffectRetaliate
-	.4byte BattleScript_EffectAeroblast
+	.4byte BattleScript_EffectPoltergiest
 	.4byte BattleScript_EffectFoulPlay
 	.4byte BattleScript_EffectPsyshock
 	.4byte BattleScript_EffectRoost
@@ -409,6 +409,20 @@ BattleScript_EffectOctolock:
 	waitmessage 0x30
 	goto BattleScript_MoveEnd
 	
+
+BattleScript_EffectPoltergiest:
+	attackcanceler
+	attackstring
+	ppreduce
+	checkpoltergeist BattleScript_ButItFailed
+	printstring STRINGID_ABOUTTOUSEPOLTERGEIST
+	waitmessage 0x40
+	goto BattleScript_HitFromCritCalc
+
+@todo
+BattleScript_EffectCoaching:
+	goto BattleScript_EffectPlaceholder
+
 BattleScript_EffectDragonDarts:
 	attackcanceler
 	attackstring
@@ -2166,8 +2180,6 @@ BattleScript_EffectPlaceholder:
 BattleScript_EffectPsywave::
 BattleScript_EffectUnused38:
 BattleScript_EffectAcrobatics:
-BattleScript_EffectAeroblast:
-BattleScript_EffectAlwaysCrit:
 BattleScript_EffectAssurance:
 BattleScript_EffectBelch:
 BattleScript_EffectBrine:

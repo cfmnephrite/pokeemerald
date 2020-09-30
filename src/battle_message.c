@@ -713,6 +713,7 @@ static const u8 sText_CloakedInAFreezingLight[] = _("{B_ATK_NAME_WITH_PREFIX} be
 static const u8 sText_BothCanNoLongerEscape[] = _("Both monsters can no\nlonger escape!");
 static const u8 sText_CantEscapeDueToUsedMove[] = _("{B_ATK_NAME_WITH_PREFIX} can no longer escape\nbecause it used {B_CURRENT_MOVE}!");
 static const u8 sText_PkmnBecameWeakerToFire[] = _("{B_DEF_NAME_WITH_PREFIX} became\nweaker to fire!");
+static const u8 sText_PkmnAboutToBeAttackedByItsItem[] = _("{B_DEF_NAME_WITH_PREFIX} is about\nto be attacked by its {B_BUFF1}!");
 static const u8 sText_CantEscapeBecauseOf[] = _("{B_DEF_NAME_WITH_PREFIX} can no longer escape\nbecause of {B_CURRENT_MOVE}!");
 
 const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
@@ -1261,11 +1262,12 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_FRISKDOUBLE - 12] = sText_FriskDouble,
     [STRINGID_TARGETABILITYSTATLOWERFOE - 12] = sText_TargetAbilityLoweredFoeStat,
     [STRINGID_HEALERACTIVATES - 12] = sText_HealerActivates,
-	[STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
-	[STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
-	[STRINGID_BOTHCANNOLONGERESCAPE - 12] = sText_BothCanNoLongerEscape,
-	[STRINGID_CANTESCAPEDUETOUSEDMOVE - 12] = sText_CantEscapeDueToUsedMove,
-	[STRINGID_PKMNBECAMEWEAKERTOFIRE - 12] = sText_PkmnBecameWeakerToFire,
+    [STRINGID_PKMNBURNEDITSELFOUT - 12] = sText_PkmnBurnedItselfOut,
+    [STRINGID_PKMNSABILITYTAKENOVER - 12] = sText_PkmnsAbilityTakenOver,
+    [STRINGID_BOTHCANNOLONGERESCAPE - 12] = sText_BothCanNoLongerEscape,
+    [STRINGID_CANTESCAPEDUETOUSEDMOVE - 12] = sText_CantEscapeDueToUsedMove,
+    [STRINGID_PKMNBECAMEWEAKERTOFIRE - 12] = sText_PkmnBecameWeakerToFire,
+    [STRINGID_ABOUTTOUSEPOLTERGEIST - 12] = sText_PkmnAboutToBeAttackedByItsItem,
     [STRINGID_CANTESCAPEBECAUSEOF - 12] = sText_CantEscapeBecauseOf,
 };
 

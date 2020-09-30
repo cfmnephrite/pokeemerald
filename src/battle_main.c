@@ -4342,7 +4342,7 @@ u32 GetBattlerTotalSpeedStat(u8 battlerId)
 
     // paralysis drop
     if (gBattleMons[battlerId].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
-        speed /= (B_PARALYSIS_SPEED >= GEN_7 ? 2 : 4);
+        speed /= 3;
 
     return speed;
 }
