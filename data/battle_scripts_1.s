@@ -369,6 +369,45 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectNoRetreat
 	.4byte BattleScript_EffectTarShot
 	.4byte BattleScript_EffectDragonDarts
+	.4byte BattleScript_EffectOctolock
+
+BattleScript_OctolockEndTurn::
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_DEF, 0, BattleScript_OctolockTryLowerSpDef
+	jumpifability BS_TARGET, ABILITY_BIG_PECKS, BattleScript_OctolockTryLowerSpDef 
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	setbyte sSTAT_BOOST_TRACKER, 0x2
+	playstatchangeanimation BS_TARGET, BIT_DEF | BIT_SPDEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_ONLY_MULTIPLE
+	playstatchangeanimation BS_TARGET, BIT_DEF, STAT_CHANGE_NEGATIVE
+	setstatchanger STAT_DEF, 1, TRUE
+	statbuffchange STAT_BUFF_ALLOW_PTR | STAT_BUFF_AFFECT_MULTIPLE_STATS | BIT_DEF | BIT_SPDEF, BattleScript_OctolockTryLowerSpDef
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+BattleScript_OctolockTryLowerSpDef::
+	playstatchangeanimation BS_TARGET, BIT_SPDEF, STAT_CHANGE_NEGATIVE
+	setstatchanger STAT_SPDEF, 1, TRUE
+	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_OctolockEnd2
+	printfromtable gStatDownStringIds
+	waitmessage 0x40
+BattleScript_OctolockDefiantCheck::
+	jumpifability BS_TARGET, ABILITY_DEFIANT, BattleScript_DefiantActivatesEnd2
+	jumpifability BS_TARGET, ABILITY_COMPETITIVE, BattleScript_DefiantActivatesEnd2
+BattleScript_OctolockEnd2::
+	setbyte sSTAT_BOOST_TRACKER, 0
+	setbyte sSTAT_BOOST_STRING_INDEX, 0
+	end2
+
+BattleScript_EffectOctolock:
+	attackcanceler
+	jumpifsubstituteblocks BattleScript_ButItFailedAtkStringPpReduce
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	setoctolock BattleScript_ButItFailed
+	attackanimation
+	waitanimation
+	printstring STRINGID_CANTESCAPEBECAUSEOF
+	waitmessage 0x30
+	goto BattleScript_MoveEnd
 	
 BattleScript_EffectDragonDarts:
 	attackcanceler
@@ -437,6 +476,8 @@ BattleScript_EffectTarShot:
 	attackstring
 	ppreduce
 	setstatchanger STAT_SPEED, 1, TRUE
+	attackanimation
+	waitanimation
 	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_TryTarShot
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
@@ -6525,9 +6566,16 @@ BattleScript_DrizzleActivates::
 	call BattleScript_WeatherFormChanges
 	end3
 
+BattleScript_DefiantActivatesEnd2::
+	call BattleScript_DefiantActivates
+	setbyte sSTAT_BOOST_STRING_INDEX, 0
+	end2
+
 BattleScript_DefiantActivates::
+	setdefiantstatvalues
 	pause 0x20
 	call BattleScript_AbilityPopUp
+	setbyte sSTAT_BOOST_TRACKER, 0
 	statbuffchange 0, NULL
 	setgraphicalstatchangevalues
 	playanimation BS_ABILITY_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
@@ -6617,7 +6665,7 @@ BattleScript_SolarPowerActivates::
 	printstring STRINGID_SOLARPOWERHPDROP
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, FALSE, NULL
-	jumpifability BS_ATTACKER, ABILITY_RKS_SYSTEM, BattleScript_IntimidateActivatesReturn
+	jumpifability BS_ATTACKER, ABILITY_RKS_SYSTEM, BattleScript_Return
 	end3
 
 BattleScript_HealerActivates::
@@ -6697,7 +6745,7 @@ BattleScript_IntimidateActivates::
 	call BattleScript_AbilityPopUp
 BattleScript_IntimidateActivatesLoop:
 	setstatchanger STAT_ATK, 1, TRUE
-	trygetintimidatetarget BattleScript_IntimidateActivatesReturn
+	trygetintimidatetarget BattleScript_Return
 	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_IntimidateActivatesLoopIncrement
 	jumpifability BS_TARGET, ABILITY_CLEAR_BODY, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_HYPER_CUTTER, BattleScript_IntimidatePrevented
@@ -6713,7 +6761,7 @@ BattleScript_IntimidateActivatesLoop:
 BattleScript_IntimidateActivatesLoopIncrement:
 	addbyte gBattlerTarget, 0x1
 	goto BattleScript_IntimidateActivatesLoop
-BattleScript_IntimidateActivatesReturn:
+BattleScript_Return:
 	return
 BattleScript_IntimidatePrevented:
 	pause 0x10

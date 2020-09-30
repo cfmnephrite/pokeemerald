@@ -4441,7 +4441,6 @@ static void Cmd_playstatchangeanimation(void)
                         && ability != ABILITY_CLEAR_BODY
                         && ability != ABILITY_FULL_METAL_BODY
                         && ability != ABILITY_WHITE_SMOKE
-                        && ability != ABILITY_FULL_METAL_BODY
                         && !IsFlowerVeilProtected(gActiveBattler)
                         && !(ability == ABILITY_KEEN_EYE && currStat == STAT_ACC)
                         && !(ability == ABILITY_HYPER_CUTTER && currStat == STAT_ATK)
@@ -8363,6 +8362,27 @@ static void Cmd_various(void)
 		else //Singles
 			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
 		return;
+    case VARIOUS_SET_OCTOLOCK:
+        if(gDisableStructs[gBattlerTarget].octolock)
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        else
+        {
+            gDisableStructs[gBattlerTarget].octolock = 1;
+            gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
+            gDisableStructs[gBattlerTarget].battlerPreventingEscape = gBattlerAttacker;
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
+    case VARIOUS_SET_DEFIANT_STAT_VALUES:
+        if (gBattleScripting.statBoostTracker > 1)
+            boost = gBattleScripting.statBoostTracker*2;
+        else
+            boost = 2;
+        if (GetBattlerAbility(gActiveBattler) == ABILITY_DEFIANT)
+            SET_STATCHANGER(STAT_ATK, boost, FALSE);
+        else
+            SET_STATCHANGER(STAT_SPATK, boost, FALSE);
+        break;
     }
 
     gBattlescriptCurrInstr += 3;

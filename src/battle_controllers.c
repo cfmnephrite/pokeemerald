@@ -15,6 +15,8 @@
 #include "util.h"
 #include "constants/abilities.h"
 #include "constants/species.h"
+#include "printf.h"
+#include "mgba.h"
 
 static EWRAM_DATA u8 sLinkSendTaskId = 0;
 static EWRAM_DATA u8 sLinkReceiveTaskId = 0;

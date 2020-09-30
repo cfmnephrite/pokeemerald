@@ -34,6 +34,8 @@
 #include "constants/moves.h"
 #include "constants/species.h"
 #include "constants/weather.h"
+#include "printf.h"
+#include "mgba.h"
 
 // rom const data
 
@@ -583,10 +585,6 @@ void PrepareStringBattle(u16 stringId, u8 battler)
         gBattlerAbility = gBattlerTarget;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_DefiantActivates;
-        if (GetBattlerAbility(gBattlerTarget) == ABILITY_DEFIANT)
-            SET_STATCHANGER(STAT_ATK, 2, FALSE);
-        else
-            SET_STATCHANGER(STAT_SPATK, 2, FALSE);
     }
 
     gActiveBattler = battler;
@@ -1452,6 +1450,7 @@ enum
     ENDTURN_NEEDLE_ARM,
     ENDTURN_THROAT_CHOP,
     ENDTURN_SLOW_START,
+    ENDTURN_OCTOLOCK,
     ENDTURN_SWITCHIN_RESET,
     ENDTURN_BATTLER_COUNT
 };
@@ -1958,6 +1957,18 @@ u8 DoBattlerEndTurnEffects(void)
                 && ability == ABILITY_SLOW_START)
             {
                 BattleScriptExecute(BattleScript_SlowStartEnds);
+                effect++;
+            }
+            gBattleStruct->turnEffectsTracker++;
+            break;
+        case ENDTURN_OCTOLOCK:
+            if (gDisableStructs[gActiveBattler].octolock 
+             && !(GetBattlerAbility(gActiveBattler) == ABILITY_CLEAR_BODY 
+             || GetBattlerAbility(gActiveBattler) == ABILITY_FULL_METAL_BODY 
+             || GetBattlerAbility(gActiveBattler) == ABILITY_WHITE_SMOKE))
+            {
+                gBattlerTarget = gActiveBattler;
+                BattleScriptExecute(BattleScript_OctolockEndTurn);
                 effect++;
             }
             gBattleStruct->turnEffectsTracker++;

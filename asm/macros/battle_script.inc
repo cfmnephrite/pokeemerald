@@ -1828,6 +1828,15 @@
 	various BS_ATTACKER, VARIOUS_TRY_NEXT_DART
 	.4byte \ptr
 	.endm
+
+	.macro setoctolock ptr:req
+	various BS_ATTACKER, VARIOUS_SET_OCTOLOCK
+	.4byte \ptr
+	.endm
+
+	.macro setdefiantstatvalues
+	various BS_TARGET, VARIOUS_SET_DEFIANT_STAT_VALUES
+	.endm
 	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
