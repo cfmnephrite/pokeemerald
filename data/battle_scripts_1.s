@@ -522,15 +522,15 @@ BattleScript_EffectStuffCheeks:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
 	ppreduce
-	jumpifnotberry BS_ATTACKER, BattleScript_ButItFailed
-	useitem BS_ATTACKER, BattleScript_ButItFailed
+	eattargetberry BattleScript_ButItFailed
 	attackanimation
 	waitanimation
+	call BattleScript_ItemHealHP_RemoveItemRet
 	waitmessage 0x30
 	setstatchanger STAT_DEF, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_BUFF_ALLOW_PTR, BattleScript_MoveEnd
 	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printfromtable gStatUpStringIds
 	goto BattleScript_MoveEnd
 	

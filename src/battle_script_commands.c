@@ -6355,19 +6355,19 @@ static void Cmd_removeitem(void)
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
         gBattleMoveDamage *= -1;
-		gBattlerAbility = gBattlerTarget = gActiveBattler;
+        gBattlerAbility = gBattlerTarget = gActiveBattler;
         gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
     }
-	ClearBattlerItemEffectHistory(gActiveBattler);
-	gBattlescriptCurrInstr += 2;
-	if (GetBattlerAbility(BATTLE_PARTNER(gActiveBattler)) == ABILITY_SYMBIOSIS && gBattleMons[BATTLE_PARTNER(gActiveBattler)].item
-		&& CanBattlerGetOrLoseItem(BATTLE_PARTNER(gActiveBattler), gBattleMons[BATTLE_PARTNER(gActiveBattler)].item)
-		&& CanBattlerGetOrLoseItem(gActiveBattler, gBattleMons[BATTLE_PARTNER(gActiveBattler)].item) && IS_WHOLE_SIDE_ALIVE(gActiveBattler))
-	{
-		BattleScriptPushCursor();
-		gBattleScripting.battler = gActiveBattler;
-		gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
-	}
+    ClearBattlerItemEffectHistory(gActiveBattler);
+    gBattlescriptCurrInstr += 2;
+    if (GetBattlerAbility(BATTLE_PARTNER(gActiveBattler)) == ABILITY_SYMBIOSIS && gBattleMons[BATTLE_PARTNER(gActiveBattler)].item
+        && CanBattlerGetOrLoseItem(BATTLE_PARTNER(gActiveBattler), gBattleMons[BATTLE_PARTNER(gActiveBattler)].item)
+        && CanBattlerGetOrLoseItem(gActiveBattler, gBattleMons[BATTLE_PARTNER(gActiveBattler)].item) && IS_WHOLE_SIDE_ALIVE(gActiveBattler))
+    {
+        BattleScriptPushCursor();
+        gBattleScripting.battler = gActiveBattler;
+        gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
+    }
 }
 
 static void Cmd_atknameinbuff1(void)
@@ -8301,11 +8301,21 @@ static void Cmd_various(void)
             MarkBattlerForControllerExec(gActiveBattler);
         }
         break;
-    case VARIOUS_USE_ITEM:
-        if(gBattleMons[gActiveBattler].item == ITEM_NONE)
+    case VARIOUS_INSTANTLY_EAT_TARGET_BERRY:
+        if(!(gBattleMons[gBattlerTarget].item >= FIRST_BERRY_INDEX && gBattleMons[gBattlerTarget].item <= LAST_BERRY_INDEX))
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-        else if(ItemBattleEffects(1, gActiveBattler, FALSE))
+        else
+        {
+            gLastUsedItem = gBattleMons[gBattlerTarget].item;
+            switch(GetBattlerHoldEffect(gBattlerTarget, TRUE))
+            {
+                case HOLD_EFFECT_RESTORE_HP:
+                case HOLD_EFFECT_RESTORE_PCT_HP:
+                    ItemHealCalculateAmount(gActiveBattler, gBattleMons[gBattlerTarget].item);
+                    break;
+            }
             gBattlescriptCurrInstr += 7;
+        }
         break;
     case VARIOUS_JUMP_IF_SELF_TRAPPED: //Ingrain does not count
         if(gBattleMons[gActiveBattler].status2 & STATUS2_ESCAPE_PREVENTION && gDisableStructs[gActiveBattler].battlerPreventingEscape == gActiveBattler)
@@ -12214,7 +12224,7 @@ static void Cmd_tryrecycleitem(void)
 
         BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
         MarkBattlerForControllerExec(gActiveBattler);
-		UpdateUnburden();
+        UpdateUnburden();   
 
         gBattlescriptCurrInstr += 5;
     }

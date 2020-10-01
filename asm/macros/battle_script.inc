@@ -1804,8 +1804,8 @@
 	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
 	.endm
 	
-	.macro useitem battler:req, ptr:req
-	various \battler, VARIOUS_USE_ITEM
+	.macro eattargetberry ptr:req
+	various BS_ATTACKER, VARIOUS_INSTANTLY_EAT_TARGET_BERRY
 	.4byte \ptr
 	.endm
 	
