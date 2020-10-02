@@ -8302,21 +8302,19 @@ static void Cmd_various(void)
         }
         break;
     case VARIOUS_INSTANTLY_EAT_TARGET_BERRY:
-        if(!(gBattleMons[gBattlerTarget].item >= FIRST_BERRY_INDEX && gBattleMons[gBattlerTarget].item <= LAST_BERRY_INDEX))
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-        else
+        gLastUsedItem = gBattleMons[gBattlerTarget].item;
+        switch(GetBattlerHoldEffect(gBattlerTarget, TRUE))
         {
-            gLastUsedItem = gBattleMons[gBattlerTarget].item;
-            switch(GetBattlerHoldEffect(gBattlerTarget, TRUE))
-            {
-                case HOLD_EFFECT_RESTORE_HP:
-                case HOLD_EFFECT_RESTORE_PCT_HP:
-                    ItemHealCalculateAmount(gActiveBattler, gBattleMons[gBattlerTarget].item);
-                    break;
-            }
-            gBattlescriptCurrInstr += 7;
+            case HOLD_EFFECT_RESTORE_HP:
+            case HOLD_EFFECT_RESTORE_PCT_HP:
+                ItemHealCalculateAmount(gActiveBattler, gBattleMons[gBattlerTarget].item);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_ItemHealHP_RemoveItemRet;
+                break;
+            default:
+                gBattlescriptCurrInstr += 3;
         }
-        break;
+        return;
     case VARIOUS_JUMP_IF_SELF_TRAPPED: //Ingrain does not count
         if(gBattleMons[gActiveBattler].status2 & STATUS2_ESCAPE_PREVENTION && gDisableStructs[gActiveBattler].battlerPreventingEscape == gActiveBattler)
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
@@ -8328,43 +8326,43 @@ static void Cmd_various(void)
         {
             gBattleMons[gActiveBattler].status2 |= STATUS2_ESCAPE_PREVENTION;
             gDisableStructs[gActiveBattler].battlerPreventingEscape = gActiveBattler;
-			gBattlescriptCurrInstr += 7;
-		}
-		else
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		return;
-	case VARIOUS_TRY_TAR_SHOT:
-		if(gDisableStructs[gBattlerTarget].tarShot)
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		else
-		{
-			gDisableStructs[gBattlerTarget].tarShot = 1;
-			gBattlescriptCurrInstr += 7;
-		}
-		return;
-	case VARIOUS_TRY_NEXT_DART:
-		if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-		{
-			if ((gMoveResultFlags & MOVE_RESULT_MISSED || !IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) || gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && gMultiHitCounter == 1) //Dart hit a target, but missed the other OR no other target; attack 1st target again
-			{
-				gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
-				gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-			}
-			else if (gMultiHitCounter == 1) //Dart hit 1st target; move onto next
-			{
-				gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
-				gBattlescriptCurrInstr += 7;
-			}
-			else if ((gMoveResultFlags & MOVE_RESULT_MISSED || gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && gMultiHitCounter == 2) //Dart missed 1st target
-			{
-				if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget))) //If partner is alive, try to hit partner; otherwise, go to result
-					gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
-				gBattlescriptCurrInstr = BattleScript_DragonDartsAccuracyCheck2;
-			}
-		}
-		else //Singles
-			gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
-		return;
+            gBattlescriptCurrInstr += 7;
+        }
+        else
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        return;
+    case VARIOUS_TRY_TAR_SHOT:
+        if(gDisableStructs[gBattlerTarget].tarShot)
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        else
+        {
+            gDisableStructs[gBattlerTarget].tarShot = 1;
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
+    case VARIOUS_TRY_NEXT_DART:
+        if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+        {
+            if ((gMoveResultFlags & MOVE_RESULT_MISSED || !IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget)) || gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && gMultiHitCounter == 1) //Dart hit a target, but missed the other OR no other target; attack 1st target again
+            {
+                gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
+                gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+            }
+            else if (gMultiHitCounter == 1) //Dart hit 1st target; move onto next
+            {
+                gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
+                gBattlescriptCurrInstr += 7;
+            }
+            else if ((gMoveResultFlags & MOVE_RESULT_MISSED || gMoveResultFlags & MOVE_RESULT_NO_EFFECT) && gMultiHitCounter == 2) //Dart missed 1st target
+            {
+                if(IsBattlerAlive(BATTLE_PARTNER(gBattlerTarget))) //If partner is alive, try to hit partner; otherwise, go to result
+                    gBattlerTarget = GetBattlerAtPosition(GetBattlerPosition(gBattlerTarget) ^ BIT_FLANK);
+                gBattlescriptCurrInstr = BattleScript_DragonDartsAccuracyCheck2;
+            }
+        }
+        else //Singles
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        return;
     case VARIOUS_SET_OCTOLOCK:
         if(gDisableStructs[gBattlerTarget].octolock)
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
