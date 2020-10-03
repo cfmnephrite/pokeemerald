@@ -526,6 +526,7 @@ BattleScript_EffectStuffCheeks:
 	attackanimation
 	waitanimation
 	eattargetberry
+	consumeitem BS_ATTACKER
 	setstatchanger STAT_DEF, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_BUFF_ALLOW_PTR, BattleScript_MoveEnd
 	setgraphicalstatchangevalues
@@ -660,6 +661,7 @@ BattleScript_EffectBugBite:
 BattleScript_MoveEffectBugBite::
 	printstring STRINGID_BUGBITE
 	waitmessage 0x40
+	eattargetberry
 	return
 
 BattleScript_EffectCoreEnforcer:
@@ -2548,6 +2550,7 @@ BattleScript_StatUpEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_StatUp::
+	setgraphicalstatchangevalues
 	playanimation BS_EFFECT_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 BattleScript_StatUpMsg::
 	printfromtable gStatUpStringIds
@@ -7661,10 +7664,10 @@ BattleScript_BerryCurePrlzEnd2::
 	end2
 
 BattleScript_BerryCureParRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMCUREDPARALYSIS
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7673,10 +7676,10 @@ BattleScript_BerryCurePsnEnd2::
 	end2
 
 BattleScript_BerryCurePsnRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMCUREDPOISON
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7685,10 +7688,10 @@ BattleScript_BerryCureBrnEnd2::
 	end2
 
 BattleScript_BerryCureBrnRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMHEALEDBURN
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7697,10 +7700,10 @@ BattleScript_BerryCureFrzEnd2::
 	end2
 
 BattleScript_BerryCureFrzRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMDEFROSTEDIT
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7709,10 +7712,10 @@ BattleScript_BerryCureSlpEnd2::
 	end2
 
 BattleScript_BerryCureSlpRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMWOKEIT
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7742,7 +7745,7 @@ BattleScript_BerryCureConfusionEnd2::
 	end2
 
 BattleScript_BerryCureConfusionRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMSNAPPEDOUT
 	waitmessage 0x40
 	consumeitem BS_SCRIPTING
@@ -7753,10 +7756,10 @@ BattleScript_BerryCureChosenStatusEnd2::
 	end2
 
 BattleScript_BerryCureChosenStatusRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printfromtable gBerryEffectStringIds
 	waitmessage 0x40
-	updatestatusicon BS_SCRIPTING
+	updatestatusicon BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 
@@ -7772,12 +7775,12 @@ BattleScript_WhiteHerbRet::
 	return
 
 BattleScript_ItemHealHP_RemoveItemRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
 	waitmessage 0x40
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_SCRIPTING
-	datahpupdate BS_SCRIPTING
+	healthbarupdate BS_EFFECT_BATTLER
+	datahpupdate BS_EFFECT_BATTLER
 	consumeitem BS_SCRIPTING
 	return
 BattleScript_ItemHealHP_RemoveItemEnd2::
@@ -7861,34 +7864,46 @@ BattleScript_HangedOnMsgRet:
 	return
 
 BattleScript_BerryConfuseHealEnd2::
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
+	call BattleScript_BerryConfuseHealRet
+	end2
+
+BattleScript_BerryConfuseHealRet::
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
 	waitmessage 0x40
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
+	healthbarupdate BS_EFFECT_BATTLER
+	datahpupdate BS_EFFECT_BATTLER
 	printstring STRINGID_FORXCOMMAYZ
 	waitmessage 0x40
 	setmoveeffect MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER
 	seteffectprimary
-	consumeitem BS_ATTACKER
-	end2
+	consumeitem BS_SCRIPTING
+	return
 
 BattleScript_BerryStatRaiseEnd2::
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
+	call BattleScript_BerryStatRaiseRet
+	end2
+
+BattleScript_BerryStatRaiseRet::
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_BUFF_ALLOW_PTR, BattleScript_82DB85B
 BattleScript_82DB85B::
 	setbyte cMULTISTRING_CHOOSER, 0x4
 	call BattleScript_StatUp
-	consumeitem BS_ATTACKER
-	end2
+	consumeitem BS_SCRIPTING
+	return
 
 BattleScript_BerryFocusEnergyEnd2::
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, NULL
+	call BattleScript_BerryFocusEnergyRet
+	end2
+
+BattleScript_BerryFocusEnergyRet::
+	playanimation BS_EFFECT_BATTLER, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_PKMNUSEDXTOGETPUMPED
 	waitmessage 0x40
-	consumeitem BS_ATTACKER
-	end2
+	consumeitem BS_SCRIPTING
+	return
 
 BattleScript_ActionSelectionItemsCantBeUsed::
 	printselectionstring STRINGID_ITEMSCANTBEUSEDNOW
