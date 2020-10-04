@@ -355,7 +355,6 @@ extern const u8 BattleScript_ItemHurtRet[];
 extern const u8 BattleScript_ToxicOrb[];
 extern const u8 BattleScript_FlameOrb[];
 extern const u8 BattleScript_MoveEffectIncinerate[];
-extern const u8 BattleScript_MoveEffectBugBite[];
 extern const u8 BattleScript_IllusionOff[];
 extern const u8 BattleScript_RKSSystemBoosts[];
 extern const u8 BattleScript_MoodyActivates[];

@@ -655,14 +655,33 @@ BattleScript_StrengthSapMustLower:
 	goto BattleScript_StrengthSapLower
 
 BattleScript_EffectBugBite:
-	setmoveeffect MOVE_EFFECT_BUG_BITE | MOVE_EFFECT_CERTAIN
-	goto BattleScript_EffectHit
-
-BattleScript_MoveEffectBugBite::
+	jumpifnotberry BS_TARGET, BattleScript_EffectHit
+	jumpifability BS_TARGET, ABILITY_STICKY_HOLD, BattleScript_EffectHit
+	attackcanceler
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	critcalc
+	damagecalc
+	adjustdamage
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage 0x40
+	resultmessage
+	waitmessage 0x40
+	setlastuseditem BS_TARGET
 	printstring STRINGID_BUGBITE
 	waitmessage 0x40
 	eattargetberry
-	return
+	waitmessage 0x30
+	tryfaintmon BS_TARGET, FALSE, NULL
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectCoreEnforcer:
 	setmoveeffect MOVE_EFFECT_CORE_ENFORCER | MOVE_EFFECT_CERTAIN
@@ -7139,7 +7158,8 @@ BattleScript_CheekPouchActivates::
 	datahpupdate BS_ABILITY_BATTLER
 	printstring STRINGID_PKMNRESTOREDHPUSING
 	waitmessage 0x40
-	end2
+	copybyte gBattlerTarget, sBATTLER
+	return
 
 BattleScript_AttackerAbilityStatRaise::
 	copybyte gBattlerAbility, gBattlerAttacker

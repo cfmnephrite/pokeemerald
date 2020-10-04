@@ -3058,19 +3058,6 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gDisableStructs[gEffectBattler].throatChopTimer = 2;
                 gBattlescriptCurrInstr++;
                 break;
-            case MOVE_EFFECT_BUG_BITE:
-                if ((gBattleMons[gEffectBattler].item >= FIRST_BERRY_INDEX && gBattleMons[gEffectBattler].item <= LAST_BERRY_INDEX)
-                    && GetBattlerAbility(gEffectBattler) != ABILITY_STICKY_HOLD)
-                {
-                    gLastUsedItem = gBattleMons[gEffectBattler].item;
-                    CheckSetUnburden(gEffectBattler);
-
-                    gActiveBattler = gEffectBattler;
-                    UpdateUnburden();
-                    BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_MoveEffectBugBite;
-                }
-                break;
             case MOVE_EFFECT_TRAP_BOTH:
                 {
                     bool32 canTargetBeTrapped = CanBattlerBeTrapped(gBattlerTarget),
@@ -6346,14 +6333,15 @@ static void Cmd_removeitem(void)
 
     BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
     MarkBattlerForControllerExec(gActiveBattler);
-    if((gLastUsedItem >= FIRST_BERRY_INDEX && gLastUsedItem <= LAST_BERRY_INDEX) && (GetBattlerAbility(gActiveBattler) == ABILITY_CHEEK_POUCH))
+    if((gLastUsedItem >= FIRST_BERRY_INDEX && gLastUsedItem <= LAST_BERRY_INDEX) && (GetBattlerAbility(gEffectBattler) == ABILITY_CHEEK_POUCH))
     {
-        gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 3;
+        gBattleMoveDamage = gBattleMons[gEffectBattler].maxHP / 3;
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
         gBattleMoveDamage *= -1;
-        gBattlerAbility = gBattlerTarget = gActiveBattler;
+        gBattlerAbility = gBattlerTarget = gEffectBattler;
         gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
+        return;
     }
     ClearBattlerItemEffectHistory(gActiveBattler);
     gBattlescriptCurrInstr += 2;
