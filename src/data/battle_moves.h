@@ -10506,7 +10506,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_TEATIME] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_TEATIME,
         .pp = 10,
         .power = 0,
         .accuracy = 0,

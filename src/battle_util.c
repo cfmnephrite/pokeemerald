@@ -588,6 +588,14 @@ void PrepareStringBattle(u16 stringId, u8 battler)
         gBattlescriptCurrInstr = BattleScript_DefiantActivates;
     }
 
+    else if (stringId == STRINGID_PKMNCUTSATTACKWITH && GetBattlerAbility(gBattlerTarget) == ABILITY_RATTLED)
+    {
+        SET_STATCHANGER(STAT_SPEED, 1, FALSE);
+        gBattlerAbility = gBattlerTarget;
+        BattleScriptPushCursor();
+        gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaise;
+    }
+
     gActiveBattler = battler;
     BtlController_EmitPrintString(0, stringId);
     MarkBattlerForControllerExec(gActiveBattler);

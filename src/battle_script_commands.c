@@ -8440,8 +8440,32 @@ static void Cmd_various(void)
                     gBattlescriptCurrInstr = BattleScript_BerryCureChosenStatusRet;                    
                 }
                 break;
-            default:
+            default: //remove berry
+                gBattleMons[gActiveBattler].item = 0;
+                CheckSetUnburden(gActiveBattler);
+
+                BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gActiveBattler].item);
+                MarkBattlerForControllerExec(gActiveBattler);
+                if((gLastUsedItem >= FIRST_BERRY_INDEX && gLastUsedItem <= LAST_BERRY_INDEX) && (GetBattlerAbility(gEffectBattler) == ABILITY_CHEEK_POUCH))
+                {
+                    gBattleMoveDamage = gBattleMons[gEffectBattler].maxHP / 3;
+                    if (gBattleMoveDamage == 0)
+                        gBattleMoveDamage = 1;
+                    gBattleMoveDamage *= -1;
+                    gBattlerAbility = gBattlerTarget = gEffectBattler;
+                    gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
+                    return;
+                }
+                ClearBattlerItemEffectHistory(gActiveBattler);
                 gBattlescriptCurrInstr += 3;
+                if (GetBattlerAbility(BATTLE_PARTNER(gActiveBattler)) == ABILITY_SYMBIOSIS && gBattleMons[BATTLE_PARTNER(gActiveBattler)].item
+                    && CanBattlerGetOrLoseItem(BATTLE_PARTNER(gActiveBattler), gBattleMons[BATTLE_PARTNER(gActiveBattler)].item)
+                    && CanBattlerGetOrLoseItem(gActiveBattler, gBattleMons[BATTLE_PARTNER(gActiveBattler)].item) && IS_WHOLE_SIDE_ALIVE(gActiveBattler))
+                {
+                    BattleScriptPushCursor();
+                    gBattleScripting.battler = gActiveBattler;
+                    gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
+                }
                 break;
         }
         return;
