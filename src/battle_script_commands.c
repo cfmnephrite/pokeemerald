@@ -8367,7 +8367,7 @@ static void Cmd_various(void)
                 {
                     gBattleMons[gActiveBattler].status1 &= ~(STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER);
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCurePsnRet;                    
+                    gBattlescriptCurrInstr = BattleScript_BerryCurePsnRet;
                 }
                 break;
             case HOLD_EFFECT_CURE_BRN:
@@ -8375,7 +8375,7 @@ static void Cmd_various(void)
                 {
                     gBattleMons[gActiveBattler].status1 &= ~(STATUS1_BURN);
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCureBrnRet;                    
+                    gBattlescriptCurrInstr = BattleScript_BerryCureBrnRet;
                 }
                 break;
             case HOLD_EFFECT_CURE_FRZ:
@@ -8383,7 +8383,7 @@ static void Cmd_various(void)
                 {
                     gBattleMons[gActiveBattler].status1 &= ~(STATUS1_FREEZE);
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCureFrzRet;                    
+                    gBattlescriptCurrInstr = BattleScript_BerryCureFrzRet;
                 }
                 break;
             case HOLD_EFFECT_CURE_SLP:
@@ -8392,52 +8392,17 @@ static void Cmd_various(void)
                     gBattleMons[gActiveBattler].status1 &= ~(STATUS1_SLEEP);
                     gBattleMons[gActiveBattler].status2 &= ~(STATUS2_NIGHTMARE);
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCureSlpRet;                    
+                    gBattlescriptCurrInstr = BattleScript_BerryCureSlpRet;
                 }
                 break;
             case HOLD_EFFECT_CURE_STATUS:
                 if (gBattleMons[gActiveBattler].status1 & STATUS1_ANY || gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION)
                 {
-                    i = 0;
-                    if (gBattleMons[gActiveBattler].status1 & STATUS1_PSN_ANY)
-                    {
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_PoisonJpn);
-                        i++;
-                    }
-                    if (gBattleMons[gActiveBattler].status1 & STATUS1_SLEEP)
-                    {
-                        gBattleMons[gActiveBattler].status2 &= ~(STATUS2_NIGHTMARE);
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_SleepJpn);
-                        i++;
-                    }
-                    if (gBattleMons[gActiveBattler].status1 & STATUS1_PARALYSIS)
-                    {
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_ParalysisJpn);
-                        i++;
-                    }
-                    if (gBattleMons[gActiveBattler].status1 & STATUS1_BURN)
-                    {
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_BurnJpn);
-                        i++;
-                    }
-                    if (gBattleMons[gActiveBattler].status1 & STATUS1_FREEZE)
-                    {
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_IceJpn);
-                        i++;
-                    }
-                    if (gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION)
-                    {
-                        StringCopy(gBattleTextBuff1, gStatusConditionString_ConfusionJpn);
-                        i++;
-                    }
-                    if (!(i > 1))
-                        gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-                    else
-                        gBattleCommunication[MULTISTRING_CHOOSER] = 1;
+                    gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                     gBattleMons[gActiveBattler].status1 = 0;
                     gBattleMons[gActiveBattler].status2 &= ~(STATUS2_CONFUSION);
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCureChosenStatusRet;                    
+                    gBattlescriptCurrInstr = BattleScript_BerryCureChosenStatusRet;
                 }
                 break;
             default: //remove berry

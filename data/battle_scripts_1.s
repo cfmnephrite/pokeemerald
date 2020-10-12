@@ -443,9 +443,31 @@ BattleScript_EffectPoltergiest:
 	waitmessage 0x40
 	goto BattleScript_HitFromCritCalc
 
-@todo
-BattleScript_EffectCoaching:
-	goto BattleScript_EffectPlaceholder
+BattleScript_EffectCoaching::
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifnoally BS_ATTACKER, BattleScript_ButItFailed
+	jumpifstat BS_TARGET, CMP_LESS_THAN, STAT_ATK, 0xC, BattleScript_CoachingDoMoveAnim
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_DEF, 0xC, BattleScript_CoachingSkipMoveAnim
+BattleScript_CoachingDoMoveAnim::
+	attackanimation
+	waitanimation
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+BattleScript_CoachingSkipMoveAnim::
+	setbyte sSTAT_BOOST_TRACKER, 0x2
+	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_DEF, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange STAT_BUFF_ALLOW_PTR | STAT_BUFF_AFFECT_MULTIPLE_STATS | BIT_ATK | BIT_DEF, BattleScript_CoachingTryDef
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_CoachingTryDef::
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange STAT_BUFF_ALLOW_PTR, BattleScript_CoachingEnd
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_CoachingEnd::
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectDragonDarts:
 	attackcanceler

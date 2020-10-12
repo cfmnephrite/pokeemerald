@@ -10916,9 +10916,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_TRIPLE_AXEL] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_HIT_ARG_TIMES,
         .pp = 10,
-        .power = 20,
+        .power = 35,
         .accuracy = 90,
         .type = TYPE_ICE,
         .split = SPLIT_PHYSICAL,
@@ -10927,13 +10927,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED,
         .target = MOVE_TARGET_SELECTED,
+        .argument = 3,
     },
 
     [MOVE_TRIPLE_KICK] = {
         .effect = EFFECT_HIT_ARG_TIMES,
         .pp = 10,
-        .power = 30,
-        .accuracy = 100,
+        .power = 35,
+        .accuracy = 90,
         .type = TYPE_FIGHTING,
         .split = SPLIT_PHYSICAL,
         .critRate = 0,
