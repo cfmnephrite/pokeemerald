@@ -911,7 +911,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_BOLT_BEAK] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_BOLT_BEAK,
         .pp = 10,
         .power = 85,
         .accuracy = 100,
@@ -1442,7 +1442,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_CLANGOROUS_SOUL] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_CLANGOROUS_SOUL,
         .pp = 5,
         .power = 0,
         .accuracy = 0,
@@ -3202,7 +3202,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_FISHIOUS_REND] = {
-        .effect = EFFECT_PLACEHOLDER, // Needs a custom move effect
+        .effect = EFFECT_BOLT_BEAK,
         .pp = 10,
         .power = 85,
         .accuracy = 100,

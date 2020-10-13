@@ -186,6 +186,7 @@
 #define VARIOUS_CHECK_POLTERGEIST               117
 #define VARIOUS_SET_OCTOLOCK                    118
 #define VARIOUS_SET_DEFIANT_STAT_VALUES         119
+#define VARIOUS_CUT_1_3_HP_RAISE_STATS          120
 
 // Cmd_manipulatedamage
 #define DMG_CHANGE_SIGN            0

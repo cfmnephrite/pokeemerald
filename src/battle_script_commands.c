@@ -8514,6 +8514,32 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr += 7;
         }
         return;
+    case VARIOUS_CUT_1_3_HP_RAISE_STATS:
+        hpFraction = gBattleMons[gBattlerAttacker].maxHP / 3;
+        if (!(gBattleMons[gBattlerAttacker].maxHP / 3))
+            hpFraction = 1;
+
+        for(i = 0; i < NUM_BATTLE_STATS - 2; i++)
+        {
+            if(gBattleMons[gBattlerAttacker].statStages[i] == 12)
+                boostStat++;
+            //else
+            //    gBattleMons[gBattlerAttacker].statStages[i]++;
+        }
+        if (boostStat != NUM_BATTLE_STATS - 3
+            && gBattleMons[gBattlerAttacker].hp > hpFraction)
+        {
+            gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 3;
+            if (gBattleMoveDamage == 0)
+                gBattleMoveDamage = 1;
+
+            gBattlescriptCurrInstr += 7;
+        }
+        else
+        {
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        }
+        return;
     }
 
     gBattlescriptCurrInstr += 3;
@@ -11167,6 +11193,8 @@ static void Cmd_maxattackhalvehp(void) // belly drum
         gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 2;
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
+        
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, argStat);
 
         gBattlescriptCurrInstr += 5;
     }

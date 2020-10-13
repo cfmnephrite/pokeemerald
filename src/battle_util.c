@@ -6429,6 +6429,11 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
         if (gBattleMons[battlerDef].status1 & STATUS1_BURN)
             basePower *= 1.5;
         break;
+    case EFFECT_BOLT_BEAK:
+        if (GetBattlerTurnOrderNum(battlerAtk) < GetBattlerTurnOrderNum(battlerDef)
+            || (gDisableStructs[battlerDef].isFirstTurn == 2 && GetBattlerTurnOrderNum(battlerAtk) > GetBattlerTurnOrderNum(battlerDef)))
+            basePower *= 2;
+        break;
     }
 
     // If the move is a Z-Move, dynamic BP will be set
@@ -6556,10 +6561,10 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
 		if (moveType == TYPE_ROCK)
 			MulModifier(&modifier, UQ_4_12(1.2));
 		break;
-	case ABILITY_STAKEOUT:
+	/*case ABILITY_STAKEOUT:
 		if (gSwitchedIn[battlerDef])
 			MulModifier(&modifier, UQ_4_12(2.0));
-		break;
+		break;*/
 	case ABILITY_STALL:
 		MulModifier(&modifier, UQ_4_12(1.3));
 		break;

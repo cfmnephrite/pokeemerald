@@ -371,6 +371,21 @@ gBattleScriptsForMoveEffects:: @ 82D86A8
 	.4byte BattleScript_EffectDragonDarts
 	.4byte BattleScript_EffectOctolock
 	.4byte BattleScript_EffectTeatime
+	.4byte BattleScript_EffectClangorousSoul
+	.4byte BattleScript_EffectBoltBeak
+
+BattleScript_EffectClangorousSoul:
+	attackcanceler
+	attackstring
+	ppreduce
+	cutonethirdhpraisestats BattleScript_ButItFailed
+	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	attackanimation
+	waitanimation
+	healthbarupdate BS_ATTACKER
+	datahpupdate BS_ATTACKER
+	call BattleScript_AllStatsUp
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectTeatime:
 	attackcanceler
@@ -2284,6 +2299,7 @@ BattleScript_EffectVenoshock:
 BattleScript_EffectVitalThrow:
 BattleScript_EffectWeatherBall:
 BattleScript_EffectWringOut:
+BattleScript_EffectBoltBeak:
 BattleScript_EffectHit::
 BattleScript_HitFromAtkCanceler::
 	attackcanceler
