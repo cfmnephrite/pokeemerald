@@ -1,0 +1,34 @@
+mapscripts LittlerootTown_MapScripts {
+    MAP_SCRIPT_ON_TRANSITION: LittlerootTown_OnTransition
+    MAP_SCRIPT_ON_FRAME_TABLE: LittlerootTown_OnFrame
+    MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE: LittlerootTown_OnWarp
+}
+
+script LittlerootTown_OnTransition {
+    setflag(FLAG_VISITED_LITTLEROOT_TOWN)
+    call(Common_EventScript_SetupRivalGfxId)
+    if (var(VAR_LITTLEROOT_INTRO_STATE) == 2) {
+        call(LittlerootTown_EventScript_MoveMomToMaysDoor)
+    }
+    if (!flag(FLAG_RESCUED_BIRCH)) {
+        call(LittlerootTown_EventScript_SetTwinPos)
+    }
+    if (var(VAR_LITTLEROOT_TOWN_STATE) == 3) {
+        call(LittlerootTown_EventScript_SetMomStandingInFrontOfDoorPos)
+    }
+    raw `
+    compare VAR_LITTLEROOT_HOUSES_STATE_MAY, 4
+    call_if_eq LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
+    compare VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 4
+    call_if_eq LittlerootTown_EventScript_SetExitedHouseAfterLatiSSTicketEvent
+    compare VAR_OLDALE_RIVAL_STATE, 1
+    call_if_eq LittlerootTown_EventScript_MoveRivalFromOldale
+    compare VAR_LITTLEROOT_RIVAL_STATE, 3
+    call_if_eq LittlerootTown_EventScript_SetRivalLeftForRoute103
+    compare VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1
+    call_if_eq LittlerootTown_EventScript_HideMapNamePopup
+    compare VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2
+    call_if_eq LittlerootTown_EventScript_LeftLabAfterDexUpgrade
+    end
+    `
+}
