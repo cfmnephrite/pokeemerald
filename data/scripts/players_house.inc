@@ -42,63 +42,6 @@ PlayersHouse_1F_EventScript_MomGoSeeRoom:: @ 8292765
 	releaseall
 	end
 
-LittlerootTown_BrendansHouse_2F_EventScript_WallClock:: @ 8292781
-	lockall
-	setvar VAR_0x8004, MALE
-	goto PlayersHouse_2F_EventScript_WallClock
-	end
-
-LittlerootTown_MaysHouse_2F_EventScript_WallClock:: @ 829278D
-	lockall
-	setvar VAR_0x8004, FEMALE
-	goto PlayersHouse_2F_EventScript_WallClock
-	end
-
-PlayersHouse_2F_EventScript_WallClock:: @ 8292799
-	goto_if_set FLAG_SET_WALL_CLOCK, PlayersHouse_2F_EventScript_CheckWallClock
-	msgbox PlayersHouse_2F_Text_ClockIsStopped, MSGBOX_DEFAULT
-	call PlayersHouse_2F_EventScript_SetWallClock
-	delay 30
-	setvar VAR_LITTLEROOT_INTRO_STATE, 6
-	setflag FLAG_SET_WALL_CLOCK
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_1
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_PLAYERS_HOUSE_VIGOROTH_2
-	checkplayergender
-	compare VAR_RESULT, MALE
-	call_if_eq PlayersHouse_2F_EventScript_MomComesUpstairsMale
-	compare VAR_RESULT, FEMALE
-	call_if_eq PlayersHouse_2F_EventScript_MomComesUpstairsFemale
-	playse SE_KAIDAN
-	removeobject VAR_0x8008
-	releaseall
-	end
-
-PlayersHouse_2F_EventScript_MomComesUpstairsMale:: @ 82927DF
-	setvar VAR_0x8008, 14
-	addobject VAR_0x8008
-	applymovement VAR_0x8008, PlayersHouse_2F_Movement_MomEntersMale
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFastestRight
-	waitmovement 0
-	msgbox PlayersHouse_2F_Text_HowDoYouLikeYourRoom, MSGBOX_DEFAULT
-	closemessage
-	applymovement VAR_0x8008, PlayersHouse_2F_Movement_MomExitsMale
-	waitmovement 0
-	return
-
-PlayersHouse_2F_EventScript_MomComesUpstairsFemale:: @ 829280F
-	setvar VAR_0x8008, 14
-	addobject VAR_0x8008
-	applymovement VAR_0x8008, PlayersHouse_2F_Movement_MomEntersFemale
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFastestLeft
-	waitmovement 0
-	msgbox PlayersHouse_2F_Text_HowDoYouLikeYourRoom, MSGBOX_DEFAULT
-	closemessage
-	applymovement VAR_0x8008, PlayersHouse_2F_Movement_MomExitsFemale
-	waitmovement 0
-	return
-
 PlayersHouse_2F_EventScript_CheckWallClock:: @ 829283F
 	incrementgamestat GAME_STAT_CHECKED_CLOCK
 	fadescreen FADE_TO_BLACK
@@ -373,26 +316,6 @@ PlayersHouse_1F_EventScript_HealParty:: @ 8292A9E
 
 PlayersHouse_1F_EventScript_DidYouMeetProfBirch:: @ 8292AB0
 	msgbox PlayersHouse_1F_Text_DidYouMeetProfBirch, MSGBOX_DEFAULT
-	release
-	end
-
-PlayersHouse_1F_EventScript_Vigoroth1:: @ 8292ABA
-	lock
-	faceplayer
-	waitse
-	playmoncry SPECIES_VIGOROTH, 0
-	msgbox PlayersHouse_1F_Text_Vigoroth1, MSGBOX_DEFAULT
-	waitmoncry
-	release
-	end
-
-PlayersHouse_1F_EventScript_Vigoroth2:: @ 8292ACD
-	lock
-	faceplayer
-	waitse
-	playmoncry SPECIES_VIGOROTH, 0
-	msgbox PlayersHouse_1F_Text_Vigoroth2, MSGBOX_DEFAULT
-	waitmoncry
 	release
 	end
 

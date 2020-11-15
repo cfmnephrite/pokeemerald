@@ -256,7 +256,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "LittlerootTown_MaysHouse_2F_EventScript_WallClock"
+      "script": "PlayersHouse_2F_EventScript_CheckWallClock"
     },
     {
       "type": "sign",
@@ -264,7 +264,7 @@
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "LittlerootTown_MaysHouse_2F_EventScript_PC"
+      "script": "LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC"
     }
   ]
 }
