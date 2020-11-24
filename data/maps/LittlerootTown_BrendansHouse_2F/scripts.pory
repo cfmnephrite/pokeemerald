@@ -1,8 +1,11 @@
 mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_TEMP_0, 0: LittlerootTown_BrendansHouse_2FBeginning
+	]
 	MAP_SCRIPT_ON_TRANSITION {
 		if (!var(VAR_SECRET_BASE_INITIALIZED)) {
 			call(SecretBase_EventScript_SetDecorationFlags)
-			setvar(VAR_SECRET_BASE_INITIALIZED, 0)
+			setvar(VAR_SECRET_BASE_INITIALIZED, 1)
 		}
 	}
 }
@@ -12,6 +15,8 @@ script LittlerootTown_BrendansHouse_2FBeginning {
 		msgbox("You hear a noise coming from next door...", MSGBOX_SIGN)
 		setflag(FLAG_YOU_HEAR_A_NOISE)
 	}
+	setvar(VAR_TEMP_0, 1)
+	end
 }
 
 script PlayersHouse_2F_EventScript_Notebook {

@@ -1,0 +1,29 @@
+mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
+	MAP_SCRIPT_ON_LOAD: LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual
+}
+
+script LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual {
+	setmetatile(3, 7, METATILE_BrendansMaysHouse_BookOnTable, 1)
+	return
+}
+
+script EventScript_RunningShoesManual {
+	msgbox(PlayersHouse_1F_Text_RunningShoesManual, MSGBOX_SIGN)
+	end
+}
+
+text PlayersHouse_1F_Text_RunningShoesManual {
+	"It's the instruction booklet for the\n"
+	"RUNNING SHOES.\p"
+	"“Press the B Button to run while\n"
+	"wearing your RUNNING SHOES.\p"
+	"“Lace up your RUNNING SHOES and hit\n"
+	"the road running!”"
+}
+
+text PlayersHouse_1F_Text_TheresAMovieOnTV {
+	"There is a movie on TV.\p"
+	"Two men are dancing on a big piano\n"
+	"keyboard.\p"
+	"Better get going!$"
+}

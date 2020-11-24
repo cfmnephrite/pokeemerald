@@ -1,5 +1,6 @@
 LittlerootTown_BrendansHouse_2F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE
 	.byte 0
 
 LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION:
@@ -9,18 +10,24 @@ LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION:
 
 LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
 	call SecretBase_EventScript_SetDecorationFlags
-	setvar VAR_SECRET_BASE_INITIALIZED, 0
+	setvar VAR_SECRET_BASE_INITIALIZED, 1
 	return
+
+LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
+	map_script_2 VAR_TEMP_0, 0, LittlerootTown_BrendansHouse_2FBeginning
+	.2byte 0
 
 
 LittlerootTown_BrendansHouse_2FBeginning::
-	goto_if_unset FLAG_YOU_HEAR_A_NOISE, LittlerootTown_BrendansHouse_2FBeginning_1
-	return
-
+	goto_if_unset FLAG_YOU_HEAR_A_NOISE, LittlerootTown_BrendansHouse_2FBeginning_2
 LittlerootTown_BrendansHouse_2FBeginning_1:
+	end
+
+LittlerootTown_BrendansHouse_2FBeginning_2:
 	msgbox LittlerootTown_BrendansHouse_2FBeginning_Text_0, MSGBOX_SIGN
 	setflag FLAG_YOU_HEAR_A_NOISE
-	return
+	setvar VAR_TEMP_0, 1
+	goto LittlerootTown_BrendansHouse_2FBeginning_1
 
 
 PlayersHouse_2F_EventScript_Notebook::
