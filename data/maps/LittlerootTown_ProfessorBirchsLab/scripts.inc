@@ -743,6 +743,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ButFirst::
 	end
 	
 LittlerootTown_ProfessorBirchsLab_EventScript_BattleMay::
+	setvar VAR_CONTINUE_AFTER_LOSING_BATTLE, 1
 	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_Text_MayDefeat
 	specialvar VAR_RESULT, GetBattleOutcome
 	compare VAR_RESULT, B_OUTCOME_WON

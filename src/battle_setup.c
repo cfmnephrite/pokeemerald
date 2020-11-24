@@ -1314,8 +1314,10 @@ static void CB2_EndTrainerBattle(void)
     }
     else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
-        if (InBattlePyramid() || InTrainerHillChallenge())
+        if (InBattlePyramid() || InTrainerHillChallenge() || VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE)) {
+            VarSet(VAR_CONTINUE_AFTER_LOSING_BATTLE, 1);
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        }
         else
             SetMainCallback2(CB2_WhiteOut);
     }
