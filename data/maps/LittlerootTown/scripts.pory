@@ -1,4 +1,79 @@
 mapscripts LittlerootTown_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+			setweather(WEATHER_SHADE)
+		}
+	}
+}
+
+script LittlerootTown_EventScript_CheckNextDoorUp {
+	lockall
+	setvar(VAR_0x8004, 0)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorDown {
+	lockall
+	setvar(VAR_0x8004, 1)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorLeft {
+	lockall
+	setvar(VAR_0x8004, 2)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorRight {
+	lockall
+	setvar(VAR_0x8004, 3)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorForceMovement {
+	if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+		msgbox(gText_BetterCheckNextDoor)
+		closemessage
+		switch(var(VAR_0x8004)) {
+			case 0: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushDown)
+			case 1: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushUp)
+			case 2: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushRight)
+			case 3: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushLeft)
+		}
+		waitmovement(0)
+	} else {
+		setvar(VAR_LITTLEROOT_INTRO_STATE, 0)
+	}
+	releaseall
+	end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushDown {
+	walk_down
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushUp {
+	walk_up
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushRight {
+	walk_right
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushLeft {
+	walk_left
+	step_end
+}
+
+text gText_BetterCheckNextDoor {
+	format("Better check what's happening next door...")
 }
 
 script LittlerootTown_EventScript_FatMan {

@@ -21,12 +21,13 @@ LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 LittlerootTown_BrendansHouse_2FBeginning::
 	goto_if_unset FLAG_YOU_HEAR_A_NOISE, LittlerootTown_BrendansHouse_2FBeginning_2
 LittlerootTown_BrendansHouse_2FBeginning_1:
+	setvar VAR_TEMP_0, 1
 	end
 
 LittlerootTown_BrendansHouse_2FBeginning_2:
 	msgbox LittlerootTown_BrendansHouse_2FBeginning_Text_0, MSGBOX_SIGN
 	setflag FLAG_YOU_HEAR_A_NOISE
-	setvar VAR_TEMP_0, 1
+	setvar VAR_LITTLEROOT_INTRO_STATE, 1
 	goto LittlerootTown_BrendansHouse_2FBeginning_1
 
 
@@ -46,7 +47,6 @@ PlayersHouse_2F_EventScript_WallClock_1:
 	msgbox PlayersHouse_2F_Text_ClockIsStopped
 	call PlayersHouse_2F_EventScript_SetWallClock
 	delay 30
-	setvar VAR_LITTLEROOT_INTRO_STATE, 6
 	setflag FLAG_SET_WALL_CLOCK
 	removeobject VAR_0x8008
 	releaseall
