@@ -43,7 +43,7 @@ LittlerootTown_EventScript_CheckNextDoorRight::
 LittlerootTown_EventScript_CheckNextDoorForceMovement::
 	compare VAR_LITTLEROOT_INTRO_STATE, 1
 	goto_if_eq LittlerootTown_EventScript_CheckNextDoorForceMovement_2
-	setvar VAR_LITTLEROOT_INTRO_STATE, 0
+	setvar VAR_LITTLEROOT_INTRO_STATE, 2
 LittlerootTown_EventScript_CheckNextDoorForceMovement_1:
 	releaseall
 	end
@@ -86,11 +86,11 @@ LittlerootTown_Movement_CheckNextDoorPushUp:
 	step_end
 
 LittlerootTown_Movement_CheckNextDoorPushRight:
-	walk_left
+	walk_right
 	step_end
 
 LittlerootTown_Movement_CheckNextDoorPushLeft:
-	walk_right
+	walk_left
 	step_end
 
 LittlerootTown_EventScript_FatMan::

@@ -364,9 +364,10 @@ static const struct SpriteTemplate gUnknown_085B1F40 =
 // .text
 u16 GetStarterPokemon(u16 chosenStarterId)
 {
-    if (chosenStarterId > STARTER_MON_COUNT)
-        chosenStarterId = 0;
-    return sStarterMon[chosenStarterId];
+    return SPECIES_PICHU;
+    // if (chosenStarterId > STARTER_MON_COUNT)
+    //     chosenStarterId = 0;
+    // return sStarterMon[chosenStarterId];
 }
 
 static void VblankCB_StarterChoose(void)
@@ -457,17 +458,17 @@ void CB2_ChooseStarter(void)
     gSprites[spriteId].data[0] = taskId;
 
     // Create three Pokeball sprites
-    spriteId = CreateSprite(&sSpriteTemplate_PokeBall, sPokeballCoords[0][0], sPokeballCoords[0][1], 2);
-    gSprites[spriteId].data[0] = taskId;
-    gSprites[spriteId].data[1] = 0;
+    // spriteId = CreateSprite(&sSpriteTemplate_PokeBall, sPokeballCoords[0][0], sPokeballCoords[0][1], 2);
+    // gSprites[spriteId].data[0] = taskId;
+    // gSprites[spriteId].data[1] = 0;
 
     spriteId = CreateSprite(&sSpriteTemplate_PokeBall, sPokeballCoords[1][0], sPokeballCoords[1][1], 2);
     gSprites[spriteId].data[0] = taskId;
     gSprites[spriteId].data[1] = 1;
 
-    spriteId = CreateSprite(&sSpriteTemplate_PokeBall, sPokeballCoords[2][0], sPokeballCoords[2][1], 2);
-    gSprites[spriteId].data[0] = taskId;
-    gSprites[spriteId].data[1] = 2;
+    // spriteId = CreateSprite(&sSpriteTemplate_PokeBall, sPokeballCoords[2][0], sPokeballCoords[2][1], 2);
+    // gSprites[spriteId].data[0] = taskId;
+    // gSprites[spriteId].data[1] = 2;
 
     sStarterChooseWindowId = 0xFF;
 }
@@ -513,16 +514,16 @@ static void Task_StarterChoose2(u8 taskId)
         gTasks[taskId].tPkmnSpriteId = spriteId;
         gTasks[taskId].func = Task_StarterChoose3;
     }
-    else if ((gMain.newKeys & DPAD_LEFT) && selection > 0)
-    {
-        gTasks[taskId].tStarterSelection--;
-        gTasks[taskId].func = Task_MoveStarterChooseCursor;
-    }
-    else if ((gMain.newKeys & DPAD_RIGHT) && selection < (STARTER_MON_COUNT - 1))
-    {
-        gTasks[taskId].tStarterSelection++;
-        gTasks[taskId].func = Task_MoveStarterChooseCursor;
-    }
+    // else if ((gMain.newKeys & DPAD_LEFT) && selection > 0)
+    // {
+    //     gTasks[taskId].tStarterSelection--;
+    //     gTasks[taskId].func = Task_MoveStarterChooseCursor;
+    // }
+    // else if ((gMain.newKeys & DPAD_RIGHT) && selection < (STARTER_MON_COUNT - 1))
+    // {
+    //     gTasks[taskId].tStarterSelection++;
+    //     gTasks[taskId].func = Task_MoveStarterChooseCursor;
+    // }
 }
 
 static void Task_StarterChoose3(u8 taskId)

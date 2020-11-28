@@ -1,2 +1,65 @@
 mapscripts LittlerootTown_MaysHouse_1F_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+			setweather(WEATHER_SHADE)
+		}
+	}
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_TEMP_0, 0: LittlerootTown_MaysHouse_1F_Beginning
+	]
 }
+
+script LittlerootTown_MaysHouse_1F_TriggerBag {
+	lock
+	playse(SE_PIN)
+	applymovement(1, Common_Movement_ExclamationMark)
+	waitmovement(0)
+	playmoncry(SPECIES_PICHU, 0)
+	waitmoncry
+	applymovement(OBJ_EVENT_ID_PLAYER, LittleroowTown_MaysHouse_1F_PlayerLookLeft)
+	waitmovement(0)
+	goto(LittlerootTown_MaysHouse_1F_BirchsBag)
+	end
+}
+
+movement LittleroowTown_MaysHouse_1F_PlayerLookLeft {
+	face_left
+	step_end
+}
+
+script LittlerootTown_MaysHouse_1F_BirchsBag {
+	lock
+	if (!flag(FLAG_SYS_POKEMON_GET)) {
+		setflag(FLAG_SYS_POKEMON_GET)
+		msgbox("There's something in here...", MSGBOX_SIGN)
+		fadescreen(FADE_TO_BLACK)
+		special(ChooseStarter)
+		waitstate
+		msgbox(format("You obtained the Pichu! Its ear looks a little crooked though..."), MSGBOX_SIGN)
+	} else {
+		msgbox("There's nothing else in here.", MSGBOX_SIGN)
+	}
+	release
+	end
+}
+
+script LittlerootTown_MaysHouse_1F_Beginning {
+	if (!flag(FLAG_ENTERED_MAYS_HOUSE)) {
+		lock
+		msgbox(LittlerootTown_MaysHouse_1F_RocketThreat, MSGBOX_SIGN)
+		release
+		setflag(FLAG_ENTERED_MAYS_HOUSE)
+	}
+	setvar(VAR_TEMP_0, 1)
+	end
+}
+
+text LittlerootTown_MaysHouse_1F_RocketThreat {
+	format(
+		"Voice 1: Look, Birch, we know you know we know you know where we can find the rare monsters.\p"
+		"Birch: ...What?\p"
+		"Voice 2: Tell us where they are now! I want a Gardev-, uh, a Gallade!\p"
+		"Birch: Look, I won't tell you...\p"
+		"Voice 1: If you don't tell us soon, your family will pay the price...")
+}
+

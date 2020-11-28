@@ -46,7 +46,7 @@ script LittlerootTown_EventScript_CheckNextDoorForceMovement {
 		}
 		waitmovement(0)
 	} else {
-		setvar(VAR_LITTLEROOT_INTRO_STATE, 0)
+		setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
 	}
 	releaseall
 	end
