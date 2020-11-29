@@ -1,4 +1,43 @@
 mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_LITTLEROOT_INTRO_STATE, 1: LittlerootTown_MaysHouse_2F_TheRescueStart
+	]
+}
+
+script LittlerootTown_MaysHouse_2F_TheRescueStart {
+	setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
+	lock
+	applymovement(1, Common_Movement_WalkInPlaceRight)
+	msgbox("Intruder 1: Tell us now or...")
+	waitmessage
+	playse(SE_PIN)
+	applymovement(1, Common_Movement_ExclamationMark)
+	applymovement(1, Common_Movement_FaceUp)
+	applymovement(2, Common_Movement_ExclamationMark)
+	applymovement(2, Common_Movement_FaceUp)
+	waitmovement(0)
+	msgbox("Intruder 1: Who the hell is this?")
+	waitmessage
+	applymovement(1, Common_Movement_WalkInPlaceDown)
+	msgbox("Go deal with it! No witnesses!")
+	waitmessage
+	applymovement(2, Common_Movement_WalkInPlaceUp)
+	msgbox("Intruder 2: You got it, boss!")
+	waitmessage
+	applymovement(1, Common_Movement_WalkInPlaceRight)
+	applymovement(2, Common_Movement_WalkUp2)
+	waitmovement(0)
+	trainerbattle_single(TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat)
+	release
+	end
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro {
+	"Sorry, kid..."
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat {
+	"Wait, what?"
 }
 
 script LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC {
