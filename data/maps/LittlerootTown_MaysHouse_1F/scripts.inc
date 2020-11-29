@@ -18,6 +18,11 @@ LittlerootTown_MaysHouse_1F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 
 
 LittlerootTown_MaysHouse_1F_TriggerBag::
+	goto_if_unset FLAG_SYS_POKEMON_GET, LittlerootTown_MaysHouse_1F_TriggerBag_2
+LittlerootTown_MaysHouse_1F_TriggerBag_1:
+	end
+
+LittlerootTown_MaysHouse_1F_TriggerBag_2:
 	lock
 	playse SE_PIN
 	applymovement 1, Common_Movement_ExclamationMark
@@ -27,7 +32,7 @@ LittlerootTown_MaysHouse_1F_TriggerBag::
 	applymovement OBJ_EVENT_ID_PLAYER, LittleroowTown_MaysHouse_1F_PlayerLookLeft
 	waitmovement 0
 	goto LittlerootTown_MaysHouse_1F_BirchsBag
-	end
+	goto LittlerootTown_MaysHouse_1F_TriggerBag_1
 
 
 LittleroowTown_MaysHouse_1F_PlayerLookLeft:
@@ -35,7 +40,6 @@ LittleroowTown_MaysHouse_1F_PlayerLookLeft:
 	step_end
 
 LittlerootTown_MaysHouse_1F_BirchsBag::
-	lock
 	goto_if_unset FLAG_SYS_POKEMON_GET, LittlerootTown_MaysHouse_1F_BirchsBag_2
 	msgbox LittlerootTown_MaysHouse_1F_BirchsBag_Text_2, MSGBOX_SIGN
 LittlerootTown_MaysHouse_1F_BirchsBag_1:
@@ -43,6 +47,7 @@ LittlerootTown_MaysHouse_1F_BirchsBag_1:
 	end
 
 LittlerootTown_MaysHouse_1F_BirchsBag_2:
+	lock
 	setflag FLAG_SYS_POKEMON_GET
 	msgbox LittlerootTown_MaysHouse_1F_BirchsBag_Text_0, MSGBOX_SIGN
 	fadescreen FADE_TO_BLACK
@@ -70,19 +75,20 @@ LittlerootTown_MaysHouse_1F_BirchsBag_Text_0:
 	.string "There's something in here...$"
 
 LittlerootTown_MaysHouse_1F_BirchsBag_Text_1:
-	.string "You obtained the Pichu! Its ear looks a\n"
+	.string "You obtained a Pichu! Its ear looks a\n"
 	.string "little crooked though...$"
 
 LittlerootTown_MaysHouse_1F_BirchsBag_Text_2:
 	.string "There's nothing else in here.$"
 
 LittlerootTown_MaysHouse_1F_RocketThreat::
-	.string "Voice 1: Look, Birch, we know you know we\n"
-	.string "know you know where we can find the\l"
-	.string "rare monsters.\p"
+	.string "Voice 1: Look, Birch, we know you know\n"
+	.string "where we can find some rare monsters,\l"
+	.string "and you know we know you know...\p"
+	.string "...we know. So just tell us, all right?\p"
 	.string "Birch: ...What?\p"
 	.string "Voice 2: Tell us where they are now! I\n"
 	.string "want a Gardev-, uh, a Gallade!\p"
-	.string "Birch: Look, I won't tell you...\p"
+	.string "Birch: I won't tell you...\p"
 	.string "Voice 1: If you don't tell us soon, your\n"
 	.string "family will pay the price...$"

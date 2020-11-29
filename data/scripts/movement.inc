@@ -6,6 +6,16 @@ Common_Movement_ExclamationMark: @ 8272598
 	emote_exclamation_mark
 	step_end
 
+Common_Movement_ExclamationMarkLookUp:
+	emote_exclamation_mark
+	face_up
+	step_end
+
+Common_Movement_ExclamationMarkLookLeft:
+	emote_exclamation_mark
+	face_left
+	step_end
+
 Common_Movement_Delay48: @ 827259A
 	delay_16
 	delay_16

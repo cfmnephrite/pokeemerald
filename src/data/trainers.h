@@ -11971,7 +11971,7 @@ const struct Trainer gTrainers[] = {
 
     // CFM trainers
 
-    [TRAINER_INTRO_GRUNT_1] =
+    [TRAINER_INTRO_GRUNT_2] =
     {
         .partyFlags = 0,
         .trainerClass = TRAINER_CLASS_TEAM_AQUA,
@@ -11984,7 +11984,7 @@ const struct Trainer gTrainers[] = {
         .partySize = ARRAY_COUNT(sParty_IntroGrunt1),
         .party = {.NoItemDefaultMoves = sParty_IntroGrunt1},
     },
-    [TRAINER_INTRO_GRUNT_2] =
+    [TRAINER_INTRO_GRUNT_1] =
     {
         .partyFlags = 0,
         .trainerClass = TRAINER_CLASS_TEAM_AQUA,
