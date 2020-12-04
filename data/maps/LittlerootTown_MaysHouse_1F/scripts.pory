@@ -53,10 +53,9 @@ script LittlerootTown_MaysHouse_1F_Beginning {
 
 text LittlerootTown_MaysHouse_1F_RocketThreat {
 	format(
-		"Voice 1: Look, Birch, we know you know where we can find some rare monsters, and you know we know you know...\p"
-		" ...we know. So just tell us, all right?\p"
+		"Voice 1: Quit stalling, Birch. We know you know where to find some seriously rare monsters. And you know we know. And we know you know we know you know. You know?\p"
 		"Birch: ...What?\p"
-		"Voice 2: Tell us where they are now! I want a Gardev-, uh, a Gallade!\p"
+		"Voice 2: Tell us where to find 'em already! I want a Gardev-, uh, a Gallade!\p"
 		"Birch: I won't tell you...\p"
 		"Voice 1: If you don't tell us soon, your family will pay the price...")
 }

@@ -29,15 +29,11 @@ LittlerootTown_MaysHouse_1F_TriggerBag_2:
 	waitmovement 0
 	playmoncry SPECIES_PICHU, 0
 	waitmoncry
-	applymovement OBJ_EVENT_ID_PLAYER, LittleroowTown_MaysHouse_1F_PlayerLookLeft
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 	waitmovement 0
 	goto LittlerootTown_MaysHouse_1F_BirchsBag
 	goto LittlerootTown_MaysHouse_1F_TriggerBag_1
 
-
-LittleroowTown_MaysHouse_1F_PlayerLookLeft:
-	face_left
-	step_end
 
 LittlerootTown_MaysHouse_1F_BirchsBag::
 	goto_if_unset FLAG_SYS_POKEMON_GET, LittlerootTown_MaysHouse_1F_BirchsBag_2
@@ -82,13 +78,15 @@ LittlerootTown_MaysHouse_1F_BirchsBag_Text_2:
 	.string "There's nothing else in here.$"
 
 LittlerootTown_MaysHouse_1F_RocketThreat::
-	.string "Voice 1: Look, Birch, we know you know\n"
-	.string "where we can find some rare monsters,\l"
-	.string "and you know we know you know...\p"
-	.string "...we know. So just tell us, all right?\p"
+	.string "Voice 1: Quit stalling, Birch. We know\n"
+	.string "you know where to find some seriously\l"
+	.string "rare monsters. And you know we know.\l"
+	.string "And we know you know we know you know.\l"
+	.string "You know?\p"
 	.string "Birch: ...What?\p"
-	.string "Voice 2: Tell us where they are now! I\n"
-	.string "want a Gardev-, uh, a Gallade!\p"
+	.string "Voice 2: Tell us where to find 'em\n"
+	.string "already! I want a Gardev-, uh, a\l"
+	.string "Gallade!\p"
 	.string "Birch: I won't tell you...\p"
 	.string "Voice 1: If you don't tell us soon, your\n"
 	.string "family will pay the price...$"

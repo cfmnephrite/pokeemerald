@@ -10,6 +10,7 @@ mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
 }
 
 script LittlerootTown_MaysHouse_2F_TheRescueStart {
+	hideobjectat(OBJ_EVENT_ID_PICHU, MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
 	setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
 	lock
 	special(SpawnCameraObject)
@@ -47,6 +48,7 @@ script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
 	waitmovement(0)
 	playse(SE_KOUKA_M)
 	waitse
+	playse(SE_PIN)
 	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_ExclamationMarkLookLeft)
 	waitmovement(0)
 	msgbox("Intruder 2: Why, you little!...\pPooch, get 'em!")
@@ -54,8 +56,11 @@ script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
 	playmoncry(SPECIES_POOCHYENA, 0)
 	waitmoncry
 	applymovement(OBJ_EVENT_ID_POOCHYENA, LittlerootTown_MaysHouse_2F_Movement_PoochyenaMovesToEngage)
+	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_GRUNT_1, LittlerootTown_MaysHouse_2F_Movement_Grunt1MovesToEngage)
+	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_PICHU, Common_Movement_FaceRight)
+	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
 	waitmovement(0)
 	trainerbattle_single(TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1)

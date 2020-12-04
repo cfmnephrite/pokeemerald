@@ -8,6 +8,7 @@ LittlerootTown_MaysHouse_2F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 
 
 LittlerootTown_MaysHouse_2F_TheRescueStart::
+	hideobjectat 7, MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F
 	setvar VAR_LITTLEROOT_INTRO_STATE, 2
 	lock
 	special SpawnCameraObject
@@ -45,6 +46,7 @@ LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2::
 	waitmovement 0
 	playse SE_KOUKA_M
 	waitse
+	playse SE_PIN
 	applymovement 1, Common_Movement_ExclamationMarkLookLeft
 	waitmovement 0
 	msgbox LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2_Text_0
@@ -52,9 +54,12 @@ LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2::
 	playmoncry SPECIES_POOCHYENA, 0
 	waitmoncry
 	applymovement 3, LittlerootTown_MaysHouse_2F_Movement_PoochyenaMovesToEngage
+	waitmovement 0
 	applymovement 1, LittlerootTown_MaysHouse_2F_Movement_Grunt1MovesToEngage
+	waitmovement 0
 	applymovement 7, Common_Movement_FaceRight
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+	waitmovement 0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 	waitmovement 0
 	trainerbattle_single TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1
 	release
