@@ -728,7 +728,7 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_ZAP_CANNON] = _("Zap Cannon"),
     [MOVE_ZEN_HEADBUTT] = _("Zen Headbutt"),
     [MOVE_ZING_ZAP] = _("Zing Zap"),
-    
+
     // Dead moves
     [MOVE_Z_NORMAL_2] = _("Not In Yet"),
     [MOVE_Z_PSYCHIC_2] = _("Not In Yet"),

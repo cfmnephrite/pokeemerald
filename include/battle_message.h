@@ -116,7 +116,8 @@
     textVar[0] = B_BUFF_PLACEHOLDER_BEGIN;                                  \
     textVar[1] = B_BUFF_ABILITY;                                            \
     textVar[2] = abilityId;                                                 \
-    textVar[3] = B_BUFF_EOS;                                                \
+    textVar[3] = (abilityId & 0xFF00) >> 8;                                 \
+    textVar[4] = B_BUFF_EOS;                                                \
 }
 
 #define PREPARE_TYPE_BUFFER(textVar, typeId)                                \
@@ -301,7 +302,7 @@ extern const u8 gText_PkmnGettingPumped[];
 extern const u8 gText_PkmnShroudedInMist[];
 extern const u8 gText_PkmnsXPreventsSwitching[];
 extern const u8 gText_TheGreatNewHope[];
-extern const u8 gText_WillChampinshipDreamComeTrue[];
+extern const u8 gText_WillChampionshipDreamComeTrue[];
 extern const u8 gText_AFormerChampion[];
 extern const u8 gText_ThePreviousChampion[];
 extern const u8 gText_TheUnbeatenChampion[];
