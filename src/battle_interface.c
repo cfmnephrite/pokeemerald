@@ -1708,11 +1708,6 @@ void UpdateOamPriorityInAllHealthboxes(u8 priority)
         gSprites[healthbarSpriteId].oam.priority = priority;
         if (indicatorSpriteId != 0xFF)
             gSprites[indicatorSpriteId].oam.priority = priority;
-        
-        #if HIDE_HEALTHBOXES_DURING_ANIMS
-        if (IsBattlerAlive(i))
-            TryToggleHealboxVisibility(priority, healthboxLeftSpriteId, healthboxRightSpriteId, healthbarSpriteId, indicatorSpriteId);
-        #endif
     }
 }
 
@@ -1967,11 +1962,11 @@ void SetMoveScreenSplitIcons(void)
     u8 splitA, splitB;
     u8 *src = (u8*)gMoveScreenSplitIconsGfx;
 
-    splitA = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]], 1);
+    splitA = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]]);
     if (gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1] == MOVE_NONE)
         splitB = 3;
     else
-        splitB = GetMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1], 1);
+        splitB = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1]);
 
     RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 99 * TILE_SIZE_4BPP), 0x40);
     RequestSpriteCopy((src + 0x40 * (3 + splitB)), (u8*)(VRAM + 101 * TILE_SIZE_4BPP), 0x40);
