@@ -7518,23 +7518,25 @@ BattleScript_GooeyActivates::
 
 BattleScript_CottonDown::
 	call BattleScript_AbilityPopUp
-	copybyte gBattlerAttacker, gBattlerTarget
-	selectfirstvalidtarget
+	copybyte gEffectBattler, gBattlerTarget
+	copybyte gBattlerTarget, gBattlerAttacker
 BattleScript_CottonDownLoop::
+	jumpifbyteequal gEffectBattler, gBattlerTarget, BattleScript_CottonDownTargetEnd
 	setstatchanger STAT_SPEED, 1, TRUE
 	jumpifability BS_TARGET, ABILITY_CLEAR_BODY, BattleScript_CottonDownPrevented
 	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_CottonDownPrevented
 	jumpifability BS_TARGET, ABILITY_WHITE_SMOKE, BattleScript_CottonDownPrevented
 	jumpifability BS_TARGET, ABILITY_FULL_METAL_BODY, BattleScript_CottonDownPrevented
 	statbuffchange STAT_BUFF_NOT_PROTECT_AFFECTED | STAT_BUFF_ALLOW_PTR, BattleScript_CottonDownTargetEnd
-	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, 0x1, BattleScript_CottonDownTargetEnd
+	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, 1, BattleScript_CottonDownTargetEnd
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printfromtable gStatDownStringIds
 	waitmessage 0x20
 BattleScript_CottonDownTargetEnd::
 	jumpifnexttargetvalid BattleScript_CottonDownLoop
-	end2
+	copybyte gBattlerTarget, gEffectBattler
+	return
 BattleScript_CottonDownPrevented::
 	copybyte gBattlerAbility, gBattlerTarget
 	call BattleScript_AbilityNoStatLoss
