@@ -300,7 +300,6 @@
 #define F_SUMMARY_SCREEN_FLIP_SPRITE 0x80
 
 // Evolution types
-// Evolution types
 #define EVO_MEGA_EVOLUTION                0xffff // Not an actual evolution, used to temporarily mega evolve in battle.
 #define EVO_MOVE_MEGA_EVOLUTION           0xfffe // Mega Evolution that checks for a move instead of held item.
 #define EVO_FRIENDSHIP                    1      // Pokémon levels up with friendship ≥ 220
@@ -336,7 +335,7 @@
 #define EVO_TRADE_SPECIFIC_MON            31     // Pokémon is traded for a specified Pokémon
 #define EVO_SPECIFIC_MAP                  32     // Pokémon levels up on specified map
 
-#define EVOS_PER_MON 8
+#define EVOS_PER_MON 10
 
 #define NUM_MALE_LINK_FACILITY_CLASSES   8
 #define NUM_FEMALE_LINK_FACILITY_CLASSES 8

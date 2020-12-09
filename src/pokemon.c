@@ -5142,7 +5142,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         // Evolution stone
                     case 7:
                         {
-                            u16 targetSpecies = GetEvolutionTargetSpecies(mon, 2, item);
+                            u16 targetSpecies = GetEvolutionTargetSpecies(mon, 2, item, SPECIES_NONE);
 
                             if (targetSpecies != SPECIES_NONE)
                             {
@@ -5513,7 +5513,7 @@ u8 GetNatureFromPersonality(u32 personality)
     return personality % NUM_NATURES;
 }
 
-u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
+u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem, u16 tradePartnerSpecies)
 {
     int i, j;
     u16 targetSpecies = 0;
@@ -5525,6 +5525,7 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
     u8 beauty = GetMonData(mon, MON_DATA_BEAUTY, 0);
     u16 upperPersonality = personality >> 16;
     u8 holdEffect;
+    u16 currentMap;
 
     if (heldItem == ITEM_ENIGMA_BERRY)
         holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
@@ -5682,6 +5683,11 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
                 if (gMapHeader.regionMapSectionId == gEvolutionTable[species][i].param)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
+            case EVO_SPECIFIC_MAP:
+                currentMap = ((gSaveBlock1Ptr->location.mapGroup) << 8 | gSaveBlock1Ptr->location.mapNum);
+                if (currentMap == gEvolutionTable[species][i].param)
+                    targetSpecies = gEvolutionTable[species][i].targetSpecies;
+                break;
             }
         }
         break;
@@ -5700,6 +5706,10 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
                     SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 }
+                break;
+            case EVO_TRADE_SPECIFIC_MON:
+                if (gEvolutionTable[species][i].param == tradePartnerSpecies)
+                    targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             }
         }
@@ -6608,9 +6618,19 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
 
     shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
     if (shinyValue < SHINY_ODDS)
-        return gMonShinyPaletteTable[species].data;
+    {
+        if (SpeciesHasGenderDifference[species] && GetGenderFromSpeciesAndPersonality(species, personality) == MON_FEMALE)
+            return gMonShinyPaletteTableFemale[species].data;
+        else
+            return gMonShinyPaletteTable[species].data;
+    }
     else
-        return gMonPaletteTable[species].data;
+    {
+        if (SpeciesHasGenderDifference[species] && GetGenderFromSpeciesAndPersonality(species, personality) == MON_FEMALE)
+            return gMonPaletteTableFemale[species].data;
+        else
+            return gMonPaletteTable[species].data;
+    }
 }
 
 const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *mon)
@@ -6627,9 +6647,19 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
 
     shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
     if (shinyValue < SHINY_ODDS)
-        return &gMonShinyPaletteTable[species];
+    {
+        if (SpeciesHasGenderDifference[species] && GetGenderFromSpeciesAndPersonality(species, personality) == MON_FEMALE)
+            return &gMonShinyPaletteTableFemale[species];
+        else
+            return &gMonShinyPaletteTable[species];
+    }
     else
-        return &gMonPaletteTable[species];
+    {
+        if (SpeciesHasGenderDifference[species] && GetGenderFromSpeciesAndPersonality(species, personality) == MON_FEMALE)
+            return &gMonPaletteTableFemale[species];
+        else
+            return &gMonPaletteTable[species];
+    }
 }
 
 bool32 IsHMMove2(u16 move)
