@@ -116,6 +116,7 @@
 #define FLAG_Z_MOVE                 (1 << 27)
 #define FLAG_DMG_IN_AIR             (1 << 28) // X2 dmg on air, always hits target on air
 #define FLAG_HIT_IN_AIR             (1 << 29) // dmg is normal, always hits target on air
+#define FLAG_IGNORE_REDIRECTION     (1 << 30)
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0

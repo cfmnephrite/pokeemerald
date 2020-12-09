@@ -904,8 +904,8 @@ u16 RenderText(struct TextPrinter *textPrinter)
             else
                 return 2;
             break;
-        case PLUS_256:
-        case PLUS_512:
+        case SKINNY:
+        case V_SKINNY:
             textPrinter->printerTemplate.shift = currChar - 0x9B;
         case BLANK:
             return 2;
@@ -1746,10 +1746,10 @@ void ForceTextWrapping(u8 *textPtr, u8 fontId, u8 allowedWidth, s8 letterSpacing
         case CHAR_SPACE:
             spaceIndex = i;
             break;
-        case PLUS_256:
+        case SKINNY:
             shift = 1;
             break;
-        case PLUS_512:
+        case V_SKINNY:
             shift = 2;
             break;
         case CHAR_NEWLINE:

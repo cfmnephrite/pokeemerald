@@ -97,9 +97,11 @@ u32 IsAbilityOnOpposingSide(u32 battlerId, u32 ability);
 u32 IsAbilityOnField(u32 ability);
 u32 IsAbilityOnFieldExcept(u32 battlerId, u32 ability);
 u32 IsAbilityPreventingEscape(u32 battlerId);
-bool32 CanBattlerEscape(u32 battlerId); // no ability check
+bool32 CanBattlerBeTrapped(u32 battlerId);
+bool32 CanBattlerEscape(u32 battlerId);
 void BattleScriptExecute(const u8* BS_ptr);
 void BattleScriptPushCursorAndCallback(const u8* BS_ptr);
+u16 ItemHealCalculateAmount(u32 battlerId, u32 itemId);
 u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn);
 void ClearFuryCutterDestinyBondGrudge(u8 battlerId);
 void HandleAction_RunBattleScript(void);

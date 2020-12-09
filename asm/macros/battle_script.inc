@@ -1805,6 +1805,49 @@
 	various BS_ATTACKER, VARIOUS_CHECK_BALL_FETCH
 	.endm
 	
+	.macro eattargetberry
+	various BS_ATTACKER, VARIOUS_INSTANTLY_EAT_TARGET_BERRY
+	.endm
+	
+	.macro jumpifselftrapped battler:req, ptr:req
+	various \battler, VARIOUS_JUMP_IF_SELF_TRAPPED
+	.4byte \ptr
+	.endm
+	
+	.macro trytrapself battler:req, ptr:req
+	various \battler, VARIOUS_TRY_TRAP_SELF
+	.4byte \ptr
+	.endm
+	
+	.macro trytarshot ptr:req
+	various BS_ATTACKER, VARIOUS_TRY_TAR_SHOT
+	.4byte \ptr
+	.endm
+	
+	.macro trynextdart ptr:req
+	various BS_ATTACKER, VARIOUS_TRY_NEXT_DART
+	.4byte \ptr
+	.endm
+
+	.macro setoctolock ptr:req
+	various BS_ATTACKER, VARIOUS_SET_OCTOLOCK
+	.4byte \ptr
+	.endm
+
+	.macro setdefiantstatvalues
+	various BS_TARGET, VARIOUS_SET_DEFIANT_STAT_VALUES
+	.endm
+	
+	.macro checkpoltergeist ptr:req
+	various BS_ATTACKER, VARIOUS_CHECK_POLTERGEIST
+	.4byte \ptr
+	.endm
+
+	.macro cutonethirdhpraisestats ptr:req
+	various BS_ATTACKER, VARIOUS_CUT_1_3_HP_RAISE_STATS
+	.4byte \ptr
+	.endm
+	
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
 	setbyte sSTATCHANGER \stat | \stages << 3 | \down << 7

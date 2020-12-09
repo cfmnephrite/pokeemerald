@@ -2002,7 +2002,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 1,
     },
 
     [ITEM_MAGO_BERRY] =
@@ -2016,7 +2016,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 2,
     },
 
     [ITEM_AGUAV_BERRY] =
@@ -2030,7 +2030,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 3,
     },
 
     [ITEM_IAPAPA_BERRY] =
@@ -2044,7 +2044,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 4,
     },
 
     [ITEM_RAZZ_BERRY] =
@@ -2298,7 +2298,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 1,
     },
 
     [ITEM_GANLON_BERRY] =
@@ -2312,7 +2312,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 2,
     },
 
     [ITEM_SALAC_BERRY] =
@@ -2326,7 +2326,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 3,
     },
 
     [ITEM_PETAYA_BERRY] =
@@ -2340,7 +2340,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 4,
     },
 
     [ITEM_APICOT_BERRY] =
@@ -2354,7 +2354,7 @@ const struct Item gItems[] =
         .pocket = POCKET_BERRIES,
         .type = 4,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .secondaryId = 0,
+        .secondaryId = 5,
     },
 
     [ITEM_LANSAT_BERRY] =

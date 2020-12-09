@@ -112,6 +112,8 @@ struct DisableStruct
     u8 skyDrop;
     u8 skyDropTrappingBattler;
     u8 statRaised;
+	u8 tarShot:1;
+    u8 octolock;
 };
 
 struct ProtectStruct

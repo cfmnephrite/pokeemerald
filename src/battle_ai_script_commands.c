@@ -866,41 +866,6 @@ static void RestoreBattlerData(u8 battlerId)
     }
 }
 
-static bool32 AI_GetIfCrit(u32 move, u8 battlerAtk, u8 battlerDef)
-{
-    bool32 isCrit;
-
-    switch (CalcCritChanceStage(battlerAtk, battlerDef, move, FALSE))
-    {
-    case -1:
-    case 0:
-    default:
-        isCrit = FALSE;
-        break;
-    case 1:
-        if (gBattleMoves[move].flags & FLAG_HIGH_CRIT && (Random() % 5 == 0))
-            isCrit = TRUE;
-        else
-            isCrit = FALSE;
-        break;
-    case 2:
-        if (gBattleMoves[move].flags & FLAG_HIGH_CRIT && (Random() % 2 == 0))
-            isCrit = TRUE;
-        else if (!(gBattleMoves[move].flags & FLAG_HIGH_CRIT) && (Random() % 4) == 0)
-            isCrit = TRUE;
-        else
-            isCrit = FALSE;
-        break;
-    case -2:
-    case 3:
-    case 4:
-        isCrit = TRUE;
-        break;
-    }
-
-    return isCrit;
-}
-
 s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef)
 {
     s32 dmg, moveType;
@@ -915,7 +880,7 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef)
     gBattleStruct->dynamicMoveSplit = 0;
     SetTypeAndSplitBeforeUsingMove(move, battlerAtk);
     GET_MOVE_TYPE(move, moveType);
-    dmg = CalculateMoveDamage(move, battlerAtk, battlerDef, moveType, 0, AI_GetIfCrit(move, battlerAtk, battlerDef), FALSE, FALSE);
+    dmg = CalculateMoveDamage(move, battlerAtk, battlerDef, moveType, 0, CalcIfMoveCrit(battlerAtk, battlerDef, move, FALSE), FALSE, FALSE);
 
     RestoreBattlerData(battlerAtk);
     RestoreBattlerData(battlerDef);
