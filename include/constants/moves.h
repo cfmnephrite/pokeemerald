@@ -359,7 +359,7 @@
 
 #define MOVES_COUNT_GEN3 355
 
-// Gen4 moves.
+// Gen 4 moves.
 #define MOVE_ROOST 355
 #define MOVE_GRAVITY 356
 #define MOVE_MIRACLE_EYE 357
@@ -476,7 +476,7 @@
 
 #define MOVES_COUNT_GEN4 468
 
-// Gen5 moves.
+// Gen 5 moves.
 #define MOVE_HONE_CLAWS 468
 #define MOVE_WIDE_GUARD 469
 #define MOVE_GUARD_SPLIT 470
@@ -572,7 +572,7 @@
 
 #define MOVES_COUNT_GEN5 560
 
-// Gen6 moves.
+// Gen 6 moves.
 #define MOVE_FLYING_PRESS 560
 #define MOVE_MAT_BLOCK 561
 #define MOVE_BELCH 562
@@ -631,6 +631,7 @@
 #define MOVE_THOUSAND_WAVES 615
 #define MOVE_LANDS_WRATH 616
 #define MOVE_LIGHT_OF_RUIN 617
+// ORAS Moves
 #define MOVE_ORIGIN_PULSE 618
 #define MOVE_PRECIPICE_BLADES 619
 #define MOVE_DRAGON_ASCENT 620
@@ -843,6 +844,6 @@
 
 #define MOVES_COUNT_GEN8        819
 
-#define MOVES_COUNT             MOVES_COUNT_GEN8
+#define MOVES_COUNT MOVES_COUNT_GEN8
 
 #endif  // GUARD_CONSTANTS_MOVES_H

@@ -5256,7 +5256,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_JUDGMENT] = {
-        .effect = EFFECT_JUDGMENT,
+        .effect = EFFECT_CHANGE_TYPE_ON_ITEM,
         .pp = 10,
         .power = 100,
         .accuracy = 100,
@@ -7723,7 +7723,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .secondaryEffectChance = 0,
         .flags = 0,
-        .target = MOVE_TARGET_SELECTED,
+        .target = MOVE_TARGET_USER,
         .argument = Z_STATUS_EFFECT_SP_ATK_PLUS_1,
     },
 
@@ -9997,7 +9997,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
 
     [MOVE_STRING_SHOT] = {
-        .effect = EFFECT_SPEED_DOWN,
+        .effect = EFFECT_SPEED_DOWN_2,
         .pp = 35,
         .power = 0,
         .accuracy = 95,
@@ -11762,6 +11762,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .secondaryEffectChance = 0,
         .flags = 0,
         .target = MOVE_TARGET_SELECTED,
+        .argument = HOLD_EFFECT_MEMORY,
     },
 
     [MOVE_LGPE_10] = {
