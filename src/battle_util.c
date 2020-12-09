@@ -90,10 +90,6 @@ void HandleAction_UseMove(void)
         gHitMarker |= HITMARKER_NO_PPDEDUCT;
         *(gBattleStruct->moveTarget + gBattlerAttacker) = GetMoveTarget(MOVE_STRUGGLE, 0);
     }
-    else if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS || gBattleMons[gBattlerAttacker].status2 & STATUS2_RECHARGE)
-    {
-        gCurrentMove = gChosenMove = gLockedMoves[gBattlerAttacker];
-    }
     // encore forces you to use the same move
     else if (gDisableStructs[gBattlerAttacker].encoredMove != MOVE_NONE
              && gDisableStructs[gBattlerAttacker].encoredMove == gBattleMons[gBattlerAttacker].moves[gDisableStructs[gBattlerAttacker].encoredMovePos])
@@ -132,7 +128,7 @@ void HandleAction_UseMove(void)
     }
 
     // Set dynamic move type.
-    SetTypeBeforeUsingMove(gChosenMove, gBattlerAttacker);
+    SetTypeAndSplitBeforeUsingMove(gChosenMove, gBattlerAttacker);
     GET_MOVE_TYPE(gChosenMove, moveType);
 
     // choose target
@@ -1380,7 +1376,6 @@ static bool32 IsGravityPreventingMove(u32 move)
     case MOVE_SKY_DROP:
     case MOVE_SPLASH:
     case MOVE_TELEKINESIS:
-    case MOVE_FLOATY_FALL:
         return TRUE;
     default:
         return FALSE;
@@ -3879,44 +3874,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 effect++;
             }
             break;
-        case ABILITY_ANTICIPATION:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                u32 side = GetBattlerSide(battler);
-
-                for (i = 0; i < MAX_BATTLERS_COUNT; i++)
-                {
-                    if (IsBattlerAlive(i) && side != GetBattlerSide(i))
-                    {
-                        for (j = 0; j < MAX_MON_MOVES; j++)
-                        {
-                            move = gBattleMons[i].moves[j];
-                            GET_MOVE_TYPE(move, moveType);
-                            if (CalcTypeEffectivenessMultiplier(move, moveType, i, battler, FALSE) >= UQ_4_12(2.0))
-                            {
-                                effect++;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (effect)
-                {
-                    gBattleCommunication[MULTISTRING_CHOOSER] = MULTI_SWITCHIN_ANTICIPATION;
-                    gSpecialStatuses[battler].switchInAbilityDone = 1;
-                    BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
-                }
-            }
-            break;
-        case ABILITY_FRISK:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = 1;
-                BattleScriptPushCursorAndCallback(BattleScript_FriskActivates); // Try activate
-                effect++;
-            }
-            return effect; // Note: It returns effect as to not record the ability if Frisk does not activate.
         case ABILITY_FOREWARN:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -4757,7 +4714,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
              && gBattleStruct->hpBefore[battler] > gBattleMons[battler].maxHP / 2
              && gBattleMons[battler].hp < gBattleMons[battler].maxHP / 2
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
-             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_SHEER_FORCE && gBattleMoves[gCurrentMove].flags & FLAG_SHEER_FORCE_BOOST)
+             && !(GetBattlerAbility(gBattlerAttacker) == ABILITY_SHEER_FORCE && gBattleMoves[gCurrentMove].secondaryEffectChance > 0)
              && (CanBattlerSwitch(battler) || !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
              && !(gBattleTypeFlags & BATTLE_TYPE_ARENA))
             {
@@ -5135,24 +5092,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 gBattleMons[gBattlerAttacker].status2 |= STATUS2_INFATUATED_WITH(battler);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_CuteCharmActivates;
-                effect++;
-            }
-            break;
-        case ABILITY_AFTERMATH:
-            if (!IsAbilityOnField(ABILITY_DAMP)
-             && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && !(IsBattlerAlive(battler))
-             && IsMoveMakingContact(move, gBattlerAttacker)
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && TARGET_TURN_DAMAGED
-             && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
-             && GetBattlerAbility(gBattlerAttacker) != ABILITY_ROCK_HEAD)
-            {
-                gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 4;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
                 effect++;
             }
             break;

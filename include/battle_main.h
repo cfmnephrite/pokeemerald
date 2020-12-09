@@ -71,7 +71,6 @@ void RunBattleScriptCommands(void);
 bool8 TryRunFromBattle(u8 battlerId);
 void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk);
 void SpecialStatusesClear(void);
-void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk);
 
 extern struct UnknownPokemonStruct4 gMultiPartnerParty[MULTI_PARTY_SIZE];
 

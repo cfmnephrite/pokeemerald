@@ -6727,7 +6727,7 @@ BattleScript_PsychicSurgeActivates::
 BattleScript_SwitchInAbilityActivates::
 	pause 0x20
 	call BattleScript_AbilityPopUp
-	printfromtable gSwitchInAbilityStringsIds
+	printfromtable gSwitchInAbilityStringIds
 	waitmessage 0x40
 	end3
 

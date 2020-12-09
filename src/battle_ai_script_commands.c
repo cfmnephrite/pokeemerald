@@ -954,7 +954,7 @@ u16 AI_GetTypeEffectiveness(u16 move, u8 battlerAtk, u8 battlerDef)
     SetBattlerData(battlerDef);
 
     gBattleStruct->dynamicMoveType = 0;
-    SetTypeBeforeUsingMove(move, battlerAtk);
+    SetTypeAndSplitBeforeUsingMove(move, battlerAtk);
     GET_MOVE_TYPE(move, moveType);
     typeEffectiveness = CalcTypeEffectivenessMultiplier(move, moveType, battlerAtk, battlerDef, FALSE);
 
@@ -2846,7 +2846,6 @@ static void Cmd_if_has_move_with_accuracy_lt(void)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE
-            && gBattleMoves[moves[i]].effect != EFFECT_OHKO
             && gBattleMoves[moves[i]].accuracy > 1
             && gBattleMoves[moves[i]].accuracy < toCmp)
             break;

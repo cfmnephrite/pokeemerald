@@ -2355,12 +2355,6 @@ AI_CV_PainSplit_ScoreDown1:
 AI_CV_PainSplit_End:
 	end
 	
-AI_EncourageIfHasOHKO:
-	if_level_cond 1, AI_EncourageIfHasOHKORet
-	if_has_move_with_effect AI_USER, EFFECT_OHKO, Score_Plus3
-AI_EncourageIfHasOHKORet:
-	end
-	
 AI_EncourageIfHasLowAccuracyMove:
 	if_ability AI_USER, ABILITY_COMPOUND_EYES, AI_EncourageIfHasVeryLowAccuracyMove
 	get_hold_effect AI_USER
@@ -2375,7 +2369,6 @@ AI_EncourageIfHasVeryLowAccuracyMove:
 	goto Score_Minus1
 
 AI_CV_LockOn:
-	call AI_EncourageIfHasOHKO
 	call AI_EncourageIfHasLowAccuracyMove
 AI_CV_LockOn2:
 	if_random_less_than 128, AI_CV_LockOn_End
@@ -3635,7 +3628,6 @@ sEffectsAtkRaise:
     .2byte EFFECT_ATTACK_UP_2
     .2byte EFFECT_DRAGON_DANCE
     .2byte EFFECT_COIL
-    .2byte EFFECT_BELLY_DRUM
     .2byte EFFECT_BULK_UP
     .2byte -1
 	
