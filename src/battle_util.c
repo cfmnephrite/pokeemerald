@@ -5838,9 +5838,9 @@ static u8 ItemHealHp(u32 battlerId, u32 itemId, bool32 end2)
     }
     if (HasEnoughHpToEatBerry(battlerId, 2, itemId))
     {
-        if (percentHeal)
-            gBattleMoveDamage = (gBattleMons[battlerId].maxHP * heal / 100) * -1;
-        else
+        // if (percentHeal)
+        //     gBattleMoveDamage = (gBattleMons[battlerId].maxHP * heal / 100) * -1;
+        // else
             gBattleMoveDamage = heal * -1;
 
         if (end2)

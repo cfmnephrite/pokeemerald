@@ -3600,7 +3600,7 @@ AI_ConsiderAllyChosenMove:
 	get_move_effect_from_result
 	if_equal EFFECT_HELPING_HAND, AI_PartnerChoseHelpingHand	
 	if_equal EFFECT_PERISH_SONG, AI_PartnerChosePerishSong
-	if_equal EFFECT_ALWAYS_CRIT, AI_PartnerChoseAlwaysCrit
+	@if_equal EFFECT_ALWAYS_CRIT, AI_PartnerChoseAlwaysCrit
 AI_ConsiderAllyChosenMoveRet:
 	end
 	
@@ -3730,7 +3730,7 @@ AI_TryOnAlly:
 	if_equal MOVE_POWER_DISCOURAGED, AI_TryStatusMoveOnAlly
 	get_curr_move_type
 	if_equal TYPE_FIRE, AI_TryFireMoveOnAlly
-	if_effect EFFECT_ALWAYS_CRIT, AI_TryCritAngerPointAlly
+	@if_effect EFFECT_ALWAYS_CRIT, AI_TryCritAngerPointAlly
 AI_DiscourageOnAlly:
 	goto Score_Minus30
 

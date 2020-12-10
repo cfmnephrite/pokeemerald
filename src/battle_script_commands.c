@@ -8588,9 +8588,9 @@ static void Cmd_various(void)
         {
             case HOLD_EFFECT_RESTORE_HP:
             case HOLD_EFFECT_RESTORE_PCT_HP:
-                ItemHealCalculateAmount(gActiveBattler, gBattleMons[gBattlerTarget].item);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ItemHealHP_RemoveItemRet;
+                // ItemHealCalculateAmount(gActiveBattler, gBattleMons[gBattlerTarget].item);
+                // BattleScriptPushCursor();
+                // gBattlescriptCurrInstr = BattleScript_ItemHealHP_RemoveItemRet;
                 break;
             case HOLD_EFFECT_CONFUSE_SPICY:
             case HOLD_EFFECT_CONFUSE_DRY:
