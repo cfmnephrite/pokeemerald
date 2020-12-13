@@ -12,44 +12,44 @@ struct BoxPokemon
     // Words 1 & 2: PID + Trainer ID
     u32 personality;
     u32 otId;
-    
+
     // Words 3-5: Pokémon nickname (12 chars)
     u8 nickname[12];
-    
+
     // Word 6: Species + Experience points (used to derive level)
     u32 species:11;
     u32 experience:21;
-    
+
     // Words 7 & 8: moves, language, gender, friendship, Pokérus, ppBonuses
     u32 move1:10;
     u32 move2:10;
     u32 language:3;
     u32 gender:1;
     u32 friendship:8;
-    
+
     u32 move3:10;
     u32 move4:10;
     u32 pokerus:4;
     u32 ppBonuses:8;
-    
+
     // Words 9 - 11: EV's + contest stats
     u8 hpEV;
     u8 attackEV;
     u8 defenseEV;
     u8 speedEV;
-    
+
     u8 spAttackEV;
     u8 spDefenseEV;
-    
+
     // Contest garbage (6 bytes)
     u8 cool;
     u8 beauty;
-    
+
     u8 cute;
     u8 smart;
     u8 tough;
     u8 sheen;
-    
+
     // Word 12: miscellaneous data; item, formId, Egg and origin data
     u32 heldItem:10;
     u32 formId:5;
@@ -58,11 +58,11 @@ struct BoxPokemon
     u32 metGame:3;
     u32 pokeball:5;
     u32 otGender:1;
-    
+
     // Words 13 & 14: Trainer name + met location
     u8 metLocation;
     u8 otName[PLAYER_NAME_LENGTH];
-    
+
     // Word 15: IV's
     u32 hpIV:5;
     u32 attackIV:5;

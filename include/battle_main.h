@@ -68,6 +68,8 @@ s8 GetMovePriority(u32 battlerId, u16 move);
 u8 GetWhoStrikesFirst(u8 battlerId1, u8 battlerId2, bool8 ignoreChosenMoves);
 void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
+void CalculateAndSetNewGlobalLevel();
+void SetGlobalLevel(u8 number);
 bool8 TryRunFromBattle(u8 battlerId);
 void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk);
 void SpecialStatusesClear(void);

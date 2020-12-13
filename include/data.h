@@ -2,6 +2,7 @@
 #define GUARD_DATA_H
 
 #include "constants/moves.h"
+#include "constants/global.h"
 
 #define SPECIES_SHINY_TAG 5000
 
@@ -45,12 +46,36 @@ struct TrainerMonItemCustomMoves
     u16 moves[MAX_MON_MOVES];
 };
 
+struct TrainerMonCustomMovesItemEVs
+{
+    u16 species;
+    u16 heldItem;
+    u8 evs[NUM_STATS];
+    u16 moves[MAX_MON_MOVES];
+    u8 nature;
+    u8 abilityNum;
+};
+
+struct TrainerMonCustomMovesItemEVsIVs
+{
+    u16 species;
+    u16 heldItem;
+    u8 ivs[NUM_STATS];
+    u8 evs[NUM_STATS];
+    u16 moves[MAX_MON_MOVES];
+    u8 nature;
+    u8 abilityNum;
+
+};
+
 union TrainerMonPtr
 {
     const struct TrainerMonNoItemDefaultMoves *NoItemDefaultMoves;
     const struct TrainerMonNoItemCustomMoves *NoItemCustomMoves;
     const struct TrainerMonItemDefaultMoves *ItemDefaultMoves;
     const struct TrainerMonItemCustomMoves *ItemCustomMoves;
+    const struct TrainerMonCustomMovesItemEVs *ItemCustomMovesEVs;
+    const struct TrainerMonCustomMovesItemEVsIVs *ItemCustomMovesIVs;
 };
 
 struct Trainer

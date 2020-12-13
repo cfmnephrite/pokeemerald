@@ -60,8 +60,11 @@
 #include "constants/party_menu.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "constants/species.h"
 #include "constants/trainers.h"
 #include "cable_club.h"
+#include "printf.h"
+#include "mgba.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
@@ -4868,6 +4871,7 @@ static void HandleEndTurn_FinishBattle(void)
         }
 
         sub_8186444();
+        CalculateAndSetNewGlobalLevel();
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
         for (i = 0; i < PARTY_SIZE; i++)
@@ -4995,6 +4999,49 @@ void RunBattleScriptCommands(void)
 {
     if (gBattleControllerExecFlags == 0)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+}
+
+void CalculateAndSetNewGlobalLevel()
+{
+    u16 i, j, level, meanLevel = 0, teamCount = 0, meanTeamCount = 0;
+    u32 combinedLevel = 0, combinedQuarticLevel = 0;
+    u32 quarticLevels[PARTY_SIZE];
+    s8 newGlobalLevel = 5;
+    for(i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE)
+        {
+            level = GetLevelFromMonExp(&gPlayerParty[i]);
+            combinedLevel += level;
+            quarticLevels[i] = level * level * level * level;
+            teamCount++;
+        }
+        else
+            quarticLevels[i] = 0;
+    }
+    if (teamCount)
+    {
+        meanLevel = combinedLevel / teamCount;
+        for (j = 0; j < PARTY_SIZE; j++)
+        {
+            if(quarticLevels[j] > meanLevel / 2)
+            {
+                combinedQuarticLevel += quarticLevels[j];
+                meanTeamCount++;
+            }
+        }
+        newGlobalLevel = Sqrt(Sqrt(combinedQuarticLevel / meanTeamCount));
+        if (newGlobalLevel < 1)
+            newGlobalLevel = 5;
+    }
+    mgba_printf(MGBA_LOG_DEBUG, "New global level: %d", newGlobalLevel);
+    if (newGlobalLevel > gSaveBlock1Ptr->globalLevel)
+        SetGlobalLevel(newGlobalLevel);
+}
+
+void SetGlobalLevel(u8 number)
+{
+    gSaveBlock1Ptr->globalLevel = number;
 }
 
 void SetTypeAndSplitBeforeUsingMove(u16 move, u8 battlerAtk)

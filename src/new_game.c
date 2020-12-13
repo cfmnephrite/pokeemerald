@@ -45,6 +45,7 @@
 #include "berry_powder.h"
 #include "mevent.h"
 #include "union_room_chat.h"
+#include "battle_main.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -181,6 +182,7 @@ void NewGameInitData(void)
     InitLotadSizeRecord();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
+    SetGlobalLevel(5);
     ResetPokemonStorageSystem();
     ClearRoamerData();
     ClearRoamerLocationData();
