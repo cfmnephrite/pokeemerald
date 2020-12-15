@@ -60,12 +60,11 @@ struct TrainerMonCustomMovesItemEVsIVs
 {
     u16 species;
     u16 heldItem;
-    u8 ivs[NUM_STATS];
     u8 evs[NUM_STATS];
     u16 moves[MAX_MON_MOVES];
     u8 nature;
     u8 abilityNum;
-
+    u8 ivs[NUM_STATS];
 };
 
 union TrainerMonPtr

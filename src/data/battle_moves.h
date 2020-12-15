@@ -7113,6 +7113,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .power = 90,
         .type = TYPE_FIGHTING,
         .accuracy = 100,
+        .pp = 10,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,

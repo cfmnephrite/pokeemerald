@@ -1788,11 +1788,11 @@ static void sub_8038538(struct Sprite *sprite)
 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
-    u32 nameHash = 0;
-    u32 personalityValue;
-    u8 fixedIV;
+    u32 nameHash = 0, ppBonuses = 255;
+    u32 personalityValue = Random32();
     s32 i, j;
-    u8 monsCount;
+    u8 fixedIV, monsCount, desiredNature, natureShift;
+    u8 monPP[MAX_MON_MOVES];
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
@@ -1819,12 +1819,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
         for (i = 0; i < monsCount; i++)
         {
 
-            if (gTrainers[trainerNum].doubleBattle == TRUE)
-                personalityValue = 0x80;
-            else if (gTrainers[trainerNum].encounterMusic_gender & 0x80)
-                personalityValue = 0x78;
-            else
-                personalityValue = 0x88;
+            // if (gTrainers[trainerNum].doubleBattle == TRUE)
+            //     personalityValue = 0x80;
+            // else if (gTrainers[trainerNum].encounterMusic_gender & 0x80)
+            //     personalityValue = 0x78;
+            // else
+            //     personalityValue = 0x88;
 
             for (j = 0; gTrainers[trainerNum].trainerName[j] != EOS; j++)
                 nameHash += gTrainers[trainerNum].trainerName[j];
@@ -1892,6 +1892,30 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 {
                     SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
                     SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                }
+                break;
+            }
+            case F_TRAINER_PARTY_COMPETITIVE:
+            {
+                const struct TrainerMonCustomMovesItemEVs *partyData = gTrainers[trainerNum].party.ItemCustomMovesEVs;
+                // Set the custom nature
+                personalityValue += (partyData[i].nature - (personalityValue % 25));
+                CreateMon(&party[i], partyData[i].species, 100, 31, TRUE, personalityValue, OT_ID_PRESET, Random32());
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+                SetMonData(&party[i], MON_DATA_PP_BONUSES, &ppBonuses);
+                SetMonData(&party[i], MON_DATA_ABILITY_NUM, &partyData[i].abilityNum);
+
+                for (j = 0; j < MAX_MON_MOVES; j++)
+                {
+                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                    monPP[j] = gBattleMoves[partyData[i].moves[j]].pp * 8 / 5;
+                    SetMonData(&party[i], MON_DATA_PP1 + j, &monPP[j]);
+                }
+
+                for (j = 0; j < NUM_STATS; j++)
+                {
+                    mgba_printf(MGBA_LOG_DEBUG, "EV: %d", partyData[i].evs[j]);
+                    SetMonData(&party[i], MON_DATA_HP_EV + j, &partyData[i].evs[j]);
                 }
                 break;
             }
@@ -5034,7 +5058,6 @@ void CalculateAndSetNewGlobalLevel()
         if (newGlobalLevel < 1)
             newGlobalLevel = 5;
     }
-    mgba_printf(MGBA_LOG_DEBUG, "New global level: %d", newGlobalLevel);
     if (newGlobalLevel > gSaveBlock1Ptr->globalLevel)
         SetGlobalLevel(newGlobalLevel);
 }

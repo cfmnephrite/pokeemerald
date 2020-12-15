@@ -8473,9 +8473,7 @@ u16 GetMegaEvolutionSpecies(u16 preEvoSpecies, u16 heldItemId)
 
 bool32 RandomChance(u8 num, u8 denom)
 {
-    if(!denom)
-        return FALSE;
-    if (Random() <= (0x10000*num)/denom)
+    if (denom && Random() <= (0x10000 * num) / denom)
         return TRUE;
     else
         return FALSE;
