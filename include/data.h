@@ -74,7 +74,7 @@ union TrainerMonPtr
     const struct TrainerMonItemDefaultMoves *ItemDefaultMoves;
     const struct TrainerMonItemCustomMoves *ItemCustomMoves;
     const struct TrainerMonCustomMovesItemEVs *ItemCustomMovesEVs;
-    const struct TrainerMonCustomMovesItemEVsIVs *ItemCustomMovesIVs;
+    const struct TrainerMonCustomMovesItemEVsIVs *ItemCustomMovesEVsIVs;
 };
 
 struct Trainer
