@@ -187,10 +187,10 @@
 #define CHAR_NEWLINE           0xFE
 #define EOS                    0xFF // end of string
 
-#define MAGIC_S             0x9A //Magic s
-#define BLANK               0x9B //Empty character
-#define PLUS_256            0x9C //Shifts the chars of the whole string by 256
-#define PLUS_512            0x9D //Shifts the chars of the whole string by 512
+#define MAGIC_S                0x9A // Magic s
+#define BLANK                  0x9B // Empty character
+#define SKINNY                 0x9C // Shifts the chars of the whole string by 256
+#define V_SKINNY               0x9D // Shifts the chars of the whole string by 512
 
 // CHAR_KEYPAD_ICON chars
 #define CHAR_A_BUTTON       0x00
