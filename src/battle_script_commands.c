@@ -3276,8 +3276,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                 gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_BUG_BITE:
-                if ((gBattleMons[gEffectBattler].item >= FIRST_BERRY_INDEX && gBattleMons[gEffectBattler].item <= LAST_BERRY_INDEX)
-                    && GetBattlerAbility(gEffectBattler) != ABILITY_STICKY_HOLD)
+                if (IsItemBerry(gBattleMons[gEffectBattler].item) && GetBattlerAbility(gEffectBattler) != ABILITY_STICKY_HOLD)
                 {
                     gLastUsedItem = gBattleMons[gEffectBattler].item;
                     gBattleMons[gEffectBattler].item = 0;

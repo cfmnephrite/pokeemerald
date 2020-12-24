@@ -957,3 +957,8 @@ u8 ItemId_GetSecondaryId(u16 itemId)
 {
     return gItems[SanitizeItemId(itemId)].secondaryId;
 }
+
+bool8 IsItemBerry(u16 itemId)
+{
+    return (itemId >= FIRST_BERRY_INDEX && itemId <= LAST_BERRY_INDEX);
+}
