@@ -206,16 +206,18 @@ struct BaseStats
 struct BattleMove
 {
     u16 effect;
-    u8 power;
-    u8 type;
-    u8 accuracy;
     u8 pp;
-    u8 secondaryEffectChance;
-    u8 target;
+    u8 power;
+    u16 accuracy:7;
+    u16 type:5;
+    u16 split:2;
+    u16 critRate:2;
     s8 priority;
+    u8 secondaryEffectChance;
     u32 flags;
-    u8 split;
+    u8 target;
     u8 argument;
+    u16 argument2;
 };
 
 struct SpindaSpot
