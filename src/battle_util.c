@@ -973,7 +973,7 @@ static const u16 sZMovesTable[] =
     MOVE_DEVASTATING_DRAKE,
     MOVE_GIGAVOLT_HAVOC,
     MOVE_TWINKLE_TACKLE,
-    MOVE_ALL_OUT_PUMELLING,
+    MOVE_ALL_OUT_PUMMELING,
     MOVE_INFERNO_OVERDRIVE,
     MOVE_SUPERSONIC_SKYSTRIKE,
     MOVE_NEVER_ENDING_NIGHTMARE,
@@ -7653,7 +7653,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
         MulModifier(&modifier, UQ_4_12(1.5));
     if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && moveType == TYPE_GRASS && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
         MulModifier(&modifier, UQ_4_12(1.3));
-    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_FAIRY && !(gStatuses3[battlerDef] & STATUS3_SEMI_INVULNERABLE))
+    if (gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN && moveType == TYPE_FAIRY && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
         MulModifier(&modifier, UQ_4_12(1.3));
     if (gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN && moveType == TYPE_ELECTRIC && !(gStatuses3[battlerAtk] & STATUS3_SEMI_INVULNERABLE))
         MulModifier(&modifier, UQ_4_12(1.3));
