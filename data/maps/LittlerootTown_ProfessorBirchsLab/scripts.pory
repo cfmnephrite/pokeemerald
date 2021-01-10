@@ -1,5 +1,5 @@
 const OBJ_EVENT_ID_PROF_BIRCH		=	2
-const OBJ_EVENT_ID_LINK_RS_MAY	    =	4
+const OBJ_EVENT_ID_LINK_RS_MAY		=	4
 
 mapscripts LittlerootTown_ProfessorBirchsLab_MapScripts {
 	MAP_SCRIPT_ON_FRAME_TABLE [
@@ -34,52 +34,50 @@ script LittlerootTown_ProfessorBirchsLab_ButFirst {
 	waitmovement(0)
 	msgbox(LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou, MSGBOX_DEFAULT)
 	applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay)
-    specialvar(VAR_RESULT, GetBattleOutcome)
 	setvar(VAR_CONTINUE_AFTER_LOSING_BATTLE, 1)
-	trainerbattle_single(TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_May_Intro, LittlerootTown_ProfessorBirchsLab_MayDefeat, LittlerootTown_ProfessorBirchsLab_WonMayBattle, LittlerootTown_ProfessorBirchsLab_LostMayBattle)
+	trainerbattle_no_intro(TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_MayDefeat)
 	specialvar(VAR_RESULT, GetBattleOutcome)
 	if (var(VAR_RESULT) == B_OUTCOME_WON) {
-		goto(LittlerootTown_ProfessorBirchsLab_WonMayBattle)
-		special(HealPlayerParty)
+		call(LittlerootTown_ProfessorBirchsLab_WonMayBattle)
 	} else {
-		goto(LittlerootTown_ProfessorBirchsLab_LostMayBattle)
-		special(HealPlayerParty)
+		call(LittlerootTown_ProfessorBirchsLab_LostMayBattle)
 	}
+	special(HealPlayerParty)
 	end
 }
 
 script LittlerootTown_ProfessorBirchsLab_WonMayBattle {
-    msgbox(LittlerootTown_ProfessorBirchsLab_NotBad, MSGBOX_DEFAULT)
-    applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
-    waitmovement(0)
-    playfanfare(MUS_FANFA4)
-    msgbox("{PLAYER} received the Pokédex!")
-    waitfanfare
-    msgbox(LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT)
-    giveitem(ITEM_POKE_BALL, 5)
-    msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
+	msgbox(LittlerootTown_ProfessorBirchsLab_NotBad, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
+	waitmovement(0)
+	playfanfare(MUS_FANFA4)
+	msgbox("{PLAYER} received the Pokédex!")
+	waitfanfare
+	msgbox(LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT)
+	giveitem(ITEM_POKE_BALL, 5)
+	msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
 	setvar(VAR_BIRCH_LAB_STATE, 3)
-    releaseall
-    end
+	releaseall
+	end
 }
 
 script LittlerootTown_ProfessorBirchsLab_LostMayBattle {
-    msgbox(LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT)
-    applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
-    waitmovement(0)
-    playfanfare(MUS_FANFA4)
-    msgbox("{PLAYER} received the Pokédex!")
-    waitfanfare
-    msgbox(LittlerootTown_ProfessorBirchsLab_Hehehehe, MSGBOX_DEFAULT)
-    giveitem(ITEM_POKE_BALL, 5)
-    msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
+	msgbox(LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
+	waitmovement(0)
+	playfanfare(MUS_FANFA4)
+	msgbox("{PLAYER} received the Pokédex!")
+	waitfanfare
+	msgbox(LittlerootTown_ProfessorBirchsLab_Hehehehe, MSGBOX_DEFAULT)
+	giveitem(ITEM_POKE_BALL, 5)
+	msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
 	setvar(VAR_BIRCH_LAB_STATE, 3)
-    releaseall
-    end
+	releaseall
+	end
 }
 
 script LittlerootTown_ProfessorBirchsLab_RatePokedex {
-    lock
+	lock
 	faceplayer
 	goto(ProfBirch_EventScript_AskRatePokedex)
 	end
@@ -162,7 +160,7 @@ text LittlerootTown_ProfessorBirchsLab_NotBad {
 text LittlerootTown_ProfessorBirchsLab_Congrats {
 	format(
 		"Birch: This Pokedex is a high-tech device that registers data of any Pokemon you catch. It is actually pretty straightforward, you should find it easy to use.\p"
-        "May: Kudos for winning, {PLAYER}! I gotta admit I have underestimated you... As a reward, here's a little gift!")
+		"May: Kudos for winning, {PLAYER}! I gotta admit I have underestimated you... As a reward, here's a little gift!")
 }
 
 text LittlerootTown_ProfessorBirchsLab_Disappointing {
@@ -173,7 +171,7 @@ text LittlerootTown_ProfessorBirchsLab_Disappointing {
 text LittlerootTown_ProfessorBirchsLab_Hehehehe {
 	format(
 		"Birch: This Pokedex is a high-tech device that registers data of any Pokemon you catch. It is extremely easy to use, even a baby should understand how it works.\p"
-        "May: Hehehehe, don't feel too bad, {PLAYER}! It's just that I'm too strong for you! Here's a little gift because I feel sorry for you!")
+		"May: Hehehehe, don't feel too bad, {PLAYER}! It's just that I'm too strong for you! Here's a little gift because I feel sorry for you!")
 }
 
 text LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls {
