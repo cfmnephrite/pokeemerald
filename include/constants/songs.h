@@ -298,7 +298,7 @@
 #define MUS_LEVEL_UP                367 // MUS_FANFA1
 #define MUS_HEAL                    368 // MUS_ME_ASA
 #define MUS_OBTAIN_BADGE            369 // MUS_ME_BACHI
-#define MUS_OBTAIN_ITEM             370 // MUS_FANFA4
+#define MUS_OBTAIN_ITEM             370 // MUS_OBTAIN_ITEM
 #define MUS_EVOLVED                 371 // MUS_FANFA5
 #define MUS_OBTAIN_TMHM             372 // MUS_ME_WAZA
 #define MUS_LILYCOVE_MUSEUM         373 // MUS_BIJYUTU

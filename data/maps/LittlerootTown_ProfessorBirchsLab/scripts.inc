@@ -718,7 +718,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GivePichuEvent::
 	lockall
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_ThankYouSoMuch, MSGBOX_DEFAULT
 	waitmessage
-	playfanfare MUS_FANFA4
+	playfanfare MUS_OBTAIN_ITEM
 	waitfanfare
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GiveNicknameToPichu, MSGBOX_YESNO
 	compare VAR_RESULT, YES
@@ -736,7 +736,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_NicknamePichu::
 LittlerootTown_ProfessorBirchsLab_EventScript_ButFirst::
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_IHaveAJobForYouButFirst, MSGBOX_DEFAULT
 	addobject 4
-	playbgm MUS_GIRL_SUP, 1
+	playbgm MUS_ENCOUNTER_MAY, 1
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_RivalDad
 	closemessage
 	delay 65
@@ -770,7 +770,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_WonMayBattle::
 	end
 	
 LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex1:: @ 81FA3AC
-	playfanfare MUS_FANFA4
+	playfanfare MUS_OBTAIN_ITEM
 	waitfanfare
 	message LittlerootTown_ProfessorBirchsLab_Text_ReceivedPokedexB
 	waitfanfare

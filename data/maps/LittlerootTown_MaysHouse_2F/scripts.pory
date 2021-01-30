@@ -42,11 +42,11 @@ script LittlerootTown_MaysHouse_2F_TheRescueStart {
 script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
 	showobjectat(OBJ_EVENT_ID_PICHU, MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
 	setobjectxy(OBJ_EVENT_ID_GRUNT_2, 1, 4)
-	playse(SE_W086)
+	playse(SE_M_THUNDER_WAVE)
 	applymovement(OBJ_EVENT_ID_PICHU, LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt2)
 	applymovement(OBJ_EVENT_ID_GRUNT_2, LittlerootTown_MaysHouse_2F_Movement_Grunt2FliesBackwards)
 	waitmovement(0)
-	playse(SE_KOUKA_M)
+	playse(SE_EFFECTIVE)
 	waitse
 	playse(SE_PIN)
 	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_ExclamationMarkLookLeft)
@@ -69,12 +69,12 @@ script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
 }
 
 script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1 {
-	playse(SE_W086)
+	playse(SE_M_THUNDER_WAVE)
 	applymovement(OBJ_EVENT_ID_PICHU, LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt1)
 	applymovement(OBJ_EVENT_ID_GRUNT_1, LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards)
 	applymovement(OBJ_EVENT_ID_POOCHYENA, LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards)
 	waitmovement(0)
-	playse(SE_KOUKA_M)
+	playse(SE_EFFECTIVE)
 	waitse
 }
 
