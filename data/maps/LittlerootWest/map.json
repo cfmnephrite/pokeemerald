@@ -2,7 +2,7 @@
   "id": "MAP_LITTLEROOT_WEST",
   "name": "LittlerootWest",
   "layout": "LAYOUT_LITTLEROOT_WEST",
-  "music": "MUS_AJITO",
+  "music": "MUS_AQUA_MAGMA_HIDEOUT",
   "region_map_section": "MAPSEC_LITTLEROOT_TOWN",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
