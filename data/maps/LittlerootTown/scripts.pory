@@ -1,0 +1,113 @@
+mapscripts LittlerootTown_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+			setweather(WEATHER_SHADE)
+		}
+	}
+}
+
+script LittlerootTown_EventScript_CheckNextDoorUp {
+	lockall
+	setvar(VAR_0x8004, 0)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorDown {
+	lockall
+	setvar(VAR_0x8004, 1)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorLeft {
+	lockall
+	setvar(VAR_0x8004, 2)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorRight {
+	lockall
+	setvar(VAR_0x8004, 3)
+	goto(LittlerootTown_EventScript_CheckNextDoorForceMovement)
+	end
+}
+
+script LittlerootTown_EventScript_CheckNextDoorForceMovement {
+	if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+		msgbox(gText_BetterCheckNextDoor)
+		closemessage
+		switch(var(VAR_0x8004)) {
+			case 0: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushDown)
+			case 1: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushUp)
+			case 2: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushRight)
+			case 3: applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushLeft)
+		}
+		waitmovement(0)
+	} else {
+		setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
+	}
+	releaseall
+	end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushDown {
+	walk_down
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushUp {
+	walk_up
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushRight {
+	walk_right
+	step_end
+}
+
+movement LittlerootTown_Movement_CheckNextDoorPushLeft {
+	walk_left
+	step_end
+}
+
+text gText_BetterCheckNextDoor {
+	format("Better check what's happening next door...")
+}
+
+script LittlerootTown_EventScript_FatMan {
+	msgbox("If you use a PC at a Pokémon Centre,\n"
+			"you can store up to 540 monsters!\p"
+			"The power of science is staggering!")
+	end
+}
+
+script LittlerootTown_EventScript_Boy{
+	msgbox(LittlerootTown_Text_BirchSpendsDaysInLab)
+	end
+}
+
+text LittlerootTown_Text_BirchSpendsDaysInLab {
+	"Prof. Birch spends days in his Lab\n"
+	"studying, then he'll suddenly go out in\l"
+	"the wild to do more research…\p"
+	"When does he spend time at home?"
+}
+
+script LittlerootTown_EventScript_Twin {
+	msgbox("Are you going to catch POKéMON?\n"
+			"Good luck!")
+	end
+}
+
+script LittlerootTown_EventScript_TownSign {
+	msgbox("Littleroot\n"
+			"A town that can't be shaded any hue.")
+	end
+}
+
+script LittlerootTown_EventScript_BirchsLabSign {
+	msgbox("Birch Laboratory for Monster Research")
+}
+

@@ -1,0 +1,158 @@
+const OBJ_EVENT_ID_GRUNT_1		=	1
+const OBJ_EVENT_ID_GRUNT_2		=	2
+const OBJ_EVENT_ID_POOCHYENA	=	3
+const OBJ_EVENT_ID_PICHU		=	7
+
+mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_LITTLEROOT_INTRO_STATE, 1: LittlerootTown_MaysHouse_2F_TheRescueStart
+	]
+}
+
+script LittlerootTown_MaysHouse_2F_TheRescueStart {
+	hideobjectat(OBJ_EVENT_ID_PICHU, MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
+	setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
+	lock
+	special(SpawnCameraObject)
+	applymovement(OBJ_EVENT_ID_CAMERA, LittlerootTown_MaysHouse_2F_Movement_Intro_PanCameraDownRight)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_WalkInPlaceRight)
+	msgbox("Intruder 1: Tell us now or...")
+	waitmessage
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_ExclamationMarkLookUp)
+	applymovement(OBJ_EVENT_ID_GRUNT_2, Common_Movement_ExclamationMarkLookUp)
+	waitmovement(0)
+	msgbox("Intruder 1: Who the hell is this?")
+	waitmessage
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_WalkInPlaceDown)
+	msgbox("Go deal with it! No witnesses!")
+	waitmessage
+	applymovement(OBJ_EVENT_ID_GRUNT_2, Common_Movement_WalkInPlaceUp)
+	msgbox("Intruder 2: You got it, boss!")
+	waitmessage
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_WalkInPlaceRight)
+	applymovement(OBJ_EVENT_ID_GRUNT_2, Common_Movement_WalkUp2)
+	waitmovement(0)
+	trainerbattle_single(TRAINER_INTRO_GRUNT_2, LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2)
+	release
+	end
+}
+
+script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
+	showobjectat(OBJ_EVENT_ID_PICHU, MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F)
+	setobjectxy(OBJ_EVENT_ID_GRUNT_2, 1, 4)
+	playse(SE_W086)
+	applymovement(OBJ_EVENT_ID_PICHU, LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt2)
+	applymovement(OBJ_EVENT_ID_GRUNT_2, LittlerootTown_MaysHouse_2F_Movement_Grunt2FliesBackwards)
+	waitmovement(0)
+	playse(SE_KOUKA_M)
+	waitse
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_ExclamationMarkLookLeft)
+	waitmovement(0)
+	msgbox("Intruder 2: Why, you little!...\pPooch, get 'em!")
+	applymovement(OBJ_EVENT_ID_POOCHYENA, Common_Movement_FaceLeft)
+	playmoncry(SPECIES_POOCHYENA, 0)
+	waitmoncry
+	applymovement(OBJ_EVENT_ID_POOCHYENA, LittlerootTown_MaysHouse_2F_Movement_PoochyenaMovesToEngage)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, LittlerootTown_MaysHouse_2F_Movement_Grunt1MovesToEngage)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PICHU, Common_Movement_FaceRight)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+	waitmovement(0)
+	trainerbattle_single(TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1)
+	release
+	end
+}
+
+script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1 {
+	playse(SE_W086)
+	applymovement(OBJ_EVENT_ID_PICHU, LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt1)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards)
+	applymovement(OBJ_EVENT_ID_POOCHYENA, LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards)
+	waitmovement(0)
+	playse(SE_KOUKA_M)
+	waitse
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_Intro_PanCameraDownRight {
+	walk_slow_diag_southeast
+	walk_slow_diag_southeast
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt2 {
+	lock_facing_direction
+	walk_fast_down
+	walk_fast_up
+	unlock_facing_direction
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_Grunt2FliesBackwards {
+	lock_facing_direction
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_PoochyenaMovesToEngage {
+	walk_fastest_up
+	walk_fastest_left
+	walk_fastest_left
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_Grunt1MovesToEngage {
+	lock_facing_direction
+	walk_right
+	unlock_facing_direction
+	walk_up
+	face_left
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_PichuAdvancesOnGrunt1 {
+	lock_facing_direction
+	walk_fast_right
+	walk_fast_left
+	unlock_facing_direction
+	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards {
+	lock_facing_direction
+	walk_fastest_right
+	walk_fastest_right
+	walk_fastest_right
+	walk_fastest_right
+	walk_fastest_right
+	unlock_facing_direction
+	step_end
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Intro {
+	"Sorry, kid..."
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Defeat {
+	"Wait, what?"
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro {
+	"You shouldn't have messed with us!"
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat {
+	"Oh, I'm in trouble..."
+}
+
+script LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC {
+	msgbox(gText_PokemonTrainerSchoolEmail)
+	releaseall
+	end
+}

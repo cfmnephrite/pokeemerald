@@ -939,11 +939,13 @@ static void CB2_GiveStarter(void)
 
     *GetVarPointer(VAR_STARTER_MON) = gSpecialVar_Result;
     starterMon = GetStarterPokemon(gSpecialVar_Result);
-    ScriptGiveMon(starterMon, 5, ITEM_NONE, 0, 0, 0);
+    ScriptGiveMon(starterMon, 5, ITEM_ORAN_BERRY, 0, 0, 0);
     ResetTasks();
-    PlayBattleBGM();
-    SetMainCallback2(CB2_StartFirstBattle);
-    BattleTransition_Start(B_TRANSITION_BLUR);
+    Overworld_ClearSavedMusic();
+    SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+    // PlayBattleBGM();
+    // SetMainCallback2(CB2_StartFirstBattle);
+    // BattleTransition_Start(B_TRANSITION_BLUR);
 }
 
 static void CB2_StartFirstBattle(void)
@@ -1350,8 +1352,10 @@ static void CB2_EndTrainerBattle(void)
     }
     else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
-        if (InBattlePyramid() || InTrainerHillChallenge())
+        if (InBattlePyramid() || InTrainerHillChallenge() || VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE)) {
+            VarSet(VAR_CONTINUE_AFTER_LOSING_BATTLE, 1);
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
+        }
         else
             SetMainCallback2(CB2_WhiteOut);
     }

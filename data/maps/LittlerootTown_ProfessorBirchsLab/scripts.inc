@@ -713,6 +713,121 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall:: @ 81FA4D6
 	clearflag FLAG_SCOTT_CALL_BATTLE_FRONTIER
 	releaseall
 	end
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_GivePichuEvent::
+	lockall
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ThankYouSoMuch, MSGBOX_DEFAULT
+	waitmessage
+	playfanfare MUS_FANFA4
+	waitfanfare
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GiveNicknameToPichu, MSGBOX_YESNO
+	compare VAR_RESULT, YES
+	goto_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_NicknamePichu
+	compare VAR_RESULT, NO
+	goto_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_ButFirst
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NicknamePichu::
+	setvar VAR_0x8004, 0
+	call Common_EventScript_NameReceivedPartyMon
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ButFirst
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ButFirst::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_IHaveAJobForYouButFirst, MSGBOX_DEFAULT
+	addobject 4
+	playbgm MUS_GIRL_SUP, 1
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_RivalDad
+	closemessage
+	delay 65
+	applymovement 4, LittlerootTown_ProfessorBirchsLab_Movement_RivalEnter
+	waitmovement 0
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTestYou, MSGBOX_DEFAULT
+	applymovement 4, LittlerootTown_ProfessorBirchsLab_Movement_RivalFacing
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingRival
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_LetsBattle, MSGBOX_DEFAULT
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_BattleMay
+	end
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_BattleMay::
+	setvar VAR_CONTINUE_AFTER_LOSING_BATTLE, 1
+	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_Text_MayDefeat
+	specialvar VAR_RESULT, GetBattleOutcome
+	compare VAR_RESULT, B_OUTCOME_WON
+	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_WonMayBattle
+	compare VAR_RESULT, B_OUTCOME_LOST
+	call_if_eq LittlerootTown_ProfessorBirchsLab_EventScript_LostMayBattle
+	special HealPlayerParty
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_WonMayBattle::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_NotTooBad, MSGBOX_DEFAULT
+	applymovement 2, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex
+	waitmovement 0
+	call LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex1
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedexB, MSGBOX_DEFAULT
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls1
+	end
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex1:: @ 81FA3AC
+	playfanfare MUS_FANFA4
+	waitfanfare
+	message LittlerootTown_ProfessorBirchsLab_Text_ReceivedPokedexB
+	waitfanfare
+	setflag FLAG_SYS_POKEDEX_GET
+	special SetUnlockedPokedexFlags
+	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
+	return	
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls1::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ALittleGiftFromMe, MSGBOX_DEFAULT
+	giveitem ITEM_POKE_BALL, 5
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchPokemonWithPokeBalls, MSGBOX_DEFAULT
+	setvar VAR_RESULT, 0
+	releaseall
+	end
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_LostMayBattle::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_Disappointing, MSGBOX_DEFAULT
+	applymovement 2, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex
+	waitmovement 0
+	call LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex1
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedexB, MSGBOX_DEFAULT
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls2
+	end
+	
+LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls2::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_Hehehehe, MSGBOX_DEFAULT
+	giveitem ITEM_POKE_BALL, 5
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchPokemonWithPokeBalls, MSGBOX_DEFAULT
+	setvar VAR_RESULT, 0
+	releaseall
+	end
+	
+LittlerootTown_ProfessorBirchsLab_Movement_RivalEnter:
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	walk_up
+	step_end
+
+LittlerootTown_ProfessorBirchsLab_Movement_RivalFacing:
+	face_left
+	step_end
+	
+LittlerootTown_ProfessorBirchsLab_Movement_FacingRival:
+	face_right
+	step_end
+	
+LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex:
+	walk_up
+	walk_up
+	walk_down
+	walk_down
+	step_end
 
 LittlerootTown_ProfessorBirchsLab_Text_BirchAwayOnFieldwork: @ 81FA4E2
 	.string "Hunh? PROF. BIRCH?\p"
@@ -1050,3 +1165,47 @@ LittlerootTown_ProfessorBirchsLab_Text_ScottAboardSSTidalCall: @ 81FBD1A
 	.string "we meet. I'll be waiting!\p"
 	.string "… … … … … …\n"
 	.string "… … … … … Click!$"
+
+LittlerootTown_ProfessorBirchsLab_Text_ThankYouSoMuch:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_GiveNicknameToPichu:
+	.string "Do you want to give a nickname\n"
+	.string "to Pichu?$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_IHaveAJobForYouButFirst:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_RivalDad:
+	.string "Daaad!$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_GetRivalToTestYou:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_LetsBattle:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_MayDefeat:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_NotTooBad:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_Disappointing:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_ExplainPokedexB:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_ALittleGiftFromMe:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_Hehehehe:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_CatchPokemonWithPokeBalls:
+	.string "...$"
+	
+LittlerootTown_ProfessorBirchsLab_Text_ReceivedPokedexB:
+	.string "{PLAYER} received the Pokédex!$"
+	

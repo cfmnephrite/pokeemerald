@@ -1,0 +1,86 @@
+mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_LITTLEROOT_INTRO_STATE, 0: LittlerootTown_BrendansHouse_2FBeginning
+	]
+	MAP_SCRIPT_ON_TRANSITION {
+		if (!var(VAR_SECRET_BASE_INITIALIZED)) {
+			call(SecretBase_EventScript_SetDecorationFlags)
+			setvar(VAR_SECRET_BASE_INITIALIZED, 1)
+		}
+	}
+}
+
+script LittlerootTown_BrendansHouse_2FBeginning {
+	lock
+	msgbox("You hear a noise coming from next door...", MSGBOX_SIGN)
+	release
+	setvar(VAR_LITTLEROOT_INTRO_STATE, 1)
+	end
+}
+
+script PlayersHouse_2F_EventScript_Notebook {
+	msgbox(PlayersHouse_2F_Text_Notebook, MSGBOX_SIGN)
+	end
+}
+
+text(local) PlayersHouse_2F_Text_Notebook {
+	"{PLAYER} flipped open the notebook.\p"
+	"ADVENTURE RULE NO. 1\n"
+	"Open the MENU with START.\p"
+	"ADVENTURE RULE NO. 2\n"
+	"Record your progress with SAVE.\p"
+	"The remaining pages are blank…"
+}
+
+script PlayersHouse_2F_EventScript_GameCube {
+	msgbox(PlayersHouse_2F_Text_ItsAGameCube, MSGBOX_SIGN)
+	end
+}
+
+text(local) PlayersHouse_2F_Text_ItsAGameCube {
+	"It's a Nintendo GameCube.\p"
+	"A Game Boy Advance is connected to\n"
+	"serve as the Controller."
+}
+
+text(local) Common_Text_LookCloserAtMap {
+	format("{PLAYER} took a closer look at the Hoenn region map.")
+}
+
+
+script PlayersHouse_2F_EventScript_WallClock {
+	if (flag(FLAG_SET_WALL_CLOCK)) {
+		goto(PlayersHouse_2F_EventScript_CheckWallClock)
+	}
+	msgbox(PlayersHouse_2F_Text_ClockIsStopped)
+	call(PlayersHouse_2F_EventScript_SetWallClock)
+	delay(30)
+	setflag(FLAG_SET_WALL_CLOCK)
+	removeobject(VAR_0x8008)
+	releaseall
+	end
+}
+
+text(local) PlayersHouse_2F_Text_ClockIsStopped {
+	"The clock is stopped…\p"
+	"Better set it and start it!"
+}
+
+raw `
+LittlerootTown_BrendansHouse_2F_EventScript_CheckPlayersPC:: @ 81F8626
+	setvar VAR_0x8004, 1
+	special DoPCTurnOnEffect
+	playse SE_PC_ON
+	msgbox gText_PlayerHouseBootPC, MSGBOX_DEFAULT
+	special BedroomPC
+	waitstate
+	releaseall
+	end
+
+LittlerootTown_BrendansHouse_2F_EventScript_TurnOffPlayerPC:: @ 81F863F
+	setvar VAR_0x8004, 1
+	playse SE_PC_OFF
+	special DoPCTurnOffEffect
+	releaseall
+	end
+`
