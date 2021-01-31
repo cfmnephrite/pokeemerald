@@ -59,8 +59,6 @@ LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2::
 	waitmovement 0
 	applymovement 7, Common_Movement_FaceRight
 	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
-	waitmovement 0
 	trainerbattle_single TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1
 	release
 	end
@@ -74,6 +72,21 @@ LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1::
 	waitmovement 0
 	playse SE_EFFECTIVE
 	waitse
+	applymovement 4, Common_Movement_FaceRight
+	waitmovement 0
+	msgbox LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1_Text_0
+	applymovement 4, LittlerootTown_MaysHouse_2F_Movement_Birch_Moves_To_Talk_To_Player
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight
+	waitmovement 0
+	msgbox LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message, MSGBOX_SIGN
+	applymovement 4, Common_Movement_FaceDown
+	waitmovement 0
+	msgbox LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message2, MSGBOX_SIGN
+	applymovement 4, Common_Movement_FaceLeft
+	waitmovement 0
+	msgbox LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message3, MSGBOX_SIGN
+	special HealPlayerParty
+	warp MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 255, 6, 5
 	return
 
 
@@ -127,6 +140,15 @@ LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards:
 	unlock_facing_direction
 	step_end
 
+LittlerootTown_MaysHouse_2F_Movement_Birch_Moves_To_Talk_To_Player:
+	walk_left
+	walk_left
+	walk_left
+	walk_up
+	walk_up
+	face_left
+	step_end
+
 LittlerootTown_MaysHouse_2F_EventScript_CheckRivalsPC::
 	msgbox gText_PokemonTrainerSchoolEmail
 	releaseall
@@ -147,6 +169,28 @@ LittlerootTown_MaysHouse_2F_TheRescueStart_Text_3:
 
 LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2_Text_0:
 	.string "Intruder 2: Why, you little!...\pPooch, get 'em!$"
+
+LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1_Text_0:
+	.string "Birch: Darling, call the police.$"
+
+LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message::
+	.string "You're our neighbour {PLAYER}, right?\p"
+	.string "You really saved us. Thank you so much!\p"
+	.string "And let me say that was an incredibly\n"
+	.string "impressive display.\p"
+	.string "You and this Pichu got along superbly,\n"
+	.string "almost as if you belong together!\l"
+	.string "Why don't you hold onto it?$"
+
+LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message2::
+	.string "I need to deal with these two for now.\p"
+	.string "It's a good thing we've got cuffs, gags\n"
+	.string "and blindfolds.$"
+
+LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message3::
+	.string "Anyway, can you come by the lab\n"
+	.string "tomorrow morning?\p"
+	.string "I have a wonderful offer for you!$"
 
 LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Intro::
 	.string "Sorry, kid...$"

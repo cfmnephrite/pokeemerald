@@ -1,6 +1,7 @@
 const OBJ_EVENT_ID_GRUNT_1		=	1
 const OBJ_EVENT_ID_GRUNT_2		=	2
 const OBJ_EVENT_ID_POOCHYENA	=	3
+const OBJ_EVENT_ID_BIRCH		=	4
 const OBJ_EVENT_ID_PICHU		=	7
 
 mapscripts LittlerootTown_MaysHouse_2F_MapScripts {
@@ -61,8 +62,8 @@ script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt2 {
 	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_PICHU, Common_Movement_FaceRight)
 	waitmovement(0)
-	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
-	waitmovement(0)
+	// applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+	// waitmovement(0)
 	trainerbattle_single(TRAINER_INTRO_GRUNT_1, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Intro, LittlerootTown_MaysHouse_2F_Intro_Grunt_1_Defeat, LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1)
 	release
 	end
@@ -76,6 +77,21 @@ script LittlerootTown_MaysHouse_2F_TheRescueDefeatedGrunt1 {
 	waitmovement(0)
 	playse(SE_EFFECTIVE)
 	waitse
+	applymovement(OBJ_EVENT_ID_BIRCH, Common_Movement_FaceRight)
+	waitmovement(0)
+	msgbox("Birch: Darling, call the police.")
+	applymovement(OBJ_EVENT_ID_BIRCH, LittlerootTown_MaysHouse_2F_Movement_Birch_Moves_To_Talk_To_Player)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceRight)
+	waitmovement(0)
+	msgbox(LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message, MSGBOX_SIGN)
+	applymovement(OBJ_EVENT_ID_BIRCH, Common_Movement_FaceDown)
+	waitmovement(0)
+	msgbox(LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message2, MSGBOX_SIGN)
+	applymovement(OBJ_EVENT_ID_BIRCH, Common_Movement_FaceLeft)
+	waitmovement(0)
+	msgbox(LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message3, MSGBOX_SIGN)
+	special(HealPlayerParty)
+	warp(MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 255, 6, 5)
 }
 
 movement LittlerootTown_MaysHouse_2F_Movement_Intro_PanCameraDownRight {
@@ -133,6 +149,40 @@ movement LittlerootTown_MaysHouse_2F_Movement_Grunt1_Poochyena_FlyBackwards {
 	walk_fastest_right
 	unlock_facing_direction
 	step_end
+}
+
+movement LittlerootTown_MaysHouse_2F_Movement_Birch_Moves_To_Talk_To_Player {
+	walk_left
+	walk_left
+	walk_left
+	walk_up
+	walk_up
+	face_left
+	step_end
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message {
+	format(
+		"You're our neighbour {PLAYER}, right?\p"
+		"You really saved us. Thank you so much!\p"
+		"And let me say that was an incredibly impressive display.\p"
+		"You and this Pichu got along superbly, almost as if you belong together!\l"
+		"Why don't you hold onto it?"
+	)
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message2 {
+	format(
+		"I need to deal with these two for now.\p"
+		"It's a good thing we've got cuffs, gags and blindfolds."
+	)
+}
+
+text LittlerootTown_MaysHouse_2F_Intro_Birch_Gratitude_Message3 {
+	format(
+		"Anyway, can you come by the lab tomorrow morning?\p"
+		"I have a wonderful offer for you!"
+	)
 }
 
 text LittlerootTown_MaysHouse_2F_Intro_Grunt_2_Intro {

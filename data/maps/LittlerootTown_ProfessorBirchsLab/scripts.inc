@@ -1,40 +1,47 @@
 LittlerootTown_ProfessorBirchsLab_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, LittlerootTown_ProfessorBirchsLab_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, LittlerootTown_ProfessorBirchsLab_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE
 	.byte 0
 
 LittlerootTown_ProfessorBirchsLab_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
-	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_ProfessorBirchsLab_GivePichu
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_ProfessorBirchsLab_Script_Intro
+	.2byte 0
+
+LittlerootTown_ProfessorBirchsLab_MapScripts_MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE:
+	map_script_2 VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_ProfessorBirchsLab_FacePlayerNorth
 	.2byte 0
 
 
-LittlerootTown_ProfessorBirchsLab_GivePichu::
+LittlerootTown_ProfessorBirchsLab_FacePlayerNorth::
+	turnobject OBJ_EVENT_ID_PLAYER, DIR_NORTH
+	end
+
+
+LittlerootTown_ProfessorBirchsLab_Script_Intro::
 	lockall
 	setvar VAR_LITTLEROOT_INTRO_STATE, 3
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
-	waitmovement 0
 	msgbox LittlerootTown_ProfessorBirchsLab_ThankYouSoMuch, MSGBOX_DEFAULT
 	waitmessage
 	playfanfare MUS_OBTAIN_ITEM
 	waitfanfare
-	msgbox LittlerootTown_ProfessorBirchsLab_GivePichu_Text_0, MSGBOX_YESNO
+	msgbox LittlerootTown_ProfessorBirchsLab_Script_Intro_Text_0, MSGBOX_YESNO
 	compare VAR_RESULT, YES
-	goto_if_eq LittlerootTown_ProfessorBirchsLab_GivePichu_2
-LittlerootTown_ProfessorBirchsLab_GivePichu_1:
+	goto_if_eq LittlerootTown_ProfessorBirchsLab_Script_Intro_2
+LittlerootTown_ProfessorBirchsLab_Script_Intro_1:
 	goto LittlerootTown_ProfessorBirchsLab_ButFirst
 	end
 
-LittlerootTown_ProfessorBirchsLab_GivePichu_2:
+LittlerootTown_ProfessorBirchsLab_Script_Intro_2:
 	setvar VAR_0x8004, 0
 	call Common_EventScript_NameReceivedPartyMon
-	goto LittlerootTown_ProfessorBirchsLab_ButFirst
-	goto LittlerootTown_ProfessorBirchsLab_GivePichu_1
+	goto LittlerootTown_ProfessorBirchsLab_Script_Intro_1
 
 
 LittlerootTown_ProfessorBirchsLab_ButFirst::
 	msgbox LittlerootTown_ProfessorBirchsLab_IHaveAJobForYou, MSGBOX_DEFAULT
-	addobject 4
+	addobject 3
 	msgbox LittlerootTown_ProfessorBirchsLab_ButFirst_Text_0
-	applymovement 4, LittlerootTown_ProfessorBirchsLab_Movement_MayEnter
+	applymovement 3, LittlerootTown_ProfessorBirchsLab_Movement_MayEnter
 	waitmovement 0
 	msgbox LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou, MSGBOX_DEFAULT
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay
@@ -46,7 +53,6 @@ LittlerootTown_ProfessorBirchsLab_ButFirst::
 	msgbox LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT
 LittlerootTown_ProfessorBirchsLab_ButFirst_1:
 	goto LittlerootTown_ProfessorBirchsLab_PostMayBattle
-	special HealPlayerParty
 	end
 
 LittlerootTown_ProfessorBirchsLab_ButFirst_2:
@@ -74,35 +80,25 @@ LittlerootTown_ProfessorBirchsLab_RatePokedex::
 	end
 
 
-LittlerootTown_ProfessorBirchsLab_Machine::
+LittlerootTown_ProfessorBirchsLab_EventScript_Machine::
 	msgbox LittlerootTown_ProfessorBirchsLab_SeriousLookingMachine, MSGBOX_SIGN
 	end
 
 
-LittlerootTown_ProfessorBirchsLab_Book::
-	msgbox LittlerootTown_ProfessorBirchsLab_Book_Text_0, MSGBOX_SIGN
+LittlerootTown_ProfessorBirchsLab_EventScript_Book::
+	msgbox LittlerootTown_ProfessorBirchsLab_EventScript_Book_Text_0, MSGBOX_SIGN
 	end
 
 
-LittlerootTown_ProfessorBirchsLab_Bookshelf::
-	msgbox LittlerootTown_ProfessorBirchsLab_Bookshelf_Text_0, MSGBOX_SIGN
+LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf::
+	msgbox LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf_Text_0, MSGBOX_SIGN
 	end
 
 
-LittlerootTown_ProfessorBirchsLab_PC::
-	msgbox LittlerootTown_ProfessorBirchsLab_PCUsedForResearch, MSGBOX_SIGN
+LittlerootTown_ProfessorBirchsLab_EventScript_PC::
+	msgbox LittlerootTown_ProfessorBirchsLab_EventScript_PCUsedForResearch, MSGBOX_SIGN
 	end
 
-
-LittlerootTown_ProfessorBirchsLab_Movement_PlayerEnter:
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	walk_up
-	step_end
 
 LittlerootTown_ProfessorBirchsLab_Movement_MayEnter:
 	walk_up
@@ -124,7 +120,7 @@ LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex:
 	walk_down
 	step_end
 
-LittlerootTown_ProfessorBirchsLab_GivePichu_Text_0:
+LittlerootTown_ProfessorBirchsLab_Script_Intro_Text_0:
 	.string "Would you like to give a nickname to\n"
 	.string "Pichu?$"
 
@@ -134,48 +130,40 @@ LittlerootTown_ProfessorBirchsLab_ButFirst_Text_0:
 LittlerootTown_ProfessorBirchsLab_PostMayBattle_Text_0:
 	.string "{PLAYER} received the Pokédex!$"
 
-LittlerootTown_ProfessorBirchsLab_Book_Text_0:
+LittlerootTown_ProfessorBirchsLab_EventScript_Book_Text_0:
 	.string "It's a book too hard to read.$"
 
-LittlerootTown_ProfessorBirchsLab_Bookshelf_Text_0:
-	.string "It's crammed with books on Pokémon.$"
+LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf_Text_0:
+	.string "It's crammed with books on monsters.$"
 
 LittlerootTown_ProfessorBirchsLab_ThankYouSoMuch::
 	.string "Birch: {PLAYER}, thank you so much for\n"
 	.string "what you did last night. There are no\l"
 	.string "words with which I can express my\l"
 	.string "gratitude.\p"
-	.string "Mom: That was so incredibly brave,\n"
-	.string "{PLAYER}. I'm so proud of you!\p"
-	.string "Birch: So before your mother and I were\n"
-	.string "having a little talk... With her consent\l"
-	.string "I decided to let you keep this special\l"
+	.string "I decided to let you keep that special\n"
 	.string "Pichu. I have a feeling you'll get along\l"
 	.string "with it really well!$"
 
 LittlerootTown_ProfessorBirchsLab_IHaveAJobForYou::
-	.string "Mom: Up until now I wanted you to focus\n"
-	.string "on graduating from school. That is why\l"
-	.string "I never let you keep Pokemon until now.\l"
-	.string "But now you're old enough to be able to\l"
-	.string "look after yourself.\p"
-	.string "Birch: Ah yes, another thing we were\n"
-	.string "discussing... There is a job I would like\l"
+	.string "Birch: Ah yes, the other thing I wanted\n"
+	.string "to mention... There is a job I would like\l"
 	.string "to offer you. I need someone to help me\l"
-	.string "researching Pokémon. You would take\l"
-	.string "this Pokedex and travel around Hoenn\l"
-	.string "catching Pokémon and registering them\l"
-	.string "here! But first, howewer...$"
+	.string "gather information on all monsters in\l"
+	.string "the region. You would take this\l"
+	.string "Pokedex and travel around Hoenn\l"
+	.string "catching them, analysing them,\l"
+	.string "registering their information here! But\l"
+	.string "first, howewer...$"
 
 LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou::
 	.string "Birch: Oh, May! Great timing...\n"
 	.string "{PLAYER}, I would like you to have a\l"
-	.string "Pokémon battle with my daughter. The\l"
-	.string "feat of last night was indeed\l"
-	.string "impressive, but I want to make sure it\l"
-	.string "wasn't all just a fluke. Consider it a\l"
-	.string "formality to see if you're up to the\l"
-	.string "task!$"
+	.string "battle with my daughter. Last night\l"
+	.string "was indeed impressive, but I want to\l"
+	.string "make sure it wasn't all just a fluke.\l"
+	.string "Consider it a test to see if you're up\l"
+	.string "to the task!$"
 
 LittlerootTown_ProfessorBirchsLab_May_Intro::
 	.string "May: That's right! I've been itching to\n"
@@ -197,7 +185,7 @@ LittlerootTown_ProfessorBirchsLab_NotBad::
 LittlerootTown_ProfessorBirchsLab_Congrats::
 	.string "Birch: This Pokedex is a high-tech\n"
 	.string "device that registers data of any\l"
-	.string "Pokemon you catch. It is actually\l"
+	.string "monster you catch. It is actually\l"
 	.string "pretty straightforward, you should\l"
 	.string "find it easy to use.\p"
 	.string "May: Kudos for winning, {PLAYER}! I\n"
@@ -206,16 +194,16 @@ LittlerootTown_ProfessorBirchsLab_Congrats::
 
 LittlerootTown_ProfessorBirchsLab_Disappointing::
 	.string "Birch: Oh... that was disappointing,\n"
-	.string "{PLAYER}. Must I suppose that last\l"
-	.string "night performance was only dumb luck?\l"
-	.string "Still, I really need help for my\l"
+	.string "{PLAYER}. Must I suppose that\l"
+	.string "performance last night was only dumb\l"
+	.string "luck? Still, I really need help for my\l"
 	.string "research, so I can't be too picky. I'll\l"
 	.string "give you the Pokédex anyways.$"
 
 LittlerootTown_ProfessorBirchsLab_Hehehehe::
 	.string "Birch: This Pokedex is a high-tech\n"
 	.string "device that registers data of any\l"
-	.string "Pokemon you catch. It is extremely\l"
+	.string "monster you catch. It is extremely\l"
 	.string "easy to use, even a baby should\l"
 	.string "understand how it works.\p"
 	.string "May: Hehehehe, don't feel too bad,\n"
@@ -226,13 +214,15 @@ LittlerootTown_ProfessorBirchsLab_Hehehehe::
 LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls::
 	.string "May: These are Poké Balls! They are used\n"
 	.string "for catching wild Pokémon! You need to\l"
-	.string "weaken a little bit to make 'em easier\l"
-	.string "to catch.$"
+	.string "weaken your target a little bit first\l"
+	.string "to make 'em easier to catch.$"
 
 LittlerootTown_ProfessorBirchsLab_SeriousLookingMachine::
+	.string "Wow, Core 2 Duo?\n"
+	.string "4 gigs of RAM?\p"
 	.string "It's a serious looking machine. Birch\n"
 	.string "must use it for research.$"
 
-LittlerootTown_ProfessorBirchsLab_PCUsedForResearch::
+LittlerootTown_ProfessorBirchsLab_EventScript_PCUsedForResearch::
 	.string "It's a PC used for research. Better not\n"
 	.string "mess with it.$"
