@@ -1,0 +1,190 @@
+const OBJ_EVENT_ID_PROF_BIRCH		=	2
+const OBJ_EVENT_ID_LINK_RS_MAY		=	4
+
+mapscripts LittlerootTown_ProfessorBirchsLab_MapScripts {
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_BIRCH_LAB_STATE, 2: LittlerootTown_ProfessorBirchsLab_GivePichu
+	]
+}
+
+script LittlerootTown_ProfessorBirchsLab_GivePichu {
+	lockall
+	applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_PlayerEnter)
+	waitmovement(0)
+	msgbox(LittlerootTown_ProfessorBirchsLab_ThankYouSoMuch, MSGBOX_DEFAULT)
+	waitmessage
+	playfanfare(MUS_FANFA4)
+	waitfanfare
+	msgbox(format("Would you like to give a nickname to Pichu?"), MSGBOX_YESNO)
+	if (var(VAR_RESULT) == YES) {
+		setvar(VAR_0x8004, 0)
+		call(Common_EventScript_NameReceivedPartyMon)
+		goto(LittlerootTown_ProfessorBirchsLab_ButFirst)
+	} else {
+		goto(LittlerootTown_ProfessorBirchsLab_ButFirst)
+	}
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_ButFirst {
+	msgbox(LittlerootTown_ProfessorBirchsLab_IHaveAJobForYou, MSGBOX_DEFAULT)
+	addobject(OBJ_EVENT_ID_LINK_RS_MAY)
+	msgbox("Daaaad!")
+	applymovement(OBJ_EVENT_ID_LINK_RS_MAY, LittlerootTown_ProfessorBirchsLab_Movement_MayEnter)
+	waitmovement(0)
+	msgbox(LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay)
+	setvar(VAR_CONTINUE_AFTER_LOSING_BATTLE, 1)
+	trainerbattle_no_intro(TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_MayDefeat)
+	specialvar(VAR_RESULT, GetBattleOutcome)
+	if (var(VAR_RESULT) == B_OUTCOME_WON) {
+		call(LittlerootTown_ProfessorBirchsLab_WonMayBattle)
+	} else {
+		call(LittlerootTown_ProfessorBirchsLab_LostMayBattle)
+	}
+	special(HealPlayerParty)
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_WonMayBattle {
+	msgbox(LittlerootTown_ProfessorBirchsLab_NotBad, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
+	waitmovement(0)
+	playfanfare(MUS_FANFA4)
+	msgbox("{PLAYER} received the Pokédex!")
+	waitfanfare
+	msgbox(LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT)
+	giveitem(ITEM_POKE_BALL, 5)
+	msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
+	setvar(VAR_BIRCH_LAB_STATE, 3)
+	releaseall
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_LostMayBattle {
+	msgbox(LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_PROF_BIRCH, LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex)
+	waitmovement(0)
+	playfanfare(MUS_FANFA4)
+	msgbox("{PLAYER} received the Pokédex!")
+	waitfanfare
+	msgbox(LittlerootTown_ProfessorBirchsLab_Hehehehe, MSGBOX_DEFAULT)
+	giveitem(ITEM_POKE_BALL, 5)
+	msgbox(LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT)
+	setvar(VAR_BIRCH_LAB_STATE, 3)
+	releaseall
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_RatePokedex {
+	lock
+	faceplayer
+	goto(ProfBirch_EventScript_AskRatePokedex)
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_Machine {
+	msgbox(LittlerootTown_ProfessorBirchsLab_SeriousLookingMachine, MSGBOX_SIGN)
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_Book {
+	msgbox("It's a book too hard to read.", MSGBOX_SIGN)
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_Bookshelf {
+	msgbox("It's crammed with books on Pokémon.", MSGBOX_SIGN)
+	end
+}
+
+script LittlerootTown_ProfessorBirchsLab_PC {
+	msgbox(LittlerootTown_ProfessorBirchsLab_PCUsedForResearch, MSGBOX_SIGN)
+	end
+}
+
+movement LittlerootTown_ProfessorBirchsLab_Movement_PlayerEnter {
+	walk_up * 7
+	step_end
+}
+
+movement LittlerootTown_ProfessorBirchsLab_Movement_MayEnter {
+	walk_up * 6
+	step_end
+}
+
+movement LittlerootTown_ProfessorBirchsLab_Movement_FacingMay {
+	face_down
+	step_end
+}
+
+movement LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex {
+	walk_up *2
+	walk_down *2
+	step_end
+}
+
+text LittlerootTown_ProfessorBirchsLab_ThankYouSoMuch {
+	format(
+		"Birch: {PLAYER}, thank you so much for what you did last night. There are no words with which I can express my gratitude.\p"
+		"Mom: That was so incredibly brave, {PLAYER}. I'm so proud of you!\p"
+		"Birch: So before your mother and I were having a little talk... With her consent I decided to let you keep this special Pichu. I have a feeling you'll get along with it really well!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_IHaveAJobForYou {
+	format(
+		"Mom: Up until now I wanted you to focus on graduating from school. That is why I never let you keep Pokemon until now. But now you're old enough to be able to look after yourself.\p"
+		"Birch: Ah yes, another thing we were discussing... There is a job I would like to offer you. I need someone to help me researching Pokémon. You would take this Pokedex and travel around Hoenn catching Pokémon and registering them here! But first, howewer...")
+}
+
+text LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou {
+	format(
+		"Birch: Oh, May! Great timing... {PLAYER}, I would like you to have a Pokémon battle with my daughter. The feat of last night was indeed impressive, but I want to make sure it wasn't all just a fluke. Consider it a formality to see if you're up to the task!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_May_Intro {
+	format(
+		"May: That's right! I've been itching to have a battle with you since I saw what you did last night! C'mon, after beating down those thugs, you shouldn't be afraid to battle me... Right?")
+}
+
+text LittlerootTown_ProfessorBirchsLab_MayDefeat {
+	format(
+		"WHAT? You... {PLAYER}, you're really good!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_NotBad {
+	format(
+		"Birch: That was a great battle, {PLAYER}! I didn't expect any less. Now, as I promised, I shall give you a Pokédex!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_Congrats {
+	format(
+		"Birch: This Pokedex is a high-tech device that registers data of any Pokemon you catch. It is actually pretty straightforward, you should find it easy to use.\p"
+		"May: Kudos for winning, {PLAYER}! I gotta admit I have underestimated you... As a reward, here's a little gift!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_Disappointing {
+	format(
+		"Birch: Oh... that was disappointing, {PLAYER}. Must I suppose that last night performance was only dumb luck? Still, I really need help for my research, so I can't be too picky. I'll give you the Pokédex anyways.")
+}
+
+text LittlerootTown_ProfessorBirchsLab_Hehehehe {
+	format(
+		"Birch: This Pokedex is a high-tech device that registers data of any Pokemon you catch. It is extremely easy to use, even a baby should understand how it works.\p"
+		"May: Hehehehe, don't feel too bad, {PLAYER}! It's just that I'm too strong for you! Here's a little gift because I feel sorry for you!")
+}
+
+text LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls {
+	format(
+		"May: These are Poké Balls! They are used for catching wild Pokémon! You need to weaken a little bit to make 'em easier to catch.")
+}
+
+text LittlerootTown_ProfessorBirchsLab_SeriousLookingMachine {
+	format(
+		"It's a serious looking machine. Birch must use it for research.")
+}
+
+text LittlerootTown_ProfessorBirchsLab_PCUsedForResearch {
+	format(
+		"It's a PC used for research. Better not mess with it.")
+}

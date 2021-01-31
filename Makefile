@@ -339,3 +339,5 @@ berry_fix:
 
 libagbsyscall:
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN)
+	
+SCRIPT := tools/poryscript/poryscript.exe$(EXE)
