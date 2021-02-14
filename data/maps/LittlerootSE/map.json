@@ -1,8 +1,8 @@
 {
-  "id": "MAP_LITTLE_ROOT_SW",
-  "name": "LittleRootSW",
-  "layout": "LAYOUT_LITTLE_ROOT_SW",
-  "music": "MUS_INTRO",
+  "id": "MAP_LITTLEROOT_SE",
+  "name": "LittlerootSE",
+  "layout": "LAYOUT_LITTLEROOT_SE",
+  "music": "MUS_ABANDONED_SHIP",
   "region_map_section": "MAPSEC_LITTLEROOT_TOWN",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -10,18 +10,18 @@
   "allow_cycling": true,
   "allow_escaping": false,
   "allow_running": true,
-  "show_map_name": false,
+  "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "direction": "up",
+      "direction": "left",
       "offset": 0,
-      "map": "MAP_LITTLEROOT_TOWN"
+      "map": "MAP_LITTLE_ROOT_SW"
     },
     {
-      "direction": "right",
-      "offset": 0,
-      "map": "MAP_LITTLEROOT_SE"
+      "direction": "left",
+      "offset": -32,
+      "map": "MAP_LITTLEROOT_TOWN"
     }
   ],
   "object_events": [

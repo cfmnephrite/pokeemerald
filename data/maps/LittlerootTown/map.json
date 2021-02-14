@@ -27,6 +27,11 @@
       "direction": "down",
       "offset": 0,
       "map": "MAP_LITTLE_ROOT_SW"
+    },
+    {
+      "direction": "right",
+      "offset": 32,
+      "map": "MAP_LITTLEROOT_SE"
     }
   ],
   "object_events": [

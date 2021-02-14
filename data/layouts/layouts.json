@@ -4430,6 +4430,16 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/LittleRootSW/border.bin",
       "blockdata_filepath": "data/layouts/LittleRootSW/map.bin"
+    },
+    {
+      "id": "LAYOUT_LITTLEROOT_SE",
+      "name": "LittlerootSE_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/LittlerootSE/border.bin",
+      "blockdata_filepath": "data/layouts/LittlerootSE/map.bin"
     }
   ]
 }
