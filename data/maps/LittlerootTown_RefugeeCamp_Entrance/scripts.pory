@@ -1,0 +1,17 @@
+mapscripts LittlerootTown_RefugeeCamp_Entrance_MapScripts {}
+
+script LittlerootTown_RefugeeCamp_EventScript_PapersPlease {
+    if (!flag(FLAG_ENTERED_REFUGEE_CAMP)) {
+        lock
+        applymovement(1, Common_Movement_WalkInPlaceRight)
+        msgbox("Papers, please...")
+        applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceLeft)
+        waitmovement(0)
+        applymovement(1, Common_Movement_WalkInPlaceRight)
+        msgbox("OK, you can pass.")
+        setflag(FLAG_ENTERED_REFUGEE_CAMP)
+    }
+    release
+    end
+}
+

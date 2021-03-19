@@ -2,7 +2,7 @@
   "id": "MAP_LITTLE_ROOT_SW",
   "name": "LittleRootSW",
   "layout": "LAYOUT_LITTLE_ROOT_SW",
-  "music": "MUS_INTRO",
+  "music": "MUS_MT_PYRE_EXTERIOR",
   "region_map_section": "MAPSEC_LITTLEROOT_TOWN",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -430,7 +430,20 @@
     }
   ],
   "warp_events": [
-
+    {
+      "x": 28,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_LITTLEROOT_TOWN_REFUGEE_CAMP_ENTRANCE",
+      "dest_warp_id": 0
+    },
+    {
+      "x": 28,
+      "y": 6,
+      "elevation": 0,
+      "dest_map": "MAP_LITTLEROOT_TOWN_REFUGEE_CAMP_ENTRANCE",
+      "dest_warp_id": 1
+    }
   ],
   "coord_events": [
 

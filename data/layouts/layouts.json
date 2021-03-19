@@ -4440,6 +4440,16 @@
       "secondary_tileset": "gTileset_Dewford",
       "border_filepath": "data/layouts/LittlerootSE/border.bin",
       "blockdata_filepath": "data/layouts/LittlerootSE/map.bin"
+    },
+    {
+      "id": "LAYOUT_LITTLEROOT_TOWN_REFUGEE_CAMP_ENTRANCE",
+      "name": "LittlerootTown_RefugeeCamp_Entrance_Layout",
+      "width": 9,
+      "height": 7,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_BattleFrontier",
+      "border_filepath": "data/layouts/LittlerootTown_RefugeeCamp_Entrance/border.bin",
+      "blockdata_filepath": "data/layouts/LittlerootTown_RefugeeCamp_Entrance/map.bin"
     }
   ]
 }
