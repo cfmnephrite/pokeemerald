@@ -45,17 +45,20 @@ LittlerootTown_ProfessorBirchsLab_ButFirst::
 	waitmovement 0
 	msgbox LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou, MSGBOX_DEFAULT
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay
+	applymovement 3, LittlerootTown_ProfessorBirchsLab_Movement_MayFacingPlayer
 	setvar VAR_CONTINUE_AFTER_LOSING_BATTLE, 1
 	trainerbattle_no_intro TRAINER_MAY_ROUTE_103_TORCHIC, LittlerootTown_ProfessorBirchsLab_MayDefeat
 	specialvar VAR_RESULT, GetBattleOutcome
 	compare VAR_RESULT, B_OUTCOME_WON
 	goto_if_eq LittlerootTown_ProfessorBirchsLab_ButFirst_2
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingBirch
 	msgbox LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT
 LittlerootTown_ProfessorBirchsLab_ButFirst_1:
 	goto LittlerootTown_ProfessorBirchsLab_PostMayBattle
 	end
 
 LittlerootTown_ProfessorBirchsLab_ButFirst_2:
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingBirch
 	msgbox LittlerootTown_ProfessorBirchsLab_NotBad, MSGBOX_DEFAULT
 	goto LittlerootTown_ProfessorBirchsLab_ButFirst_1
 
@@ -66,6 +69,9 @@ LittlerootTown_ProfessorBirchsLab_PostMayBattle::
 	playfanfare MUS_OBTAIN_ITEM
 	msgbox LittlerootTown_ProfessorBirchsLab_PostMayBattle_Text_0
 	waitfanfare
+	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
+	msgbox LittlerootTown_ProfessorBirchsLab_ExplainPokedex1, MSGBOX_DEFAULT
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay2
 	msgbox LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT
 	giveitem ITEM_POKE_BALL, 5
 	msgbox LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT
@@ -107,10 +113,23 @@ LittlerootTown_ProfessorBirchsLab_Movement_MayEnter:
 	walk_up
 	walk_up
 	walk_up
+	walk_up
 	step_end
 
 LittlerootTown_ProfessorBirchsLab_Movement_FacingMay:
-	face_down
+	face_right
+	step_end
+
+LittlerootTown_ProfessorBirchsLab_Movement_MayFacingPlayer:
+	face_left
+	step_end
+
+LittlerootTown_ProfessorBirchsLab_Movement_FacingBirch:
+	face_up
+	step_end
+
+LittlerootTown_ProfessorBirchsLab_Movement_FacingMay2:
+	face_right
 	step_end
 
 LittlerootTown_ProfessorBirchsLab_Movement_BirchFetchPokedex:
@@ -182,12 +201,14 @@ LittlerootTown_ProfessorBirchsLab_NotBad::
 	.string "Now, as I promised, I shall give you a\l"
 	.string "Pokédex!$"
 
-LittlerootTown_ProfessorBirchsLab_Congrats::
+LittlerootTown_ProfessorBirchsLab_ExplainPokedex1::
 	.string "Birch: This Pokedex is a high-tech\n"
 	.string "device that registers data of any\l"
 	.string "monster you catch. It is actually\l"
 	.string "pretty straightforward, you should\l"
-	.string "find it easy to use.\p"
+	.string "find it easy to use.$"
+
+LittlerootTown_ProfessorBirchsLab_Congrats::
 	.string "May: Kudos for winning, {PLAYER}! I\n"
 	.string "gotta admit I have underestimated\l"
 	.string "you... As a reward, here's a little gift!$"

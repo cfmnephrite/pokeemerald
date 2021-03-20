@@ -21,6 +21,8 @@ LittlerootTown_BrendansHouse_2F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
 LittlerootTown_BrendansHouse_2FBeginning::
 	lock
 	msgbox LittlerootTown_BrendansHouse_2FBeginning_Text_0, MSGBOX_SIGN
+	setflag FLAG_RECEIVED_RUNNING_SHOES
+	setflag FLAG_SYS_B_DASH
 	release
 	setvar VAR_LITTLEROOT_INTRO_STATE, 1
 	end

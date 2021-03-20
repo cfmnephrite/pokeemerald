@@ -13,6 +13,8 @@ mapscripts LittlerootTown_BrendansHouse_2F_MapScripts {
 script LittlerootTown_BrendansHouse_2FBeginning {
 	lock
 	msgbox("You hear a noise coming from next door...", MSGBOX_SIGN)
+	setflag(FLAG_RECEIVED_RUNNING_SHOES)
+	setflag(FLAG_SYS_B_DASH)
 	release
 	setvar(VAR_LITTLEROOT_INTRO_STATE, 1)
 	end
