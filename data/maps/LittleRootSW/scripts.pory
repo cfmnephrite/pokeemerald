@@ -1,0 +1,50 @@
+mapscripts LittleRootSW_MapScripts {}
+
+script LittlerootSW_EventScript_First_NPC {
+    msgbox(LittlerootSW_FirstNPC_Text, MSGBOX_NPC)
+}
+
+script LittlerootSW_EventScript_BoyMissingFamily {
+    msgbox(format("Não gosto daqui... Tenho saudades da minha família."), MSGBOX_NPC)
+}
+
+script LittlerootSW_EventScript_GuyaneseMan {
+    msgbox(LittlerootSW_GuyaneseMan_Text, MSGBOX_NPC)
+    applymovement(VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection)
+    waitmovement(0)
+    end
+}
+
+script LittlerootSW_EventScript_GuyaneseGirl {
+    msgbox(LittlerootSW_GuyaneseGirl_Text, MSGBOX_NPC)
+    applymovement(VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection)
+    waitmovement(0)
+    end
+}
+
+text LittlerootSW_FirstNPC_Text {
+    format(
+        "¡Tú! ¡No somos criminales!\p"
+        "¡Solo queremos vivir y trabajar con seguridad!\p"
+        "¿Por qué su gobierno nos trata como animales?"
+    )
+}
+
+text LittlerootSW_GuyaneseMan_Text {
+    format(
+        "My daughter and I are from Guyana.\p"
+        "When I was a kid, we lived on the Essequibo in a little town called Bartica.\p"
+        "When the town sank, my family moved into the forest to find a new home.\p"
+        "But the Brazilian soldiers came and took the forest. They forced us back towards the coast.\p"
+        "I had to build a raft out of driftwood, and took my daughter with me onto the open sea.\p"
+        "It's a miracle that we arrived here..."
+    )
+}
+
+text LittlerootSW_GuyaneseGirl_Text {
+    format(
+        "When we left home, we had to leave everyone else behind...\p"
+        "We wait here every day, hoping to see our friends again."
+    )
+}
+
