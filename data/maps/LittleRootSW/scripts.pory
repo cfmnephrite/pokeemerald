@@ -22,6 +22,59 @@ script LittlerootSW_EventScript_GuyaneseGirl {
     end
 }
 
+script LittlerootSW_EventScript_OldManOnBeach {
+    checkplayergender
+    if (var(VAR_RESULT) == MALE) {
+        msgbox(LittlerootSW_OldManOnBeach_Male_Text, MSGBOX_NPC)
+    }
+    else {
+        msgbox(LittlerootSW_OldManOnBeach_Female_Text, MSGBOX_NPC)
+    }
+}
+
+script LittlerootSW_EventScript_OldWomanOnBeach {
+    if (!flag(FLAG_GAVE_MONEY_TO_OLD_LADY_REFUGEE)) {
+        lock
+        faceplayer
+        msgbox(format("Oh, hello, young man! Are you a volunteer?"))
+        checkmoney(100, 0)
+        if (var(VAR_RESULT)) {
+            showmoneybox(0, 0, 0)
+            msgbox(format(
+                "Can you spare some money for an old lady? Just ¥100 will do!"
+            ))
+            multichoicedefault(20, 8, MULTI_YESNO, 0, 1)
+            if (var(VAR_RESULT) == 0) { // YES is 0, for some reason
+                removemoney(100, 0)
+                updatemoneybox(0, 0)
+                setflag(FLAG_GAVE_MONEY_TO_OLD_LADY_REFUGEE)
+                msgbox(LittlerootSW_OldWomanOnBeach_Text)
+                giveitem(ITEM_MOON_STONE)
+            }
+            else {
+                msgbox(format(
+                    "I see..."
+                ), MSGBOX_NPC)
+            }
+            hidemoneybox
+        }
+        release
+        end
+    }
+    else {
+        msgbox(format(
+            "Hello again, young man! How are you today?"
+        ), MSGBOX_NPC)
+    }
+}
+
+text LittlerootSW_OldWomanOnBeach_Text {
+    format(
+        "Oh, thank you, so generous!\p"
+        "Please, let me say thank you with this!"
+    )
+}
+
 text LittlerootSW_FirstNPC_Text {
     format(
         "¡Tú! ¡No somos criminales!\p"
@@ -45,6 +98,24 @@ text LittlerootSW_GuyaneseGirl_Text {
     format(
         "When we left home, we had to leave everyone else behind...\p"
         "We wait here every day, hoping to see our friends again."
+    )
+}
+
+text LittlerootSW_OldManOnBeach_Male_Text {
+    format(
+        "Buenos días, joven. Where are you from?\p"
+        "My family used to own sugar plantations in Nicaragua.\p"
+        "When the revolutionaries took over, they seized the farmlands.\p"
+        "I lost everything..."
+    )
+}
+
+text LittlerootSW_OldManOnBeach_Female_Text {
+    format(
+        "Buenos días, jovencita. Where are you from?\p"
+        "My family used to own sugar plantations in Nicaragua.\p"
+        "When the revolutionaries took over, they seized the farmlands.\p"
+        "I lost everything..."
     )
 }
 
