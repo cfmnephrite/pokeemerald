@@ -69,9 +69,26 @@ LittlerootSW_EventScript_OldWomanOnBeach_8:
 	removemoney 100, 0
 	updatemoneybox 0, 0
 	setflag FLAG_GAVE_MONEY_TO_OLD_LADY_REFUGEE
-	msgbox LittlerootSW_OldWomanOnBeach_Text, MSGBOX_NPC
+	msgbox LittlerootSW_OldWomanOnBeach_Text
 	giveitem ITEM_MOON_STONE
 	goto LittlerootSW_EventScript_OldWomanOnBeach_7
+
+
+LittlerootSW_EventScript_BoyAndMagmaGruntConversation::
+	lock
+	applymovement 3, Common_Movement_WalkInPlaceFastestRight
+	waitmovement 0
+	msgbox LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_0
+	applymovement 3 + 1, Common_Movement_WalkInPlaceLeft
+	waitmovement 0
+	msgbox LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_1
+	applymovement 3 + 1, Common_Movement_FacePlayer
+	waitmovement 0
+	msgbox LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_2
+	applymovement 3 + 1, Common_Movement_FaceLeft
+	waitmovement 0
+	release
+	end
 
 
 LittlerootSW_EventScript_BoyMissingFamily_Text_0:
@@ -92,6 +109,24 @@ LittlerootSW_EventScript_OldWomanOnBeach_Text_2:
 LittlerootSW_EventScript_OldWomanOnBeach_Text_3:
 	.string "Hello again, young man! How are you\n"
 	.string "today?$"
+
+LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_0:
+	.string "Boy: Ne me dis pas d'être calme!\p"
+	.string "J'ai besoin de trouver mon Couaneton!\p"
+	.string "Je vous en prie, c'est tout ce qu'il me\n"
+	.string "reste...$"
+
+LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_1:
+	.string "Volunter: Uh, ne.. ne t'inquieter pas!\p"
+	.string "Uh, let's see...\p"
+	.string "Nous allons trouver le monstre vous!$"
+
+LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_2:
+	.string "Volunter: This boy can't find his\n"
+	.string "monster.\p"
+	.string "I believe it's a Ducklett?\p"
+	.string "Keep an eye out for it, would you?\n"
+	.string "Thanks!$"
 
 LittlerootSW_OldWomanOnBeach_Text::
 	.string "Oh, thank you, so generous!\p"

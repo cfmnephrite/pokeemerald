@@ -68,6 +68,38 @@ script LittlerootSW_EventScript_OldWomanOnBeach {
     }
 }
 
+const BOY_OBJ_ID = 3
+const GRUNT_OBJ_ID = BOY_OBJ_ID + 1
+
+script LittlerootSW_EventScript_BoyAndMagmaGruntConversation {
+    lock
+    applymovement(BOY_OBJ_ID, Common_Movement_WalkInPlaceFastestRight)
+    waitmovement(0)
+    msgbox(format(
+        "Boy: Ne me dis pas d'être calme!\p"
+        "J'ai besoin de trouver mon Couaneton!\p"
+        "Je vous en prie, c'est tout ce qu'il me reste..."
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_WalkInPlaceLeft)
+    waitmovement(0)
+    msgbox(format(
+        "Volunter: Uh, ne... ne t'inquieter pas!\p"
+        "Uh, let's see...\p"
+        "Nous allons trouver le monstre vous!"
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_FacePlayer)
+    waitmovement(0)
+    msgbox(format(
+        "Volunter: This boy can't find his monster.\p"
+        "I believe it's a Ducklett?\p"
+        "Keep an eye out for it, would you? Thanks!"
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_FaceLeft)
+    waitmovement(0)
+    release
+    end
+}
+
 text LittlerootSW_OldWomanOnBeach_Text {
     format(
         "Oh, thank you, so generous!\p"
