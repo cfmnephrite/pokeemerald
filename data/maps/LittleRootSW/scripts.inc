@@ -117,7 +117,8 @@ LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_0:
 	.string "reste...$"
 
 LittlerootSW_EventScript_BoyAndMagmaGruntConversation_Text_1:
-	.string "Volunter: Uh, ne.. ne t'inquieter pas!\p"
+	.string "Volunter: Uh, calmez vous, s'il vous\n"
+	.string "plaît!\p"
 	.string "Uh, let's see...\p"
 	.string "Nous allons trouver le monstre vous!$"
 
@@ -161,7 +162,8 @@ LittlerootSW_GuyaneseGirl_Text::
 	.string "our friends again.$"
 
 LittlerootSW_OldManOnBeach_Male_Text::
-	.string "Buenos días, joven. Where are you from?\p"
+	.string "Buenos días, joven.\l"
+	.string "Where are you from?\p"
 	.string "My family used to own sugar plantations\n"
 	.string "in Nicaragua.\p"
 	.string "When the revolutionaries took over,\n"
@@ -169,8 +171,8 @@ LittlerootSW_OldManOnBeach_Male_Text::
 	.string "I lost everything...$"
 
 LittlerootSW_OldManOnBeach_Female_Text::
-	.string "Buenos días, jovencita. Where are you\n"
-	.string "from?\p"
+	.string "Buenos días, jovencita.\l"
+	.string "Where are you from?\p"
 	.string "My family used to own sugar plantations\n"
 	.string "in Nicaragua.\p"
 	.string "When the revolutionaries took over,\n"
