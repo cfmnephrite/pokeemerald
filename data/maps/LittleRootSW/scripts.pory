@@ -83,7 +83,7 @@ script LittlerootSW_EventScript_BoyAndMagmaGruntConversation {
     applymovement(GRUNT_OBJ_ID, Common_Movement_WalkInPlaceLeft)
     waitmovement(0)
     msgbox(format(
-        "Volunter: Uh, ne... ne t'inquieter pas!\p"
+        "Volunter: Uh, calmez vous, s'il vous plaît!\p"
         "Uh, let's see...\p"
         "Nous allons trouver le monstre vous!"
     ))
@@ -135,7 +135,7 @@ text LittlerootSW_GuyaneseGirl_Text {
 
 text LittlerootSW_OldManOnBeach_Male_Text {
     format(
-        "Buenos días, joven. Where are you from?\p"
+        "Buenos días, joven.\lWhere are you from?\p"
         "My family used to own sugar plantations in Nicaragua.\p"
         "When the revolutionaries took over, they seized the farmlands.\p"
         "I lost everything..."
@@ -144,7 +144,7 @@ text LittlerootSW_OldManOnBeach_Male_Text {
 
 text LittlerootSW_OldManOnBeach_Female_Text {
     format(
-        "Buenos días, jovencita. Where are you from?\p"
+        "Buenos días, jovencita.\lWhere are you from?\p"
         "My family used to own sugar plantations in Nicaragua.\p"
         "When the revolutionaries took over, they seized the farmlands.\p"
         "I lost everything..."
