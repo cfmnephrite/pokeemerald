@@ -1,1 +1,86 @@
+const OBJ_EVENT_ID_MAGMA_GRUNT_1	=	3
+const OBJ_EVENT_ID_MAGMA_GRUNT_2	=	4
+const OBJ_EVENT_ID_MAGMA_GRUNT_3	=	5
+const OBJ_EVENT_ID_ANABEL_1 		=	7
+const OBJ_EVENT_ID_ANABEL_2 		=	9
+const OBJ_EVENT_ID_ANABEL_3 		=	10
+const OBJ_EVENT_ID_ANABEL_4 		=	11
+const OBJ_EVENT_ID_ANABEL_5 		=	12
+const OBJ_EVENT_ID_AQUA_GRUNT_1		=	13
+const OBJ_EVENT_ID_AQUA_GRUNT_2		=	14
+const OBJ_EVENT_ID_AQUA_GRUNT_3		=	15
+const OBJ_EVENT_ID_AQUA_GRUNT_4		=	16
+
 mapscripts LittlerootSE_MapScripts {}
+
+script LittlerootSE_MagmaRallyTrigger {
+	lockall
+	goto(LittlerootSE_MagmaRally)
+	end
+}
+
+script LittlerootSE_MagmaRally {
+	msgbox(LittlerootSE_WeAreTeamMagma, MSGBOX_DEFAULT)
+	clearflag(FLAG_HIDE_AQUA_GRUNTS)
+	msgbox("???: Hold it right there!")
+	waitmessage
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_1, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_2, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_3, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_ANABEL_1, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_2, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_3, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_4, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_5, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_1, LittlerootSE_Movement_Grunt1GoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_2, LittlerootSE_Movement_OtherGruntsGoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_3, LittlerootSE_Movement_OtherGruntsGoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_4, LittlerootSE_Movement_OtherGruntsGoungUp)
+	msgbox(LittlerootSE_WeAreTeamAqua, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_1, Common_Movement_WalkInPlaceFastestDown)
+	msgbox(LittlerootSE_YouCowards, MSGBOX_DEFAULT)
+	end
+}
+	
+movement LittlerootSE_Movement_Grunt1GoungUp {
+	walk_up * 6
+	step_end
+}
+
+movement LittlerootSE_Movement_OtherGruntsGoungUp {
+	walk_up * 6
+	step_end
+}
+
+text LittlerootSE_WeAreTeamMagma {
+	format(
+		"Magma Grunt 1: Welcome, refugees...\p"
+		"Allow us to express our sympathy for all of your hardships, from the bottom of our hearts.\p"
+		"We, Team Magma, are an organization dedicated to fight against climate change to prevent tragedies, such as the one that struck your homeland, from happening ever again.\p"
+		"Even though everyone turns a blind eye over it, climate change is becoming a bigger and bigger problem here in Hoenn too.\p"
+		"Corrupt corporations are not willing to make the change, just for the sake of their own gains, not caring of what will be of our beautiful land!\p"
+		"As you can see, we are all in the same boat. We need the cooperation of all people in our crusade against the status quo!\p"
+		"So, people of the world, uni-"
+	)
+}
+
+text LittlerootSE_WeAreTeamAqua {
+	format(
+		"Aqua Grunt 1: Look at you, refugees.\p"
+		"You escaped your countries only to arrive in a wretched land, imploring charity, listening to the blabbering of some buffoons.\p"
+		"No matter what others may tell you, the end of the world is coming. The climate crisis that is sweeping nations one by one is a divine punishment by the hands of God.\p"
+		"Greedy, godless and filthy human beings have ruined the planet. Exploiting other humans and Earth's resources has brought the wrath of the Heavens upon all us.\p"
+		"There is but one way of salvation from the impending doom -- joining Team Aqua, our noble organization!\p"
+		"If you're worthy of living among the chosen by God, that is..."
+	)
+}
+
+text LittlerootSE_YouCowards {
+	format(
+		"Magma Grunt 1: Aqua, you bastards!\p"
+		"Comrades, do not listen to a single word from the mouth of those bigots!\p"
+		"They don't care about the safety of anyone..."
+	)
+}
