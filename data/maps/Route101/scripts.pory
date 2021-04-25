@@ -1,0 +1,26 @@
+mapscripts Route101_MapScripts {}
+
+script make  {
+    trainerbattle_single(TRAINER_CALVIN_1, Route101_Text_AveryIntro, Route101_Text_AveryLoses)
+    msgbox(Route101_Text_AveryGeneral, MSGBOX_AUTOCLOSE)
+    end
+}
+
+text Route101_Text_AveryIntro {
+    format(
+        "Ah, I'm having the time of my life...\n The beach here is beautiful!\pOh? A battle?"
+    )
+}
+
+text Route101_Text_AveryLoses {
+    format(
+        "Well, thanks for ruining my vacation..."
+    )
+}
+
+text Route101_Text_AveryGeneral {
+    format(
+        "Razor Wind is such a cool move!\p"
+        "It's a special Flying-type attack that targets physical defense!"
+    )
+}

@@ -1068,3 +1068,5 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 	.include "data/maps/LittlerootSE/scripts.inc"
 
 	.include "data/maps/LittlerootTown_RefugeeCamp_Entrance/scripts.inc"
+
+	.include "data/maps/Littleroot_BeachCafe/scripts.inc"

@@ -1,0 +1,15 @@
+mapscripts Littleroot_BeachCafe_MapScripts {}
+
+script Littleroot_BeachCafe_EventScript_SailorExposition {
+    msgbox(format(
+        "Slateport used to be my favorite place to work...\p"
+        "It's a shame what happened to it."
+    ), MSGBOX_AUTOCLOSE)
+}
+
+script Littleroot_BeachCafe_EventScript_LittleGirl {
+    msgbox(format(
+        "I'm here on vacation with Mama and Papa!\p"
+        "My papa works at Devon!\nWhat about yours?"
+    ), MSGBOX_AUTOCLOSE)
+}

@@ -4450,6 +4450,16 @@
       "secondary_tileset": "gTileset_BattleFrontier",
       "border_filepath": "data/layouts/LittlerootTown_RefugeeCamp_Entrance/border.bin",
       "blockdata_filepath": "data/layouts/LittlerootTown_RefugeeCamp_Entrance/map.bin"
+    },
+    {
+      "id": "LAYOUT_LITTLEROOT_BEACH_CAFE",
+      "name": "Littleroot_BeachCafe_Layout",
+      "width": 10,
+      "height": 8,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_SeashoreHouse",
+      "border_filepath": "data/layouts/Littleroot_BeachCafe/border.bin",
+      "blockdata_filepath": "data/layouts/Littleroot_BeachCafe/map.bin"
     }
   ]
 }
