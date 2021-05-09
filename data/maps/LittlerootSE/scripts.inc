@@ -10,7 +10,10 @@ LittlerootSE_MagmaRallyTrigger::
 
 LittlerootSE_MagmaRally::
 	msgbox LittlerootSE_WeAreTeamMagma, MSGBOX_DEFAULT
-	clearflag FLAG_HIDE_AQUA_GRUNTS
+	addobject 13
+	addobject 14
+	addobject 15
+	addobject 16
 	msgbox LittlerootSE_MagmaRally_Text_0
 	waitmessage
 	playse SE_PIN
@@ -30,6 +33,17 @@ LittlerootSE_MagmaRally::
 	msgbox LittlerootSE_WeAreTeamAqua, MSGBOX_DEFAULT
 	applymovement 3, Common_Movement_WalkInPlaceFastestDown
 	msgbox LittlerootSE_YouCowards, MSGBOX_DEFAULT
+	applymovement 7, LittlerootSE_Movement_CrowdDispersing1
+	applymovement 9, LittlerootSE_Movement_CrowdDispersing2
+	applymovement 10, LittlerootSE_Movement_CrowdDispersing3
+	applymovement 11, LittlerootSE_Movement_CrowdDispersing4
+	applymovement 12, LittlerootSE_Movement_CrowdDispersing5
+	removeobject 7
+	removeobject 9
+	removeobject 10
+	removeobject 11
+	removeobject 12
+	msgbox LittlerootSE_AreYouWithUsOrWithThem, MSGBOX_DEFAULT
 	end
 
 
@@ -51,58 +65,114 @@ LittlerootSE_Movement_OtherGruntsGoungUp:
 	walk_up
 	step_end
 
+LittlerootSE_Movement_CrowdDispersing1:
+	walk_fastest_right
+	walk_fastest_right
+	walk_fastest_right
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	step_end
+
+LittlerootSE_Movement_CrowdDispersing2:
+	walk_fastest_left
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	step_end
+
+LittlerootSE_Movement_CrowdDispersing3:
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_left
+	step_end
+
+LittlerootSE_Movement_CrowdDispersing4:
+	walk_fastest_left
+	walk_fastest_left
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	step_end
+
+LittlerootSE_Movement_CrowdDispersing5:
+	walk_fastest_right
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	walk_fastest_up
+	step_end
+
 LittlerootSE_MagmaRally_Text_0:
 	.string "???: Hold it right there!$"
 
 LittlerootSE_WeAreTeamMagma::
-	.string "Magma Grunt 1: Welcome, refugees...\p"
-	.string "Allow us to express our sympathy for all\n"
-	.string "of your hardships, from the bottom of\l"
-	.string "our hearts.\p"
-	.string "We, Team Magma, are an organization\n"
-	.string "dedicated to fight against climate\l"
-	.string "change to prevent tragedies, such as\l"
-	.string "the one that struck your homeland,\l"
-	.string "from happening ever again.\p"
-	.string "Even though everyone turns a blind eye\n"
-	.string "over it, climate change is becoming a\l"
-	.string "bigger and bigger problem here in Hoenn\l"
-	.string "too.\p"
-	.string "Corrupt corporations are not willing to\n"
-	.string "make the change, just for the sake of\l"
-	.string "their own gains, not caring of what will\l"
-	.string "be of our beautiful land!\p"
-	.string "As you can see, we are all in the same\n"
-	.string "boat. We need the cooperation of all\l"
-	.string "people in our crusade against the\l"
-	.string "status quo!\p"
-	.string "So, people of the world, uni-$"
+	.string "Magma Grunt 1: Comrades! We live in\n"
+	.string "desperate times!\p"
+	.string "Some of you have escaped from horrific\n"
+	.string "violence.\p"
+	.string "Some of you have fled from the rising\n"
+	.string "waters.\p"
+	.string "And some have been forced here by\n"
+	.string "drought and famine.\p"
+	.string "We can't change the past, but the\n"
+	.string "future is ours!\p"
+	.string "We must work together to build a\n"
+	.string "better, fairer society!\p"
+	.string "We shall overthrow our corrupt, failing\n"
+	.string "governments!\p"
+	.string "We can share resources, build shelters,\n"
+	.string "schools, and hospitals so that\l"
+	.string "everyone has a chance for a\l"
+	.string "comfortable life.\p"
+	.string "We can no longer let the elite exploit\n"
+	.string "us while they ravage our planet.\p"
+	.string "In time, science will help us to undo the\n"
+	.string "damage.$"
 
 LittlerootSE_WeAreTeamAqua::
-	.string "Aqua Grunt 1: Look at you, refugees.\p"
-	.string "You escaped your countries only to\n"
-	.string "arrive in a wretched land, imploring\l"
-	.string "charity, listening to the blabbering of\l"
-	.string "some buffoons.\p"
-	.string "No matter what others may tell you, the\n"
-	.string "end of the world is coming. The climate\l"
-	.string "crisis that is sweeping nations one by\l"
-	.string "one is a divine punishment by the hands\l"
-	.string "of God.\p"
-	.string "Greedy, godless and filthy human beings\n"
-	.string "have ruined the planet. Exploiting\l"
-	.string "other humans and Earth's resources\l"
-	.string "has brought the wrath of the Heavens\l"
-	.string "upon all us.\p"
-	.string "There is but one way of salvation from\n"
-	.string "the impending doom -- joining Team\l"
-	.string "Aqua, our noble organization!\p"
-	.string "If you're worthy of living among the\n"
-	.string "chosen by God, that is...$"
+	.string "Aqua Grunt 1: What a load of nonsense.\n"
+	.string "Surely you people aren't buying this?\p"
+	.string "You're all here because you are\n"
+	.string "stronger than the rest.\p"
+	.string "Because you had the courage and\n"
+	.string "determination to fight your way here.\p"
+	.string "Our planet has been ruined by the\n"
+	.string "greedy, the weak and the faithless.\p"
+	.string "Don't give up your fight to join them\n"
+	.string "and follow a bunch of spineless\l"
+	.string "hypocrites.\p"
+	.string "No matter what these criminals might\n"
+	.string "tell you, the end is near.\p"
+	.string "The heavens shall open and a great\n"
+	.string "flood shall sweep the Earth.\p"
+	.string "The only path of salvation is through\n"
+	.string "us - through Aqua!$"
 
 LittlerootSE_YouCowards::
-	.string "Magma Grunt 1: Aqua, you bastards!\p"
-	.string "Comrades, do not listen to a single word\n"
-	.string "from the mouth of those bigots!\p"
-	.string "They don't care about the safety of\n"
-	.string "anyone...$"
+	.string "Magma Grunt 2: The words of these\n"
+	.string "deranged bigots are meaningless!\p"
+	.string "You, Aqua, don't want to save anyone\n"
+	.string "but your supporters.\p"
+	.string "You call us criminals, while you pigs\n"
+	.string "stuff your pockets with dirty money!\p"
+	.string "Aqua Grunt 2: We're not here to argue\n"
+	.string "with you violent thugs.\p"
+	.string "You should leave, you pathetic bleeding\n"
+	.string "hearts!$"
+
+LittlerootSE_AreYouWithUsOrWithThem::
+	.string "Magma Grunt 1: Who are you? Are you with\n"
+	.string "us or are you with them?$"

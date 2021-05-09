@@ -1,6 +1,6 @@
 mapscripts Route101_MapScripts {}
 
-script make  {
+script Route101_EventScript_Avery  {
     trainerbattle_single(TRAINER_CALVIN_1, Route101_Text_AveryIntro, Route101_Text_AveryLoses)
     msgbox(Route101_Text_AveryGeneral, MSGBOX_AUTOCLOSE)
     end
