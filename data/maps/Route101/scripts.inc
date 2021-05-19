@@ -2,7 +2,7 @@ Route101_MapScripts::
 	.byte 0
 
 
-Route101_EventScript_Avery::
+make::
 	trainerbattle_single TRAINER_CALVIN_1, Route101_Text_AveryIntro, Route101_Text_AveryLoses
 	msgbox Route101_Text_AveryGeneral, MSGBOX_AUTOCLOSE
 	end
