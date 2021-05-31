@@ -25,7 +25,12 @@
     },
     {
       "direction": "left",
-      "offset": 0,
+      "offset": 16,
+      "map": "MAP_ROUTE102NE"
+    },
+    {
+      "direction": "left",
+      "offset": 32,
       "map": "MAP_ROUTE102"
     }
   ],

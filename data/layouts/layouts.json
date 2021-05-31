@@ -174,8 +174,8 @@
     {
       "id": "LAYOUT_ROUTE102",
       "name": "Route102_Layout",
-      "width": 50,
-      "height": 20,
+      "width": 32,
+      "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102/border.bin",
@@ -4460,6 +4460,16 @@
       "secondary_tileset": "gTileset_SeashoreHouse",
       "border_filepath": "data/layouts/Littleroot_BeachCafe/border.bin",
       "blockdata_filepath": "data/layouts/Littleroot_BeachCafe/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE102NE",
+      "name": "Route102NE_Layout",
+      "width": 32,
+      "height": 16,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/Route102NE/border.bin",
+      "blockdata_filepath": "data/layouts/Route102NE/map.bin"
     }
   ]
 }
