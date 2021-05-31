@@ -21,7 +21,10 @@ script LittlerootSE_MagmaRallyTrigger {
 
 script LittlerootSE_MagmaRally {
 	msgbox(LittlerootSE_WeAreTeamMagma, MSGBOX_DEFAULT)
-	clearflag(FLAG_HIDE_AQUA_GRUNTS)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_1)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_2)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_3)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_4)
 	msgbox("???: Hold it right there!")
 	waitmessage
 	playse(SE_PIN)
@@ -41,6 +44,17 @@ script LittlerootSE_MagmaRally {
 	msgbox(LittlerootSE_WeAreTeamAqua, MSGBOX_DEFAULT)
 	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_1, Common_Movement_WalkInPlaceFastestDown)
 	msgbox(LittlerootSE_YouCowards, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_ANABEL_1, LittlerootSE_Movement_CrowdDispersing1)
+	applymovement(OBJ_EVENT_ID_ANABEL_2, LittlerootSE_Movement_CrowdDispersing2)
+	applymovement(OBJ_EVENT_ID_ANABEL_3, LittlerootSE_Movement_CrowdDispersing3)
+	applymovement(OBJ_EVENT_ID_ANABEL_4, LittlerootSE_Movement_CrowdDispersing4)
+	applymovement(OBJ_EVENT_ID_ANABEL_5, LittlerootSE_Movement_CrowdDispersing5)
+	removeobject(OBJ_EVENT_ID_ANABEL_1)
+	removeobject(OBJ_EVENT_ID_ANABEL_2)
+	removeobject(OBJ_EVENT_ID_ANABEL_3)
+	removeobject(OBJ_EVENT_ID_ANABEL_4)
+	removeobject(OBJ_EVENT_ID_ANABEL_5)
+	msgbox(LittlerootSE_AreYouWithUsOrWithThem, MSGBOX_DEFAULT)
 	end
 }
 	
@@ -54,33 +68,75 @@ movement LittlerootSE_Movement_OtherGruntsGoungUp {
 	step_end
 }
 
+movement LittlerootSE_Movement_CrowdDispersing1 {
+	walk_fastest_right * 3
+	walk_fastest_down * 4
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing2 {
+	walk_fastest_left * 1
+	walk_fastest_down * 4
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing3 {
+	walk_fastest_left * 7
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing4 {
+	walk_fastest_left * 2
+	walk_fastest_up * 6
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing5 {
+	walk_fastest_right * 1
+	walk_fastest_up * 7
+	step_end
+}
+
 text LittlerootSE_WeAreTeamMagma {
 	format(
-		"Magma Grunt 1: Welcome, refugees...\p"
-		"Allow us to express our sympathy for all of your hardships, from the bottom of our hearts.\p"
-		"We, Team Magma, are an organization dedicated to fight against climate change to prevent tragedies, such as the one that struck your homeland, from happening ever again.\p"
-		"Even though everyone turns a blind eye over it, climate change is becoming a bigger and bigger problem here in Hoenn too.\p"
-		"Corrupt corporations are not willing to make the change, just for the sake of their own gains, not caring of what will be of our beautiful land!\p"
-		"As you can see, we are all in the same boat. We need the cooperation of all people in our crusade against the status quo!\p"
-		"So, people of the world, uni-"
+		"Magma Grunt 1: Comrades! We live in desperate times!\p"
+		"Some of you have escaped from horrific violence.\p"
+		"Some of you have fled from the rising waters.\p"
+		"And some have been forced here by drought and famine.\p"
+		"We can't change the past, but the future is ours!\p"
+		"We must work together to build a better, fairer society!\p"
+		"We shall overthrow our corrupt, failing governments!\p"
+		"We can share resources, build shelters, schools, and hospitals so that everyone has a chance for a comfortable life.\p"
+		"We can no longer let the elite exploit us while they ravage our planet.\p"
+		"In time, science will help us to undo the damage."
 	)
 }
 
 text LittlerootSE_WeAreTeamAqua {
 	format(
-		"Aqua Grunt 1: Look at you, refugees.\p"
-		"You escaped your countries only to arrive in a wretched land, imploring charity, listening to the blabbering of some buffoons.\p"
-		"No matter what others may tell you, the end of the world is coming. The climate crisis that is sweeping nations one by one is a divine punishment by the hands of God.\p"
-		"Greedy, godless and filthy human beings have ruined the planet. Exploiting other humans and Earth's resources has brought the wrath of the Heavens upon all us.\p"
-		"There is but one way of salvation from the impending doom -- joining Team Aqua, our noble organization!\p"
-		"If you're worthy of living among the chosen by God, that is..."
+		"Aqua Grunt 1: What a load of nonsense. Surely you people aren't buying this?\p"
+		"You're all here because you are stronger than the rest.\p"
+		"Because you had the courage and determination to fight your way here.\p"
+		"Our planet has been ruined by the greedy, the weak and the faithless.\p"
+		"Don't give up your fight to join them and follow a bunch of spineless hypocrites.\p"
+		"No matter what these criminals might tell you, the end is near.\p"
+		"The heavens shall open and a great flood shall sweep the Earth.\p"
+		"The only path of salvation is through us - through Aqua!"
 	)
 }
 
 text LittlerootSE_YouCowards {
 	format(
-		"Magma Grunt 1: Aqua, you bastards!\p"
-		"Comrades, do not listen to a single word from the mouth of those bigots!\p"
-		"They don't care about the safety of anyone..."
+		"Magma Grunt 2: The words of these deranged bigots are meaningless!\p"
+		"You, Aqua, don't want to save anyone but your supporters.\p"
+		"You call us criminals, while you pigs stuff your pockets with dirty money!\p"
+		"Aqua Grunt 2: We're not here to argue with you violent thugs.\p"
+		"You should leave, you pathetic bleeding hearts!"
+	)
+}
+
+text LittlerootSE_AreYouWithUsOrWithThem {
+	format(
+		"Magma Grunt 1: Who are you? Are you with us or are you with them?"
 	)
 }
