@@ -4465,7 +4465,7 @@
       "id": "LAYOUT_ROUTE102NE",
       "name": "Route102NE_Layout",
       "width": 32,
-      "height": 16,
+      "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102NE/border.bin",
