@@ -63,6 +63,8 @@
 #define MAP_LITTLE_ROOT_SW      (58 | (0 << 8))
 #define MAP_LITTLEROOT_SE       (59 | (0 << 8))
 #define MAP_ROUTE102NE          (60 | (0 << 8))
+#define MAP_ROUTE102NW          (61 | (0 << 8))
+#define MAP_ROUTE102W           (62 | (0 << 8))
 
 // Map Group 1
 #define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F     (0 | (1 << 8))

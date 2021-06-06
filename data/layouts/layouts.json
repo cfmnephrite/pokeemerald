@@ -4470,6 +4470,26 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102NE/border.bin",
       "blockdata_filepath": "data/layouts/Route102NE/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE102NW",
+      "name": "Route102NW_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/Route102NW/border.bin",
+      "blockdata_filepath": "data/layouts/Route102NW/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE102W",
+      "name": "Route102W_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/Route102W/border.bin",
+      "blockdata_filepath": "data/layouts/Route102W/map.bin"
     }
   ]
 }

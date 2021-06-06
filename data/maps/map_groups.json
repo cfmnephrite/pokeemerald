@@ -97,7 +97,9 @@
     "LittlerootWest",
     "LittleRootSW",
     "LittlerootSE",
-    "Route102NE"
+    "Route102NE",
+    "Route102NW",
+    "Route102W"
   ],
   "gMapGroup1": [
     "LittlerootTown_BrendansHouse_1F",
