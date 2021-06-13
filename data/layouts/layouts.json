@@ -104,10 +104,10 @@
     {
       "id": "LAYOUT_OLDALE_TOWN",
       "name": "OldaleTown_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 32,
+      "height": 32,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Petalburg",
+      "secondary_tileset": "gTileset_Lilycove",
       "border_filepath": "data/layouts/OldaleTown/border.bin",
       "blockdata_filepath": "data/layouts/OldaleTown/map.bin"
     },
@@ -174,8 +174,8 @@
     {
       "id": "LAYOUT_ROUTE102",
       "name": "Route102_Layout",
-      "width": 50,
-      "height": 20,
+      "width": 32,
+      "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102/border.bin",
@@ -4462,6 +4462,7 @@
       "blockdata_filepath": "data/layouts/Littleroot_BeachCafe/map.bin"
     },
     {
+
       "id": "LAYOUT_LITTLEROOT_BEACH_RESORT1",
       "name": "Littleroot_BeachResort1_Layout",
       "width": 17,
@@ -4470,6 +4471,35 @@
       "secondary_tileset": "gTileset_GenericBuilding",
       "border_filepath": "data/layouts/Littleroot_BeachResort1/border.bin",
       "blockdata_filepath": "data/layouts/Littleroot_BeachResort1/map.bin"
+
+      "id": "LAYOUT_ROUTE102NE",
+      "name": "Route102NE_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/Route102NE/border.bin",
+      "blockdata_filepath": "data/layouts/Route102NE/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE102NW",
+      "name": "Route102NW_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/Route102NW/border.bin",
+      "blockdata_filepath": "data/layouts/Route102NW/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE102W",
+      "name": "Route102W_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/Route102W/border.bin",
+      "blockdata_filepath": "data/layouts/Route102W/map.bin"
     }
   ]
 }

@@ -22,6 +22,21 @@
       "direction": "up",
       "offset": 0,
       "map": "MAP_OLDALE_TOWN"
+    },
+    {
+      "direction": "left",
+      "offset": -32,
+      "map": "MAP_ROUTE102NE"
+    },
+    {
+      "direction": "left",
+      "offset": 32,
+      "map": "MAP_LITTLEROOT_WEST"
+    },
+    {
+      "direction": "left",
+      "offset": 0,
+      "map": "MAP_ROUTE102"
     }
   ],
   "object_events": [
@@ -113,7 +128,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "Route101_EventScript_Avery",
+      "script": "NULL",
       "flag": "0"
     },
     {

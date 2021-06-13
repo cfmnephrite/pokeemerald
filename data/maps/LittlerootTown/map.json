@@ -32,6 +32,16 @@
       "direction": "right",
       "offset": 32,
       "map": "MAP_LITTLEROOT_SE"
+    },
+    {
+      "direction": "left",
+      "offset": 0,
+      "map": "MAP_LITTLEROOT_WEST"
+    },
+    {
+      "direction": "left",
+      "offset": -32,
+      "map": "MAP_ROUTE102"
     }
   ],
   "object_events": [
