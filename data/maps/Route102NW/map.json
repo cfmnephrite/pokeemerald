@@ -25,13 +25,13 @@
     },
     {
       "direction": "down",
-      "offset": 32,
-      "map": "MAP_ROUTE102"
-    },
-    {
-      "direction": "down",
       "offset": 0,
       "map": "MAP_ROUTE102W"
+    },
+    {
+      "direction": "right",
+      "offset": 32,
+      "map": "MAP_ROUTE102"
     }
   ],
   "object_events": [
@@ -39,46 +39,46 @@
   ],
   "warp_events": [
     {
-      "x": 24,
-      "y": 21,
-      "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
-      "dest_warp_id": 0
-    },
-    {
-      "x": 25,
-      "y": 21,
-      "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
-      "dest_warp_id": 0
-    },
-    {
-      "x": 26,
-      "y": 21,
-      "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
-      "dest_warp_id": 0
-    },
-    {
       "x": 6,
       "y": 7,
       "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
+      "dest_map": "MAP_PETALBURG_WOODS",
       "dest_warp_id": 0
     },
     {
       "x": 7,
       "y": 7,
       "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
-      "dest_warp_id": 0
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 1
     },
     {
       "x": 8,
       "y": 7,
       "elevation": 0,
-      "dest_map": "MAP_ROUTE102NW",
-      "dest_warp_id": 0
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 2
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 3
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 4
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 5
     }
   ],
   "coord_events": [
