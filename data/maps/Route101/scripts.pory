@@ -1,9 +1,35 @@
 mapscripts Route101_MapScripts {}
 
-script Route101_EventScript_Avery  {
+script Route101_EventScript_Avery {
     trainerbattle_single(TRAINER_CALVIN_1, Route101_Text_AveryIntro, Route101_Text_AveryLoses)
     msgbox(Route101_Text_AveryGeneral, MSGBOX_AUTOCLOSE)
     end
+}
+
+script Route101_EventScript_Ernest {
+    lock
+    faceplayer
+    if (!flag(FLAG_RECEIVED_OLD_ROD)) {
+        msgbox(Route101_WantToLearnToFish, MSGBOX_YESNO)
+		if (var(VAR_RESULT) == YES) {
+            msgbox(format("Give it all in this battle!"))
+            trainerbattle_no_intro(TRAINER_IVAN, Route101_ErnestLoses)
+		    msgbox(Route101_HaveOneOfMyRods, MSGBOX_DEFAULT)
+            giveitem(ITEM_OLD_ROD)
+            setflag(FLAG_RECEIVED_OLD_ROD)
+            msgbox(Route101_FishingAdvice, MSGBOX_DEFAULT)
+            release
+            end
+        } else {
+            msgbox(Route101_NotInterested, MSGBOX_DEFAULT)
+            release
+			end
+        }
+    } else {
+        msgbox(Route101_HavingFunFishing, MSGBOX_DEFAULT)
+        release
+        end
+    }
 }
 
 text Route101_Text_AveryIntro {
@@ -23,4 +49,35 @@ text Route101_Text_AveryGeneral {
         "Razor Wind is such a cool move!\p"
         "It's a special Flying-type attack that targets physical defense!"
     )
+}
+
+text Route101_WantToLearnToFish {
+    format(
+        "Oh, hello there, young man! This beach is popular among tourists, but is also a great place for fishing! Say, would you like to learn to fish? First however, we battle!")
+}
+
+text Route101_ErnestLoses {
+    format(
+        "Excellent!"
+    )
+}
+
+text Route101_HaveOneOfMyRods {
+    format(
+        "That was a great battle! Now, take one of my Rods!")
+}
+
+text Route101_FishingAdvice {
+    format(
+        "So, fishing is very simple. All you have to do is facing the water and use your Rod. If you get a bite, pull the Rod.")
+}
+
+text Route101_NotInterested {
+    format(
+        "Oh, you're not interested? Too bad. Anyway, if you change your mind, you can find me here.")
+}
+
+text Route101_HavingFunFishing {
+    format(
+        "So, are you having fun fishing?")
 }
