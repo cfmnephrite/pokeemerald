@@ -36,7 +36,7 @@ Route101_EventScript_Ernest_4:
 
 
 Route101_EventScript_Ernest_Text_0:
-	.string "Give it all in this battle!$"
+	.string "Give it your all in this battle!$"
 
 Route101_Text_AveryIntro::
 	.string "Ah, I'm having the time of my life...\n"
@@ -52,23 +52,25 @@ Route101_Text_AveryGeneral::
 	.string "targets physical defense!$"
 
 Route101_WantToLearnToFish::
-	.string "Oh, hello there, young man! This beach is\n"
-	.string "popular among tourists, but is also a\l"
-	.string "great place for fishing! Say, would you\l"
-	.string "like to learn to fish? First however, we\l"
-	.string "battle!$"
+	.string "Oh, hello there, young man!\p"
+	.string "This beach is popular for tourists,\n"
+	.string "but it's also a great fishing spot!\p"
+	.string "Say, would you like a little fishing\n"
+	.string "lesson?\p"
+	.string "First, however, we battle!$"
 
 Route101_ErnestLoses::
 	.string "Excellent!$"
 
 Route101_HaveOneOfMyRods::
-	.string "That was a great battle! Now, take one\n"
-	.string "of my Rods!$"
+	.string "That was a great battle!\n"
+	.string "Now, take one of my Rods!$"
 
 Route101_FishingAdvice::
-	.string "So, fishing is very simple. All you have\n"
-	.string "to do is facing the water and use your\l"
-	.string "Rod. If you get a bite, pull the Rod.$"
+	.string "So, fishing is very simple.\p"
+	.string "All you have to do is face the water and\n"
+	.string "use your Rod.\p"
+	.string "If you get a bite, pull the Rod.$"
 
 Route101_NotInterested::
 	.string "Oh, you're not interested? Too bad.\n"
