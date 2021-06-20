@@ -11,10 +11,10 @@ script Route101_EventScript_Ernest {
     faceplayer
     if (!flag(FLAG_RECEIVED_OLD_ROD)) {
         msgbox(Route101_WantToLearnToFish, MSGBOX_YESNO)
-		if (var(VAR_RESULT) == YES) {
+        if (var(VAR_RESULT) == YES) {
             msgbox(format("Give it all in this battle!"))
             trainerbattle_no_intro(TRAINER_IVAN, Route101_ErnestLoses)
-		    msgbox(Route101_HaveOneOfMyRods, MSGBOX_DEFAULT)
+            msgbox(Route101_HaveOneOfMyRods, MSGBOX_DEFAULT)
             giveitem(ITEM_OLD_ROD)
             setflag(FLAG_RECEIVED_OLD_ROD)
             msgbox(Route101_FishingAdvice, MSGBOX_DEFAULT)
@@ -23,7 +23,7 @@ script Route101_EventScript_Ernest {
         } else {
             msgbox(Route101_NotInterested, MSGBOX_DEFAULT)
             release
-			end
+            end
         }
     } else {
         msgbox(Route101_HavingFunFishing, MSGBOX_DEFAULT)

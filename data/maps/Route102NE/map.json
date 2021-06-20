@@ -19,14 +19,14 @@
       "map": "MAP_ROUTE101"
     },
     {
-      "direction": "down",
-      "offset": 0,
-      "map": "MAP_ROUTE102"
-    },
-    {
       "direction": "right",
       "offset": 0,
       "map": "MAP_OLDALE_TOWN"
+    },
+    {
+      "direction": "down",
+      "offset": 0,
+      "map": "MAP_ROUTE102"
     },
     {
       "direction": "left",
@@ -34,8 +34,8 @@
       "map": "MAP_ROUTE102NW"
     },
     {
-      "direction": "left",
-      "offset": 32,
+      "direction": "down",
+      "offset": -32,
       "map": "MAP_ROUTE102W"
     }
   ],

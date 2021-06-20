@@ -4,8 +4,8 @@
     {
       "id": "LAYOUT_PETALBURG_CITY",
       "name": "PetalburgCity_Layout",
-      "width": 30,
-      "height": 30,
+      "width": 32,
+      "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/PetalburgCity/border.bin",
