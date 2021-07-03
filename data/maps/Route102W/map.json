@@ -19,19 +19,19 @@
       "map": "MAP_PETALBURG_CITY"
     },
     {
+      "direction": "right",
+      "offset": 0,
+      "map": "MAP_ROUTE102"
+    },
+    {
       "direction": "up",
       "offset": 0,
       "map": "MAP_ROUTE102NW"
     },
     {
-      "direction": "right",
-      "offset": -32,
+      "direction": "up",
+      "offset": 32,
       "map": "MAP_ROUTE102NE"
-    },
-    {
-      "direction": "right",
-      "offset": 0,
-      "map": "MAP_ROUTE102"
     }
   ],
   "object_events": [

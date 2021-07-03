@@ -15,35 +15,41 @@ Route101_EventScript_Phil::
 
 
 Route101_JuliaIntro::
-	.string "What? I have ordered a double\n"
-	.string "cheeseburger, but there's no cheese in\l"
-	.string "there! Uh? Do you want to battle us?$"
+	.string "What?\p"
+	.string "I ordered a double cheeseburger and\n"
+	.string "there's no cheese in it!\p"
+	.string "Huh? Do you want to battle us?$"
 
 Route101_JuliaLoses::
-	.string "Oh wow, takeout service is terrible and\n"
-	.string "so are our monsters...$"
+	.string "Oh, wow! The takeout service is terrible\n"
+	.string "and so are our monsters...$"
 
 Route101_JuliaGeneral::
-	.string "We are here in vacation. The beach is\n"
-	.string "lovely, but the services around here\l"
-	.string "leave a lot to be desired...$"
+	.string "The beach here is fantastic!\p"
+	.string "Amazing to think that it used to be\n"
+	.string "miles inland...\p"
+	.string "The services leave a lot to be desired\n"
+	.string "though!$"
 
 Route101_JuliaNotEnoughMons::
-	.string "Huh? You have just one monster. We\n"
-	.string "can't bother to battle you like that.$"
+	.string "Huh? You only have one monster.\p"
+	.string "Come back when we can have a proper\n"
+	.string "double battle!$"
 
 Route101_PhilIntro::
-	.string "Oh hello there! Are you too in vacation?\n"
-	.string "Ah, you want to battle us? Alright!$"
+	.string "Oh hello there!\n"
+	.string "Are you on vacation too?\p"
+	.string "You want to battle us? All right!$"
 
 Route101_PhilLoses::
-	.string "Oh oh. What strong monsters you have!$"
+	.string "Oof. What strong monsters you have!$"
 
 Route101_PhilGeneral::
-	.string "We are here in vacation. It's a lovely\n"
-	.string "place, shame about that refugees\l"
-	.string "situation...$"
+	.string "We're here on vacation.\p"
+	.string "It's a lovely place, but I wish that\n"
+	.string "refugee camp weren't so close by.$"
 
 Route101_PhilNotEnoughMons::
-	.string "Hoho. I see you want to battle us, but\n"
-	.string "you need more monsters in your team...$"
+	.string "Hoho, I see you want to battle us!\p"
+	.string "But you need more monsters in your\n"
+	.string "team...$"

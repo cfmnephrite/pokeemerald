@@ -14,14 +14,9 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "direction": "left",
+      "direction": "down",
       "offset": 0,
-      "map": "MAP_PETALBURG_CITY"
-    },
-    {
-      "direction": "right",
-      "offset": 0,
-      "map": "MAP_ROUTE102NE"
+      "map": "MAP_ROUTE102W"
     },
     {
       "direction": "down",
@@ -29,16 +24,57 @@
       "map": "MAP_ROUTE102"
     },
     {
-      "direction": "down",
+      "direction": "right",
       "offset": 0,
-      "map": "MAP_ROUTE102W"
+      "map": "MAP_ROUTE102NE"
     }
   ],
   "object_events": [
 
   ],
   "warp_events": [
-
+    {
+      "x": 6,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 0
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 1
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 2
+    },
+    {
+      "x": 24,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 3
+    },
+    {
+      "x": 25,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 4
+    },
+    {
+      "x": 26,
+      "y": 21,
+      "elevation": 0,
+      "dest_map": "MAP_PETALBURG_WOODS",
+      "dest_warp_id": 5
+    }
   ],
   "coord_events": [
 
