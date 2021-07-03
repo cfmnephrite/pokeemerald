@@ -53,6 +53,7 @@ LittlerootTown_ProfessorBirchsLab_ButFirst::
 	goto_if_eq LittlerootTown_ProfessorBirchsLab_ButFirst_2
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingBirch
 	msgbox LittlerootTown_ProfessorBirchsLab_Disappointing, MSGBOX_DEFAULT
+	setflag FLAG_LOST_MAY_BATTLE
 LittlerootTown_ProfessorBirchsLab_ButFirst_1:
 	goto LittlerootTown_ProfessorBirchsLab_PostMayBattle
 	end
@@ -70,19 +71,36 @@ LittlerootTown_ProfessorBirchsLab_PostMayBattle::
 	msgbox LittlerootTown_ProfessorBirchsLab_PostMayBattle_Text_0
 	waitfanfare
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
-	msgbox LittlerootTown_ProfessorBirchsLab_ExplainPokedex1, MSGBOX_DEFAULT
+	goto_if_unset FLAG_LOST_MAY_BATTLE, LittlerootTown_ProfessorBirchsLab_PostMayBattle_2
+	msgbox LittlerootTown_ProfessorBirchsLab_ExplainPokedex2, MSGBOX_DEFAULT
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay2
-	msgbox LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT
+	msgbox LittlerootTown_ProfessorBirchsLab_Hehehehe, MSGBOX_DEFAULT
+LittlerootTown_ProfessorBirchsLab_PostMayBattle_1:
 	giveitem ITEM_POKE_BALL, 5
 	msgbox LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls, MSGBOX_DEFAULT
 	releaseall
 	end
+
+LittlerootTown_ProfessorBirchsLab_PostMayBattle_2:
+	msgbox LittlerootTown_ProfessorBirchsLab_ExplainPokedex1, MSGBOX_DEFAULT
+	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_FacingMay2
+	msgbox LittlerootTown_ProfessorBirchsLab_Congrats, MSGBOX_DEFAULT
+	goto LittlerootTown_ProfessorBirchsLab_PostMayBattle_1
 
 
 LittlerootTown_ProfessorBirchsLab_RatePokedex::
 	lock
 	faceplayer
 	goto ProfBirch_EventScript_AskRatePokedex
+	release
+	end
+
+
+LittlerootTown_ProfessorBirchsLab_Rival::
+	lock
+	faceplayer
+	msgbox LittlerootTown_ProfessorBirchsLab_TrainingMonstersIsDifficult, MSGBOX_DEFAULT
+	release
 	end
 
 
@@ -157,39 +175,44 @@ LittlerootTown_ProfessorBirchsLab_EventScript_Bookshelf_Text_0:
 
 LittlerootTown_ProfessorBirchsLab_ThankYouSoMuch::
 	.string "Birch: {PLAYER}, thank you so much for\n"
-	.string "what you did last night. There are no\l"
-	.string "words with which I can express my\l"
-	.string "gratitude.\p"
+	.string "what you did last night.\p"
+	.string "There are no words with which I can\n"
+	.string "express my gratitude.\p"
 	.string "I decided to let you keep that special\n"
 	.string "Pichu. I have a feeling you'll get along\l"
 	.string "with it really well!$"
 
 LittlerootTown_ProfessorBirchsLab_IHaveAJobForYou::
 	.string "Birch: Ah yes, the other thing I wanted\n"
-	.string "to mention... There is a job I would like\l"
-	.string "to offer you. I need someone to help me\l"
-	.string "gather information on all monsters in\l"
-	.string "the region. You would take this\l"
-	.string "Pokedex and travel around Hoenn\l"
-	.string "catching them, analysing them,\l"
-	.string "registering their information here! But\l"
-	.string "first, howewer...$"
+	.string "to mention...\p"
+	.string "There is a job I would like to offer you.\p"
+	.string "I need someone to help me gather\n"
+	.string "information on all monsters in the\l"
+	.string "region.\p"
+	.string "You would take this Pokedex and travel\n"
+	.string "around Hoenn catching them, analysing\l"
+	.string "them, registering their information\l"
+	.string "here!\p"
+	.string "But first, howewer...$"
 
 LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou::
-	.string "Birch: Oh, May! Great timing...\n"
-	.string "{PLAYER}, I would like you to have a\l"
-	.string "battle with my daughter. Last night\l"
-	.string "was indeed impressive, but I want to\l"
-	.string "make sure it wasn't all just a fluke.\l"
-	.string "Consider it a test to see if you're up\l"
-	.string "to the task!$"
+	.string "Birch: Oh, May! Great timing...\p"
+	.string "{PLAYER}, I would like you to have a\n"
+	.string "battle with my daughter.\p"
+	.string "Last night was indeed impressive, but I\n"
+	.string "want to make sure it wasn't all just a\l"
+	.string "fluke.\p"
+	.string "Consider it a test to see if you're up to\n"
+	.string "the task!$"
 
 LittlerootTown_ProfessorBirchsLab_May_Intro::
-	.string "May: That's right! I've been itching to\n"
-	.string "have a battle with you since I saw what\l"
-	.string "you did last night! C'mon, after beating\l"
-	.string "down those thugs, you shouldn't be\l"
-	.string "afraid to battle me... Right?$"
+	.string "May: That's right!\p"
+	.string "I've been itching to have a battle with\n"
+	.string "you since I saw what you did last\l"
+	.string "night!\p"
+	.string "C'mon, after beating down those thugs,\n"
+	.string "you shouldn't be afraid to battle me...\p"
+	.string "Right?$"
 
 LittlerootTown_ProfessorBirchsLab_MayDefeat::
 	.string "WHAT? You... {PLAYER}, you're really\n"
@@ -197,46 +220,59 @@ LittlerootTown_ProfessorBirchsLab_MayDefeat::
 
 LittlerootTown_ProfessorBirchsLab_NotBad::
 	.string "Birch: That was a great battle,\n"
-	.string "{PLAYER}! I didn't expect any less.\l"
-	.string "Now, as I promised, I shall give you a\l"
+	.string "{PLAYER}! I didn't expect any less.\p"
+	.string "Now, as I promised, I shall give you a\n"
 	.string "Pokédex!$"
 
 LittlerootTown_ProfessorBirchsLab_ExplainPokedex1::
 	.string "Birch: This Pokedex is a high-tech\n"
 	.string "device that registers data of any\l"
-	.string "monster you catch. It is actually\l"
-	.string "pretty straightforward, you should\l"
-	.string "find it easy to use.$"
+	.string "monster you catch.\p"
+	.string "It is actually pretty straightforward,\n"
+	.string "you should find it easy to use.$"
 
 LittlerootTown_ProfessorBirchsLab_Congrats::
-	.string "May: Kudos for winning, {PLAYER}! I\n"
-	.string "gotta admit I have underestimated\l"
-	.string "you... As a reward, here's a little gift!$"
+	.string "May: Kudos for winning, {PLAYER}!\p"
+	.string "I gotta admit, I have underestimated\n"
+	.string "you...\p"
+	.string "As a reward, here's a little gift!$"
 
 LittlerootTown_ProfessorBirchsLab_Disappointing::
 	.string "Birch: Oh... that was disappointing,\n"
-	.string "{PLAYER}. Must I suppose that\l"
-	.string "performance last night was only dumb\l"
-	.string "luck? Still, I really need help for my\l"
-	.string "research, so I can't be too picky. I'll\l"
-	.string "give you the Pokédex anyways.$"
+	.string "{PLAYER}.\p"
+	.string "So the feat of last night was only dumb\n"
+	.string "luck?\p"
+	.string "Still, I really need help for my\n"
+	.string "research, so I can't be too picky.\p"
+	.string "I'll give you the Pokédex anyways.$"
 
-LittlerootTown_ProfessorBirchsLab_Hehehehe::
+LittlerootTown_ProfessorBirchsLab_ExplainPokedex2::
 	.string "Birch: This Pokedex is a high-tech\n"
 	.string "device that registers data of any\l"
-	.string "monster you catch. It is extremely\l"
-	.string "easy to use, even a baby should\l"
-	.string "understand how it works.\p"
+	.string "monster you catch.\p"
+	.string "It is very easy to use, even a baby\n"
+	.string "should understand how it works.\p"
+	.string "$"
+
+LittlerootTown_ProfessorBirchsLab_Hehehehe::
 	.string "May: Hehehehe, don't feel too bad,\n"
-	.string "{PLAYER}! It's just that I'm too\l"
-	.string "strong for you! Here's a little gift\l"
-	.string "because I feel sorry for you!$"
+	.string "{PLAYER}!\p"
+	.string "It's just that I'm too strong for you!\p"
+	.string "Here's a little gift, because I feel\n"
+	.string "sorry for you!$"
 
 LittlerootTown_ProfessorBirchsLab_TheseArePokeBalls::
-	.string "May: These are Poké Balls! They are used\n"
-	.string "for catching wild Pokémon! You need to\l"
-	.string "weaken your target a little bit first\l"
-	.string "to make 'em easier to catch.$"
+	.string "May: These are Poké Balls!\p"
+	.string "They are used for catching wild\n"
+	.string "Pokémon!\p"
+	.string "You need to weaken your target a little\n"
+	.string "bit first to make 'em easier to catch.$"
+
+LittlerootTown_ProfessorBirchsLab_TrainingMonstersIsDifficult::
+	.string "May: Training monsters is difficult,\n"
+	.string "you know.\p"
+	.string "This is not a game where you can go back\n"
+	.string "and make different choices, after all!$"
 
 LittlerootTown_ProfessorBirchsLab_SeriousLookingMachine::
 	.string "Wow, Core 2 Duo?\n"
