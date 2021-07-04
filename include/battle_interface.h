@@ -147,6 +147,7 @@ enum
 #define TAG_MOVE_BOX_STEEL_PAL     0xD85E
 #define TAG_MOVE_BOX_WATER_PAL     0xD85F
 #define TAG_MOVE_BOX_CURSOR     0xD860
+#define TAG_ACTION_BOX_CURSOR     0xD861
 
 enum
 {
