@@ -1963,13 +1963,13 @@ void SetMoveScreenSplitIcons(void)
     u8 *src = (u8*)gMoveScreenSplitIconsGfx;
 
     splitA = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]]);
-    if (gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1] == MOVE_NONE)
+    if (gBattleMons[gActiveBattler].moves[1] == MOVE_NONE) // i.e. the mon only has one move
         splitB = 3;
     else
         splitB = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1]);
 
-    RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 99 * TILE_SIZE_4BPP), 0x40);
-    RequestSpriteCopy((src + 0x40 * (3 + splitB)), (u8*)(VRAM + 101 * TILE_SIZE_4BPP), 0x40);
+    RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 161 * TILE_SIZE_4BPP), 0x40);
+    RequestSpriteCopy((src + 0xC0 + (0x60 * splitB)), (u8*)(VRAM + 163 * TILE_SIZE_4BPP), 0x60);
 }
 
 void UpdateScrollBar(u8 totalMoveNo)
@@ -1981,7 +1981,7 @@ void UpdateScrollBar(u8 totalMoveNo)
     else if (totalMoveNo == 4)
         src += 0xE0 * (3 + gMoveSelectionState[gActiveBattler]);
 
-    RequestSpriteCopy(src, (u8*)(VRAM + 104 * TILE_SIZE_4BPP), 0xE0);
+    RequestSpriteCopy(src, (u8*)(VRAM + 166 * TILE_SIZE_4BPP), 0xE0);
 
 }
 
@@ -1992,13 +1992,13 @@ void UpdateTypeBg(void)
     if (type)
     {
         LoadPalette((u8*)gTypeBgBug_Pal + (type - 1) * 0x20, 0xD0, 0x20);
-        RequestSpriteCopy((u8*)gTypeBgBug_Gfx + (type - 1) * 0x320, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+        RequestSpriteCopy((u8*)gTypeBgBug_Gfx + (type - 1) * 0x320, (u8 *)(VRAM + 136 * TILE_SIZE_4BPP), 0x320);
     }
     else
     {
         LZDecompressWram(gBattleTextboxTiles, gDecompressionBuffer);
         LoadPalette(&gTypeBgNormal_Pal, 0xD0, 0x20);
-        RequestSpriteCopy((u8*)gDecompressionBuffer + 0x940, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+        RequestSpriteCopy((u8*)gDecompressionBuffer + 0x940, (u8 *)(VRAM + 136 * TILE_SIZE_4BPP), 0x320);
     }
 }
 
