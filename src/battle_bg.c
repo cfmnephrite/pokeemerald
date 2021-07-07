@@ -170,26 +170,18 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
         .width = 26,
         .height = 4,
         .paletteNum = 0,
-        .baseBlock = 0x0090,
+        .baseBlock = 0x00AE,
     },
     { // 1 "What will (pokemon) do?"
         .bg = 0,
-        .tilemapLeft = 1,
+        .tilemapLeft = 2,
         .tilemapTop = 35,
-        .width = 14,
+        .width = 12,
         .height = 4,
         .paletteNum = 0,
         .baseBlock = 0x01C0,
     },
-    { // 2 "Fight/Pokemon/Bag/Run"
-        .bg = 0,
-        .tilemapLeft = 17,
-        .tilemapTop = 35,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 5,
-        .baseBlock = 0x0190,
-    },
+    {0},
     { // 3 Move desc1
         .bg = 0,
         .tilemapLeft = 17,
@@ -1218,7 +1210,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         CopyBgTilemapBufferToVram(0);
         break;
     case 2:
-        LoadCompressedPalette(gBattleTextboxPalette, 0, 0x40);
+        LoadCompressedPalette(gBattleTextboxPalette, 0, 0x20);
         LoadCompressedPalette(gBattleTextboxPalette1, 0xE0, 0x40);
         LoadCompressedPalette(gBattleTextboxPalette2, 0xF0, 0x40);
         break;
