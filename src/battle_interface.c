@@ -502,7 +502,8 @@ static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] =
     {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE4},
     {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE4},
     {gBattleMoveBoxRightHalf_Gfx, 0x400, TAG_MOVE_BOX_RIGHTHALF_TILE},
-    {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR}
+    {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR},
+    {gBattleMoveBoxCursor, 0x100, TAG_ACTION_BOX_CURSOR}
 };
 
 static const struct SpritePalette sSpritePalettes_BattleMoveBoxes[] =
@@ -1242,7 +1243,6 @@ static const struct SubspriteTable sBattleMoveBoxSubspriteTable[] =
 };
 
 // Movebox cursor
-
 static const struct OamData sOamData_BattleMoveBoxCursor =
 {
     .y = 0,
@@ -1333,6 +1333,112 @@ static const struct SubspriteTable sBattleMoveBoxCursorPausedSubspriteTable[] =
     {ARRAY_COUNT(sBattleMoveBoxCursorPausedSubsprites), sBattleMoveBoxCursorPausedSubsprites}
 };
 
+
+// Action box cursor
+static const struct OamData sOamData_BattleActionBoxCursor =
+{
+    .y = 0,
+    .affineMode = 0,
+    .objMode = 0,
+    .mosaic = 0,
+    .bpp = 0,
+    .shape = SPRITE_SHAPE(16x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(16x16),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static void SpriteCallback_ActionBoxCursor(struct Sprite *sprite)
+{
+    // u8 i;
+    // X
+    // if ((sprite->pos1.x - 120) > 59 * (sprite->oam.affineParam % 2))
+    // {
+    //     // for (i = 0; i < 5; i++)
+    //     // {
+    //     //     sprite->pos1.x--;
+    //     // }
+    //     // if (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
+    //     //     sprite->pos1.x--;
+    //     while (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
+    //     {
+    //         sprite->pos1.x--;
+    //     }
+
+    // }
+    // else if ((sprite->pos1.x - 120) < 59 * (sprite->oam.affineParam % 2))
+    // {
+    //     // for (i = 0; i < 5; i++)
+    //     // {
+    //     //     sprite->pos1.x++;
+    //     // }
+    //     // if (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
+    //     //     sprite->pos1.x++;
+    //     while (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
+    //     {
+    //         sprite->pos1.x++;
+    //     }
+    // }
+
+    sprite->pos1.x = 120 + 59 * (sprite->oam.affineParam % 2);
+    sprite->pos1.y = 113 + 23 * (sprite->oam.affineParam / 2);
+
+    // Y
+    // if ((sprite->pos1.y - 113) > 23 * (sprite->oam.affineParam / 2))
+    // {
+    //     sprite->pos1.y -= 2;
+    //     if (sprite->pos1.y - 113 != 23 * (sprite->oam.affineParam / 2))
+    //         sprite->pos1.y--;
+
+    // }
+    // else if ((sprite->pos1.y - 113) < 23 * (sprite->oam.affineParam / 2))
+    // {
+    //     sprite->pos1.y += 2;
+    //     if (sprite->pos1.y - 113 != 23 * (sprite->oam.affineParam / 2))
+    //         sprite->pos1.y++;
+    // }
+}
+
+static const struct SpriteTemplate sBattleActionBoxCursor =
+{
+    .tileTag = TAG_ACTION_BOX_CURSOR,
+    .paletteTag = TAG_HEALTHBOX_PAL,
+    .oam = &sOamData_BattleActionBoxCursor,
+    .anims = sBattleMoveBoxCursorAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallback_ActionBoxCursor
+};
+
+static const struct Subsprite sBattleActionBoxCursorSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      0},
+    {51,    0,  0,  0,  1,      0},
+    {0,    14,  0,  0,  2,      0},
+    {51,   14,  0,  0,  3,      0}
+};
+
+static const struct Subsprite sBattleActionBoxCursorPausedSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      1},
+    {51,    0,  0,  0,  1,      1},
+    {0,    14,  0,  0,  2,      1},
+    {51,   14,  0,  0,  3,      1}
+};
+
+static const struct SubspriteTable sBattleActionBoxCursorSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleActionBoxCursorSubsprites), sBattleActionBoxCursorSubsprites},
+};
+
+static const struct SubspriteTable sBattleActionBoxCursorPausedSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleActionBoxCursorPausedSubsprites), sBattleActionBoxCursorPausedSubsprites}
+};
 
 // possibly text
 static const u8 sUnknown_0832C3C4[] =
@@ -2029,12 +2135,36 @@ void DestroyMoveBoxes(void)
     gBattleMoveBoxReset = 0xFF;
 }
 
-void DestroyMoveBoxCursor(void)
+void CreateMoveBoxCursor(void)
+{
+    u8 index = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    u8 cursorParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
+    if (index == 0xFF)
+    {
+        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
+        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113 + 23 * cursorParam, 0);
+        gSprites[index].oam.affineParam = cursorParam;
+    }
+    SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
+    StartSpriteAnim(&gSprites[index], 0);
+}
+
+void ConfirmMoveBoxCursor(void)
 {
     u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
     if (cursorId != 0xFF)
     {
-        FreeSpriteTilesByTag(TAG_MOVE_BOX_CURSOR);
+        StartSpriteAnim(&gSprites[cursorId], 1);
+        SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
+    }
+}
+
+void DestroyMoveBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        FreeSpriteTilesByTag(TAG_ACTION_BOX_CURSOR);
         DestroySprite(&gSprites[cursorId]);
     }
 }
@@ -2060,27 +2190,40 @@ void CreateMoveBox(u8 type, u8 index)
     MoveBox_PrintMovePP(index);
 }
 
-void CreateMoveBoxCursor(void)
+void CreateActionBoxCursor(void)
 {
-    u8 index = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
-    u8 cursorParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
+    u8 index = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
     if (index == 0xFF)
     {
-        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
-        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113 + 23 * cursorParam, 0);
-        gSprites[index].oam.affineParam = cursorParam;
+        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[78]);
+        index = CreateSprite(&sBattleActionBoxCursor,
+            120 + 59 * (gActionSelectionCursor[gActiveBattler] % 2),
+            113 + 23 * (gActionSelectionCursor[gActiveBattler] / 2),
+            0
+        );
+        gSprites[index].oam.affineParam = gActionSelectionCursor[gActiveBattler];
     }
-    SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
+    SetSubspriteTables(&gSprites[index], sBattleActionBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
 }
 
-void ConfirmMoveBoxCursor(void)
+void ConfirmActionBoxCursor(void)
 {
-    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
     if (cursorId != 0xFF)
     {
         StartSpriteAnim(&gSprites[cursorId], 1);
-        SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
+        SetSubspriteTables(&gSprites[cursorId], sBattleActionBoxCursorPausedSubspriteTable);
+    }
+}
+
+void DestroyActionBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        FreeSpriteTilesByTag(TAG_ACTION_BOX_CURSOR);
+        DestroySprite(&gSprites[cursorId]);
     }
 }
 

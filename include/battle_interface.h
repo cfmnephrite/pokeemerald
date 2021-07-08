@@ -183,6 +183,9 @@ void UpdateMoveBoxList(void);
 void ChangeMoveBox(u8 type, u8 position, u8 upOrDown);
 void MoveBox_PrintMoveName(u8 position);
 void MoveBox_PrintMovePP(u8 position);
+void CreateActionBoxCursor(void);
+void DestroyActionBoxCursor(void);
+void ConfirmActionBoxCursor(void);
 
 u8 CreateBattlerHealthboxSprites(u8 battler);
 u8 CreateSafariPlayerHealthboxSprites(void);
