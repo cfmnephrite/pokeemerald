@@ -658,7 +658,7 @@ static void HandleInputChooseMove(void)
                 UpdateScrollBar(gNumberOfMovesToChoose);
             }
             else
-                gSprites[GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR)].oam.affineParam = 0;
+                gSprites[GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR)].oam.affineParam = 0x10;
             PlaySE(SE_SELECT);
             MoveSelectionDisplayBPAndAccuracy();
             ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);
@@ -686,7 +686,7 @@ static void HandleInputChooseMove(void)
                 UpdateScrollBar(gNumberOfMovesToChoose);
             }
             else
-                gSprites[GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR)].oam.affineParam = 1;
+                gSprites[GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR)].oam.affineParam = 0x11;
             PlaySE(SE_SELECT);
             MoveSelectionDisplayBPAndAccuracy();
             ChangeZMoveTriggerSprite(gBattleStruct->zMove.triggerSpriteId, 0);

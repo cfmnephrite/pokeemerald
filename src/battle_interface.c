@@ -502,7 +502,6 @@ static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] =
     {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE4},
     {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE4},
     {gBattleMoveBoxRightHalf_Gfx, 0x400, TAG_MOVE_BOX_RIGHTHALF_TILE},
-    {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR},
     {gBattleMoveBoxCursor, 0x100, TAG_ACTION_BOX_CURSOR}
 };
 
@@ -1354,53 +1353,15 @@ static const struct OamData sOamData_BattleActionBoxCursor =
 
 static void SpriteCallback_ActionBoxCursor(struct Sprite *sprite)
 {
-    // u8 i;
-    // X
-    // if ((sprite->pos1.x - 120) > 59 * (sprite->oam.affineParam % 2))
-    // {
-    //     // for (i = 0; i < 5; i++)
-    //     // {
-    //     //     sprite->pos1.x--;
-    //     // }
-    //     // if (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
-    //     //     sprite->pos1.x--;
-    //     while (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
-    //     {
-    //         sprite->pos1.x--;
-    //     }
-
-    // }
-    // else if ((sprite->pos1.x - 120) < 59 * (sprite->oam.affineParam % 2))
-    // {
-    //     // for (i = 0; i < 5; i++)
-    //     // {
-    //     //     sprite->pos1.x++;
-    //     // }
-    //     // if (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
-    //     //     sprite->pos1.x++;
-    //     while (sprite->pos1.x - 120 != 59 * (sprite->oam.affineParam % 2))
-    //     {
-    //         sprite->pos1.x++;
-    //     }
-    // }
-
-    sprite->pos1.x = 120 + 59 * (sprite->oam.affineParam % 2);
-    sprite->pos1.y = 113 + 23 * (sprite->oam.affineParam / 2);
-
-    // Y
-    // if ((sprite->pos1.y - 113) > 23 * (sprite->oam.affineParam / 2))
-    // {
-    //     sprite->pos1.y -= 2;
-    //     if (sprite->pos1.y - 113 != 23 * (sprite->oam.affineParam / 2))
-    //         sprite->pos1.y--;
-
-    // }
-    // else if ((sprite->pos1.y - 113) < 23 * (sprite->oam.affineParam / 2))
-    // {
-    //     sprite->pos1.y += 2;
-    //     if (sprite->pos1.y - 113 != 23 * (sprite->oam.affineParam / 2))
-    //         sprite->pos1.y++;
-    // }
+    if (sprite->oam.affineParam & 0x10)
+    {
+        sprite->pos1.x = 3;
+        sprite->pos1.y = 23 * (sprite->oam.affineParam & 0xF) + 113;
+    } else
+    {
+        sprite->pos1.x = 120 + 59 * (sprite->oam.affineParam % 2);
+        sprite->pos1.y = 113 + 23 * (sprite->oam.affineParam / 2);
+    }
 }
 
 static const struct SpriteTemplate sBattleActionBoxCursor =
@@ -2142,16 +2103,16 @@ void CreateMoveBoxCursor(void)
     if (index == 0xFF)
     {
         LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
-        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113 + 23 * cursorParam, 0);
-        gSprites[index].oam.affineParam = cursorParam;
+        index = CreateSprite(&sBattleActionBoxCursor, 3, 113 + 23 * cursorParam, 0);
     }
+    gSprites[index].oam.affineParam = (0x10 | cursorParam);
     SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
 }
 
 void ConfirmMoveBoxCursor(void)
 {
-    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
     if (cursorId != 0xFF)
     {
         StartSpriteAnim(&gSprites[cursorId], 1);
@@ -2193,16 +2154,17 @@ void CreateMoveBox(u8 type, u8 index)
 void CreateActionBoxCursor(void)
 {
     u8 index = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    u8 param = gActionSelectionCursor[gActiveBattler];
     if (index == 0xFF)
     {
-        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[78]);
+        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
         index = CreateSprite(&sBattleActionBoxCursor,
-            120 + 59 * (gActionSelectionCursor[gActiveBattler] % 2),
-            113 + 23 * (gActionSelectionCursor[gActiveBattler] / 2),
+            120 + 59 * (param % 2),
+            113 + 23 * (param / 2),
             0
         );
-        gSprites[index].oam.affineParam = gActionSelectionCursor[gActiveBattler];
     }
+    gSprites[index].oam.affineParam = param;
     SetSubspriteTables(&gSprites[index], sBattleActionBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
 }
