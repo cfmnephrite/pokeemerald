@@ -1278,34 +1278,6 @@ static const union AnimCmd *const sBattleMoveBoxCursorAnimTable[] =
     sBattleMoveBoxCursorPause
 };
 
-static void SpriteCallback_MoveBoxCursor(struct Sprite *sprite)
-{
-    if ((sprite->pos1.y - 113) > 23 * sprite->oam.affineParam)
-    {
-        sprite->pos1.y -= 2;
-        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
-            sprite->pos1.y--;
-
-    }
-    else if ((sprite->pos1.y - 113) < 23 * sprite->oam.affineParam)
-    {
-        sprite->pos1.y += 2;
-        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
-            sprite->pos1.y++;
-    }
-}
-
-static const struct SpriteTemplate sBattleMoveBoxCursor =
-{
-    .tileTag = TAG_MOVE_BOX_CURSOR,
-    .paletteTag = TAG_HEALTHBOX_PAL,
-    .oam = &sOamData_BattleMoveBoxCursor,
-    .anims = sBattleMoveBoxCursorAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallback_MoveBoxCursor
-};
-
 static const struct Subsprite sBattleMoveBoxCursorSubsprites[] =
 {
     {0,     0,  0,  0,  0,      0},
