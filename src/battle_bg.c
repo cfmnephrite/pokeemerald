@@ -170,7 +170,7 @@ static const struct WindowTemplate gStandardBattleWindowTemplates[] =
         .width = 26,
         .height = 4,
         .paletteNum = 0,
-        .baseBlock = 0x00AE,
+        .baseBlock = 0x0158,
     },
     { // 1 "What will (pokemon) do?"
         .bg = 0,
