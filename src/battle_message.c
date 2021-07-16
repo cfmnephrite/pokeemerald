@@ -1840,9 +1840,9 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .letterSpacing = 0,
         .lineSpacing = 0,
         .speed = 1,
-        .fgColor = 1,
+        .fgColor = 5,
         .bgColor = 15,
-        .shadowColor = 6,
+        .shadowColor = 12,
     },
     { // 1 "What will (pokemon) do?"
         .fillValue = PIXEL_FILL(0xF),
@@ -1852,9 +1852,9 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .letterSpacing = 0,
         .lineSpacing = 0,
         .speed = 0,
-        .fgColor = 1,
+        .fgColor = 5,
         .bgColor = 15,
-        .shadowColor = 6,
+        .shadowColor = 12,
     },
     { // 2 "Fight/Pokemon/Bag/Run"
         .fillValue = PIXEL_FILL(0xE),

@@ -146,7 +146,7 @@ enum
 #define TAG_MOVE_BOX_ROCK_PAL     0xD85D
 #define TAG_MOVE_BOX_STEEL_PAL     0xD85E
 #define TAG_MOVE_BOX_WATER_PAL     0xD85F
-#define TAG_MOVE_BOX_CURSOR     0xD860
+#define TAG_ACTION_BOX_CURSOR     0xD860
 
 enum
 {
@@ -182,6 +182,9 @@ void UpdateMoveBoxList(void);
 void ChangeMoveBox(u8 type, u8 position, u8 upOrDown);
 void MoveBox_PrintMoveName(u8 position);
 void MoveBox_PrintMovePP(u8 position);
+void CreateActionBoxCursor(void);
+void DestroyActionBoxCursor(void);
+void ConfirmActionBoxCursor(void);
 
 u8 CreateBattlerHealthboxSprites(u8 battler);
 u8 CreateSafariPlayerHealthboxSprites(void);

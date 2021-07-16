@@ -502,7 +502,7 @@ static const struct SpriteSheet sSpriteSheets_BattleMoveBoxes[] =
     {gBattleMoveBoxSteel_Gfx, 0x400, TAG_MOVE_BOX_STEEL_TILE4},
     {gBattleMoveBoxWater_Gfx, 0x400, TAG_MOVE_BOX_WATER_TILE4},
     {gBattleMoveBoxRightHalf_Gfx, 0x400, TAG_MOVE_BOX_RIGHTHALF_TILE},
-    {gBattleMoveBoxCursor, 0x100, TAG_MOVE_BOX_CURSOR}
+    {gBattleMoveBoxCursor, 0x100, TAG_ACTION_BOX_CURSOR}
 };
 
 static const struct SpritePalette sSpritePalettes_BattleMoveBoxes[] =
@@ -1242,7 +1242,6 @@ static const struct SubspriteTable sBattleMoveBoxSubspriteTable[] =
 };
 
 // Movebox cursor
-
 static const struct OamData sOamData_BattleMoveBoxCursor =
 {
     .y = 0,
@@ -1279,34 +1278,6 @@ static const union AnimCmd *const sBattleMoveBoxCursorAnimTable[] =
     sBattleMoveBoxCursorPause
 };
 
-static void SpriteCallback_MoveBoxCursor(struct Sprite *sprite)
-{
-    if ((sprite->pos1.y - 113) > 23 * sprite->oam.affineParam)
-    {
-        sprite->pos1.y -= 2;
-        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
-            sprite->pos1.y--;
-
-    }
-    else if ((sprite->pos1.y - 113) < 23 * sprite->oam.affineParam)
-    {
-        sprite->pos1.y += 2;
-        if (sprite->pos1.y - 113 != 23 * sprite->oam.affineParam)
-            sprite->pos1.y++;
-    }
-}
-
-static const struct SpriteTemplate sBattleMoveBoxCursor =
-{
-    .tileTag = TAG_MOVE_BOX_CURSOR,
-    .paletteTag = TAG_HEALTHBOX_PAL,
-    .oam = &sOamData_BattleMoveBoxCursor,
-    .anims = sBattleMoveBoxCursorAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallback_MoveBoxCursor
-};
-
 static const struct Subsprite sBattleMoveBoxCursorSubsprites[] =
 {
     {0,     0,  0,  0,  0,      0},
@@ -1333,6 +1304,74 @@ static const struct SubspriteTable sBattleMoveBoxCursorPausedSubspriteTable[] =
     {ARRAY_COUNT(sBattleMoveBoxCursorPausedSubsprites), sBattleMoveBoxCursorPausedSubsprites}
 };
 
+
+// Action box cursor
+static const struct OamData sOamData_BattleActionBoxCursor =
+{
+    .y = 0,
+    .affineMode = 0,
+    .objMode = 0,
+    .mosaic = 0,
+    .bpp = 0,
+    .shape = SPRITE_SHAPE(16x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(16x16),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static void SpriteCallback_ActionBoxCursor(struct Sprite *sprite)
+{
+    if (sprite->oam.affineParam & 0x10)
+    {
+        sprite->pos1.x = 3;
+        sprite->pos1.y = 23 * (sprite->oam.affineParam & 0xF) + 113;
+    } else
+    {
+        sprite->pos1.x = 120 + 59 * (sprite->oam.affineParam % 2);
+        sprite->pos1.y = 113 + 23 * (sprite->oam.affineParam / 2);
+    }
+}
+
+static const struct SpriteTemplate sBattleActionBoxCursor =
+{
+    .tileTag = TAG_ACTION_BOX_CURSOR,
+    .paletteTag = TAG_HEALTHBOX_PAL,
+    .oam = &sOamData_BattleActionBoxCursor,
+    .anims = sBattleMoveBoxCursorAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallback_ActionBoxCursor
+};
+
+static const struct Subsprite sBattleActionBoxCursorSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      0},
+    {51,    0,  0,  0,  1,      0},
+    {0,    14,  0,  0,  2,      0},
+    {51,   14,  0,  0,  3,      0}
+};
+
+static const struct Subsprite sBattleActionBoxCursorPausedSubsprites[] =
+{
+    {0,     0,  0,  0,  0,      1},
+    {51,    0,  0,  0,  1,      1},
+    {0,    14,  0,  0,  2,      1},
+    {51,   14,  0,  0,  3,      1}
+};
+
+static const struct SubspriteTable sBattleActionBoxCursorSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleActionBoxCursorSubsprites), sBattleActionBoxCursorSubsprites},
+};
+
+static const struct SubspriteTable sBattleActionBoxCursorPausedSubspriteTable[] =
+{
+    {ARRAY_COUNT(sBattleActionBoxCursorPausedSubsprites), sBattleActionBoxCursorPausedSubsprites}
+};
 
 // possibly text
 static const u8 sUnknown_0832C3C4[] =
@@ -1963,13 +2002,13 @@ void SetMoveScreenSplitIcons(void)
     u8 *src = (u8*)gMoveScreenSplitIconsGfx;
 
     splitA = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler]]);
-    if (gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1] == MOVE_NONE)
+    if (gBattleMons[gActiveBattler].moves[1] == MOVE_NONE) // i.e. the mon only has one move
         splitB = 3;
     else
         splitB = GetBattleMoveSplit(gActiveBattler, gBattleMons[gActiveBattler].moves[gMoveSelectionState[gActiveBattler] + 1]);
 
-    RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 99 * TILE_SIZE_4BPP), 0x40);
-    RequestSpriteCopy((src + 0x40 * (3 + splitB)), (u8*)(VRAM + 101 * TILE_SIZE_4BPP), 0x40);
+    RequestSpriteCopy((src + 0x40 * splitA), (u8*)(VRAM + 162 * TILE_SIZE_4BPP), 0x40);
+    RequestSpriteCopy((src + 0xC0 + (0x60 * splitB)), (u8*)(VRAM + 164 * TILE_SIZE_4BPP), 0x60);
 }
 
 void UpdateScrollBar(u8 totalMoveNo)
@@ -1981,7 +2020,7 @@ void UpdateScrollBar(u8 totalMoveNo)
     else if (totalMoveNo == 4)
         src += 0xE0 * (3 + gMoveSelectionState[gActiveBattler]);
 
-    RequestSpriteCopy(src, (u8*)(VRAM + 104 * TILE_SIZE_4BPP), 0xE0);
+    RequestSpriteCopy(src, (u8*)(VRAM + 167 * TILE_SIZE_4BPP), 0xE0);
 
 }
 
@@ -1992,13 +2031,13 @@ void UpdateTypeBg(void)
     if (type)
     {
         LoadPalette((u8*)gTypeBgBug_Pal + (type - 1) * 0x20, 0xD0, 0x20);
-        RequestSpriteCopy((u8*)gTypeBgBug_Gfx + (type - 1) * 0x320, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+        RequestSpriteCopy((u8*)gTypeBgBug_Gfx + (type - 1) * 0x320, (u8 *)(VRAM + 137 * TILE_SIZE_4BPP), 0x320);
     }
     else
     {
         LZDecompressWram(gBattleTextboxTiles, gDecompressionBuffer);
         LoadPalette(&gTypeBgNormal_Pal, 0xD0, 0x20);
-        RequestSpriteCopy((u8*)gDecompressionBuffer + 0x940, (u8 *)(VRAM + 74 * TILE_SIZE_4BPP), 0x320);
+        RequestSpriteCopy((u8*)gDecompressionBuffer + 0x940, (u8 *)(VRAM + 137 * TILE_SIZE_4BPP), 0x320);
     }
 }
 
@@ -2029,12 +2068,36 @@ void DestroyMoveBoxes(void)
     gBattleMoveBoxReset = 0xFF;
 }
 
-void DestroyMoveBoxCursor(void)
+void CreateMoveBoxCursor(void)
 {
-    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    u8 index = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    u8 cursorParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
+    if (index == 0xFF)
+    {
+        LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
+        index = CreateSprite(&sBattleActionBoxCursor, 3, 113 + 23 * cursorParam, 0);
+    }
+    gSprites[index].oam.affineParam = (0x10 | cursorParam);
+    SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
+    StartSpriteAnim(&gSprites[index], 0);
+}
+
+void ConfirmMoveBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
     if (cursorId != 0xFF)
     {
-        FreeSpriteTilesByTag(TAG_MOVE_BOX_CURSOR);
+        StartSpriteAnim(&gSprites[cursorId], 1);
+        SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
+    }
+}
+
+void DestroyMoveBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        FreeSpriteTilesByTag(TAG_ACTION_BOX_CURSOR);
         DestroySprite(&gSprites[cursorId]);
     }
 }
@@ -2060,27 +2123,41 @@ void CreateMoveBox(u8 type, u8 index)
     MoveBox_PrintMovePP(index);
 }
 
-void CreateMoveBoxCursor(void)
+void CreateActionBoxCursor(void)
 {
-    u8 index = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
-    u8 cursorParam = (gMoveSelectionCursor[gActiveBattler] > gMoveSelectionState[gActiveBattler]);
+    u8 index = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    u8 param = gActionSelectionCursor[gActiveBattler];
     if (index == 0xFF)
     {
         LoadSpriteSheet(&sSpriteSheets_BattleMoveBoxes[77]);
-        index = CreateSprite(&sBattleMoveBoxCursor, 3, 113 + 23 * cursorParam, 0);
-        gSprites[index].oam.affineParam = cursorParam;
+        index = CreateSprite(&sBattleActionBoxCursor,
+            120 + 59 * (param % 2),
+            113 + 23 * (param / 2),
+            0
+        );
     }
-    SetSubspriteTables(&gSprites[index], sBattleMoveBoxCursorSubspriteTable);
+    gSprites[index].oam.affineParam = param;
+    SetSubspriteTables(&gSprites[index], sBattleActionBoxCursorSubspriteTable);
     StartSpriteAnim(&gSprites[index], 0);
 }
 
-void ConfirmMoveBoxCursor(void)
+void ConfirmActionBoxCursor(void)
 {
-    u8 cursorId = GetSpriteIndexByTileTag(TAG_MOVE_BOX_CURSOR);
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
     if (cursorId != 0xFF)
     {
         StartSpriteAnim(&gSprites[cursorId], 1);
-        SetSubspriteTables(&gSprites[cursorId], sBattleMoveBoxCursorPausedSubspriteTable);
+        SetSubspriteTables(&gSprites[cursorId], sBattleActionBoxCursorPausedSubspriteTable);
+    }
+}
+
+void DestroyActionBoxCursor(void)
+{
+    u8 cursorId = GetSpriteIndexByTileTag(TAG_ACTION_BOX_CURSOR);
+    if (cursorId != 0xFF)
+    {
+        FreeSpriteTilesByTag(TAG_ACTION_BOX_CURSOR);
+        DestroySprite(&gSprites[cursorId]);
     }
 }
 
