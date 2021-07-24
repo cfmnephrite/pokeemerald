@@ -56,7 +56,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "LittlerootTown_EventScript_Twin",
-      "flag": "FLAG_HIDE_LITTLEROOT_ALL_NPCS"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_FAT_MAN",
@@ -69,7 +69,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "LittlerootTown_EventScript_FatMan",
-      "flag": "FLAG_HIDE_LITTLEROOT_ALL_NPCS"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_BOY_2",
@@ -82,7 +82,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "LittlerootTown_EventScript_Boy",
-      "flag": "FLAG_HIDE_LITTLEROOT_ALL_NPCS"
+      "flag": "FLAG_UNUSED_0x50"
     }
   ],
   "warp_events": [

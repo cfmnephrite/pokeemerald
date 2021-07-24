@@ -21,7 +21,7 @@ MarineCave_End_OnTransition: @ 823B008
 	end
 
 MarineCave_End_EventScript_ShowKyogre:: @ 823B012
-	clearflag FLAG_HIDE_MARINE_CAVE_KYOGRE
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_TEMP_1, 1
 	return
 

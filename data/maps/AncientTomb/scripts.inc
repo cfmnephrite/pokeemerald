@@ -21,7 +21,7 @@ AncientTomb_OnTransition: @ 8238FE1
 	end
 
 AncientTomb_EventScript_ShowRegisteel:: @ 8238FEE
-	clearflag FLAG_HIDE_REGISTEEL
+	clearflag FLAG_UNUSED_0x50
 	return
 
 AncientTomb_OnLoad: @ 8238FF2

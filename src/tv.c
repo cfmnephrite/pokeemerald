@@ -3593,7 +3593,7 @@ void HideBattleTowerReporter(void)
 {
     VarSet(VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, 0);
     RemoveObjectEventByLocalIdAndMap(5, gSaveBlock1Ptr->location.mapNum, gSaveBlock1Ptr->location.mapGroup);
-    FlagSet(FLAG_HIDE_BATTLE_TOWER_REPORTER);
+    FlagSet(FLAG_UNUSED_0x50);
 }
 
 void ReceiveTvShowsData(void *src, u32 size, u8 masterIdx)

@@ -9,7 +9,7 @@ LilycoveCity_MapScripts:: @ 81E2B3C
 LilycoveCity_OnTransition: @ 81E2B47
 	setflag FLAG_VISITED_LILYCOVE_CITY
 	setvar VAR_CONTEST_HALL_STATE, 0
-	setflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_REPORTER
+	setflag FLAG_UNUSED_0x50
 	call_if_set FLAG_SYS_WEATHER_CTRL, Common_EventScript_SetAbnormalWeather
 	call Common_EventScript_SetupRivalGfxId
 	end
@@ -336,8 +336,8 @@ LilycoveCity_EventScript_DefeatedMay:: @ 81E2F3E
 	call_if_eq LilycoveCity_EventScript_MayCollectBadges
 	compare VAR_RESULT, TRUE
 	call_if_eq LilycoveCity_EventScript_MayPokemonLeague
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_BEDROOM
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_2F_PICHU_DOLL
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	goto LilycoveCity_EventScript_RivalFlyAway
 	end
 
@@ -370,8 +370,8 @@ LilycoveCity_EventScript_DefeatedBrendan:: @ 81E2FAA
 	call_if_eq LilycoveCity_EventScript_BrendanCollectBadges
 	compare VAR_RESULT, TRUE
 	call_if_eq LilycoveCity_EventScript_BrendanPokemonLeague
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_RIVAL_BEDROOM
-	clearflag FLAG_HIDE_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F_SWABLU_DOLL
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	goto LilycoveCity_EventScript_RivalFlyAway
 	end
 

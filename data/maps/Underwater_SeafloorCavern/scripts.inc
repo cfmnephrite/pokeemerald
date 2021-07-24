@@ -10,7 +10,7 @@ Underwater_SeafloorCavern_OnTransition: @ 823434B
 	end
 
 Underwater_SeafloorCavern_EventScript_HideSubmarine:: @ 8234358
-	setflag FLAG_HIDE_UNDERWATER_SEA_FLOOR_CAVERN_STOLEN_SUBMARINE
+	setflag FLAG_UNUSED_0x50
 	end
 
 Underwater_SeafloorCavern_OnLoad: @ 823435C

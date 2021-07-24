@@ -9,7 +9,7 @@ MauvilleCity_MapScripts:: @ 81DF385
 MauvilleCity_OnTransition: @ 81DF38B
 	setflag FLAG_VISITED_MAUVILLE_CITY
 	clearflag FLAG_FORCE_MIRAGE_TOWER_VISIBLE
-	clearflag FLAG_HIDE_SLATEPORT_MUSEUM_POPULATION
+	clearflag FLAG_UNUSED_0x50
 	setflag FLAG_SYS_TV_START
 	clearflag FLAG_MAUVILLE_GYM_BARRIERS_STATE
 	setvar VAR_MAUVILLE_GYM_STATE, 0
@@ -17,8 +17,8 @@ MauvilleCity_OnTransition: @ 81DF38B
 	end
 
 MauvilleCity_EventScript_MoveWattsonBackToGym:: @ 81DF3A9
-	clearflag FLAG_HIDE_MAUVILLE_GYM_WATTSON
-	setflag FLAG_HIDE_MAUVILLE_CITY_WATTSON
+	clearflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	setflag FLAG_WATTSON_REMATCH_AVAILABLE
 	return
 
@@ -159,8 +159,8 @@ MauvilleCity_EventScript_WallyAndUncleExitEast:: @ 81DF53D
 MauvilleCity_EventScript_DefeatedWally:: @ 81DF593
 	removeobject LOCALID_WALLY
 	removeobject LOCALID_WALLYS_UNCLE
-	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WALLY
-	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WALLYS_UNCLE
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setflag FLAG_DEFEATED_WALLY_MAUVILLE
 	setvar VAR_WALLY_CALL_STEP_COUNTER, 0
 	setflag FLAG_ENABLE_FIRST_WALLY_POKENAV_CALL

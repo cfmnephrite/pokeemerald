@@ -34,7 +34,7 @@ DesertRuins_OnTransition: @ 822D9CA
 	end
 
 DesertRuins_EventScript_ShowRegirock:: @ 822D9D7
-	clearflag FLAG_HIDE_REGIROCK
+	clearflag FLAG_UNUSED_0x50
 	return
 
 DesertRuins_EventScript_CaveEntranceMiddle:: @ 822D9DB

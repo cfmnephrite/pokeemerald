@@ -11,12 +11,12 @@ NavelRock_Bottom_OnTransition: @ 8269260
 	end
 
 NavelRock_Bottom_EventScript_HideLugia:: @ 8269273
-	setflag FLAG_HIDE_LUGIA
+	setflag FLAG_UNUSED_0x50
 	return
 
 NavelRock_Bottom_EventScript_TryShowLugia:: @ 8269277
 	goto_if_set FLAG_DEFEATED_LUGIA, Common_EventScript_NopReturn
-	clearflag FLAG_HIDE_LUGIA
+	clearflag FLAG_UNUSED_0x50
 	return
 
 NavelRock_Bottom_OnResume: @ 8269284

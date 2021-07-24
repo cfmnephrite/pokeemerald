@@ -205,15 +205,6 @@ LittlerootTown_ProfessorBirchsLab_GetRivalToTestYou::
 	.string "Consider it a test to see if you're up to\n"
 	.string "the task!$"
 
-LittlerootTown_ProfessorBirchsLab_May_Intro::
-	.string "May: That's right!\p"
-	.string "I've been itching to have a battle with\n"
-	.string "you since I saw what you did last\l"
-	.string "night!\p"
-	.string "C'mon, after beating down those thugs,\n"
-	.string "you shouldn't be afraid to battle me...\p"
-	.string "Right?$"
-
 LittlerootTown_ProfessorBirchsLab_MayDefeat::
 	.string "WHAT? You... {PLAYER}, you're really\n"
 	.string "good!$"

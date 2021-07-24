@@ -13,7 +13,7 @@ EverGrandeCity_PokemonCenter_1F_OnTransition: @ 8229A3F
 
 EverGrandeCity_PokemonCenter_1F_EventScript_TryShowScott:: @ 8229A4C
 	goto_if_unset FLAG_BADGE06_GET, Common_EventScript_NopReturn
-	clearflag FLAG_HIDE_EVER_GRANDE_POKEMON_CENTER_1F_SCOTT
+	clearflag FLAG_UNUSED_0x50
 	return
 
 EverGrandeCity_PokemonCenter_1F_EventScript_Nurse:: @ 8229A59

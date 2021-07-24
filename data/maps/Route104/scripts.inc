@@ -25,11 +25,11 @@ Route104_OnTransition: @ 81ECC4E
 Route104_EventScript_ShowOrHideWhiteHerbFlorist:: @ 81ECC5E
 	goto_if_unset FLAG_MET_PRETTY_PETAL_SHOP_OWNER, Route104_EventScript_HideWhiteHerbFlorist
 	goto_if_unset FLAG_BADGE03_GET, Route104_EventScript_HideWhiteHerbFlorist
-	clearflag FLAG_HIDE_ROUTE_104_WHITE_HERB_FLORIST
+	clearflag FLAG_UNUSED_0x50
 	return
 
 Route104_EventScript_HideWhiteHerbFlorist:: @ 81ECC74
-	setflag FLAG_HIDE_ROUTE_104_WHITE_HERB_FLORIST
+	setflag FLAG_UNUSED_0x50
 	return
 
 Route104_EventScript_TrySetRivalPos:: @ 81ECC78
@@ -52,14 +52,14 @@ Route104_EventScript_Rival:: @ 81ECC9E
 
 Route104_EventScript_RivalTrigger:: @ 81ECCB3
 	lockall
-	setflag FLAG_HIDE_RUSTBORO_CITY_RIVAL
+	setflag FLAG_UNUSED_0x50
 	setvar VAR_RUSTBORO_CITY_STATE, 8
 	setvar VAR_ROUTE104_STATE, 2
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFastestUp
 	waitmovement 0
 	delay 10
 	addobject LOCALID_RIVAL
-	clearflag FLAG_HIDE_ROUTE_104_RIVAL
+	clearflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, Route104_Movement_PlayerBackUp
 	waitmovement 0
 	applymovement LOCALID_RIVAL, Route104_Movement_RivalExitBrineysCottage
@@ -410,13 +410,13 @@ Route104_EventScript_ArriveInDewford:: @ 81ED139
 	setobjectxyperm LOCALID_BRINEY_DEWFORD, 12, 8
 	addobject LOCALID_BRINEY_DEWFORD
 	setobjectpriority LOCALID_BRINEY_DEWFORD, MAP_DEWFORD_TOWN, 0
-	clearflag FLAG_HIDE_MR_BRINEY_DEWFORD_TOWN
+	clearflag FLAG_UNUSED_0x50
 	applymovement LOCALID_BRINEY_DEWFORD, Route104_Movement_BrineyExitBoat
 	waitmovement 0
 	addobject LOCALID_BOAT_DEWFORD
-	clearflag FLAG_HIDE_MR_BRINEY_BOAT_DEWFORD_TOWN
+	clearflag FLAG_UNUSED_0x50
 	call Common_EventScript_StopBrineysBoatMusic
-	setflag FLAG_HIDE_ROUTE_104_MR_BRINEY_BOAT
+	setflag FLAG_UNUSED_0x50
 	hideobjectat LOCALID_BOAT_R104, MAP_ROUTE104
 	copyvar VAR_BRINEY_LOCATION, VAR_0x8008
 	resetobjectpriority OBJ_EVENT_ID_PLAYER, MAP_ROUTE104

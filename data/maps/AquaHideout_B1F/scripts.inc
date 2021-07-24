@@ -20,11 +20,11 @@ AquaHideout_B1F_OnTransition: @ 82339D0
 	end
 
 AquaHideout_B1F_EventScript_ShowElectrode1:: @ 82339E3
-	clearflag FLAG_HIDE_AQUA_HIDEOUT_B1F_ELECTRODE_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 AquaHideout_B1F_EventScript_ShowElectrode2:: @ 82339E7
-	clearflag FLAG_HIDE_AQUA_HIDEOUT_B1F_ELECTRODE_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 AquaHideout_B1F_EventScript_Electrode1:: @ 82339EB

@@ -26,7 +26,7 @@ PetalburgCity_EventScript_MoveGymBoyToWestEntrance:: @ 81DC307
 	return
 
 PetalburgCity_EventScript_DisableMapNameAndMusic:: @ 81DC30F
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	savebgm MUS_FOLLOW_ME
 	return
 
@@ -54,7 +54,7 @@ PetalburgCity_EventScript_WallyTutorial:: @ 81DC32E
 	waitmovement LOCALID_WALLY, MAP_PETALBURG_CITY
 	msgbox Route102_Text_LetsGoBack, MSGBOX_DEFAULT
 	closemessage
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_PETALBURG_CITY_STATE, 3
 	fadedefaultbgm
 	clearflag FLAG_DONT_TRANSITION_MUSIC
@@ -67,7 +67,7 @@ PetalburgCity_EventScript_WallyTutorial:: @ 81DC32E
 
 PetalburgCity_EventScript_WalkToWallyHouse:: @ 81DC390
 	lockall
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	applymovement LOCALID_WALLYS_DAD, PetalburgCity_Movement_WalkToWallyHouseWallysDad
 	applymovement OBJ_EVENT_ID_PLAYER, PetalburgCity_Movement_WalkToWallyHousePlayer
 	waitmovement 0
@@ -78,11 +78,11 @@ PetalburgCity_EventScript_WalkToWallyHouse:: @ 81DC390
 	applymovement LOCALID_WALLYS_DAD, PetalburgCity_Movement_WalkInsideHouseWallysDad
 	applymovement OBJ_EVENT_ID_PLAYER, PetalburgCity_Movement_WalkInsideHousePlayer
 	waitmovement 0
-	setflag FLAG_HIDE_PETALBURG_CITY_WALLYS_DAD
+	setflag FLAG_UNUSED_0x50
 	hideobjectat OBJ_EVENT_ID_PLAYER, MAP_PETALBURG_CITY
 	closedoor VAR_0x8004, VAR_0x8005
 	waitdooranim
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	fadedefaultbgm
 	clearflag FLAG_DONT_TRANSITION_MUSIC
 	warp MAP_PETALBURG_CITY_WALLYS_HOUSE, 255, 2, 4

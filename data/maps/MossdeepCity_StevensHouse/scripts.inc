@@ -49,8 +49,8 @@ MossdeepCity_StevensHouse_EventScript_StevenGivesDive:: @ 82227CA
 	delay 20
 	applymovement LOCALID_STEVEN, MossdeepCity_StevensHouse_Movement_StevenReturn
 	waitmovement 0
-	setflag FLAG_HIDE_MOSSDEEP_CITY_SCOTT
-	setflag FLAG_HIDE_SEAFLOOR_CAVERN_ENTRANCE_AQUA_GRUNT
+	setflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	setvar VAR_STEVENS_HOUSE_STATE, 2
 	releaseall
 	end
@@ -131,7 +131,7 @@ MossdeepCity_StevensHouse_EventScript_ReceivedBeldumFanfare:: @ 82228EB
 	return
 
 MossdeepCity_StevensHouse_EventScript_ReceivedBeldum:: @ 8222901
-	setflag FLAG_HIDE_MOSSDEEP_CITY_STEVENS_HOUSE_BELDUM_POKEBALL
+	setflag FLAG_UNUSED_0x50
 	setflag FLAG_RECEIVED_BELDUM
 	releaseall
 	end

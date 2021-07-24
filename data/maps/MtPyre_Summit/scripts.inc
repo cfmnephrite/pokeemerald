@@ -59,8 +59,8 @@ MtPyre_Summit_EventScript_TeamAquaExits:: @ 823203C
 	removeobject LOCALID_GRUNT_2
 	removeobject LOCALID_GRUNT_3
 	removeobject LOCALID_GRUNT_4
-	setflag FLAG_HIDE_MT_PYRE_SUMMIT_ARCHIE
-	setflag FLAG_HIDE_MT_PYRE_SUMMIT_TEAM_AQUA
+	setflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	fadedefaultbgm
 	fadescreen FADE_FROM_BLACK
 	delay 20
@@ -74,7 +74,7 @@ MtPyre_Summit_EventScript_TeamAquaExits:: @ 823203C
 	msgbox MtPyre_Summit_Text_BothOrbsTakenMagmaLeftThis, MSGBOX_DEFAULT
 	giveitem ITEM_MAGMA_EMBLEM
 	setflag FLAG_RECEIVED_RED_OR_BLUE_ORB
-	setflag FLAG_HIDE_JAGGED_PASS_MAGMA_GUARD
+	setflag FLAG_UNUSED_0x50
 	releaseall
 	end
 

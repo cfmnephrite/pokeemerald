@@ -253,7 +253,7 @@ LilycoveCity_ContestLobby_EventScript_TryShowContestReporter:: @ 828CB2B
 	end
 
 LilycoveCity_ContestLobby_EventScript_ShowContestReporter:: @ 828CB91
-	clearflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_REPORTER
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_DontShowContestReporter:: @ 828CB95
@@ -336,9 +336,9 @@ BattleFrontier_BattleTowerLobby_EventScript_ShowOrHideReporter:: @ 828CC84
 	special InterviewBefore
 	compare VAR_RESULT, TRUE
 	goto_if_eq BattleFrontier_BattleTowerLobby_EventScript_HideReporter
-	clearflag FLAG_HIDE_BATTLE_TOWER_REPORTER
+	clearflag FLAG_UNUSED_0x50
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_HideReporter:: @ 828CCA6
-	setflag FLAG_HIDE_BATTLE_TOWER_REPORTER
+	setflag FLAG_UNUSED_0x50
 	return

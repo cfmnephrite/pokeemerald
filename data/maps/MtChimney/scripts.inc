@@ -59,7 +59,7 @@ MtChimney_EventScript_Maxie:: @ 822EE0B
 	removeobject LOCALID_MAGMA_GRUNT_1
 	removeobject LOCALID_TABITHA
 	removeobject LOCALID_MAGMA_GRUNT_2
-	setflag FLAG_HIDE_MT_CHIMNEY_TEAM_MAGMA
+	setflag FLAG_UNUSED_0x50
 	fadescreen FADE_FROM_BLACK
 	setobjectxyperm LOCALID_ARCHIE, 10, 12
 	addobject LOCALID_ARCHIE
@@ -76,11 +76,11 @@ MtChimney_EventScript_Maxie:: @ 822EE0B
 	compare VAR_FACING, DIR_NORTH
 	call_if_eq MtChimney_EventScript_ArchieExitNorth
 	removeobject LOCALID_ARCHIE
-	setflag FLAG_HIDE_MT_CHIMNEY_TEAM_AQUA
+	setflag FLAG_UNUSED_0x50
 	setflag FLAG_DEFEATED_EVIL_TEAM_MT_CHIMNEY
-	clearflag FLAG_HIDE_FALLARBOR_HOUSE_PROF_COZMO
-	setflag FLAG_HIDE_METEOR_FALLS_1F_1R_COZMO
-	clearflag FLAG_HIDE_MT_CHIMNEY_LAVA_COOKIE_LADY
+	clearflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	releaseall
 	end
 

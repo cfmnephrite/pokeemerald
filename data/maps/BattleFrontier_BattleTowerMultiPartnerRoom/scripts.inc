@@ -13,14 +13,14 @@ BattleFrontier_BattleTowerMultiPartnerRoom_OnResume: @ 8243DA7
 
 BattleFrontier_BattleTowerMultiPartnerRoom_OnTransition: @ 8243DB0
 	goto_if_set FLAG_CHOSEN_MULTI_BATTLE_NPC_PARTNER, BattleFrontier_BattleTowerMultiPartnerRoom_EventScript_ChosePartner
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_1
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_2
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_3
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_4
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_5
-	clearflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_6
-	setflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_ALT_1
-	setflag FLAG_HIDE_BATTLE_TOWER_MULTI_BATTLE_PARTNER_ALT_2
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	tower_loadpartners
 	end
 

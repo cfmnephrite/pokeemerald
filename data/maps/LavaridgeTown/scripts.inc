@@ -32,15 +32,15 @@ LavaridgeTown_EventScript_SetRivalPos:: @ 81EA529
 	setobjectxyperm LOCALID_RIVAL, 11, 9
 	setobjectxyperm LOCALID_RIVAL_ON_BIKE, 9, 8
 	setobjectmovementtype LOCALID_RIVAL_ON_BIKE, MOVEMENT_TYPE_FACE_UP
-	clearflag FLAG_HIDE_LAVARIDGE_TOWN_RIVAL
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LavaridgeTown_EventScript_ShowMtChimneyTrainers:: @ 81EA53F
-	clearflag FLAG_HIDE_MT_CHIMNEY_TRAINERS
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LavaridgeTown_EventScript_HideMapNamePopup:: @ 81EA543
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	return
 
 LavaridgeTown_OnFrame: @ 81EA547
@@ -98,7 +98,7 @@ LavaridgeTown_EventScript_RivalExit:: @ 81EA5FF
 	call_if_ne LavaridgeTown_EventScript_RivalExit2
 	removeobject LOCALID_RIVAL_ON_BIKE
 	setvar VAR_LAVARIDGE_TOWN_STATE, 2
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	savebgm MUS_DUMMY
 	fadedefaultbgm
 	releaseall

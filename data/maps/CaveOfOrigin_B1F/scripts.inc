@@ -56,7 +56,7 @@ CaveOfOrigin_B1F_EventScript_AtSkyPillar:: @ 823584D
 	setflag FLAG_WALLACE_GOES_TO_SKY_PILLAR
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 3
 	removeobject LOCALID_WALLACE
-	clearflag FLAG_HIDE_SKY_PILLAR_WALLACE
+	clearflag FLAG_UNUSED_0x50
 	fadescreen FADE_FROM_BLACK
 	release
 	end

@@ -93,7 +93,7 @@ PetalburgCity_Gym_EventScript_ReturnFromWallyTutorial:: @ 82049A4
 	waitmovement 0
 	playse SE_EXIT
 	removeobject LOCALID_WALLY
-	setflag FLAG_HIDE_PETALBURG_CITY_WALLY
+	setflag FLAG_UNUSED_0x50
 	delay 30
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFastestUp
 	waitmovement 0
@@ -213,12 +213,12 @@ PetalburgCity_Gym_EventScript_BeginWallyTutorial:: @ 8204AAC
 	compare VAR_0x8008, 3
 	call_if_eq PetalburgCity_Gym_EventScript_ExitGymWithWallyEast
 	removeobject LOCALID_WALLY
-	setflag FLAG_HIDE_PETALBURG_CITY_WALLYS_MOM
+	setflag FLAG_UNUSED_0x50
 	setvar VAR_PETALBURG_GYM_STATE, 1
 	setvar VAR_PETALBURG_CITY_STATE, 2
-	clearflag FLAG_HIDE_PETALBURG_CITY_WALLY
-	clearflag FLAG_HIDE_PETALBURG_GYM_WALLY
-	setflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCHS_LAB_RIVAL
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	special InitBirchState
 	warp MAP_PETALBURG_CITY, 255, 15, 8
 	waitstate
@@ -419,11 +419,11 @@ PetalburgCity_Gym_EventScript_NormanBattle:: @ 8204E3B
 	setflag FLAG_BADGE05_GET
 	special ResetHealLocationFromDewford
 	call EventScript_HideMrBriney
-	setflag FLAG_HIDE_MAUVILLE_GYM_WATTSON
-	clearflag FLAG_HIDE_MAUVILLE_CITY_WATTSON
+	setflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_0x8008, 5
 	call Common_EventScript_SetGymTrainers
-	clearflag FLAG_HIDE_DEWFORD_HALL_SLUDGE_BOMB_MAN
+	clearflag FLAG_UNUSED_0x50
 	call PetalburgCity_Gym_EventScript_UnlockAllDoors
 	special DrawWholeMapView
 	call PetalburgCity_Gym_EventScript_GiveFacade
@@ -496,7 +496,7 @@ PetalburgCity_Gym_EventScript_WallysDadArrives:: @ 8204F13
 	call_if_eq PetalburgCity_Gym_EventScript_ExitGymWithWallysDadWest
 	removeobject LOCALID_WALLYS_DAD
 	setvar VAR_PETALBURG_CITY_STATE, 4
-	clearflag FLAG_HIDE_PETALBURG_CITY_WALLYS_DAD
+	clearflag FLAG_UNUSED_0x50
 	warp MAP_PETALBURG_CITY, 255, 15, 8
 	waitstate
 	release

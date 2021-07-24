@@ -25,7 +25,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_KYOGRE_1"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ARCHIE",
@@ -38,7 +38,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_ARCHIE"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAXIE",
@@ -51,7 +51,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_MAXIE"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAGMA_MEMBER_M",
@@ -64,7 +64,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_MAGMA_GRUNTS"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAGMA_MEMBER_F",
@@ -77,7 +77,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_MAGMA_GRUNTS"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
@@ -103,7 +103,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_HIDE_SEAFLOOR_CAVERN_ROOM_9_KYOGRE_2"
+      "flag": "FLAG_UNUSED_0x50"
     }
   ],
   "warp_events": [

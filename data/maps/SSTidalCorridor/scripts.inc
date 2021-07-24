@@ -144,7 +144,7 @@ SSTidalCorridor_EventScript_ExitSlateport:: @ 823C15A
 	end
 
 SSTidalCorridor_EventScript_HideSnatchGiver:: @ 823C179
-	setflag FLAG_HIDE_SS_TIDAL_ROOMS_SNATCH_GIVER
+	setflag FLAG_UNUSED_0x50
 	return
 
 SSTidalCorridor_EventScript_Porthole:: @ 823C17D

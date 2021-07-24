@@ -17,7 +17,7 @@ SlateportCity_SternsShipyard_1F_EventScript_Dock:: @ 8207F40
 	applymovement LOCALID_DOCK, Common_Movement_FaceOriginalDirection
 	waitmovement 0
 	setflag FLAG_DOCK_REJECTED_DEVON_GOODS
-	setflag FLAG_HIDE_SLATEPORT_CITY_TEAM_AQUA
+	setflag FLAG_UNUSED_0x50
 	releaseall
 	end
 

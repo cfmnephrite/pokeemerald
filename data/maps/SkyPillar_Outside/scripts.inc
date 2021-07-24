@@ -14,7 +14,7 @@ SkyPillar_Outside_OnTransition: @ 82392B8
 	end
 
 SkyPillar_Outside_EventScript_HideMapNamePopup:: @ 82392CF
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	return
 
 SkyPillar_Outside_EventScript_CheckSetAbnormalWeather:: @ 82392D3
@@ -83,10 +83,10 @@ SkyPillar_Outside_EventScript_WallaceScene:: @ 8239304
 	closemessage
 	playse SE_EXIT
 	fadescreenswapbuffers FADE_TO_BLACK
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 4
 	removeobject LOCALID_WALLACE
-	clearflag FLAG_HIDE_SOOTOPOLIS_CITY_WALLACE
+	clearflag FLAG_UNUSED_0x50
 	fadescreenswapbuffers FADE_FROM_BLACK
 	releaseall
 	end

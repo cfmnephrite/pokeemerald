@@ -80,7 +80,7 @@ SootopolisCity_OnTransition: @ 81E56EF
 	end
 
 SootopolisCity_EventScript_HideMapNamePopup:: @ 81E5781
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	return
 
 SootopolisCity_EventScript_SetBattleSpectators:: @ 81E5785
@@ -291,7 +291,7 @@ SootopolisCity_EventScript_LegendariesSceneFromPokeCenter:: @ 81E5946
 	waitmovement 0
 	special RemoveCameraObject
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 2
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	releaseall
 	end
 
@@ -391,7 +391,7 @@ SootopolisCity_EventScript_LegendariesSceneFromDive:: @ 81E5A82
 	waitmovement 0
 	special RemoveCameraObject
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 2
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	releaseall
 	end
 
@@ -564,7 +564,7 @@ SootopolisCity_EventScript_RayquazaSceneFromPokeCenter:: @ 81E5C1E
 	clearflag FLAG_LEGENDARIES_IN_SOOTOPOLIS
 	fadenewbgm MUS_SOOTOPOLIS
 	delay 120
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	warpsootopolislegend MAP_SOOTOPOLIS_CITY, 255, 43, 32
 	waitstate
 	end
@@ -617,7 +617,7 @@ SootopolisCity_EventScript_RayquazaSceneFromDive:: @ 81E5CCE
 	clearflag FLAG_LEGENDARIES_IN_SOOTOPOLIS
 	fadenewbgm MUS_SURF
 	delay 120
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	warpsootopolislegend MAP_SOOTOPOLIS_CITY, 255, 29, 53
 	waitstate
 	end
@@ -1454,11 +1454,11 @@ SootopolisCity_EventScript_ArchieRayquaza:: @ 81E6536
 	end
 
 SootopolisCity_EventScript_MaxieArchieLeave:: @ 81E654C
-	setflag FLAG_HIDE_SOOTOPOLIS_CITY_MAXIE
-	setflag FLAG_HIDE_SOOTOPOLIS_CITY_ARCHIE
+	setflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	setflag FLAG_SOOTOPOLIS_ARCHIE_MAXIE_LEAVE
-	clearflag FLAG_HIDE_MT_PYRE_SUMMIT_MAXIE
-	clearflag FLAG_HIDE_MT_PYRE_SUMMIT_ARCHIE
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_MT_PYRE_STATE, 2
 	warpsilent MAP_SOOTOPOLIS_CITY, 255, 31, 34
 	waitstate
