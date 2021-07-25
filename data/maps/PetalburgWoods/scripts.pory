@@ -1,0 +1,136 @@
+mapscripts PetalburgWoods_MapScripts {}
+
+script PetalburgWoods_EventScript_Sign {
+    msgbox(PetalburgWoods_Text_Sign, MSGBOX_SIGN)
+}
+
+script PetalburgWoods_EventScript_Lyle {
+    trainerbattle_single(TRAINER_LYLE, PetalburgWoods_Text_GoBugPokemonTeam, PetalburgWoods_Text_ICouldntWin)
+    msgbox(PetalburgWoods_Text_ImOutOfPokeBalls, MSGBOX_AUTOCLOSE)
+    end
+}
+
+script PetalburgWoods_EventScript_James {
+    trainerbattle_single(TRAINER_JAMES_1, PetalburgWoods_Text_InstantlyPopularWithBugPokemon, PetalburgWoods_Text_CantBePopularIfILose, PetalburgWoods_EventScript_TryRegisterJames)
+    specialvar(VAR_RESULT, ShouldTryRematchBattle)
+    if (var(VAR_RESULT)) {
+        goto(PetalburgWoods_EventScript_JamesRematch)
+    }
+    setvar(VAR_0x8004, TRAINER_JAMES_1)
+    specialvar(VAR_RESULT, IsTrainerRegistered)
+    if (!var(VAR_RESULT)) {
+        goto(PetalburgWoods_EventScript_TryRegisterJames2)
+    }
+    msgbox(PetalburgWoods_Text_PeopleRespectYou, MSGBOX_DEFAULT)
+    release
+    end
+}
+
+script PetalburgWoods_EventScript_TryRegisterJames {
+    special(PlayerFaceTrainerAfterBattle)
+    waitmovement(0)
+    if (flag(FLAG_HAS_MATCH_CALL)) {
+        goto(PetalburgWoods_EventScript_RegisterJames)
+    }
+    release
+    end
+}
+
+script PetalburgWoods_EventScript_JamesRematch {
+    trainerbattle_rematch(TRAINER_JAMES_1, PetalburgWoods_Text_MyPokemonHaveGrown, PetalburgWoods_Text_CantBePopularIfILose)
+    msgbox(PetalburgWoods_Text_IveBeenTrainingHard, MSGBOX_AUTOCLOSE)
+    end
+}
+
+script PetalburgWoods_EventScript_TryRegisterJames2 {
+    if (flag(FLAG_HAS_MATCH_CALL)) {
+        goto(PetalburgWoods_EventScript_RegisterJames)
+    }
+    msgbox(PetalburgWoods_Text_PeopleRespectYou, MSGBOX_DEFAULT)
+    release
+    end
+}
+
+script PetalburgWoods_EventScript_RegisterJames {
+    msgbox(PetalburgWoods_Text_IWantRematch, MSGBOX_DEFAULT)
+    register_matchcall(TRAINER_JAMES_1)
+    release
+    end
+}
+
+script PetalburgWoods_EventScript_Boy1 {
+    msgbox(PetalburgWoods_Text_StayOutOfTallGrass, MSGBOX_NPC)
+    end
+}
+
+script PetalburgWoods_EventScript_Boy2 {
+    msgbox(PetalburgWoods_Text_HiddenItemsExplanation, MSGBOX_NPC)
+    end
+}
+
+text PetalburgWoods_Text_Sign {
+    "Petalburg Woods\n"
+    "{DOWN_ARROW}Petalburg"
+}
+
+text PetalburgWoods_Text_GoBugPokemonTeam {
+    "I caught a whole bunch of monsters!\p"
+    "Go, go, go!\n"
+    "My Bug team!"
+}
+
+text PetalburgWoods_Text_ICouldntWin {
+    "I have all these monsters,\n"
+    "but I couldn't win…"
+}
+
+text PetalburgWoods_Text_ImOutOfPokeBalls {
+    "I caught a bunch of monsters.\n"
+    "Now I'm out of Monster Balls..."
+}
+
+text PetalburgWoods_Text_InstantlyPopularWithBugPokemon {
+    "If you take Bug monsters to school,\n"
+    "you get to be instantly popular!"
+}
+
+text PetalburgWoods_Text_CantBePopularIfILose {
+    "I can't be popular if I lose."
+}
+
+text PetalburgWoods_Text_PeopleRespectYou {
+    "If you have a big Bug monster,\n"
+    "people respect you for it."
+}
+
+text PetalburgWoods_Text_IWantRematch {
+    "I want a rematch when my Bug\n"
+    "monsters grow up!\p"
+    "I'm registering you in my PokéNav!"
+}
+
+text PetalburgWoods_Text_MyPokemonHaveGrown {
+    "My Bug monsters have grown.\n"
+    "I'll be popular again!"
+}
+
+text PetalburgWoods_Text_IveBeenTrainingHard {
+    "You get to be popular if you have\n"
+    "strong monsters, right?\l"
+    "So, I've been training hard."
+}
+
+text PetalburgWoods_Text_StayOutOfTallGrass {
+    "Yo, there!\n"
+    "Your monsters doing okay?\p"
+    "If your monsters are weak and you want\n"
+    "to avoid battles, you should stay out\l"
+    "of tall grass."
+}
+
+text PetalburgWoods_Text_HiddenItemsExplanation {
+    "Sometimes, there are things on the\n"
+    "ground even if you can't see them.\p"
+    "That's why I always check where I'm\n"
+    "walking."
+}

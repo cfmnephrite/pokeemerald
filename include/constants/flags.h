@@ -1629,7 +1629,7 @@
 
 // Special Flags (Stored in EWRAM (gSpecialFlags), not in the SaveBlock)
 #define SPECIAL_FLAGS_START                     0x4000
-#define FLAG_UNUSED_0x50                (SPECIAL_FLAGS_START + 0x0)
+#define FLAG_HIDE_MAP_NAME_POPUP                (SPECIAL_FLAGS_START + 0x0)
 #define FLAG_DONT_TRANSITION_MUSIC              (SPECIAL_FLAGS_START + 0x1)
 #define FLAG_ENABLE_MULTI_CORRIDOR_DOOR         (SPECIAL_FLAGS_START + 0x2)
 #define FLAG_SPECIAL_FLAG_UNUSED_0x4003         (SPECIAL_FLAGS_START + 0x3) // Unused Flag

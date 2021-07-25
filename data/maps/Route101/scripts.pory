@@ -10,39 +10,53 @@ script Route101_EventScript_Ernest {
     lock
     faceplayer
     if (!flag(FLAG_RECEIVED_OLD_ROD)) {
-        msgbox(Route101_WantToLearnToFish, MSGBOX_YESNO)
+        msgbox(Route101_Text_WantToLearnToFish, MSGBOX_YESNO)
         if (var(VAR_RESULT) == YES) {
             msgbox(format("Give it your all in this battle!"))
-            trainerbattle_no_intro(TRAINER_IVAN, Route101_ErnestLoses)
-            msgbox(Route101_HaveOneOfMyRods, MSGBOX_DEFAULT)
+            trainerbattle_no_intro(TRAINER_IVAN, Route101_Text_ErnestLoses)
+            msgbox(Route101_Text_HaveOneOfMyRods, MSGBOX_DEFAULT)
             giveitem(ITEM_OLD_ROD)
             setflag(FLAG_RECEIVED_OLD_ROD)
-            msgbox(Route101_FishingAdvice, MSGBOX_DEFAULT)
+            msgbox(Route101_Text_FishingAdvice, MSGBOX_DEFAULT)
             release
             end
         } else {
-            msgbox(Route101_NotInterested, MSGBOX_DEFAULT)
+            msgbox(Route101_Text_NotInterested, MSGBOX_DEFAULT)
             release
             end
         }
     } else {
-        msgbox(Route101_HavingFunFishing, MSGBOX_DEFAULT)
+        msgbox(Route101_Text_HavingFunFishing, MSGBOX_DEFAULT)
         release
         end
     }
 }
 
+script Route101_EventScript_YoungsterWildMons {
+    msgbox(Route101_Text_YoungsterWildMons, MSGBOX_NPC)
+    end
+}
+
+script Route101_EventScript_Lily {
+    trainerbattle_single(TRAINER_CALVIN_1, Route101_Text_LilyIntro, Route101_Text_LilyLoses)
+    msgbox(Route101_Text_LilyGeneral, MSGBOX_AUTOCLOSE)
+    end
+}
+script Route101_EventScript_Lilys_Mum {
+    msgbox(Route101_Text_LilysMum, MSGBOX_NPC)
+}
+
+script Route101_EventScript_RouteSign {
+    msgbox(Route101_Text_RouteSign, MSGBOX_SIGN)
+}
+
 text Route101_Text_AveryIntro {
-    format(
-        "Ah, I'm having the time of my life...\n The beach here is beautiful!\p"
-        "Oh? A battle?"
-    )
+    "Ah, I'm having the time of my life...\n The beach here is beautiful!\p"
+    "Oh? A battle?"
 }
 
 text Route101_Text_AveryLoses {
-    format(
-        "Well, thanks for ruining my vacation..."
-    )
+    "Well, thanks for ruining my vacation..."
 }
 
 text Route101_Text_AveryGeneral {
@@ -52,43 +66,60 @@ text Route101_Text_AveryGeneral {
     )
 }
 
-text Route101_WantToLearnToFish {
+text Route101_Text_WantToLearnToFish {
+    "Oh, hello there, young man!\p"
+    "This beach is popular for tourists,\nbut it's also a great fishing spot!\p"
+    "Say, would you like a little fishing lesson?\p"
+    "First, however, we battle!"
+}
+
+text Route101_Text_ErnestLoses {
+    "Excellent!"
+}
+
+text Route101_Text_HaveOneOfMyRods {
+    "That was a great battle!\nNow, take my rod!"
+}
+
+text Route101_Text_FishingAdvice {
+    "So, fishing is very simple.\p"
+    "All you have to do is face the water and use your Rod.\p"
+    "If you get a nibble on your rod,\npull it hard!"
+}
+
+text Route101_Text_NotInterested {
+    "Oh, you're not interested?\nToo bad. Anyway, if you change your mind, you can find me here."
+}
+
+text Route101_Text_HavingFunFishing {
+    "So, are you having fun fishing?"
+}
+
+text Route101_Text_YoungsterWildMons {
+    format("Wow, there're so many different monsters around here now!")
+}
+
+text Route101_Text_LilyIntro {
+    "Mommy got me a monster!\nBattle me! Battle me!"
+}
+
+text Route101_Text_LilyLoses {
+    "Hey, no fair!\nYou big meanie!"
+}
+
+text Route101_Text_LilyGeneral {
+    "Have you heard of Cherbui?\nIt's so cute!\p"
+    "I want one! I want one!"
+}
+
+text Route101_Text_LilysMum {
     format(
-        "Oh, hello there, young man!\p"
-        "This beach is popular for tourists,\nbut it's also a great fishing spot!\p"
-        "Say, would you like a little fishing lesson?\p"
-        "First, however, we battle!"
+        "Isn't she precious?\nI take her here every year!\p"
+        "I wish those ghastly immigrants wouldn't come and ruin it though..."
     )
 }
 
-text Route101_ErnestLoses {
-    format(
-        "Excellent!"
-    )
-}
-
-text Route101_HaveOneOfMyRods {
-    format(
-        "That was a great battle!\nNow, take one of my Rods!"
-    )
-}
-
-text Route101_FishingAdvice {
-    format(
-        "So, fishing is very simple.\p"
-        "All you have to do is face the water and use your Rod.\p"
-        "If you get a bite, pull the Rod."
-    )
-}
-
-text Route101_NotInterested {
-    format(
-        "Oh, you're not interested? Too bad. Anyway, if you change your mind, you can find me here."
-    )
-}
-
-text Route101_HavingFunFishing {
-    format(
-        "So, are you having fun fishing?"
-    )
+text Route101_Text_RouteSign {
+    "Route 101\n"
+    "{UP_ARROW}Oldale\l{LEFT_ARROW}Petalburg"
 }
