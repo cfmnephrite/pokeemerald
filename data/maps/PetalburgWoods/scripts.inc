@@ -1,5 +1,34 @@
 PetalburgWoods_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION
 	.byte 0
+
+PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION:
+	switch VAR_PETALBURG_WOODS_STATE
+	case 0, PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_2
+	case 1, PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_3
+	return
+
+PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_2:
+	call PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position
+	return
+
+PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_3:
+	call PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position
+	return
+
+
+PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position::
+	setobjectxyperm 11, 16, 26
+	setobjectmovementtype 11, MOVEMENT_TYPE_LOOK_AROUND
+	return
+
+
+PetalburgWoods_EventScript_MoveGruntsToVar1Positions::
+	setobjectxyperm 13, 11, 30
+	setobjectxyperm 14, 12, 29
+	setobjectmovementtype 13, MOVEMENT_TYPE_FACE_DOWN
+	setobjectmovementtype 14, MOVEMENT_TYPE_FACE_DOWN
+	return
 
 
 PetalburgWoods_EventScript_Sign::
