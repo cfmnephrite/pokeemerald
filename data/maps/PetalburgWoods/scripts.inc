@@ -9,15 +9,102 @@ PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION:
 	return
 
 PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_2:
-	call PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position
+	call PetalburgWoods_EventScript_MoveGirlToVar0Var1Position
 	return
 
 PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_3:
-	call PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position
+	call PetalburgWoods_EventScript_MoveGirlToVar0Var1Position
+	call PetalburgWoods_EventScript_MoveGruntsToVar1Positions
 	return
 
 
-PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position::
+PetalburgWoods_EventScript_FirstEncounter_Position1::
+	setvar VAR_TEMP_0, 1
+	goto PetalburgWoods_EventScript_FirstEncounter
+	return
+
+
+PetalburgWoods_EventScript_FirstEncounter_Position2::
+	setvar VAR_TEMP_0, 2
+	goto PetalburgWoods_EventScript_FirstEncounter
+	return
+
+
+PetalburgWoods_EventScript_FirstEncounter::
+	applymovement 16, Common_Movement_WalkInPlaceDown
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_0
+	applymovement 13, Common_Movement_WalkInPlaceUp
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_1
+	applymovement 16, Common_Movement_ExclamationMarkLookRight
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_2
+	applymovement 13, Common_Movement_ExclamationMarkLookRight
+	applymovement 14, Common_Movement_ExclamationMarkLookRight
+	waitmovement 0
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_3
+	applymovement 13, PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition
+	applymovement 14, PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition
+	waitmovement 0
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_4
+	addobject 17
+	switch VAR_TEMP_0
+	case 1, PetalburgWoods_EventScript_FirstEncounter_3
+	case 2, PetalburgWoods_EventScript_FirstEncounter_4
+PetalburgWoods_EventScript_FirstEncounter_1:
+	waitmovement 0
+	releaseall
+	end
+
+PetalburgWoods_EventScript_FirstEncounter_3:
+	applymovement 17, PetalburgWoods_Movement_BrendanMovesIntoPosition1
+	goto PetalburgWoods_EventScript_FirstEncounter_1
+
+PetalburgWoods_EventScript_FirstEncounter_4:
+	applymovement 17, PetalburgWoods_Movement_BrendanMovesIntoPosition2
+	goto PetalburgWoods_EventScript_FirstEncounter_1
+
+
+PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition:
+	walk_down
+	walk_right
+	walk_right
+	step_end
+
+PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition:
+	walk_right
+	walk_down
+	face_right
+	step_end
+
+PetalburgWoods_Movement_BrendanMovesIntoPosition1:
+	walk_fast_up
+	walk_fast_up
+	walk_fast_left
+	walk_fast_left
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_left
+	walk_fast_up
+	walk_fast_left
+	step_end
+
+PetalburgWoods_Movement_BrendanMovesIntoPosition2:
+	walk_fast_up
+	walk_fast_up
+	walk_fast_left
+	walk_fast_left
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_up
+	walk_fast_left
+	walk_fast_left
+	step_end
+
+PetalburgWoods_EventScript_MoveGirlToVar0Var1Position::
 	setobjectxyperm 11, 16, 26
 	setobjectmovementtype 11, MOVEMENT_TYPE_LOOK_AROUND
 	return
@@ -113,6 +200,25 @@ PetalburgWoods_EventScript_Boy2::
 	msgbox PetalburgWoods_Text_HiddenItemsExplanation, MSGBOX_NPC
 	end
 
+
+PetalburgWoods_EventScript_FirstEncounter_Text_0:
+	.string "Boy: Please let me go!\n"
+	.string "I won't tell anyone, I swear!$"
+
+PetalburgWoods_EventScript_FirstEncounter_Text_1:
+	.string "Sorry, kid, you know how it is.\n"
+	.string "Can't have any loose en-$"
+
+PetalburgWoods_EventScript_FirstEncounter_Text_2:
+	.string "Boy: Oh, you!\n"
+	.string "Please help meeee!$"
+
+PetalburgWoods_EventScript_FirstEncounter_Text_3:
+	.string "Well, look what we have here...$"
+
+PetalburgWoods_EventScript_FirstEncounter_Text_4:
+	.string "You trying to be a hero, kid?\p"
+	.string "???: Wait a second, gay boys!$"
 
 PetalburgWoods_Text_Sign::
 	.string "Petalburg Woods\n"

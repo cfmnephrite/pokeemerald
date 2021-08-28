@@ -5,20 +5,97 @@ const OBJ_EVENT_ID_GRUNT_3		=	15
 const OBJ_EVENT_ID_GRUNT_4		=	1
 const OBJ_EVENT_ID_DEVON_GUY	=	2
 const OBJ_EVENT_ID_RANDOM_GIRL	=	11
+const OBJ_EVENT_ID_BRENDAN		=	17
 
 mapscripts PetalburgWoods_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
 		switch(var(VAR_PETALBURG_WOODS_STATE)) {
 			case 0:
-				call(PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position)
+				call(PetalburgWoods_EventScript_MoveGirlToVar0Var1Position)
 			case 1:
-				call(PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position)
+				call(PetalburgWoods_EventScript_MoveGirlToVar0Var1Position)
 				call(PetalburgWoods_EventScript_MoveGruntsToVar1Positions)
 		}
 	}
 }
 
-script PetalburgWoods_EventScriot_MoveGirlToVar0Var1Position {
+script PetalburgWoods_EventScript_FirstEncounter_Position1 {
+	setvar(VAR_TEMP_0, 1)
+	goto(PetalburgWoods_EventScript_FirstEncounter)
+}
+
+script PetalburgWoods_EventScript_FirstEncounter_Position2 {
+	setvar(VAR_TEMP_0, 2)
+	goto(PetalburgWoods_EventScript_FirstEncounter)
+}
+
+script PetalburgWoods_EventScript_FirstEncounter {
+	applymovement(OBJ_EVENT_ID_BOY, Common_Movement_WalkInPlaceDown)
+	msgbox(
+		"Boy: Please let me go!\n"
+		"I won't tell anyone, I swear!"
+	)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_WalkInPlaceUp)
+	msgbox(
+		"Sorry, kid, you know how it is.\n"
+		"Can't have any loose en-"
+	)
+	applymovement(OBJ_EVENT_ID_BOY, Common_Movement_ExclamationMarkLookRight)
+	msgbox(
+		"Boy: Oh, you!\n"
+		"Please help meeee!"
+	)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_ExclamationMarkLookRight)
+	applymovement(OBJ_EVENT_ID_GRUNT_2, Common_Movement_ExclamationMarkLookRight)
+	waitmovement(0)
+	msgbox(
+		"Well, look what we have here..."
+	)
+	applymovement(OBJ_EVENT_ID_GRUNT_1, PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition)
+	applymovement(OBJ_EVENT_ID_GRUNT_2, PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition)
+	waitmovement(0)
+	msgbox(
+		"You trying to be a hero, kid?\p"
+		"???: Wait a second, gay boys!"
+	)
+	addobject(OBJ_EVENT_ID_BRENDAN)
+	switch(var(VAR_TEMP_0)) {
+		case 1: applymovement(OBJ_EVENT_ID_BRENDAN, PetalburgWoods_Movement_BrendanMovesIntoPosition1)
+		case 2: applymovement(OBJ_EVENT_ID_BRENDAN, PetalburgWoods_Movement_BrendanMovesIntoPosition2)
+	}
+	waitmovement(0)
+	releaseall
+	end
+}
+
+movement PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition {
+	walk_down
+	walk_right * 2
+}
+
+movement PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition {
+	walk_right
+	walk_down
+	face_right
+}
+
+movement PetalburgWoods_Movement_BrendanMovesIntoPosition1 {
+	walk_fast_up * 2
+	walk_fast_left * 2
+	walk_fast_up * 5
+	walk_fast_left
+	walk_fast_up
+	walk_fast_left
+}
+
+movement PetalburgWoods_Movement_BrendanMovesIntoPosition2 {
+	walk_fast_up * 2
+	walk_fast_left * 2
+	walk_fast_up * 5
+	walk_fast_left * 2
+}
+
+script PetalburgWoods_EventScript_MoveGirlToVar0Var1Position {
 	setobjectxyperm(OBJ_EVENT_ID_RANDOM_GIRL, 16, 26)
 	setobjectmovementtype(OBJ_EVENT_ID_RANDOM_GIRL, MOVEMENT_TYPE_LOOK_AROUND)
 	return
@@ -99,6 +176,10 @@ script PetalburgWoods_EventScript_Boy2 {
 	msgbox(PetalburgWoods_Text_HiddenItemsExplanation, MSGBOX_NPC)
 	end
 }
+
+// Episode text
+
+// Random text
 
 text PetalburgWoods_Text_Sign {
 	"Petalburg Woods\n"
