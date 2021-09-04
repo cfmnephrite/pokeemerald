@@ -64,8 +64,36 @@ script PetalburgWoods_EventScript_FirstEncounter {
 		case 2: applymovement(OBJ_EVENT_ID_BRENDAN, PetalburgWoods_Movement_BrendanMovesIntoPosition2)
 	}
 	waitmovement(0)
-	releaseall
-	end
+	goto(PetalburgWoods_EventScript_FirstSpecialDoubleBattle)
+	switch(var(VAR_RESULT)){
+		case 1:
+			msgbox("Double battle success")
+			end
+		default:
+			fadescreen(FADE_TO_BLACK)
+			special(SetCB2WhiteOut)
+			waitstate
+	}
+}
+script PetalburgWoods_EventScript_FirstSpecialDoubleBattle {
+	multi_fixed_2_vs_2(TRAINER_PETALBURG_WOODS_GRUNT_1, PetalburgWoods_Text_Grunt1Defeat, TRAINER_PETALBURG_WOODS_GRUNT_2, PetalburgWoods_Text_Grunt2Defeat, TRAINER_PETALBURG_WOODS_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN)
+	switch(var(VAR_RESULT)){
+		case 1:
+			msgbox("Double battle success", MSGBOX_NPC)
+			end
+		default:
+			fadescreen(FADE_TO_BLACK)
+			special(SetCB2WhiteOut)
+			waitstate
+	}
+}
+
+script PetalburgWoods_EventScript_Grunt1Trainer {
+	trainerbattle(TRAINER_BATTLE_SET_TRAINER_A, TRAINER_PETALBURG_WOODS_GRUNT_1, 0, PetalburgWoods_Text_Grunt1Defeat, PetalburgWoods_Text_Grunt1Defeat)
+}
+
+script PetalburgWoods_EventScript_Grunt2Trainer {
+	trainerbattle(TRAINER_BATTLE_SET_TRAINER_B, TRAINER_PETALBURG_WOODS_GRUNT_2, 0, PetalburgWoods_Text_Grunt2Defeat, PetalburgWoods_Text_Grunt2Defeat)
 }
 
 movement PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition {
@@ -178,6 +206,13 @@ script PetalburgWoods_EventScript_Boy2 {
 }
 
 // Episode text
+text PetalburgWoods_Text_Grunt1Defeat {
+	format("Useless bat! First it gives me some weird cough, now this!")
+}
+
+text PetalburgWoods_Text_Grunt2Defeat {
+	format("Hmm, maybe actual training is better than Rare Candies...")
+}
 
 // Random text
 

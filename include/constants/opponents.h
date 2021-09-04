@@ -861,6 +861,9 @@
 // CFM trainers
 #define TRAINER_INTRO_GRUNT_1               (TRAINER_CFM_START + 1)
 #define TRAINER_INTRO_GRUNT_2               (TRAINER_CFM_START + 2)
+#define TRAINER_PETALBURG_WOODS_GRUNT_1     (TRAINER_CFM_START + 3)
+#define TRAINER_PETALBURG_WOODS_GRUNT_2     (TRAINER_CFM_START + 4)
+#define TRAINER_PETALBURG_WOODS_BRENDAN     (TRAINER_CFM_START + 5)
 
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 9 additional trainers before trainer flag space overflows

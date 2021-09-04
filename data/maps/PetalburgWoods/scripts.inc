@@ -51,8 +51,13 @@ PetalburgWoods_EventScript_FirstEncounter::
 	case 2, PetalburgWoods_EventScript_FirstEncounter_4
 PetalburgWoods_EventScript_FirstEncounter_1:
 	waitmovement 0
-	releaseall
-	end
+	goto PetalburgWoods_EventScript_FirstSpecialDoubleBattle
+	switch VAR_RESULT
+	case 1, PetalburgWoods_EventScript_FirstEncounter_6
+	fadescreen FADE_TO_BLACK
+	special SetCB2WhiteOut
+	waitstate
+	return
 
 PetalburgWoods_EventScript_FirstEncounter_3:
 	applymovement 17, PetalburgWoods_Movement_BrendanMovesIntoPosition1
@@ -61,6 +66,34 @@ PetalburgWoods_EventScript_FirstEncounter_3:
 PetalburgWoods_EventScript_FirstEncounter_4:
 	applymovement 17, PetalburgWoods_Movement_BrendanMovesIntoPosition2
 	goto PetalburgWoods_EventScript_FirstEncounter_1
+
+PetalburgWoods_EventScript_FirstEncounter_6:
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_5
+	end
+
+
+PetalburgWoods_EventScript_FirstSpecialDoubleBattle::
+	multi_fixed_2_vs_2 TRAINER_PETALBURG_WOODS_GRUNT_1, PetalburgWoods_Text_Grunt1Defeat, TRAINER_PETALBURG_WOODS_GRUNT_2, PetalburgWoods_Text_Grunt2Defeat, TRAINER_PETALBURG_WOODS_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN
+	switch VAR_RESULT
+	case 1, PetalburgWoods_EventScript_FirstSpecialDoubleBattle_2
+	fadescreen FADE_TO_BLACK
+	special SetCB2WhiteOut
+	waitstate
+	return
+
+PetalburgWoods_EventScript_FirstSpecialDoubleBattle_2:
+	msgbox PetalburgWoods_EventScript_FirstEncounter_Text_5, MSGBOX_NPC
+	end
+
+
+PetalburgWoods_EventScript_Grunt1Trainer::
+	trainerbattle TRAINER_BATTLE_SET_TRAINER_A, TRAINER_PETALBURG_WOODS_GRUNT_1, 0, PetalburgWoods_Text_Grunt1Defeat, PetalburgWoods_Text_Grunt1Defeat
+	return
+
+
+PetalburgWoods_EventScript_Grunt2Trainer::
+	trainerbattle TRAINER_BATTLE_SET_TRAINER_B, TRAINER_PETALBURG_WOODS_GRUNT_2, 0, PetalburgWoods_Text_Grunt2Defeat, PetalburgWoods_Text_Grunt2Defeat
+	return
 
 
 PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition:
@@ -219,6 +252,17 @@ PetalburgWoods_EventScript_FirstEncounter_Text_3:
 PetalburgWoods_EventScript_FirstEncounter_Text_4:
 	.string "You trying to be a hero, kid?\p"
 	.string "???: Wait a second, gay boys!$"
+
+PetalburgWoods_EventScript_FirstEncounter_Text_5:
+	.string "Double battle success$"
+
+PetalburgWoods_Text_Grunt1Defeat::
+	.string "Useless bat! First it gives me some\n"
+	.string "weird cough, now this!$"
+
+PetalburgWoods_Text_Grunt2Defeat::
+	.string "Hmm, maybe actual training is better\n"
+	.string "than Rare Candies...$"
 
 PetalburgWoods_Text_Sign::
 	.string "Petalburg Woods\n"

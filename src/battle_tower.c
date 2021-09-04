@@ -763,7 +763,7 @@ static const u8 *const *const sPartnerApprenticeTextTables[NUM_APPRENTICES] =
     sPartnerApprenticeTexts16
 };
 
-struct
+struct CustomTeamMon
 {
     u16 species;
     u8 fixedIV;
@@ -771,7 +771,9 @@ struct
     u8 nature;
     u8 evs[NUM_STATS];
     u16 moves[MAX_MON_MOVES];
-} const sStevenMons[MULTI_PARTY_SIZE] =
+};
+
+const struct CustomTeamMon sStevenMons[MULTI_PARTY_SIZE] =
 {
     {
         .species = SPECIES_METANG,
@@ -2978,6 +2980,28 @@ void TryHideBattleTowerReporter(void)
 
 #define STEVEN_OTID 61226
 
+static void FillCustomPartnerParty(const struct CustomTeamMon *customTeamMons, u16 trainerID, u16 trainerNum)
+{
+    s32 i, j;
+    for (i = 0; i < MULTI_PARTY_SIZE; i++)
+    {
+        CreateMon(&gPlayerParty[MULTI_PARTY_SIZE + i],
+                    (customTeamMons + i)->species,
+                    gSaveBlock1Ptr->globalLevel,
+                    (customTeamMons + i)->fixedIV,
+                    TRUE,                    GetPersonalityForNature((customTeamMons + i)->nature),
+                    OT_ID_PRESET, trainerID);
+        for (j = 0; j < PARTY_SIZE; j++)
+            SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_HP_EV + j, &(customTeamMons + i)->evs[j]);
+        for (j = 0; j < MAX_MON_MOVES; j++)
+            SetMonMoveSlot(&gPlayerParty[MULTI_PARTY_SIZE + i], (customTeamMons + i)->moves[j], j);
+        SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_OT_NAME, gTrainers[trainerNum].trainerName);
+        j = MALE;
+        SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_OT_GENDER, &j);
+        CalculateMonStats(&gPlayerParty[MULTI_PARTY_SIZE + i]);
+    }
+}
+
 static void FillPartnerParty(u16 trainerId)
 {
     s32 i, j;
@@ -2990,27 +3014,7 @@ static void FillPartnerParty(u16 trainerId)
 
     if (trainerId == TRAINER_STEVEN_PARTNER)
     {
-        for (i = 0; i < MULTI_PARTY_SIZE; i++)
-        {
-            do
-            {
-                j = Random32();
-            } while (IsShinyOtIdPersonality(STEVEN_OTID, j) || sStevenMons[i].nature != GetNatureFromPersonality(j));
-            CreateMon(&gPlayerParty[MULTI_PARTY_SIZE + i],
-                      sStevenMons[i].species,
-                      sStevenMons[i].level,
-                      sStevenMons[i].fixedIV,
-                      TRUE, i, // BUG: personality was stored in the 'j' variable. As a result, Steven's pokemon do not have the intended natures.
-                      OT_ID_PRESET, STEVEN_OTID);
-            for (j = 0; j < PARTY_SIZE; j++)
-                SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_HP_EV + j, &sStevenMons[i].evs[j]);
-            for (j = 0; j < MAX_MON_MOVES; j++)
-                SetMonMoveSlot(&gPlayerParty[MULTI_PARTY_SIZE + i], sStevenMons[i].moves[j], j);
-            SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_OT_NAME, gTrainers[TRAINER_STEVEN].trainerName);
-            j = MALE;
-            SetMonData(&gPlayerParty[MULTI_PARTY_SIZE + i], MON_DATA_OT_GENDER, &j);
-            CalculateMonStats(&gPlayerParty[MULTI_PARTY_SIZE + i]);
-        }
+        FillCustomPartnerParty(sStevenMons, STEVEN_OTID, TRAINER_STEVEN);
     }
     else if (trainerId >= TRAINER_CUSTOM_PARTNER)
     {
@@ -3032,14 +3036,22 @@ static void FillPartnerParty(u16 trainerId)
             {
                 const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerId - TRAINER_CUSTOM_PARTNER].party.NoItemDefaultMoves;
 
-                CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
+                // If Level 0, use global level
+                level = partyData[i].lvl;
+                if (level == 0)
+                    level = gSaveBlock1Ptr->globalLevel;
+                CreateMon(&gPlayerParty[i + 3], partyData[i].species, level, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
                 break;
             }
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
                 const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerId - TRAINER_CUSTOM_PARTNER].party.NoItemCustomMoves;
 
-                CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
+                // If Level 0, use global level
+                level = partyData[i].lvl;
+                if (level == 0)
+                    level = gSaveBlock1Ptr->globalLevel;
+                CreateMon(&gPlayerParty[i + 3], partyData[i].species, level, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
 
                 for (j = 0; j < 4; j++)
                 {
@@ -3052,7 +3064,11 @@ static void FillPartnerParty(u16 trainerId)
             {
                 const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerId - TRAINER_CUSTOM_PARTNER].party.ItemDefaultMoves;
 
-                CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
+                // If Level 0, use global level
+                level = partyData[i].lvl;
+                if (level == 0)
+                    level = gSaveBlock1Ptr->globalLevel;
+                CreateMon(&gPlayerParty[i + 3], partyData[i].species, level, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
 
                 SetMonData(&gPlayerParty[i + 3], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -3061,7 +3077,7 @@ static void FillPartnerParty(u16 trainerId)
             {
                 const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerId - TRAINER_CUSTOM_PARTNER].party.ItemCustomMoves;
 
-                CreateMon(&gPlayerParty[i + 3], partyData[i].species, partyData[i].lvl, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
+                CreateMon(&gPlayerParty[i + 3], partyData[i].species, level, partyData[i].iv * 31 / 255, TRUE, j, TRUE, otID);
 
                 SetMonData(&gPlayerParty[i + 3], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 

@@ -5513,6 +5513,12 @@ u8 GetNatureFromPersonality(u32 personality)
     return personality % NUM_NATURES;
 }
 
+u8 GetPersonalityForNature(u8 nature)
+{
+    u32 personality = Random32();
+    return personality - (personality % NUM_NATURES) + nature;
+}
+
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem, u16 tradePartnerSpecies)
 {
     int i, j;
