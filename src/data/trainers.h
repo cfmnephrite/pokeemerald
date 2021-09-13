@@ -12023,6 +12023,32 @@ const struct Trainer gTrainers[] = {
         .partySize = ARRAY_COUNT(sParty_PetalburgWoodsGrunt2),
         .party = {.NoItemDefaultMoves = sParty_PetalburgWoodsGrunt2},
     },
+    [TRAINER_PETALBURG_WOODS_GRUNT_3] =
+    {
+        .partyFlags = 0,
+        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
+        .trainerPic = TRAINER_PIC_AQUA_GRUNT_M,
+        .trainerName = _("GRUNT"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .partySize = ARRAY_COUNT(sParty_PetalburgWoodsGrunt3),
+        .party = {.NoItemDefaultMoves = sParty_PetalburgWoodsGrunt3},
+    },
+    [TRAINER_PETALBURG_WOODS_GRUNT_4] =
+    {
+        .partyFlags = 0,
+        .trainerClass = TRAINER_CLASS_TEAM_AQUA,
+        .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
+        .trainerPic = TRAINER_PIC_AQUA_GRUNT_M,
+        .trainerName = _("GRUNT"),
+        .items = {},
+        .doubleBattle = FALSE,
+        .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
+        .partySize = ARRAY_COUNT(sParty_PetalburgWoodsGrunt4),
+        .party = {.NoItemDefaultMoves = sParty_PetalburgWoodsGrunt4},
+    },
     [TRAINER_PETALBURG_WOODS_BRENDAN] =
     {
         .partyFlags = F_TRAINER_PARTY_CUSTOM_MOVESET,

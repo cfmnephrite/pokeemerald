@@ -10,18 +10,13 @@ script LittlerootTown_EventScript_CheckNextDoorForceMovement {
 	if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
 		msgbox(gText_BetterCheckNextDoor)
 		closemessage
-		applymovement(OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushUp)
+		applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp)
 		waitmovement(0)
 	} else {
 		setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
 	}
 	releaseall
 	end
-}
-
-movement LittlerootTown_Movement_CheckNextDoorPushUp {
-	walk_up
-	step_end
 }
 
 text gText_BetterCheckNextDoor {

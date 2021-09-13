@@ -12497,3 +12497,29 @@ static const struct TrainerMonNoItemCustomMoves sParty_PetalburgWoodsBrendan[] =
     .moves = {MOVE_FLAMETHROWER, MOVE_EARTH_POWER, MOVE_WILL_O_WISP, MOVE_RECOVER}
     }
 };
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt3[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_GUMSHOOS,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_MURKROW,
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt4[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_SNUBBULL,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_SEVIPER,
+    }
+};

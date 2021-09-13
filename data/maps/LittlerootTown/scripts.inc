@@ -23,14 +23,10 @@ LittlerootTown_EventScript_CheckNextDoorForceMovement_1:
 LittlerootTown_EventScript_CheckNextDoorForceMovement_2:
 	msgbox gText_BetterCheckNextDoor
 	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_Movement_CheckNextDoorPushUp
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp
 	waitmovement 0
 	goto LittlerootTown_EventScript_CheckNextDoorForceMovement_1
 
-
-LittlerootTown_Movement_CheckNextDoorPushUp:
-	walk_up
-	step_end
 
 LittlerootTown_EventScript_FatMan::
 	msgbox LittlerootTown_EventScript_FatMan_Text_0

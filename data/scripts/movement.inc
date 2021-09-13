@@ -11,6 +11,11 @@ Common_Movement_ExclamationMarkLookUp:
 	face_up
 	step_end
 
+Common_Movement_ExclamationMarkLookDown:
+	emote_exclamation_mark
+	face_down
+	step_end
+
 Common_Movement_ExclamationMarkLookLeft:
 	emote_exclamation_mark
 	face_left
