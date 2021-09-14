@@ -105,13 +105,12 @@ script PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver {
 	applymovement(OBJ_EVENT_ID_GRUNT_1, Common_Movement_FaceRight)
 	applymovement(OBJ_EVENT_ID_GRUNT_2, Common_Movement_FaceRight)
 	waitmovement(0)
-	delay(120)
+	delay(90)
 	applymovement(OBJ_EVENT_ID_GRUNT_1, PetalburgWoods_Movement_Grunt1Flees)
 	applymovement(OBJ_EVENT_ID_GRUNT_2, PetalburgWoods_Movement_Grunt2Flees)
 	waitmovement(0)
 	hideobjectat(OBJ_EVENT_ID_GRUNT_1, MAP_PETALBURG_WOODS)
 	hideobjectat(OBJ_EVENT_ID_GRUNT_2, MAP_PETALBURG_WOODS)
-	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_BRENDAN, Common_Movement_WalkInPlaceLeft)
 	msgbox(
 		"Pah!\nWhat a bunch of cowards!"
@@ -129,23 +128,27 @@ script PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver {
 	if (!var(VAR_RESULT)) {
 		msgbox("No? You you mean you have no fear?")
 	}
-	msgbox(PetalburgWoods_Text_BrendanIntro2, MSGBOX_NPC)
+	msgbox(PetalburgWoods_Text_BrendanIntro2, MSGBOX_AUTOCLOSE)
 	end
 }
 
 script PetalburgWoods_EventScript_RocketEncounterContinues {
+	special(SpawnCameraObject)
+	applymovement(OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraPansDownForBattle2)
+	applymovement(OBJ_EVENT_ID_PLAYER, PetalburgWoods_Movement_PlayerMovesIntoBattle2Position)
+	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_GRUNT_3, Common_Movement_WalkInPlaceRight)
 	msgbox(
 		format(
 			"We need the goods you've got in that truck, chief.\p"
-			"Are you going to give us the code to the safe\p?"
-			"Or do I need to introduce you to my Seviper?"
+			"You going to give us the code to the safe?\p"
+			"Or do you want me to bring out my Seviper?"
 		)
 	)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceDown)
 	msgbox(
 		format(
-			"And if you still don't want to give it after he delights you with his purple snake,\p"
+			"And if you still don't want to let us in\pafter he delights you with his purple snake,\p"
 			"I'll smash your head in."
 		)
 	)
@@ -161,6 +164,7 @@ script PetalburgWoods_EventScript_RocketEncounterContinues {
 	applymovement(OBJ_EVENT_ID_GRUNT_3, Common_Movement_ExclamationMarkLookUp)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_ExclamationMarkLookUp)
 	waitmovement(0)
+	delay(60)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceDown)
 	msgbox(
 		format("Boss: You wait here.")
@@ -169,34 +173,68 @@ script PetalburgWoods_EventScript_RocketEncounterContinues {
 	msgbox(
 		format("You must be the ones who scared away our colleagues.")
 	)
-	applymovement(OBJ_EVENT_ID_GRUNT_3, Common_Movement_ExclamationMarkLookUp)
-	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_ExclamationMarkLookUp)
+	applymovement(OBJ_EVENT_ID_GRUNT_3, PetalburgWoods_Movement_Grunt3MovesIntoBattle2Position)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4MovesIntoBattle2Position)
 	msgbox(
 		format(
 			"And I see you're just a couple of stupid kids!\p"
-			"Makes no difference to me - you're both dead."
+			"Makes no difference to me.\nYou're both dead."
 		)
 	)
 	goto(PetalburgWoods_EventScript_SecondSpecialDoubleBattle)
 }
 
 script PetalburgWoods_EventScript_SecondSpecialDoubleBattle {
-	// multi_fixed_2_vs_2(TRAINER_PETALBURG_WOODS_GRUNT_3, PetalburgWoods_Text_Grunt3Defeat, TRAINER_PETALBURG_WOODS_GRUNT_3, PetalburgWoods_Text_Grunt3Defeat, TRAINER_PETALBURG_WOODS_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN)
+	// multi_fixed_2_vs_2(TRAINER_PETALBURG_WOODS_GRUNT_3, PetalburgWoods_Text_Grunt3Defeat, TRAINER_PETALBURG_WOODS_GRUNT_4, PetalburgWoods_Text_Grunt4Defeat, TRAINER_PETALBURG_WOODS_BRENDAN, TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN)
 	// switch(var(VAR_RESULT)){
 	// 	case 1:
-	// 		setvar(VAR_PETALBURG_WOODS_STATE, 1)
-	// 		goto(PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver)
+	// 		setvar(VAR_PETALBURG_WOODS_STATE, 2)
+	// 		goto(PetalburgWoods_EventScript_Battle2GruntsRetreat)
 	// 	default:
 	// 		fadescreen(FADE_TO_BLACK)
 	// 		special(SetCB2WhiteOut)
 	// 		waitstate
 	// }
 	setvar(VAR_PETALBURG_WOODS_STATE, 2)
+	goto(PetalburgWoods_EventScript_Battle2GruntsRetreat)
+}
+
+script PetalburgWoods_EventScript_Battle2GruntsRetreat {
+	applymovement(OBJ_EVENT_ID_GRUNT_3, PetalburgWoods_Movement_Grunt3Recoils)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4WalksBack)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceUp)
+	msgbox(
+		format(
+			"How?! How did you beat us?!"
+		)
+	)
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_GRUNT_3, PetalburgWoods_Movement_Grunt3Flees)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_ExclamationMarkLookDown)
+	delay(60)
+	removeobject(OBJ_EVENT_ID_GRUNT_3)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceUp)
+	msgbox(format(
+		"dialogue"
+	))
+	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4WalksBack)
+	waitmovement(0)
+	msgbox(format(
+		"dialogue"
+	), MSGBOX_AUTOCLOSE)
+	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4Flees)
+	waitmovement(0)
+	removeobject(OBJ_EVENT_ID_GRUNT_4)
+	setflag(FLAG_PETALBURG_WOODS_HIDE_SPRITES)
 	goto(PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver)
 }
 
 script PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver {
-	msgbox("Damn, this is over", MSGBOX_AUTOCLOSE)
+	applymovement(OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraReverts)
+	waitmovement(0)
+	special(RemoveCameraObject)
+	end
 }
 
 movement PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition {
@@ -210,16 +248,6 @@ movement PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition {
 	face_right
 }
 
-movement PetalburgWoods_Movement_Grunt3MovesIntoBattlePosition {
-	walk_left *2
-	walk_up * 2
-}
-
-movement PetalburgWoods_Movement_Grunt4MovesIntoBattlePosition {
-	walk_up * 2
-	walk_left * 2
-}
-
 movement PetalburgWoods_Movement_Grunts12DefeatedLockRightWalkLeft {
 	lock_facing_direction
 	walk_left
@@ -231,6 +259,7 @@ movement PetalburgWoods_Movement_Grunt1Flees {
 	walk_fastest_down * 6
 	walk_fastest_right
 	walk_fastest_down
+	walk_fastest_right
 }
 
 movement PetalburgWoods_Movement_Grunt2Flees {
@@ -238,6 +267,7 @@ movement PetalburgWoods_Movement_Grunt2Flees {
 	walk_fastest_down * 7
 	walk_fastest_right
 	walk_fastest_down
+	walk_fastest_right
 }
 
 movement PetalburgWoods_Movement_BrendanMovesIntoPosition1 {
@@ -254,6 +284,51 @@ movement PetalburgWoods_Movement_BrendanMovesIntoPosition2 {
 	walk_fast_left * 2
 	walk_fast_up * 5
 	walk_fast_left * 2
+}
+
+movement PetalburgWoods_Movement_CameraPansDownForBattle2 {
+	walk_slow_diag_southeast
+	walk_slow_diag_southeast
+}
+
+movement PetalburgWoods_Movement_Grunt3MovesIntoBattle2Position {
+	walk_left
+	walk_up * 2
+}
+
+movement PetalburgWoods_Movement_Grunt4MovesIntoBattle2Position {
+	walk_left
+	walk_up
+}
+
+movement PetalburgWoods_Movement_PlayerMovesIntoBattle2Position {
+	walk_right * 2
+	face_down
+}
+
+movement PetalburgWoods_Movement_Grunt3Recoils {
+	lock_facing_direction
+	walk_fast_down * 2
+	unlock_facing_direction
+}
+
+movement PetalburgWoods_Movement_Grunt4WalksBack {
+	lock_facing_direction
+	walk_down
+	unlock_facing_direction
+}
+
+movement PetalburgWoods_Movement_Grunt3Flees {
+	walk_fastest_down * 6
+}
+
+movement PetalburgWoods_Movement_Grunt4Flees {
+	walk_fast_down * 6
+}
+
+movement PetalburgWoods_Movement_CameraReverts {
+	walk_slow_up
+	walk_slow_up
 }
 
 script PetalburgWoods_EventScript_BrendanSaysYouCantLeave {
@@ -279,23 +354,30 @@ script PetalburgWoods_EventScript_Girl {
 }
 
 script PetalburgWoods_EventScript_Boy3 {
+	lock
 	switch(var(VAR_PETALBURG_WOODS_STATE)) {
 		case 0:
 		case 1:
 			if (!flag(FLAG_BERRY_PETALBURG_WOODS_RECEIVED_SITRUS)) {
-				msgbox(format("Thank you, thank you, thank you! Here, take this!"))
+				msgbox(format(
+					"Thank you, thank you, thank you! Here, take this!"
+				))
 				giveitem(ITEM_SITRUS_BERRY)
 				setflag(FLAG_BERRY_PETALBURG_WOODS_RECEIVED_SITRUS)
 			}
 			msgbox("I was just walking and they grabbed me...", MSGBOX_NPC)
 		default:
 			if (!flag(FLAG_BERRY_PETALBURG_WOODS_RECEIVED_SITRUS)) {
-				msgbox(format("Hey! Thank you for saving me from the Rockets!\pI have a present for you!"))
+				msgbox(format(
+					"Hey! Thank you for saving me from the Rockets!\p"
+					"I have a present for you!"
+				))
 				giveitem(ITEM_SITRUS_BERRY)
 				setflag(FLAG_BERRY_PETALBURG_WOODS_RECEIVED_SITRUS)
 			}
 			msgbox(PetalburgWoods_Text_Boy, MSGBOX_NPC)	
 	}
+	release
 	end
 }
 
@@ -377,7 +459,7 @@ text PetalburgWoods_Text_Grunt3Defeat {
 }
 
 text PetalburgWoods_Text_Grunt4Defeat {
-	format("How?! How can this be?!")
+	format("What? What the hell?!")
 }
 
 text PetalburgWoods_Text_BrendanIntro {
@@ -428,7 +510,8 @@ text PetalburgWoods_TextGirl {
 text PetalburgWoods_Text_Boy {
 	format(
 		"Those Rocket guys are scary...\nMy dad says they're not from Hoenn.\p"
-		"He says we should stop all the foreigners coming in\pbecause they could be Rockets or drug dealers or French."
+		"He says we should stop all the foreigners coming in...\p"
+		"...because they could be Rockets or drug dealers or French."
 	)
 }
 

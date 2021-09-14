@@ -86,13 +86,12 @@ PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver::
 	applymovement 13, Common_Movement_FaceRight
 	applymovement 14, Common_Movement_FaceRight
 	waitmovement 0
-	delay 120
+	delay 90
 	applymovement 13, PetalburgWoods_Movement_Grunt1Flees
 	applymovement 14, PetalburgWoods_Movement_Grunt2Flees
 	waitmovement 0
 	hideobjectat 13, MAP_PETALBURG_WOODS
 	hideobjectat 14, MAP_PETALBURG_WOODS
-	waitmovement 0
 	applymovement 17, Common_Movement_WalkInPlaceLeft
 	msgbox PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_Text_0
 	switch VAR_TEMP_0
@@ -104,7 +103,7 @@ PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_1:
 	compare VAR_RESULT, 0
 	goto_if_eq PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_6
 PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_5:
-	msgbox PetalburgWoods_Text_BrendanIntro2, MSGBOX_NPC
+	msgbox PetalburgWoods_Text_BrendanIntro2, MSGBOX_AUTOCLOSE
 	end
 
 PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_3:
@@ -123,6 +122,10 @@ PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_6:
 
 
 PetalburgWoods_EventScript_RocketEncounterContinues::
+	special SpawnCameraObject
+	applymovement OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraPansDownForBattle2
+	applymovement OBJ_EVENT_ID_PLAYER, PetalburgWoods_Movement_PlayerMovesIntoBattle2Position
+	waitmovement 0
 	applymovement 1, Common_Movement_WalkInPlaceRight
 	msgbox PetalburgWoods_EventScript_RocketEncounterContinues_Text_0
 	applymovement 15, Common_Movement_WalkInPlaceDown
@@ -133,12 +136,13 @@ PetalburgWoods_EventScript_RocketEncounterContinues::
 	applymovement 1, Common_Movement_ExclamationMarkLookUp
 	applymovement 15, Common_Movement_ExclamationMarkLookUp
 	waitmovement 0
+	delay 60
 	applymovement 15, Common_Movement_WalkInPlaceDown
 	msgbox PetalburgWoods_EventScript_RocketEncounterContinues_Text_3
 	applymovement 15, Common_Movement_WalkInPlaceUp
 	msgbox PetalburgWoods_EventScript_RocketEncounterContinues_Text_4
-	applymovement 1, Common_Movement_ExclamationMarkLookUp
-	applymovement 15, Common_Movement_ExclamationMarkLookUp
+	applymovement 1, PetalburgWoods_Movement_Grunt3MovesIntoBattle2Position
+	applymovement 15, PetalburgWoods_Movement_Grunt4MovesIntoBattle2Position
 	msgbox PetalburgWoods_EventScript_RocketEncounterContinues_Text_5
 	goto PetalburgWoods_EventScript_SecondSpecialDoubleBattle
 	return
@@ -146,13 +150,39 @@ PetalburgWoods_EventScript_RocketEncounterContinues::
 
 PetalburgWoods_EventScript_SecondSpecialDoubleBattle::
 	setvar VAR_PETALBURG_WOODS_STATE, 2
+	goto PetalburgWoods_EventScript_Battle2GruntsRetreat
+	return
+
+
+PetalburgWoods_EventScript_Battle2GruntsRetreat::
+	applymovement 1, PetalburgWoods_Movement_Grunt3Recoils
+	applymovement 15, PetalburgWoods_Movement_Grunt4WalksBack
+	waitmovement 0
+	applymovement 15, Common_Movement_WalkInPlaceUp
+	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_0
+	playse SE_PIN
+	applymovement 1, PetalburgWoods_Movement_Grunt3Flees
+	applymovement 15, Common_Movement_ExclamationMarkLookDown
+	delay 60
+	removeobject 1
+	applymovement 15, Common_Movement_WalkInPlaceUp
+	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1
+	applymovement 15, PetalburgWoods_Movement_Grunt4WalksBack
+	waitmovement 0
+	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1, MSGBOX_AUTOCLOSE
+	applymovement 15, PetalburgWoods_Movement_Grunt4Flees
+	waitmovement 0
+	removeobject 15
+	setflag FLAG_PETALBURG_WOODS_HIDE_SPRITES
 	goto PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver
 	return
 
 
 PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver::
-	msgbox PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_0, MSGBOX_AUTOCLOSE
-	return
+	applymovement OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraReverts
+	waitmovement 0
+	special RemoveCameraObject
+	end
 
 
 PetalburgWoods_Movement_Grunt1MovesIntoBattlePosition:
@@ -165,20 +195,6 @@ PetalburgWoods_Movement_Grunt2MovesIntoBattlePosition:
 	walk_right
 	walk_down
 	face_right
-	step_end
-
-PetalburgWoods_Movement_Grunt3MovesIntoBattlePosition:
-	walk_left
-	walk_left
-	walk_up
-	walk_up
-	step_end
-
-PetalburgWoods_Movement_Grunt4MovesIntoBattlePosition:
-	walk_up
-	walk_up
-	walk_left
-	walk_left
 	step_end
 
 PetalburgWoods_Movement_Grunts12DefeatedLockRightWalkLeft:
@@ -197,6 +213,7 @@ PetalburgWoods_Movement_Grunt1Flees:
 	walk_fastest_down
 	walk_fastest_right
 	walk_fastest_down
+	walk_fastest_right
 	step_end
 
 PetalburgWoods_Movement_Grunt2Flees:
@@ -210,6 +227,7 @@ PetalburgWoods_Movement_Grunt2Flees:
 	walk_fastest_down
 	walk_fastest_right
 	walk_fastest_down
+	walk_fastest_right
 	step_end
 
 PetalburgWoods_Movement_BrendanMovesIntoPosition1:
@@ -241,6 +259,64 @@ PetalburgWoods_Movement_BrendanMovesIntoPosition2:
 	walk_fast_left
 	step_end
 
+PetalburgWoods_Movement_CameraPansDownForBattle2:
+	walk_slow_diag_southeast
+	walk_slow_diag_southeast
+	step_end
+
+PetalburgWoods_Movement_Grunt3MovesIntoBattle2Position:
+	walk_left
+	walk_up
+	walk_up
+	step_end
+
+PetalburgWoods_Movement_Grunt4MovesIntoBattle2Position:
+	walk_left
+	walk_up
+	step_end
+
+PetalburgWoods_Movement_PlayerMovesIntoBattle2Position:
+	walk_right
+	walk_right
+	face_down
+	step_end
+
+PetalburgWoods_Movement_Grunt3Recoils:
+	lock_facing_direction
+	walk_fast_down
+	walk_fast_down
+	unlock_facing_direction
+	step_end
+
+PetalburgWoods_Movement_Grunt4WalksBack:
+	lock_facing_direction
+	walk_down
+	unlock_facing_direction
+	step_end
+
+PetalburgWoods_Movement_Grunt3Flees:
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	walk_fastest_down
+	step_end
+
+PetalburgWoods_Movement_Grunt4Flees:
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	walk_fast_down
+	step_end
+
+PetalburgWoods_Movement_CameraReverts:
+	walk_slow_up
+	walk_slow_up
+	step_end
+
 PetalburgWoods_EventScript_BrendanSaysYouCantLeave::
 	msgbox PetalburgWoods_Text_BrendanSaysCantLeave, MSGBOX_SIGN
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp
@@ -267,6 +343,7 @@ PetalburgWoods_EventScript_Girl_3:
 
 
 PetalburgWoods_EventScript_Boy3::
+	lock
 	switch VAR_PETALBURG_WOODS_STATE
 	case 0, PetalburgWoods_EventScript_Boy3_3
 	case 1, PetalburgWoods_EventScript_Boy3_3
@@ -274,6 +351,7 @@ PetalburgWoods_EventScript_Boy3::
 PetalburgWoods_EventScript_Boy3_8:
 	msgbox PetalburgWoods_Text_Boy, MSGBOX_NPC
 PetalburgWoods_EventScript_Boy3_1:
+	release
 	end
 
 PetalburgWoods_EventScript_Boy3_3:
@@ -405,14 +483,14 @@ PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_Text_1:
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_0:
 	.string "We need the goods you've got in that\n"
 	.string "truck, chief.\p"
-	.string "Are you going to give us the code to the\n"
-	.string "safe\p"
-	.string "? Or do I need to introduce you to my\n"
+	.string "You going to give us the code to the\n"
+	.string "safe?\p"
+	.string "Or do you want me to bring out my\n"
 	.string "Seviper?$"
 
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_1:
-	.string "And if you still don't want to give it\n"
-	.string "after he delights you with his purple\l"
+	.string "And if you still don't want to let us in\p"
+	.string "after he delights you with his purple\n"
 	.string "snake,\p"
 	.string "I'll smash your head in.$"
 
@@ -432,11 +510,14 @@ PetalburgWoods_EventScript_RocketEncounterContinues_Text_4:
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_5:
 	.string "And I see you're just a couple of stupid\n"
 	.string "kids!\p"
-	.string "Makes no difference to me - you're both\n"
-	.string "dead.$"
+	.string "Makes no difference to me.\n"
+	.string "You're both dead.$"
 
-PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_0:
-	.string "Damn, this is over$"
+PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_0:
+	.string "How?! How did you beat us?!$"
+
+PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1:
+	.string "dialogue$"
 
 PetalburgWoods_EventScript_Boy3_Text_0:
 	.string "Thank you, thank you, thank you! Here,\n"
@@ -462,7 +543,7 @@ PetalburgWoods_Text_Grunt3Defeat::
 	.string "Oh, the boss isn't going to like this...$"
 
 PetalburgWoods_Text_Grunt4Defeat::
-	.string "How?! How can this be?!$"
+	.string "What? What the hell?!$"
 
 PetalburgWoods_Text_BrendanIntro::
 	.string "My name's Brendan\n"
@@ -490,8 +571,8 @@ PetalburgWoods_Text_Sign::
 	.string "{DOWN_ARROW}Petalburg$"
 
 PetalburgWoods_Text_GirlVar0Var1::
-	.string "What's going on?\n"
-	.string "There's a crashed truck blocking the\l"
+	.string "What's going on?\p"
+	.string "There's a crashed truck blocking the\n"
 	.string "road and I hear angry men shouting...$"
 
 PetalburgWoods_TextGirl::
@@ -502,9 +583,9 @@ PetalburgWoods_Text_Boy::
 	.string "Those Rocket guys are scary...\n"
 	.string "My dad says they're not from Hoenn.\p"
 	.string "He says we should stop all the\n"
-	.string "foreigners coming in\p"
-	.string "because they could be Rockets or drug\n"
-	.string "dealers or French.$"
+	.string "foreigners coming in...\p"
+	.string "...because they could be Rockets or\n"
+	.string "drug dealers or French.$"
 
 PetalburgWoods_Text_GoBugPokemonTeam::
 	.string "I caught a whole bunch of monsters!\p"

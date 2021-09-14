@@ -25,7 +25,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "0x0",
-      "flag": "FLAG_PETALBURG_WOODS_HIDE_SPRITES"
+      "flag": "FLAG_UNUSED_0x2BF"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_2",
@@ -207,7 +207,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
-      "flag": "FLAG_PETALBURG_WOODS_HIDE_SPRITES"
+      "flag": "FLAG_UNUSED_0x2BF"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_BOY_1",
@@ -233,7 +233,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "NULL",
-      "flag": "FLAG_PETALBURG_WOODS_HIDE_SPRITES"
+      "flag": "FLAG_PETALBURG_WOODS_HIDE_BRENDAN"
     }
   ],
   "warp_events": [
@@ -343,7 +343,7 @@
       "elevation": 0,
       "var": "VAR_PETALBURG_WOODS_STATE",
       "var_value": "1",
-      "script": "NULL"
+      "script": "PetalburgWoods_EventScript_RocketEncounterContinues"
     }
   ],
   "bg_events": [
