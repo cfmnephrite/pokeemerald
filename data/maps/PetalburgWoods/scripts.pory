@@ -15,12 +15,6 @@ mapscripts PetalburgWoods_MapScripts {
 			setobjectmovementtype(OBJ_EVENT_ID_RANDOM_GIRL, MOVEMENT_TYPE_LOOK_AROUND)
 			setobjectxyperm(OBJ_EVENT_ID_BOY, 7, 8)
 			setobjectmovementtype(OBJ_EVENT_ID_RANDOM_GIRL, MOVEMENT_TYPE_FACE_DOWN)
-			addobject(OBJ_EVENT_ID_GRUNT_1)
-			addobject(OBJ_EVENT_ID_GRUNT_2)
-			addobject(OBJ_EVENT_ID_GRUNT_3)
-			addobject(OBJ_EVENT_ID_GRUNT_4)
-			addobject(OBJ_EVENT_ID_DEVON_GUY)
-			addobject(OBJ_EVENT_ID_TRUCK)
 		}
 	}
 }
@@ -148,7 +142,7 @@ script PetalburgWoods_EventScript_RocketEncounterContinues {
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceDown)
 	msgbox(
 		format(
-			"And if you still don't want to let us in\pafter he delights you with his purple snake,\p"
+			"And if you still won't let us in after playing with his purple snake,\p"
 			"I'll smash your head in."
 		)
 	)
@@ -204,6 +198,7 @@ script PetalburgWoods_EventScript_Battle2GruntsRetreat {
 	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4WalksBack)
 	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceUp)
+	waitmovement(0)
 	msgbox(
 		format(
 			"How?! How did you beat us?!"
@@ -212,21 +207,22 @@ script PetalburgWoods_EventScript_Battle2GruntsRetreat {
 	playse(SE_PIN)
 	applymovement(OBJ_EVENT_ID_GRUNT_3, PetalburgWoods_Movement_Grunt3Flees)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_ExclamationMarkLookDown)
+	waitmovement(0)
 	delay(60)
 	removeobject(OBJ_EVENT_ID_GRUNT_3)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceUp)
+	waitmovement(0)
 	msgbox(format(
-		"dialogue"
+		"This isn't over, you hear?"
 	))
 	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4WalksBack)
 	waitmovement(0)
 	msgbox(format(
-		"dialogue"
+		"You're dead!"
 	), MSGBOX_AUTOCLOSE)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, PetalburgWoods_Movement_Grunt4Flees)
 	waitmovement(0)
 	removeobject(OBJ_EVENT_ID_GRUNT_4)
-	setflag(FLAG_PETALBURG_WOODS_HIDE_SPRITES)
 	goto(PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver)
 }
 

@@ -12,12 +12,6 @@ PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
 	setobjectmovementtype 11, MOVEMENT_TYPE_LOOK_AROUND
 	setobjectxyperm 16, 7, 8
 	setobjectmovementtype 11, MOVEMENT_TYPE_FACE_DOWN
-	addobject 13
-	addobject 14
-	addobject 1
-	addobject 15
-	addobject 2
-	addobject 12
 	return
 
 
@@ -159,21 +153,23 @@ PetalburgWoods_EventScript_Battle2GruntsRetreat::
 	applymovement 15, PetalburgWoods_Movement_Grunt4WalksBack
 	waitmovement 0
 	applymovement 15, Common_Movement_WalkInPlaceUp
+	waitmovement 0
 	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_0
 	playse SE_PIN
 	applymovement 1, PetalburgWoods_Movement_Grunt3Flees
 	applymovement 15, Common_Movement_ExclamationMarkLookDown
+	waitmovement 0
 	delay 60
 	removeobject 1
 	applymovement 15, Common_Movement_WalkInPlaceUp
+	waitmovement 0
 	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1
 	applymovement 15, PetalburgWoods_Movement_Grunt4WalksBack
 	waitmovement 0
-	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1, MSGBOX_AUTOCLOSE
+	msgbox PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_2, MSGBOX_AUTOCLOSE
 	applymovement 15, PetalburgWoods_Movement_Grunt4Flees
 	waitmovement 0
 	removeobject 15
-	setflag FLAG_PETALBURG_WOODS_HIDE_SPRITES
 	goto PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver
 	return
 
@@ -489,9 +485,8 @@ PetalburgWoods_EventScript_RocketEncounterContinues_Text_0:
 	.string "Seviper?$"
 
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_1:
-	.string "And if you still don't want to let us in\p"
-	.string "after he delights you with his purple\n"
-	.string "snake,\p"
+	.string "And if you still won't let us in after\n"
+	.string "playing with his purple snake,\p"
 	.string "I'll smash your head in.$"
 
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_2:
@@ -517,7 +512,10 @@ PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_0:
 	.string "How?! How did you beat us?!$"
 
 PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1:
-	.string "dialogue$"
+	.string "This isn't over, you hear?$"
+
+PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_2:
+	.string "You're dead!$"
 
 PetalburgWoods_EventScript_Boy3_Text_0:
 	.string "Thank you, thank you, thank you! Here,\n"
