@@ -5,13 +5,15 @@ PetalburgWoods_MapScripts::
 PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION:
 	compare VAR_PETALBURG_WOODS_STATE, 0
 	goto_if_eq PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_1
+	compare VAR_PETALBURG_WOODS_STATE, 1
+	goto_if_eq PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_1
 	return
 
 PetalburgWoods_MapScripts_MAP_SCRIPT_ON_TRANSITION_1:
 	setobjectxyperm 11, 16, 26
 	setobjectmovementtype 11, MOVEMENT_TYPE_LOOK_AROUND
 	setobjectxyperm 16, 7, 8
-	setobjectmovementtype 11, MOVEMENT_TYPE_FACE_DOWN
+	setobjectmovementtype 16, MOVEMENT_TYPE_FACE_DOWN
 	return
 
 
@@ -176,8 +178,29 @@ PetalburgWoods_EventScript_Battle2GruntsRetreat::
 
 PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver::
 	applymovement OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraReverts
+	applymovement 2, PetalburgWoods_Movement_DevonGuyWalksUpToYou
 	waitmovement 0
 	special RemoveCameraObject
+	msgbox PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_0
+	giveitem ITEM_GREAT_BALL
+	msgbox PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_1, MSGBOX_AUTOCLOSE
+	applymovement 2, PetalburgWoods_Movement_DevonGuyWalksUpToHisTruck
+	waitmovement 0
+	playse SE_WARP_IN
+	fadescreenswapbuffers FADE_TO_BLACK
+	removeobject 12
+	removeobject 2
+	removeobject 18
+	removeobject 19
+	removeobject 20
+	removeobject 21
+	removeobject 22
+	fadescreenswapbuffers FADE_FROM_BLACK
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+	waitmovement 0
+	msgbox PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_2, MSGBOX_AUTOCLOSE
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	removeobject 17
 	end
 
 
@@ -311,6 +334,26 @@ PetalburgWoods_Movement_Grunt4Flees:
 PetalburgWoods_Movement_CameraReverts:
 	walk_slow_up
 	walk_slow_up
+	step_end
+
+PetalburgWoods_Movement_DevonGuyWalksUpToYou:
+	walk_left
+	walk_up
+	walk_up
+	step_end
+
+PetalburgWoods_Movement_DevonGuyWalksUpToHisTruck:
+	walk_fast_right
+	walk_fast_up
+	step_end
+
+PetalburgWoods_Movement_BrendanLeaves:
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
+	walk_down
 	step_end
 
 PetalburgWoods_EventScript_BrendanSaysYouCantLeave::
@@ -487,7 +530,7 @@ PetalburgWoods_EventScript_RocketEncounterContinues_Text_0:
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_1:
 	.string "And if you still won't let us in after\n"
 	.string "playing with his purple snake,\p"
-	.string "I'll smash your head in.$"
+	.string "I'll start slicing off your skin.$"
 
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_2:
 	.string "Look, fellas!\p"
@@ -516,6 +559,26 @@ PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_1:
 
 PetalburgWoods_EventScript_Battle2GruntsRetreat_Text_2:
 	.string "You're dead!$"
+
+PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_0:
+	.string "Thanks so much!\n"
+	.string "I was in real trouble there...\p"
+	.string "Anyway, I've got to get to Devon quick,\n"
+	.string "or the boss will turn me into dog food.\p"
+	.string "If you're on the way to Rustborough,\n"
+	.string "visit the office!\p"
+	.string "I'm sure there'll be a substantial\n"
+	.string "reward for you two!\p"
+	.string "For now though...\n"
+	.string "Here, take this!$"
+
+PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_1:
+	.string "I'm sorry, I've really got to go!\p"
+	.string "$"
+
+PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_2:
+	.string "Well, that was fun!\p"
+	.string "See you later, whatever your name was!$"
 
 PetalburgWoods_EventScript_Boy3_Text_0:
 	.string "Thank you, thank you, thank you! Here,\n"

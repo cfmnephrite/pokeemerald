@@ -10,11 +10,11 @@ const OBJ_EVENT_ID_TRUCK		=	12
 
 mapscripts PetalburgWoods_MapScripts {
 	MAP_SCRIPT_ON_TRANSITION {
-		if (var(VAR_PETALBURG_WOODS_STATE) == 0) {
+		if (var(VAR_PETALBURG_WOODS_STATE) == 0 || var(VAR_PETALBURG_WOODS_STATE) == 1) {
 			setobjectxyperm(OBJ_EVENT_ID_RANDOM_GIRL, 16, 26)
 			setobjectmovementtype(OBJ_EVENT_ID_RANDOM_GIRL, MOVEMENT_TYPE_LOOK_AROUND)
 			setobjectxyperm(OBJ_EVENT_ID_BOY, 7, 8)
-			setobjectmovementtype(OBJ_EVENT_ID_RANDOM_GIRL, MOVEMENT_TYPE_FACE_DOWN)
+			setobjectmovementtype(OBJ_EVENT_ID_BOY, MOVEMENT_TYPE_FACE_DOWN)
 		}
 	}
 }
@@ -143,7 +143,7 @@ script PetalburgWoods_EventScript_RocketEncounterContinues {
 	msgbox(
 		format(
 			"And if you still won't let us in after playing with his purple snake,\p"
-			"I'll smash your head in."
+			"I'll start slicing off your skin."
 		)
 	)
 	applymovement(OBJ_EVENT_ID_DEVON_GUY, Common_Movement_WalkInPlaceUp)
@@ -199,11 +199,9 @@ script PetalburgWoods_EventScript_Battle2GruntsRetreat {
 	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_WalkInPlaceUp)
 	waitmovement(0)
-	msgbox(
-		format(
-			"How?! How did you beat us?!"
-		)
-	)
+	msgbox(format(
+		"How?! How did you beat us?!"
+	))
 	playse(SE_PIN)
 	applymovement(OBJ_EVENT_ID_GRUNT_3, PetalburgWoods_Movement_Grunt3Flees)
 	applymovement(OBJ_EVENT_ID_GRUNT_4, Common_Movement_ExclamationMarkLookDown)
@@ -228,8 +226,43 @@ script PetalburgWoods_EventScript_Battle2GruntsRetreat {
 
 script PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver {
 	applymovement(OBJ_EVENT_ID_CAMERA, PetalburgWoods_Movement_CameraReverts)
+	applymovement(OBJ_EVENT_ID_DEVON_GUY, PetalburgWoods_Movement_DevonGuyWalksUpToYou)
 	waitmovement(0)
 	special(RemoveCameraObject)
+	msgbox(format(
+		"Thanks so much!\n"
+		"I was in real trouble there...\p"
+		"Anyway, I've got to get to Devon quick, or the boss will turn me into dog food.\p"
+		"If you're on the way to Rustborough, visit the office!\p"
+		"I'm sure there'll be a substantial reward for you two!\p"
+		"For now though...\nHere, take this!"
+	))
+	giveitem(ITEM_GREAT_BALL)
+	msgbox(format(
+		"I'm sorry, I've really got to go!"
+	), MSGBOX_AUTOCLOSE)
+	applymovement(OBJ_EVENT_ID_DEVON_GUY, PetalburgWoods_Movement_DevonGuyWalksUpToHisTruck)
+	waitmovement(0)
+	playse(SE_WARP_IN)
+	// fadescreenswapbuffers(FADE_TO_BLACK)
+	removeobject(OBJ_EVENT_ID_TRUCK)
+	removeobject(OBJ_EVENT_ID_DEVON_GUY)
+	removeobject(18)
+	removeobject(19)
+	removeobject(20)
+	removeobject(21)
+	removeobject(22)
+	// fadescreenswapbuffers(FADE_FROM_BLACK)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	// applymovement(OBJ_EVENT_ID_BRENDAN, Common_Movement_FaceRight)
+	waitmovement(0)
+	msgbox(format(
+		"Well, that was fun!\p"
+		"See you later, whatever your name was!"
+	), MSGBOX_AUTOCLOSE)
+	// applymovement(OBJ_EVENT_ID_BRENDAN, PetalburgWoods_Movement_BrendanLeaves)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+	removeobject(OBJ_EVENT_ID_BRENDAN)
 	end
 }
 
@@ -325,6 +358,20 @@ movement PetalburgWoods_Movement_Grunt4Flees {
 movement PetalburgWoods_Movement_CameraReverts {
 	walk_slow_up
 	walk_slow_up
+}
+
+movement PetalburgWoods_Movement_DevonGuyWalksUpToYou {
+	walk_left
+	walk_up * 2
+}
+
+movement PetalburgWoods_Movement_DevonGuyWalksUpToHisTruck {
+	walk_fast_right
+	walk_fast_up
+}
+
+movement PetalburgWoods_Movement_BrendanLeaves {
+	walk_down * 6
 }
 
 script PetalburgWoods_EventScript_BrendanSaysYouCantLeave {
