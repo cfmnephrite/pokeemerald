@@ -27,6 +27,11 @@
       "direction": "right",
       "offset": 0,
       "map": "MAP_ROUTE102NE"
+    },
+    {
+      "direction": "left",
+      "offset": 0,
+      "map": "MAP_PETALBURG_CITY"
     }
   ],
   "object_events": [

@@ -187,7 +187,6 @@ PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver::
 	applymovement 2, PetalburgWoods_Movement_DevonGuyWalksUpToHisTruck
 	waitmovement 0
 	playse SE_WARP_IN
-	fadescreenswapbuffers FADE_TO_BLACK
 	removeobject 12
 	removeobject 2
 	removeobject 18
@@ -195,7 +194,6 @@ PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver::
 	removeobject 20
 	removeobject 21
 	removeobject 22
-	fadescreenswapbuffers FADE_FROM_BLACK
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
 	waitmovement 0
 	msgbox PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_2, MSGBOX_AUTOCLOSE
@@ -573,8 +571,7 @@ PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_0:
 	.string "Here, take this!$"
 
 PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_1:
-	.string "I'm sorry, I've really got to go!\p"
-	.string "$"
+	.string "I'm sorry, I've really got to go!$"
 
 PetalburgWoods_EventScript_SecondSpecialDoubleBattleOver_Text_2:
 	.string "Well, that was fun!\p"

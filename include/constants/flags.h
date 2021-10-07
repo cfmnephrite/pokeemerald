@@ -737,9 +737,9 @@
 
 // Event Flags
 #define FLAG_PETALBURG_WOODS_HIDE_BRENDAN                           0x2BC
-#define FLAG_PETALBURG_WOODS_HIDE_GRUNTS_1_2                        0x2BD
+#define FLAG_PETALBURG_WOODS_COMPLETE                               0x2BD
 #define FLAG_BERRY_PETALBURG_WOODS_RECEIVED_SITRUS                  0x2BE
-#define FLAG_PETALBURG_WOODS_COMPLETE                               0x2BF
+#define FLAG_UNUSED_0x2BF                                           0x2BF
 #define FLAG_UNUSED_0x2C0                                           0x2C0
 #define FLAG_UNUSED_0x2C1                                           0x2C1
 #define FLAG_UNUSED_0x2C2                                           0x2C2
