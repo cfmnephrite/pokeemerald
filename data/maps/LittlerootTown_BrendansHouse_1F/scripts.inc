@@ -21,8 +21,14 @@ PlayersHouse_1F_Text_RunningShoesManual::
 	.string "“Lace up your RUNNING SHOES and hit\n"
 	.string "the road running!”$"
 
-PlayersHouse_1F_Text_TheresAMovieOnTV::
-	.string "There is a movie on TV.\p"
-	.string "Two men are dancing on a big piano\n"
-	.string "keyboard.\p"
-	.string "Better get going!$"
+PlayersHouse_1F_Text_TheresAMusicVideoOnTV::
+	.string "There is a music video on TV.\p"
+	.string "...\p"
+	.string "Never gonna give you up\n"
+	.string "Never gonna let you down\p"
+	.string "Naver gonna run around and\n"
+	.string "desert you\p"
+	.string "Never gonna make you cry\n"
+	.string "Never gonna say goodbye\p"
+	.string "Never gonna tell a lie\n"
+	.string "and hurt you...$"

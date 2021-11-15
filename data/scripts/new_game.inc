@@ -113,6 +113,7 @@ EventScript_ResetAllBerries:: @ 827149D
 	return
 
 EventScript_ResetAllMapFlags:: @ 82715DE
+	setflag FLAG_PETALBURG_WOODS_HIDE_BRENDAN
 	setflag FLAG_UNUSED_0x50
 	setflag FLAG_UNUSED_0x50
 	setflag FLAG_UNUSED_0x50

@@ -21,9 +21,15 @@ text PlayersHouse_1F_Text_RunningShoesManual {
 	"the road running!”"
 }
 
-text PlayersHouse_1F_Text_TheresAMovieOnTV {
-	"There is a movie on TV.\p"
-	"Two men are dancing on a big piano\n"
-	"keyboard.\p"
-	"Better get going!$"
+text PlayersHouse_1F_Text_TheresAMusicVideoOnTV {
+	"There is a music video on TV.\p"
+	"...\p"
+	"Never gonna give you up\n"
+	"Never gonna let you down\p"
+	"Naver gonna run around and\n"
+	"desert you\p"
+	"Never gonna make you cry\n"
+	"Never gonna say goodbye\p"
+	"Never gonna tell a lie\n"
+	"and hurt you..."
 }

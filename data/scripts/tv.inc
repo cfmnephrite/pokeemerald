@@ -34,7 +34,7 @@ EventScript_MomDadMightLikeThis1:: @ 827EE8A
 	end
 
 EventScript_PlayersHouseMovie:: @ 827EE9A
-	msgbox PlayersHouse_1F_Text_TheresAMovieOnTV, MSGBOX_DEFAULT
+	msgbox PlayersHouse_1F_Text_TheresAMusicVideoOnTV, MSGBOX_DEFAULT
 	releaseall
 	end
 
