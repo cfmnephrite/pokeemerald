@@ -55,6 +55,16 @@ script LittlerootSE_MagmaRally {
 	removeobject(OBJ_EVENT_ID_ANABEL_4)
 	removeobject(OBJ_EVENT_ID_ANABEL_5)
 	msgbox(LittlerootSE_AreYouWithUsOrWithThem, MSGBOX_DEFAULT)
+	multichoice(0, 0, MULTI_AQUA_VS_MAGMA, FALSE)
+	switch(var(VAR_RESULT)){
+		case 0:
+			msgbox(LittlerootSE_SideWithAqua, MSGBOX_DEFAULT)
+		case 1:
+			msgbox(LittlerootSE_SideWithMagma, MSGBOX_DEFAULT)
+		case 2:
+			warp(MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 255, 6, 5)
+		}
+	release
 	end
 }
 	
@@ -138,5 +148,17 @@ text LittlerootSE_YouCowards {
 text LittlerootSE_AreYouWithUsOrWithThem {
 	format(
 		"Magma Grunt 1: Who are you? Are you with us or are you with them?"
+	)
+}
+
+text LittlerootSE_SideWithAqua {
+	format(
+		"lol"
+	)
+}
+
+text LittlerootSE_SideWithMagma {
+	format(
+		"lol"
 	)
 }

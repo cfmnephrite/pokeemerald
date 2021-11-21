@@ -5,7 +5,7 @@ mapscripts PetalburgCity_Gym_MapScripts {}
 script PetalburgCity_Gym_EventScript_Norman {
 	lock
 	faceplayer
-	msgbox(PetalburgCity_Gym_Text_NormanIntro, MSGBOX_DEFAULT)
+	msgbox(PetalburgCity_Gym_NormanIntro, MSGBOX_DEFAULT)
 	release
 	end
 }
@@ -20,9 +20,34 @@ script PetalburgCity_Gym_EventScript_GymGuide {
 	multichoice(0, 0, MULTI_PETALBURG_GYM_GUIDE, FALSE)
 	switch(var(VAR_RESULT)){
 		case 0:
-			msgbox(PetalburgCity_Gym_Text_TheGymSystem, MSGBOX_DEFAULT)
+			msgbox(PetalburgCity_Gym_TheGymSystem, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
 		case 1:
-			msgbox(PetalburgCity_Gym_Text_TheNormalType, MSGBOX_DEFAULT)
+			msgbox(PetalburgCity_Gym_TheNormalType, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 2:
+			msgbox(format("Feel free to ask if you have any questions!"))
+		}
+	release
+	end
+}
+
+script PetalburgCity_Gym_EventScript_GymGuideLoop {
+	msgbox(format(
+		"Is there something else you would like to ask?"
+	))
+	multichoice(0, 0, MULTI_PETALBURG_GYM_GUIDE, FALSE)
+	switch(var(VAR_RESULT)){
+		case 0:
+			msgbox(PetalburgCity_Gym_TheGymSystem, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 1:
+			msgbox(PetalburgCity_Gym_TheNormalType, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
 		case 2:
 			msgbox(format("Feel free to ask if you have any questions!"))
 		}
@@ -33,11 +58,11 @@ script PetalburgCity_Gym_EventScript_GymGuide {
 script PetalburgCity_Gym_EventScript_LeftGymStatue {
 	lock
 	if (!flag(FLAG_BADGE05_GET)) { 
-		msgbox(PetalburgCity_Gym_Text_GymStatue, MSGBOX_DEFAULT)
+		msgbox(PetalburgCity_Gym_GymStatue, MSGBOX_DEFAULT)
 		release
 		end
 	} else {
-		msgbox(PetalburgCity_Gym_Text_GymStatueCertified, MSGBOX_DEFAULT)
+		msgbox(PetalburgCity_Gym_GymStatueCertified, MSGBOX_DEFAULT)
 		release
 		end
 	}
@@ -46,17 +71,17 @@ script PetalburgCity_Gym_EventScript_LeftGymStatue {
 script PetalburgCity_Gym_EventScript_RightGymStatue {
 	lock
 	if (!flag(FLAG_BADGE05_GET)) { 
-		msgbox(PetalburgCity_Gym_Text_GymStatue, MSGBOX_DEFAULT)
+		msgbox(PetalburgCity_Gym_GymStatue, MSGBOX_DEFAULT)
 		release
 		end
 	} else {
-		msgbox(PetalburgCity_Gym_Text_GymStatueCertified, MSGBOX_DEFAULT)
+		msgbox(PetalburgCity_Gym_GymStatueCertified, MSGBOX_DEFAULT)
 		release
 		end
 	}
 }
 
-text PetalburgCity_Gym_Text_NormanIntro {
+text PetalburgCity_Gym_NormanIntro {
 	format (
 		"Hello. Are you a rookie Trainer?\p"
 		"My name is Norman. I'm the Gym Leader in this town.\p"
@@ -72,7 +97,7 @@ text PetalburgCity_Gym_Text_NormanIntro {
 	)
 }
 
-text PetalburgCity_Gym_Text_TheGymSystem {
+text PetalburgCity_Gym_TheGymSystem {
 	"There are eight Gyms in the Hoenn\n"
 	"region.\p"
 	"In those Gyms, Trainers' skills are put\n"
@@ -84,7 +109,7 @@ text PetalburgCity_Gym_Text_TheGymSystem {
 	"the prestigious Hoenn League!"
 }
 
-text PetalburgCity_Gym_Text_TheNormalType {
+text PetalburgCity_Gym_TheNormalType {
 	"The Normal type is basically an\n"
 	"all-rounder type, with no notable\l"
 	"strength or weakness.\p"
@@ -97,11 +122,11 @@ text PetalburgCity_Gym_Text_TheNormalType {
 	"will go down easily, though!"
 }
 
-text PetalburgCity_Gym_Text_GymStatue {
+text PetalburgCity_Gym_GymStatue {
 	"Petalburg City Gym"
 }	
 
-text PetalburgCity_Gym_Text_GymStatueCertified {
+text PetalburgCity_Gym_GymStatueCertified {
 	"Petalburg City Gym\p"
 	"Norman's Certified Trainers:\n"
 	"{PLAYER}"

@@ -44,7 +44,26 @@ LittlerootSE_MagmaRally::
 	removeobject 11
 	removeobject 12
 	msgbox LittlerootSE_AreYouWithUsOrWithThem, MSGBOX_DEFAULT
+	multichoice 0, 0, MULTI_AQUA_VS_MAGMA, FALSE
+	switch VAR_RESULT
+	case 0, LittlerootSE_MagmaRally_3
+	case 1, LittlerootSE_MagmaRally_4
+	case 2, LittlerootSE_MagmaRally_5
+LittlerootSE_MagmaRally_1:
+	release
 	end
+
+LittlerootSE_MagmaRally_3:
+	msgbox LittlerootSE_SideWithAqua, MSGBOX_DEFAULT
+	goto LittlerootSE_MagmaRally_1
+
+LittlerootSE_MagmaRally_4:
+	msgbox LittlerootSE_SideWithMagma, MSGBOX_DEFAULT
+	goto LittlerootSE_MagmaRally_1
+
+LittlerootSE_MagmaRally_5:
+	warp MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 255, 6, 5
+	goto LittlerootSE_MagmaRally_1
 
 
 LittlerootSE_Movement_Grunt1GoungUp:
@@ -176,3 +195,9 @@ LittlerootSE_YouCowards::
 LittlerootSE_AreYouWithUsOrWithThem::
 	.string "Magma Grunt 1: Who are you? Are you with\n"
 	.string "us or are you with them?$"
+
+LittlerootSE_SideWithAqua::
+	.string "lol$"
+
+LittlerootSE_SideWithMagma::
+	.string "lol$"

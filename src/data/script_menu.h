@@ -245,6 +245,13 @@ static const struct MenuAction MultichoiceList_SternDeepSea[] =
     {gText_Exit},
 };
 
+static const struct MenuAction MultichoiceList_AquaVsMagma[] =
+{
+    {gText_SideWithAqua},
+    {gText_SideWithMagma},
+    {gText_Leave},
+};
+
 static const struct MenuAction MultichoiceList_PetalburgGymGuide[] =
 {
     {gText_TheGymSystem},
@@ -564,13 +571,6 @@ static const struct MenuAction MultichoiceList_FrontierGamblerBet[] =
     {gText_Exit},
 };
 
-static const struct MenuAction MultichoiceList_UnusedSSTidal1[] =
-{
-    {gText_SouthernIsland},
-    {gText_BirthIsland},
-    {gText_Exit},
-};
-
 static const struct MenuAction MultichoiceList_UnusedSSTidal2[] =
 {
     {gText_SouthernIsland},
@@ -868,7 +868,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_FORCED_START_MENU]          = MULTICHOICE(MultichoiceList_ForcedStartMenu),
     [MULTI_FRONTIER_GAMBLER_BET]       = MULTICHOICE(MultichoiceList_FrontierGamblerBet),
     [MULTI_TENT]                       = MULTICHOICE(MultichoiceList_Tent),
-    [MULTI_UNUSED_SSTIDAL_1]           = MULTICHOICE(MultichoiceList_UnusedSSTidal1),
+    [MULTI_AQUA_VS_MAGMA]              = MULTICHOICE(MultichoiceList_AquaVsMagma),
     [MULTI_UNUSED_SSTIDAL_2]           = MULTICHOICE(MultichoiceList_UnusedSSTidal2),
     [MULTI_UNUSED_SSTIDAL_3]           = MULTICHOICE(MultichoiceList_UnusedSSTidal3),
     [MULTI_UNUSED_SSTIDAL_4]           = MULTICHOICE(MultichoiceList_UnusedSSTidal4),

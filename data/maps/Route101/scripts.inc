@@ -105,7 +105,7 @@ Route101_Text_LilyLoses::
 	.string "Hey, no fair!\nYou big meanie!$"
 
 Route101_Text_LilyGeneral::
-	.string "Have you heard of Cherbui?\nIt's so cute!\p"
+	.string "Have you heard of Cherubi?\nIt's so cute!\p"
 	.string "I want one! I want one!$"
 
 Route101_Text_LilysMum::
