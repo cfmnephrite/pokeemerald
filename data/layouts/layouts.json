@@ -4500,6 +4500,56 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102W/border.bin",
       "blockdata_filepath": "data/layouts/Route102W/map.bin"
+    },
+    {
+      "id": "LAYOUT_SOUTH_RUSTBOROUGH",
+      "name": "SouthRustborough_Layout",
+      "width": 64,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/SouthRustborough/border.bin",
+      "blockdata_filepath": "data/layouts/SouthRustborough/map.bin"
+    },
+    {
+      "id": "LAYOUT_CENTRAL_WEST_RUSTBOROUGH",
+      "name": "CentralWestRustborough_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/CentralWestRustborough/border.bin",
+      "blockdata_filepath": "data/layouts/CentralWestRustborough/map.bin"
+    },
+    {
+      "id": "LAYOUT_CENTRAL_EAST_RUSTBOROUGH",
+      "name": "CentralEastRustborough_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/CentralEastRustborough/border.bin",
+      "blockdata_filepath": "data/layouts/CentralEastRustborough/map.bin"
+    },
+    {
+      "id": "LAYOUT_NORTH_WEST_RUSTBOROUGH",
+      "name": "NorthWestRustborough_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/NorthWestRustborough/border.bin",
+      "blockdata_filepath": "data/layouts/NorthWestRustborough/map.bin"
+    },
+    {
+      "id": "LAYOUT_NORTH_EAST_RUSTBOROUGH",
+      "name": "NorthEastRustborough_Layout",
+      "width": 32,
+      "height": 32,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/NorthEastRustborough/border.bin",
+      "blockdata_filepath": "data/layouts/NorthEastRustborough/map.bin"
     }
   ]
 }
