@@ -1079,12 +1079,12 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 
 	.include "data/maps/Route102W/scripts.inc"
 
-	.include "data/maps/SouthRustborough/scripts.inc"
+	.include "data/maps/RustboroughSouth/scripts.inc"
 
-	.include "data/maps/CentralWestRustborough/scripts.inc"
+	.include "data/maps/RustboroughCentralWest/scripts.inc"
 
-	.include "data/maps/CentralEastRustborough/scripts.inc"
+	.include "data/maps/RustboroughCentralEast/scripts.inc"
 
-	.include "data/maps/NorthWestRustborough/scripts.inc"
+	.include "data/maps/RustboroughNorthWest/scripts.inc"
 
-	.include "data/maps/NorthEastRustborough/scripts.inc"
+	.include "data/maps/RustboroughNorthEast/scripts.inc"

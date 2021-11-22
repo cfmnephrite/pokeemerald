@@ -1,7 +1,7 @@
 {
-  "id": "MAP_NORTH_WEST_RUSTBOROUGH",
-  "name": "NorthWestRustborough",
-  "layout": "LAYOUT_NORTH_WEST_RUSTBOROUGH",
+  "id": "MAP_RUSTBOROUGH_CENTRAL_EAST",
+  "name": "RustboroughCentralEast",
+  "layout": "LAYOUT_RUSTBOROUGH_CENTRAL_EAST",
   "music": "MUS_ABANDONED_SHIP",
   "region_map_section": "MAPSEC_RUSTBORO_CITY",
   "requires_flash": false,
@@ -14,14 +14,19 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "direction": "down",
+      "direction": "left",
       "offset": 0,
-      "map": "MAP_CENTRAL_WEST_RUSTBOROUGH"
+      "map": "MAP_RUSTBOROUGH_CENTRAL_WEST"
     },
     {
-      "direction": "right",
+      "direction": "down",
+      "offset": -32,
+      "map": "MAP_RUSTBOROUGH_SOUTH"
+    },
+    {
+      "direction": "up",
       "offset": 0,
-      "map": "MAP_NORTH_EAST_RUSTBOROUGH"
+      "map": "MAP_RUSTBOROUGH_NORTH_EAST"
     }
   ],
   "object_events": [

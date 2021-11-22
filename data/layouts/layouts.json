@@ -4502,54 +4502,54 @@
       "blockdata_filepath": "data/layouts/Route102W/map.bin"
     },
     {
-      "id": "LAYOUT_SOUTH_RUSTBOROUGH",
-      "name": "SouthRustborough_Layout",
+      "id": "LAYOUT_RUSTBOROUGH_SOUTH",
+      "name": "RustboroughSouth_Layout",
       "width": 64,
       "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/SouthRustborough/border.bin",
-      "blockdata_filepath": "data/layouts/SouthRustborough/map.bin"
+      "border_filepath": "data/layouts/RustboroughSouth/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughSouth/map.bin"
     },
     {
-      "id": "LAYOUT_CENTRAL_WEST_RUSTBOROUGH",
-      "name": "CentralWestRustborough_Layout",
+      "id": "LAYOUT_RUSTBOROUGH_CENTRAL_WEST",
+      "name": "RustboroughCentralWest_Layout",
       "width": 32,
       "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/CentralWestRustborough/border.bin",
-      "blockdata_filepath": "data/layouts/CentralWestRustborough/map.bin"
+      "border_filepath": "data/layouts/RustboroughCentralWest/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughCentralWest/map.bin"
     },
     {
-      "id": "LAYOUT_CENTRAL_EAST_RUSTBOROUGH",
-      "name": "CentralEastRustborough_Layout",
+      "id": "LAYOUT_RUSTBOROUGH_CENTRAL_EAST",
+      "name": "RustboroughCentralEast_Layout",
       "width": 32,
       "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/CentralEastRustborough/border.bin",
-      "blockdata_filepath": "data/layouts/CentralEastRustborough/map.bin"
+      "border_filepath": "data/layouts/RustboroughCentralEast/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughCentralEast/map.bin"
     },
     {
-      "id": "LAYOUT_NORTH_WEST_RUSTBOROUGH",
-      "name": "NorthWestRustborough_Layout",
+      "id": "LAYOUT_RUSTBOROUGH_NORTH_WEST",
+      "name": "RustboroughNorthWest_Layout",
       "width": 32,
       "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/NorthWestRustborough/border.bin",
-      "blockdata_filepath": "data/layouts/NorthWestRustborough/map.bin"
+      "border_filepath": "data/layouts/RustboroughNorthWest/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughNorthWest/map.bin"
     },
     {
-      "id": "LAYOUT_NORTH_EAST_RUSTBOROUGH",
-      "name": "NorthEastRustborough_Layout",
+      "id": "LAYOUT_RUSTBOROUGH_NORTH_EAST",
+      "name": "RustboroughNorthEast_Layout",
       "width": 32,
       "height": 32,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
-      "border_filepath": "data/layouts/NorthEastRustborough/border.bin",
-      "blockdata_filepath": "data/layouts/NorthEastRustborough/map.bin"
+      "border_filepath": "data/layouts/RustboroughNorthEast/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughNorthEast/map.bin"
     }
   ]
 }

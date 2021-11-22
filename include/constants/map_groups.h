@@ -65,11 +65,11 @@
 #define MAP_ROUTE102NE               (60 | (0 << 8))
 #define MAP_ROUTE102NW               (61 | (0 << 8))
 #define MAP_ROUTE102W                (62 | (0 << 8))
-#define MAP_SOUTH_RUSTBOROUGH        (63 | (0 << 8))
-#define MAP_CENTRAL_WEST_RUSTBOROUGH (64 | (0 << 8))
-#define MAP_CENTRAL_EAST_RUSTBOROUGH (65 | (0 << 8))
-#define MAP_NORTH_WEST_RUSTBOROUGH   (66 | (0 << 8))
-#define MAP_NORTH_EAST_RUSTBOROUGH   (67 | (0 << 8))
+#define MAP_RUSTBOROUGH_SOUTH        (63 | (0 << 8))
+#define MAP_RUSTBOROUGH_CENTRAL_WEST (64 | (0 << 8))
+#define MAP_RUSTBOROUGH_CENTRAL_EAST (65 | (0 << 8))
+#define MAP_RUSTBOROUGH_NORTH_WEST   (66 | (0 << 8))
+#define MAP_RUSTBOROUGH_NORTH_EAST   (67 | (0 << 8))
 
 // Map Group 1
 #define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F     (0 | (1 << 8))

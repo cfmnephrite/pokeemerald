@@ -1,7 +1,7 @@
 {
-  "id": "MAP_NORTH_EAST_RUSTBOROUGH",
-  "name": "NorthEastRustborough",
-  "layout": "LAYOUT_NORTH_EAST_RUSTBOROUGH",
+  "id": "MAP_RUSTBOROUGH_NORTH_EAST",
+  "name": "RustboroughNorthEast",
+  "layout": "LAYOUT_RUSTBOROUGH_NORTH_EAST",
   "music": "MUS_ABANDONED_SHIP",
   "region_map_section": "MAPSEC_RUSTBORO_CITY",
   "requires_flash": false,
@@ -16,12 +16,12 @@
     {
       "direction": "left",
       "offset": 0,
-      "map": "MAP_NORTH_WEST_RUSTBOROUGH"
+      "map": "MAP_RUSTBOROUGH_NORTH_WEST"
     },
     {
       "direction": "down",
       "offset": 0,
-      "map": "MAP_CENTRAL_EAST_RUSTBOROUGH"
+      "map": "MAP_RUSTBOROUGH_CENTRAL_EAST"
     }
   ],
   "object_events": [

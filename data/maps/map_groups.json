@@ -100,11 +100,11 @@
     "Route102NE",
     "Route102NW",
     "Route102W",
-    "SouthRustborough",
-    "CentralWestRustborough",
-    "CentralEastRustborough",
-    "NorthWestRustborough",
-    "NorthEastRustborough"
+    "RustboroughSouth",
+    "RustboroughCentralWest",
+    "RustboroughCentralEast",
+    "RustboroughNorthWest",
+    "RustboroughNorthEast"
   ],
   "gMapGroup1": [
     "LittlerootTown_BrendansHouse_1F",
