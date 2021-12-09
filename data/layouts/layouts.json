@@ -4505,7 +4505,7 @@
       "id": "LAYOUT_RUSTBOROUGH_SOUTH",
       "name": "RustboroughSouth_Layout",
       "width": 64,
-      "height": 32,
+      "height": 96,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/RustboroughSouth/border.bin",

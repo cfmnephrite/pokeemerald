@@ -22,6 +22,11 @@
       "direction": "up",
       "offset": 32,
       "map": "MAP_RUSTBOROUGH_CENTRAL_EAST"
+    },
+    {
+      "direction": "down",
+      "offset": 0,
+      "map": "MAP_PETALBURG_CITY"
     }
   ],
   "object_events": [
