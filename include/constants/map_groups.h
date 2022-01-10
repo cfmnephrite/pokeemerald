@@ -70,6 +70,7 @@
 #define MAP_RUSTBOROUGH_CENTRAL_EAST (65 | (0 << 8))
 #define MAP_RUSTBOROUGH_NORTH_WEST   (66 | (0 << 8))
 #define MAP_RUSTBOROUGH_NORTH_EAST   (67 | (0 << 8))
+#define MAP_ROUTE104_                (68 | (0 << 8))
 
 // Map Group 1
 #define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F     (0 | (1 << 8))

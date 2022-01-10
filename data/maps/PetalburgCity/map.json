@@ -14,11 +14,6 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "direction": "left",
-      "offset": -76,
-      "map": "MAP_ROUTE104"
-    },
-    {
       "direction": "right",
       "offset": 0,
       "map": "MAP_ROUTE102NW"
@@ -29,9 +24,9 @@
       "map": "MAP_ROUTE102W"
     },
     {
-      "direction": "up",
-      "offset": 0,
-      "map": "MAP_RUSTBOROUGH_SOUTH"
+      "direction": "left",
+      "offset": -32,
+      "map": "MAP_ROUTE104_"
     }
   ],
   "object_events": [

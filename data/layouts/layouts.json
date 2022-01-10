@@ -4550,6 +4550,16 @@
       "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/RustboroughNorthEast/border.bin",
       "blockdata_filepath": "data/layouts/RustboroughNorthEast/map.bin"
+    },
+    {
+      "id": "LAYOUT_ROUTE104_",
+      "name": "Route104__Layout",
+      "width": 32,
+      "height": 40,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Mauville",
+      "border_filepath": "data/layouts/Route104_/border.bin",
+      "blockdata_filepath": "data/layouts/Route104_/map.bin"
     }
   ]
 }

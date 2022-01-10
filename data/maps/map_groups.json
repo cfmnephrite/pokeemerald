@@ -104,7 +104,8 @@
     "RustboroughCentralWest",
     "RustboroughCentralEast",
     "RustboroughNorthWest",
-    "RustboroughNorthEast"
+    "RustboroughNorthEast",
+    "Route104_"
   ],
   "gMapGroup1": [
     "LittlerootTown_BrendansHouse_1F",
