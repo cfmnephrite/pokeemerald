@@ -1,0 +1,73 @@
+mapscripts RustboroCity_Gym_MapScripts {}
+
+const OBJ_EVENT_ID_GYM_GUIDE	=	4
+
+script RustboroCity_Gym_EventScript_GymGuide {
+	lock
+	faceplayer
+	switch (var(VAR_RUSTBORO_CITY_STATE)) {
+		case 0:
+			msgbox(RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne)
+		default:
+			if (flag(FLAG_DEFEATED_RUSTBORO_GYM)) {
+				msgbox(RustboroCity_Gym_Text_GymGuidePostVictory)
+			} else {
+				msgbox(RustboroCity_Gym_Text_GymGuideAdvice)
+			}
+	}
+	release
+	end
+}
+
+script RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne {
+	lockall
+	applymovement(OBJ_EVENT_ID_GYM_GUIDE, Common_Movement_ExclamationMarkLookDown)
+	msgbox(RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkDown)
+	warp(MAP_RUSTBOROUGH_SOUTH, 19, 22, 42)
+}
+
+text RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne {
+	format(
+		"Yo! Are you here to see Roxanne?\n"
+		"She's not here right now...\p"
+		"But she is giving a lecture at the university!\p"
+		"Big building just north of the gym, you can't miss it!"
+	)
+}
+
+text RustboroCity_Gym_Text_GymGuideAdvice {
+	"Yo, how's it going?\p"
+	"Listen, my friend!\n"
+	"Would you like to become the CHAMPION?\p"
+	"I'm no TRAINER, not me, but I can\n"
+	"sure give you winning advice.\p"
+	"That's settled, then! We'll aim for the\n"
+	"POKéMON CHAMPIONSHIP together!\p"
+	"It's your job as a TRAINER to collect\n"
+	"GYM BADGES, am I right?\p"
+	"But GYM LEADERS aren't pushovers!\p"
+	"And that's where I come in!\n"
+	"I'm here to provide expert advice!\p"
+	"ROXANNE, the GYM LEADER, is a user\n"
+	"of ROCK-type POKéMON.\p"
+	"The ROCK type is very durable, but\n"
+	"it can't stand WATER-type and\l"
+	"GRASS-type moves.\p"
+	"Come see me afterwards, if you beat\n"
+	"the GYM LEADER.\p"
+	"Well, go for it!"
+}
+
+text RustboroCity_Gym_Text_GymGuidePostVictory {
+	"Whoa! What a breathtaking victory!\n"
+	"My cheering must've worked!\p"
+	"Great!\n"
+	"Check your TRAINER CARD.\p"
+	"The STONE BADGE you got should be\n"
+	"properly recorded on it.\p"
+	"In other words…\p"
+	"You've climbed the first step on\n"
+	"the stairs to the CHAMPIONSHIP!\p"
+	"That's got to feel awesome!"
+}
