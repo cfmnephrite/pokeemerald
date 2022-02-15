@@ -24,7 +24,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "RustboroCity_Gym_EventScript_Roxanne",
+      "script": "NULL",
       "flag": "0"
     },
     {
@@ -37,7 +37,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "2",
-      "script": "RustboroCity_Gym_EventScript_Josh",
+      "script": "NULL",
       "flag": "0"
     },
     {
@@ -50,7 +50,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "3",
-      "script": "RustboroCity_Gym_EventScript_Tommy",
+      "script": "NULL",
       "flag": "0"
     },
     {
@@ -76,7 +76,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "3",
-      "script": "RustboroCity_Gym_EventScript_Marc",
+      "script": "NULL",
       "flag": "0"
     }
   ],
@@ -123,7 +123,7 @@
       "y": 18,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
-      "script": "RustboroCity_Gym_EventScript_LeftGymStatue"
+      "script": "NULL"
     },
     {
       "type": "sign",
@@ -131,7 +131,7 @@
       "y": 18,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
-      "script": "RustboroCity_Gym_EventScript_RightGymStatue"
+      "script": "NULL"
     }
   ]
 }
