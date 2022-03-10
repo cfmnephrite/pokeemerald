@@ -94,7 +94,8 @@ PetalburgCity_Gym_Text_NormanIntro::
 	.string "I hope to see you soon!$"
 
 PetalburgCity_Gym_Text_TheGymSystem::
-	.string "There are eight Gyms in the Hoenn region.\p"
+	.string "There are eight Gyms in the Hoenn\n"
+	.string "region.\p"
 	.string "In those Gyms, Trainers' skills are put\n"
 	.string "to the test against Gym Leaders.\p"
 	.string "You may challenge Gym Leaders and\n"

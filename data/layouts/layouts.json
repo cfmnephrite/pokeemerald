@@ -4560,6 +4560,16 @@
       "secondary_tileset": "gTileset_Mauville",
       "border_filepath": "data/layouts/Route104_/border.bin",
       "blockdata_filepath": "data/layouts/Route104_/map.bin"
+    },
+    {
+      "id": "LAYOUT_RUSTBOROUGH_UNIVERSITY",
+      "name": "RustboroughUniversity_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_PokemonSchool",
+      "border_filepath": "data/layouts/RustboroughUniversity/border.bin",
+      "blockdata_filepath": "data/layouts/RustboroughUniversity/map.bin"
     }
   ]
 }

@@ -1090,3 +1090,5 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 	.include "data/maps/RustboroughNorthEast/scripts.inc"
 
 	.include "data/maps/Route104_/scripts.inc"
+
+	.include "data/maps/RustboroughUniversity/scripts.inc"

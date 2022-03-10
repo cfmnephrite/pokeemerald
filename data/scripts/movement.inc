@@ -121,8 +121,13 @@ Common_Movement_WalkDown:
 	walk_down
 	step_end
 
-@ Unused
 Common_Movement_WalkUp2:: @ 82725CB
+	walk_up
+	walk_up
+	step_end
+
+Common_Movement_WalkUp3::
+	walk_up
 	walk_up
 	walk_up
 	step_end

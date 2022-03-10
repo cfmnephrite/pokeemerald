@@ -1,0 +1,56 @@
+// const OBJ_EVENT_ID_ROXANNE		=	7
+
+mapscripts RustboroughUniversity_MapScripts {
+	// MAP_SCRIPT_ON_RESUME {
+	// 	if (var(VAR_RUSTBORO_CITY_STATE) == 0) {
+	// 		goto(RustboroughUniversity_EventScript_FirstEntry)
+	// 	}
+	// }
+}
+
+// script RustboroughUniversity_EventScript_FirstEntry {
+// 	special(SpawnCameraObject)
+// 	msgbox(RustboroughUniversity_EventScript_RoxanneIntro)
+// 	applymovement(OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerUp12)
+// 	applymovement(OBJ_EVENT_ID_CAMERA, Common_Movement_WalkUp3)
+// 	waitmovement(0)
+// 	playse(SE_PIN)
+// 	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_ExclamationMarkLookDown)
+// 	waitmovement(0)
+// }
+
+// text RustboroughUniversity_EventScript_RoxanneIntro1 {
+// 	format(
+// 		"Roxanne: So in summary, there are several abilities that can change the type of a monster's move/\p
+// 		Among others, Aerilate, Liquid Voice, Power of Alchemy and Galvanize.\p
+// 		That last one is used my one of my favourite monsters...\p"
+// 	)
+// }
+
+// script RustboroughUniversity_EventScript_NPCGolemFact {
+// 	lock
+// 	faceplayer
+// 	msgbox(format(
+// 		"Between Red, Blue, and Yellow Versions in Generation I\p,
+// 		Golem is the only Pokémon that cannot ever be seen without trading\p
+// 		However, its existence is implied by a non-player character\p
+// 		who had just received his friend's Graveler."
+// 		), MSGBOX_NPC
+// 	)
+// }
+
+// movement RustboroughUniversity_Movement_MovePlayerUp12 {
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	walk_up
+// 	step_end
+// }

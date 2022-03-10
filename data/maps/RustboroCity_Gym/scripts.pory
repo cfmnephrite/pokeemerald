@@ -1,4 +1,10 @@
-mapscripts RustboroCity_Gym_MapScripts {}
+mapscripts RustboroCity_Gym_MapScripts {
+	MAP_SCRIPT_ON_RESUME {
+		if (var(VAR_RUSTBORO_CITY_STATE) == 0) {
+			goto(RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne)
+		}
+	}
+}
 
 const OBJ_EVENT_ID_GYM_GUIDE	=	4
 
@@ -21,8 +27,12 @@ script RustboroCity_Gym_EventScript_GymGuide {
 
 script RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne {
 	lockall
-	applymovement(OBJ_EVENT_ID_GYM_GUIDE, Common_Movement_ExclamationMarkLookDown)
-	msgbox(RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_GYM_GUIDE, Common_Movement_ExclamationMarkLookRight)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft)
+	msgbox(RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne, MSGBOX_AUTOCLOSE)
 	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkDown)
 	warp(MAP_RUSTBOROUGH_SOUTH, 19, 22, 42)
 }
