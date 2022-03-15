@@ -120,7 +120,7 @@ script PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver {
 	waitmovement(0)
 	msgbox(PetalburgWoods_Text_BrendanIntro, MSGBOX_YESNO)
 	if (!var(VAR_RESULT)) {
-		msgbox("No? You you mean you have no fear?")
+		msgbox("No? You mean no problem?")
 	}
 	msgbox(PetalburgWoods_Text_BrendanIntro2, MSGBOX_AUTOCLOSE)
 	end

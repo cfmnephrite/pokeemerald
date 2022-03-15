@@ -1,15 +1,10 @@
 RustboroCity_Gym_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_RESUME
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE
 	.byte 0
 
-RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_RESUME:
-	compare VAR_RUSTBORO_CITY_STATE, 0
-	goto_if_eq RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_RESUME_1
-	return
-
-RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_RESUME_1:
-	goto RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne
-	return
+RustboroCity_Gym_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
+	map_script_2 VAR_RUSTBORO_CITY_STATE, 0, RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne
+	.2byte 0
 
 
 RustboroCity_Gym_EventScript_GymGuide::
@@ -37,12 +32,16 @@ RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne::
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp
 	waitmovement 0
 	applymovement 4, Common_Movement_ExclamationMarkLookRight
+	playse SE_PIN
 	waitmovement 0
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceLeft
+	waitmovement 0
 	msgbox RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne, MSGBOX_AUTOCLOSE
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkDown
+	waitmovement 0
 	warp MAP_RUSTBOROUGH_SOUTH, 19, 22, 42
-	return
+	waitstate
+	end
 
 
 RustboroCity_Gym_Text_GymGuide_GoSeeRoxanne::

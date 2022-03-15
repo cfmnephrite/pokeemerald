@@ -97,15 +97,7 @@
     }
   ],
   "coord_events": [
-    {
-      "type": "trigger",
-      "x": 5,
-      "y": 18,
-      "elevation": 0,
-      "var": "VAR_RUSTBORO_CITY_STATE",
-      "var_value": "0",
-      "script": "RustboroCity_Gym_EventScript_TriggerGoSeeRoxanne"
-    }
+
   ],
   "bg_events": [
     {

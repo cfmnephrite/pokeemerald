@@ -515,7 +515,7 @@ PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_Text_0:
 	.string "Pah!\nWhat a bunch of cowards!$"
 
 PetalburgWoods_EventScript_FirstSpecialDoubleBattleOver_Text_1:
-	.string "No? You you mean you have no fear?$"
+	.string "No? You mean no problem?$"
 
 PetalburgWoods_EventScript_RocketEncounterContinues_Text_0:
 	.string "We need the goods you've got in that\n"

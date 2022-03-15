@@ -1,4 +1,4 @@
-// const OBJ_EVENT_ID_ROXANNE		=	7
+const OBJ_EVENT_ID_ROXANNE		=	7
 
 mapscripts RustboroughUniversity_MapScripts {
 	// MAP_SCRIPT_ON_RESUME {
@@ -6,51 +6,128 @@ mapscripts RustboroughUniversity_MapScripts {
 	// 		goto(RustboroughUniversity_EventScript_FirstEntry)
 	// 	}
 	// }
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_RUSTBORO_CITY_STATE, 0: RustboroughUniversity_EventScript_FirstEntry
+	]
 }
 
-// script RustboroughUniversity_EventScript_FirstEntry {
-// 	special(SpawnCameraObject)
-// 	msgbox(RustboroughUniversity_EventScript_RoxanneIntro)
-// 	applymovement(OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerUp12)
-// 	applymovement(OBJ_EVENT_ID_CAMERA, Common_Movement_WalkUp3)
-// 	waitmovement(0)
-// 	playse(SE_PIN)
-// 	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_ExclamationMarkLookDown)
-// 	waitmovement(0)
-// }
+script RustboroughUniversity_EventScript_FirstEntry {
+	setvar(VAR_RUSTBORO_CITY_STATE, 1)
+	lock
+	special(SpawnCameraObject)
+	applymovement(OBJ_EVENT_ID_CAMERA, RustboroughUniversity_Movement_MoveCameraUp14)
+	applymovement(OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerUp12)
+	msgbox(RustboroughUniversity_Text_RoxanneIntro1)
+	waitmovement(0)
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_ExclamationMarkLookDown)
+	waitmovement(0)
+	delay(60)
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_WalkDown2)
+	applymovement(OBJ_EVENT_ID_CAMERA, Common_Movement_WalkDown2)
+	waitmovement(0)
+	special(RemoveCameraObject)
+	msgbox(RustboroughUniversity_Text_RoxanneIntro2)
+	applymovement(OBJ_EVENT_ID_ROXANNE, RustboroughUniversity_Movement_MoveRoxanneIntoBattlePosition)
+	waitmovement(0)
+	msgbox(format("Move to the other side of the training area, please."))
+	applymovement(OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerIntoBattlePosition)
+	msgbox("Come on, chop-chop!", MSGBOX_AUTOCLOSE)
+	waitmovement(0)
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_FaceDown)
+	msgbox(RustboroughUniversity_Text_RoxanneIntro3, MSGBOX_AUTOCLOSE)
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_FaceRight)
+	waitmovement(0)
+	delay(30)
+	msgbox("Are you ready?", MSGBOX_YESNO)
+	if (!var(VAR_RESULT)) {
+		msgbox("Too late now!")
+	}
+	msgbox(format("I'm looking forward to studying your technique..."), MSGBOX_AUTOCLOSE)
+	release
+	end
+}
 
-// text RustboroughUniversity_EventScript_RoxanneIntro1 {
-// 	format(
-// 		"Roxanne: So in summary, there are several abilities that can change the type of a monster's move/\p
-// 		Among others, Aerilate, Liquid Voice, Power of Alchemy and Galvanize.\p
-// 		That last one is used my one of my favourite monsters...\p"
-// 	)
-// }
+text RustboroughUniversity_Text_RoxanneIntro1 {
+	format(
+		"Roxanne: So, in summary, humans and monsters have a symbiotic relationship.\p"
+		"Humans use monsters as companions, or for work or battling.\p"
+		"And monsters rely on humans for food, shelter and, yes, training.\p"
+		"While it might take a monster decades to reach its full potential in the wild...\p"
+		"...with a good trainer that process can take as little as months.\p"
+		"Of course, that greatly increases their chances of sexual reproduction..."
+	)
+}
 
-// script RustboroughUniversity_EventScript_NPCGolemFact {
-// 	lock
-// 	faceplayer
-// 	msgbox(format(
-// 		"Between Red, Blue, and Yellow Versions in Generation I\p,
-// 		Golem is the only Pokémon that cannot ever be seen without trading\p
-// 		However, its existence is implied by a non-player character\p
-// 		who had just received his friend's Graveler."
-// 		), MSGBOX_NPC
-// 	)
-// }
+text RustboroughUniversity_Text_RoxanneIntro2 {
+	format(
+		"You know, I don't appreciate you walking in halfway through my class.\p"
+		"I mean, really, it's disprespectful, lazy and...\p"
+		"Oh? Norman sent you to find out about gyms and the League?\p"
+		"That doesn't explain why you barged in while I was teaching a class...\p"
+		"Although...\pMaybe you can make it up to me...\p"
+		"You're clearly no stranger to battling, so...\p"
+		"Class, I think this is an opportunity for a demonstration!"
+	)
+}
+text RustboroughUniversity_Text_RoxanneIntro3 {
+	format(
+		"As penance for the interruption, this one has kindly volunteered!\p"
+		"We'll be showing you a monster battle in League format!\p"
+		"For those of you who don't know...\p"
+		"In League battles, all monsters are set to Lv 50 by the computer.\p"
+		"Their stats are recalculated accordingly.\p"
+		"What's more, Trainers are not allowed to use items.\p"
+		"Are you ready to see what some well-trained monsters can do?"
+	)
+}
 
-// movement RustboroughUniversity_Movement_MovePlayerUp12 {
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	walk_up
-// 	step_end
-// }
+script RustboroughUniversity_EventScript_NPCGolemFact {
+	lock
+	faceplayer
+	msgbox(format(
+		"Between Red, Blue, and Yellow Versions in Generation I\p,"
+		"Golem is the only monster that cannot ever be seen without trading\p"
+		"However, its existence is implied by a non-player character\p"
+		"who had just received his friend's Graveler."
+		), MSGBOX_NPC
+	)
+	release
+	end
+}
+
+script RustboroughUniversity_EventScript_NPCLevitationFact {
+	lock
+	faceplayer
+	msgbox(format(
+		"Did you know that a lot of monsters are airborne?\p"
+		"That makes them completely immune to moves like Earthquake & Bulldoze!\p"
+		"However, attacks like Drill Run and Mud Bomb still hit them..."
+		), MSGBOX_NPC
+	)
+	release
+	end
+}
+
+movement RustboroughUniversity_Movement_MovePlayerUp12 {
+	walk_up * 12
+	step_end
+}
+
+movement RustboroughUniversity_Movement_MoveCameraUp14 {
+	walk_up * 14
+	step_end
+}
+
+movement RustboroughUniversity_Movement_MoveRoxanneIntoBattlePosition {
+	walk_left * 2
+	walk_in_place_right
+	step_end
+}
+
+movement RustboroughUniversity_Movement_MovePlayerIntoBattlePosition {
+	walk_up * 2
+	walk_fast_right * 2
+	walk_in_place_fast_left
+	step_end
+}
