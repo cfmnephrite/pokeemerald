@@ -32,10 +32,10 @@ script RustboroughUniversity_EventScript_FirstEntry {
 	waitmovement(0)
 	msgbox(format("Move to the other side of the training area, please."))
 	applymovement(OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerIntoBattlePosition)
-	msgbox("Come on, chop-chop!", MSGBOX_AUTOCLOSE)
+	msgbox("Come on, chop-chop!")
 	waitmovement(0)
 	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_FaceDown)
-	msgbox(RustboroughUniversity_Text_RoxanneIntro3, MSGBOX_AUTOCLOSE)
+	msgbox(RustboroughUniversity_Text_RoxanneIntro3)
 	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_FaceRight)
 	waitmovement(0)
 	delay(30)
@@ -43,14 +43,32 @@ script RustboroughUniversity_EventScript_FirstEntry {
 	if (!var(VAR_RESULT)) {
 		msgbox("Too late now!")
 	}
-	msgbox(format("I'm looking forward to studying your technique..."), MSGBOX_AUTOCLOSE)
+	msgbox(format("I'm looking forward to studying your technique..."))
+	// BATTLE
+	goto(RustboroughUniversity_EventScript_PostRoxanneBattle)
+}
+
+script RustboroughUniversity_EventScript_PostRoxanneBattle {
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_WalkInPlaceDown)
+	msgbox(RustboroughUniversity_Text_RoxannePostBattle1, MSGBOX_AUTOCLOSE)
+	fadescreen(FADE_TO_BLACK)
+	setobjectxy(OBJ_EVENT_ID_ROXANNE, 9, 4)
+	applymovement(OBJ_EVENT_ID_ROXANNE, Common_Movement_FaceDown)
+	setobjectxy(OBJ_EVENT_ID_PLAYER, 9, 5)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp)
+	fadescreen(FADE_FROM_BLACK)
+	special(SpawnCameraObject)
+	applymovement(OBJ_EVENT_ID_CAMERA, RustboroughUniversity_Movement_MoveCameraIntoPostBattlePosition)
+	msgbox(RustboroughUniversity_Text_RoxannePostBattle2, MSGBOX_AUTOCLOSE)
+	waitmovement(0)
+	special(RemoveCameraObject)
 	release
 	end
 }
 
 text RustboroughUniversity_Text_RoxanneIntro1 {
 	format(
-		"Roxanne: So, in summary, humans and monsters have a symbiotic relationship.\p"
+		"Roxanne: In summary, humans and monsters have a symbiotic relationship.\p"
 		"Humans use monsters as companions, or for work or battling.\p"
 		"And monsters rely on humans for food, shelter and, yes, training.\p"
 		"While it might take a monster decades to reach its full potential in the wild...\p"
@@ -70,15 +88,49 @@ text RustboroughUniversity_Text_RoxanneIntro2 {
 		"Class, I think this is an opportunity for a demonstration!"
 	)
 }
+
 text RustboroughUniversity_Text_RoxanneIntro3 {
 	format(
-		"As penance for the interruption, this one has kindly volunteered!\p"
+		"To say sorry for the interruption, this one has kindly volunteered!\p"
 		"We'll be showing you a monster battle in League format!\p"
 		"For those of you who don't know...\p"
 		"In League battles, all monsters are set to Lv 50 by the computer.\p"
 		"Their stats are recalculated accordingly.\p"
 		"What's more, Trainers are not allowed to use items.\p"
 		"Are you ready to see what some well-trained monsters can do?"
+	)
+}
+
+text RustboroughUniversity_Text_RoxannePostBattleWin {
+	format(
+		"Well!\n"
+		"I must admit I underestimated you!"
+	)
+}
+
+text RustboroughUniversity_Text_RoxannePostBattleLoss {
+	format(
+		"Not too bad for your first League battle!"
+	)
+}
+
+text RustboroughUniversity_Text_RoxannePostBattle1 {
+	format(
+		"Woo, I hope you found that exciting, boys and girls!\p"
+		"Well, would you look at the time...\p"
+		"See you tomorrow, class!"
+	)
+}
+
+text RustboroughUniversity_Text_RoxannePostBattle2 {
+	format(
+		"So, you've been tasked with cataloguing every monster in Hoenn?\p"
+		"That's quite an assignment, especially at your age!\p"
+		"Not that I'm much older than you!\p"
+		"When I was your age, I was exploring Granite Cave for my Geology major.\p"
+		"You don't know the cave?\nIt's in Dewford Town.\p"
+		"Oh, it's a haven for rare Rock and Steel-types!\p"
+		"It's a protected area now - under the protection of Devon, that is."
 	)
 }
 
@@ -101,7 +153,7 @@ script RustboroughUniversity_EventScript_NPCLevitationFact {
 	faceplayer
 	msgbox(format(
 		"Did you know that a lot of monsters are airborne?\p"
-		"That makes them completely immune to moves like Earthquake & Bulldoze!\p"
+		"That makes them completely immune to moves like Earthquake!\p"
 		"However, attacks like Drill Run and Mud Bomb still hit them..."
 		), MSGBOX_NPC
 	)
@@ -129,5 +181,10 @@ movement RustboroughUniversity_Movement_MovePlayerIntoBattlePosition {
 	walk_up * 2
 	walk_fast_right * 2
 	walk_in_place_fast_left
+	step_end
+}
+
+movement RustboroughUniversity_Movement_MoveCameraIntoPostBattlePosition {
+	walk_left * 3
 	step_end
 }

@@ -28,10 +28,10 @@ RustboroughUniversity_EventScript_FirstEntry::
 	waitmovement 0
 	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_0
 	applymovement OBJ_EVENT_ID_PLAYER, RustboroughUniversity_Movement_MovePlayerIntoBattlePosition
-	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_1, MSGBOX_AUTOCLOSE
+	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_1
 	waitmovement 0
 	applymovement 7, Common_Movement_FaceDown
-	msgbox RustboroughUniversity_Text_RoxanneIntro3, MSGBOX_AUTOCLOSE
+	msgbox RustboroughUniversity_Text_RoxanneIntro3
 	applymovement 7, Common_Movement_FaceRight
 	waitmovement 0
 	delay 30
@@ -39,13 +39,31 @@ RustboroughUniversity_EventScript_FirstEntry::
 	compare VAR_RESULT, 0
 	goto_if_eq RustboroughUniversity_EventScript_FirstEntry_2
 RustboroughUniversity_EventScript_FirstEntry_1:
-	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_4, MSGBOX_AUTOCLOSE
-	release
-	end
+	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_4
+	goto RustboroughUniversity_EventScript_PostRoxanneBattle
+	return
 
 RustboroughUniversity_EventScript_FirstEntry_2:
 	msgbox RustboroughUniversity_EventScript_FirstEntry_Text_3
 	goto RustboroughUniversity_EventScript_FirstEntry_1
+
+
+RustboroughUniversity_EventScript_PostRoxanneBattle::
+	applymovement 7, Common_Movement_WalkInPlaceDown
+	msgbox RustboroughUniversity_Text_RoxannePostBattle1, MSGBOX_AUTOCLOSE
+	fadescreen FADE_TO_BLACK
+	setobjectxy 7, 9, 4
+	applymovement 7, Common_Movement_FaceDown
+	setobjectxy OBJ_EVENT_ID_PLAYER, 9, 5
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
+	fadescreen FADE_FROM_BLACK
+	special SpawnCameraObject
+	applymovement OBJ_EVENT_ID_CAMERA, RustboroughUniversity_Movement_MoveCameraIntoPostBattlePosition
+	msgbox RustboroughUniversity_Text_RoxannePostBattle2, MSGBOX_AUTOCLOSE
+	waitmovement 0
+	special RemoveCameraObject
+	release
+	end
 
 
 RustboroughUniversity_EventScript_NPCGolemFact::
@@ -110,6 +128,12 @@ RustboroughUniversity_Movement_MovePlayerIntoBattlePosition:
 	walk_in_place_fast_left
 	step_end
 
+RustboroughUniversity_Movement_MoveCameraIntoPostBattlePosition:
+	walk_left
+	walk_left
+	walk_left
+	step_end
+
 RustboroughUniversity_EventScript_FirstEntry_Text_0:
 	.string "Move to the other side of the training\n"
 	.string "area, please.$"
@@ -141,12 +165,12 @@ RustboroughUniversity_EventScript_NPCLevitationFact_Text_0:
 	.string "Did you know that a lot of monsters are\n"
 	.string "airborne?\p"
 	.string "That makes them completely immune to\n"
-	.string "moves like Earthquake & Bulldoze!\p"
+	.string "moves like Earthquake!\p"
 	.string "However, attacks like Drill Run and Mud\n"
 	.string "Bomb still hit them...$"
 
 RustboroughUniversity_Text_RoxanneIntro1::
-	.string "Roxanne: So, in summary, humans and\n"
+	.string "Roxanne: In summary, humans and\n"
 	.string "monsters have a symbiotic\l"
 	.string "relationship.\p"
 	.string "Humans use monsters as companions, or\n"
@@ -177,7 +201,7 @@ RustboroughUniversity_Text_RoxanneIntro2::
 	.string "for a demonstration!$"
 
 RustboroughUniversity_Text_RoxanneIntro3::
-	.string "As penance for the interruption, this\n"
+	.string "To say sorry for the interruption, this\n"
 	.string "one has kindly volunteered!\p"
 	.string "We'll be showing you a monster battle in\n"
 	.string "League format!\p"
@@ -190,3 +214,32 @@ RustboroughUniversity_Text_RoxanneIntro3::
 	.string "use items.\p"
 	.string "Are you ready to see what some\n"
 	.string "well-trained monsters can do?$"
+
+RustboroughUniversity_Text_RoxannePostBattleWin::
+	.string "Well!\n"
+	.string "I must admit I underestimated you!$"
+
+RustboroughUniversity_Text_RoxannePostBattleLoss::
+	.string "Not too bad for your first League\n"
+	.string "battle!$"
+
+RustboroughUniversity_Text_RoxannePostBattle1::
+	.string "Woo, I hope you found that exciting,\n"
+	.string "boys and girls!\p"
+	.string "Well, would you look at the time...\p"
+	.string "See you tomorrow, class!$"
+
+RustboroughUniversity_Text_RoxannePostBattle2::
+	.string "So, you've been tasked with cataloguing\n"
+	.string "every monster in Hoenn?\p"
+	.string "That's quite an assignment, especially\n"
+	.string "at your age!\p"
+	.string "Not that I'm much older than you!\p"
+	.string "When I was your age, I was exploring\n"
+	.string "Granite Cave for my Geology major.\p"
+	.string "You don't know the cave?\n"
+	.string "It's in Dewford Town.\p"
+	.string "Oh, it's a haven for rare Rock and\n"
+	.string "Steel-types!\p"
+	.string "It's a protected area now - under the\n"
+	.string "protection of Devon, that is.$"

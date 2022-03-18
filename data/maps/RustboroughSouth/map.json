@@ -892,7 +892,7 @@
       "y": 34,
       "elevation": 0,
       "dest_map": "MAP_RUSTBOROUGH_UNIVERSITY",
-      "dest_warp_id": 0
+      "dest_warp_id": 1
     },
     {
       "x": 24,
@@ -916,8 +916,8 @@
       "dest_warp_id": 0
     },
     {
-      "x": 45,
-      "y": 23,
+      "x": 46,
+      "y": 24,
       "elevation": 0,
       "dest_map": "MAP_RUSTBOROUGH_SOUTH",
       "dest_warp_id": 0
