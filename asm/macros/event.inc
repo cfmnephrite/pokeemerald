@@ -738,6 +738,10 @@
 	trainerbattle TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT, \trainer, 0, \lose_text
 	.endm
 
+	.macro trainerleaguebattle trainer:req, win_text:req, lose_text:req, event_script:req
+	trainerbattle TRAINER_BATTLE_LEAGUE, \trainer, 0, \win_text, \lose_text, \event_script
+	.endm
+
 
 	@ Starts a trainer battle using the battle information stored in RAM (usually by trainerbattle, which actually calls this 
 	@ command behind-the-scenes), and blocks script execution until the battle finishes.
