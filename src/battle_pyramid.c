@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pokemon_storage_system.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "event_data.h"
@@ -1207,19 +1208,19 @@ static void RestorePyramidPlayerParty(void)
         int partyIndex = gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1;
         for (j = 0; j < FRONTIER_PARTY_SIZE; j++)
         {
-            if (GetMonData(&gSaveBlock1Ptr->playerParty[partyIndex], MON_DATA_SPECIES, NULL) == GetMonData(&gPlayerParty[j], MON_DATA_SPECIES, NULL))
+            if (GetMonData(&gPokemonStoragePtr->playerParty[partyIndex], MON_DATA_SPECIES, NULL) == GetMonData(&gPlayerParty[j], MON_DATA_SPECIES, NULL))
             {
                 for (k = 0; k < MAX_MON_MOVES; k++)
                 {
                     for (l = 0; l < MAX_MON_MOVES; l++)
                     {
-                        if (GetMonData(&gSaveBlock1Ptr->playerParty[partyIndex], MON_DATA_MOVE1 + l, NULL) == GetMonData(&gPlayerParty[j], MON_DATA_MOVE1 + k, NULL))
+                        if (GetMonData(&gPokemonStoragePtr->playerParty[partyIndex], MON_DATA_MOVE1 + l, NULL) == GetMonData(&gPlayerParty[j], MON_DATA_MOVE1 + k, NULL))
                             break;
                     }
                     if (l == MAX_MON_MOVES)
                         SetMonMoveSlot(&gPlayerParty[j], MOVE_SKETCH, k);
                 }
-                gSaveBlock1Ptr->playerParty[partyIndex] = gPlayerParty[j];
+                gPokemonStoragePtr->playerParty[partyIndex] = gPlayerParty[j];
                 gSelectedOrderFromParty[j] = partyIndex + 1;
                 break;
             }

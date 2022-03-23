@@ -4855,7 +4855,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_SPD_MINUS_1;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
                 effect++;
             }
@@ -4867,6 +4866,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
             {
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
+                gBattleCommunication[MULTIUSE_STATE] = battler;
                 gBattlescriptCurrInstr = BattleScript_CottonDown;
                 effect++;
             }
@@ -5025,7 +5025,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
              && RandomChance(3, 10))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
-				PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
                 gHitMarker |= HITMARKER_IGNORE_SAFEGUARD;
@@ -5221,69 +5221,69 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 effect++;
             }
             break;
-		case ABILITY_RKS_SYSTEM:
-			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(battler)
-             && TARGET_TURN_DAMAGED
-			 && (gBattleMons[battler].species == SPECIES_TYPE_NULL
-			 && ((gBattleMons[battler].spAttack > gBattleMons[battler].attack && IS_MOVE_SPECIAL(move)) 
-			 || (gBattleMons[battler].attack >= gBattleMons[battler].spAttack && IS_MOVE_PHYSICAL(move)))))
-			{
-				gBattleMoveDamage = gBattleMons[battler].maxHP / 6;
-				if (gBattleMoveDamage == 0)
-					gBattleMoveDamage = 1;
-				BattleScriptPushCursor();
-				gBattlescriptCurrInstr = BattleScript_SolarPowerActivates;
-				effect++;
-			}
-			break;
-		case ABILITY_MAGICIAN:
-		case ABILITY_PICKPOCKET:
-			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(battler)
-             && TARGET_TURN_DAMAGED
-			 && gBattleScripting.moveEffect != MOVE_EFFECT_STEAL_ITEM)
-			{
-				if(gLastUsedAbility == ABILITY_PICKPOCKET && !(gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
-					break;
-				gBattleScripting.moveEffect = MOVE_EFFECT_STEAL_ITEM | MOVE_EFFECT_CERTAIN;
-				effect++;
-			}
-			break;
-		case ABILITY_PLUS:
-		case ABILITY_MINUS:
-			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(battler)
-             && TARGET_TURN_DAMAGED
-			 && moveType == TYPE_ELECTRIC)
-			{
-				bool8 activate = FALSE;
-				if(IsBattlerAlive(BATTLE_PARTNER(battler)))
-				{
-					if((GetBattlerAbility(battler) == ABILITY_PLUS
-						&& GetBattlerAbility(BATTLE_PARTNER(battler)) == ABILITY_MINUS)
-						|| (GetBattlerAbility(battler) == ABILITY_MINUS
-						&& GetBattlerAbility(BATTLE_PARTNER(battler)) == ABILITY_PLUS))
-							activate = RandomChance(3, 5);
-				}
-				else
-					activate = RandomChance(3, 10);
-				if(activate)
-				{
-					//gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
+        case ABILITY_RKS_SYSTEM:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+                && IsBattlerAlive(battler)
+                && TARGET_TURN_DAMAGED
+                && (gBattleMons[battler].species == SPECIES_TYPE_NULL
+                && ((gBattleMons[battler].spAttack > gBattleMons[battler].attack && IS_MOVE_SPECIAL(move)) 
+                || (gBattleMons[battler].attack >= gBattleMons[battler].spAttack && IS_MOVE_PHYSICAL(move)))))
+            {
+                gBattleMoveDamage = gBattleMons[battler].maxHP / 6;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_SolarPowerActivates;
+                effect++;
+            }
+            break;
+        case ABILITY_MAGICIAN:
+        case ABILITY_PICKPOCKET:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+                && IsBattlerAlive(battler)
+                && TARGET_TURN_DAMAGED
+                && gBattleScripting.moveEffect != MOVE_EFFECT_STEAL_ITEM)
+            {
+                if(gLastUsedAbility == ABILITY_PICKPOCKET && !(gBattleMoves[move].flags & FLAG_MAKES_CONTACT))
+                    break;
+                gBattleScripting.moveEffect = MOVE_EFFECT_STEAL_ITEM | MOVE_EFFECT_CERTAIN;
+                effect++;
+            }
+            break;
+        case ABILITY_PLUS:
+        case ABILITY_MINUS:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+                && IsBattlerAlive(battler)
+                && TARGET_TURN_DAMAGED
+                && moveType == TYPE_ELECTRIC)
+            {
+                bool8 activate = FALSE;
+                if(IsBattlerAlive(BATTLE_PARTNER(battler)))
+                {
+                    if((GetBattlerAbility(battler) == ABILITY_PLUS
+                        && GetBattlerAbility(BATTLE_PARTNER(battler)) == ABILITY_MINUS)
+                        || (GetBattlerAbility(battler) == ABILITY_MINUS
+                        && GetBattlerAbility(BATTLE_PARTNER(battler)) == ABILITY_PLUS))
+                            activate = RandomChance(3, 5);
+                }
+                else
+                    activate = RandomChance(3, 10);
+                if(activate)
+                {
+                    //gBattleMons[battler].statStages[GetHigherOffStat(battler)]++;
                     SET_STATCHANGER(GetHigherOffStat(battler), 1, FALSE);
                     PREPARE_STAT_BUFFER(gBattleTextBuff1, GetHigherOffStat(battler));
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
                     effect++;
-				}
-			}
-			break;
-		case ABILITY_SOLAR_POWER:
+                }
+            }
+            break;
+        case ABILITY_SOLAR_POWER:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(battler)
-             && TARGET_TURN_DAMAGED
-			 && (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
-			 && IS_MOVE_SPECIAL(move))
+                && IsBattlerAlive(battler)
+                && TARGET_TURN_DAMAGED
+                && (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY)
+                && IS_MOVE_SPECIAL(move))
             {
                 BattleScriptPushCursorAndCallback(BattleScript_SolarPowerActivates);
                 gBattleMoveDamage = gBattleMons[battler].maxHP / 8;
@@ -5305,9 +5305,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
         {
         case ABILITY_DANCER:
             if (IsBattlerAlive(battler)
-             && (gBattleMoves[gCurrentMove].flags & FLAG_DANCE)
-             && !gSpecialStatuses[battler].dancerUsedMove
-             && gBattlerAttacker != battler)
+                && (gBattleMoves[gCurrentMove].flags & FLAG_DANCE)
+                && !gSpecialStatuses[battler].dancerUsedMove
+                && gBattlerAttacker != battler)
             {
                 // Set bit and save Dancer mon's original target
                 gSpecialStatuses[battler].dancerUsedMove = 1;
