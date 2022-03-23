@@ -18,9 +18,11 @@ COLUMNS     0   1   2   3   4   5
 struct PokemonStorage
 {
     /*0x0000*/ u8 currentBox;
-    /*0x0001*/ struct BoxPokemon boxes[TOTAL_BOXES_COUNT][IN_BOX_COUNT];
+    /*0x0001*/ u8 playerPartyCount;
+    /*0x0004*/ struct BoxPokemon boxes[TOTAL_BOXES_COUNT][IN_BOX_COUNT];
     /*0x8344*/ u8 boxNames[TOTAL_BOXES_COUNT][9];
     /*0x83C2*/ u8 boxWallpapers[TOTAL_BOXES_COUNT];
+    /*0x83D4*/ struct Pokemon playerParty[PARTY_SIZE];
 };
 
 extern struct PokemonStorage *gPokemonStoragePtr;
