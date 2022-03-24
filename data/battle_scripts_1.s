@@ -6,6 +6,7 @@
 #include "constants/battle_arena.h"
 #include "constants/battle_script_commands.h"
 #include "constants/battle_anim.h"
+#include "constants/battle_setup.h"
 #include "constants/battle_string_ids.h"
 #include "constants/abilities.h"
 #include "constants/hold_effects.h"
@@ -6456,6 +6457,9 @@ BattleScript_LocalBattleLost::
 	jumpifbattletype BATTLE_TYPE_FRONTIER, BattleScript_LocalBattleLostPrintTrainersWinText
 	jumpifbattletype BATTLE_TYPE_TRAINER_HILL, BattleScript_LocalBattleLostPrintTrainersWinText
 	jumpifhalfword CMP_EQUAL, gTrainerBattleOpponent_A, TRAINER_SECRET_BASE, BattleScript_LocalBattleLostEnd
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE, BattleScript_LocalBattleLostPrintTrainersWinText
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT, BattleScript_LocalBattleLostPrintTrainersWinText
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC, BattleScript_LocalBattleLostPrintTrainersWinText
 BattleScript_LocalBattleLostPrintWhiteOut::
 .if B_WHITEOUT_MONEY >= GEN_4
 	jumpifbattletype BATTLE_TYPE_TRAINER, BattleScript_LocalBattleLostEnd
@@ -6501,6 +6505,7 @@ BattleScript_LocalBattleLostDoTrainer2WinText::
 	waitstate
 	printstring STRINGID_TRAINER2WINTEXT
 BattleScript_LocalBattleLostEnd_::
+	jumpifbyte CMP_EQUAL, gBattleCommunication, 0x1, BattleScript_LocalBattleLostPrintWhiteOut @victory text, but still have to white out
 	end2
 
 BattleScript_FrontierLinkBattleLost::

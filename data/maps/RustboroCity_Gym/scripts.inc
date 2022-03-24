@@ -1,10 +1,11 @@
 RustboroCity_Gym_MapScripts::
 	.byte 0
 
-RustboroCity_Gym_EventScript_Roxanne::
+RustboroCity_Gym_EventScript_Roxanne:: @ 8212F31
 	trainerbattle_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_RoxanneIntro, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_EventScript_RoxanneDefeated, NO_MUSIC
 	specialvar VAR_RESULT, ShouldTryRematchBattle
-	goto_if_eq VAR_RESULT, TRUE, RustboroCity_Gym_EventScript_RoxanneRematch
+	compare VAR_RESULT, TRUE
+	goto_if_eq RustboroCity_Gym_EventScript_RoxanneRematch
 	goto_if_unset FLAG_RECEIVED_TM39, RustboroCity_Gym_EventScript_GiveRockTomb
 	msgbox RustboroCity_Gym_Text_RoxannePostBattle, MSGBOX_DEFAULT
 	release
@@ -196,7 +197,10 @@ RustboroCity_Gym_Text_RoxanneDefeat:
 	.string "Please accept the official POKéMON\n"
 	.string "LEAGUE STONE BADGE.$"
 
-RustboroCity_Gym_Text_ReceivedStoneBadge:
+RustboroCity_Gym_Text_RoxanneVictory:
+	.string "I win!$"
+
+RustboroCity_Gym_Text_ReceivedStoneBadge: @ 82137EC
 	.string "{PLAYER} received the STONE BADGE\n"
 	.string "from ROXANNE.$"
 

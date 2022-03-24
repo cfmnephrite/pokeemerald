@@ -3453,6 +3453,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                         && !(gBattleTypeFlags &
                             (BATTLE_TYPE_FRONTIER
                             | BATTLE_TYPE_LINK
+                            | BATTLE_TYPE_LEAGUE
                             | BATTLE_TYPE_RECORDED_LINK
                             | BATTLE_TYPE_SECRET_BASE)))
                     {
@@ -3461,6 +3462,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                     else if (!(gBattleTypeFlags &
                             (BATTLE_TYPE_FRONTIER
                             | BATTLE_TYPE_LINK
+                            | BATTLE_TYPE_LEAGUE
                             | BATTLE_TYPE_RECORDED_LINK
                             | BATTLE_TYPE_SECRET_BASE))
                         && (gWishFutureKnock.knockedOffMons[side] & gBitTable[gBattlerPartyIndexes[gBattlerAttacker]]))
@@ -4132,6 +4134,7 @@ static void Cmd_getexp(void)
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_TRAINER_HILL
               | BATTLE_TYPE_FRONTIER
+              | BATTLE_TYPE_LEAGUE
               | BATTLE_TYPE_SAFARI
               | BATTLE_TYPE_BATTLE_TOWER
               )))
@@ -14260,6 +14263,8 @@ static void Cmd_trysethelpinghand(void)
 // Trick
 static void Cmd_tryswapitems(void)
 {
+    u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
+    u8 sideTarget = GetBattlerSide(gBattlerTarget);
     CMD_ARGS(const u8 *failInstr);
 
     // opponent can't swap items with player in regular battles
@@ -14276,10 +14281,24 @@ static void Cmd_tryswapitems(void)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }
+
+    // you can't swap certain items
+    if (!CanBattlerGetOrLoseItem(gBattlerAttacker, gBattleMons[gBattlerAttacker].item)
+        || !CanBattlerGetOrLoseItem(gBattlerTarget, gBattleMons[gBattlerTarget].item))
+    {
+        gBattlescriptCurrInstr = cmd->failInstr;
+    }
+    // check if ability prevents swapping
+    else if (gBattleMons[gBattlerTarget].ability == ABILITY_STICKY_HOLD)
+    {
+        gBattlescriptCurrInstr = BattleScript_StickyHoldActivates;
+        gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
+        RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
+    }
+    // took a while, but all checks passed and items can be safely swapped
     else
     {
-        u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
-        u8 sideTarget = GetBattlerSide(gBattlerTarget);
+        u16 oldItemAtk, *newItemAtk;
 
         // You can't swap items if they were knocked off in regular battles
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK

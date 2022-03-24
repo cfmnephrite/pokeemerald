@@ -3303,6 +3303,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                     CopyTrainerHillTrainerText(TRAINER_HILL_TEXT_PLAYER_LOST, gTrainerBattleOpponent_A);
                     toCpy = gStringVar4;
                 }
+                else
+                {
+                    toCpy = GetTrainerWonSpeech();
+                }
                 break;
             case B_TXT_26: // ?
                 if (GetBattlerSide(gBattleScripting.battler) != B_SIDE_PLAYER)

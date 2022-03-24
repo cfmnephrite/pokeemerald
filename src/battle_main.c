@@ -54,6 +54,7 @@
 #include "window.h"
 #include "constants/abilities.h"
 #include "constants/battle_move_effects.h"
+#include "constants/battle_setup.h"
 #include "constants/battle_string_ids.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
@@ -61,8 +62,11 @@
 #include "constants/party_menu.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "constants/species.h"
 #include "constants/trainers.h"
 #include "cable_club.h"
+#include "printf.h"
+#include "mgba.h"
 
 extern struct Evolution gEvolutionTable[][EVOS_PER_MON];
 
@@ -1871,15 +1875,20 @@ static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite)
 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
-    u32 nameHash = 0;
-    u32 personalityValue;
-    u8 fixedIV;
+    u32 nameHash = 0, ppBonuses = 255;
+    u32 personalityValue = Random32();
     s32 i, j;
-    u8 monsCount;
     u16 ball;
+    u8 fixedIV, monsCount, desiredNature, natureShift, level;
+    u8 monPP[MAX_MON_MOVES];
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
+
+    if (IsLeagueBattle())
+        level = 50;
+    else
+        level = gSaveBlock1Ptr->globalLevel;
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
                                                                         | BATTLE_TYPE_TRAINER_HILL)))
@@ -1902,12 +1911,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
         for (i = 0; i < monsCount; i++)
         {
 
-            if (gTrainers[trainerNum].doubleBattle == TRUE)
-                personalityValue = 0x80;
-            else if (gTrainers[trainerNum].encounterMusic_gender & F_TRAINER_FEMALE)
-                personalityValue = 0x78; // Use personality more likely to result in a female Pokémon
-            else
-                personalityValue = 0x88; // Use personality more likely to result in a male Pokémon
+            // if (gTrainers[trainerNum].doubleBattle == TRUE)
+            //     personalityValue = 0x80;
+            // else if (gTrainers[trainerNum].encounterMusic_gender & F_TRAINER_FEMALE)
+            //     personalityValue = 0x78; // Use personality more likely to result in a female Pokémon
+            // else
+            //     personalityValue = 0x88; // Use personality more likely to result in a male Pokémon
 
             for (j = 0; gTrainers[trainerNum].trainerName[j] != EOS; j++)
                 nameHash += gTrainers[trainerNum].trainerName[j];
@@ -1978,12 +1987,38 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 }
                 break;
             }
+            case F_TRAINER_PARTY_COMPETITIVE:
+            {
+                const struct TrainerMonCustomMovesItemEVs *partyData = gTrainers[trainerNum].party.ItemCustomMovesEVs;
+                // Set the custom nature
+                personalityValue += (partyData[i].nature - (personalityValue % 25));
+                CreateMon(&party[i], partyData[i].species, 100, 31, TRUE, personalityValue, OT_ID_PRESET, Random32());
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+                SetMonData(&party[i], MON_DATA_PP_BONUSES, &ppBonuses);
+                SetMonData(&party[i], MON_DATA_ABILITY_NUM, &partyData[i].abilityNum);
+
+                for (j = 0; j < MAX_MON_MOVES; j++)
+                {
+                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                    monPP[j] = gBattleMoves[partyData[i].moves[j]].pp * 8 / 5;
+                    SetMonData(&party[i], MON_DATA_PP1 + j, &monPP[j]);
+                }
+
+                for (j = 0; j < NUM_STATS; j++)
+                {
+                    mgba_printf(MGBA_LOG_DEBUG, "EV: %d", partyData[i].evs[j]);
+                    SetMonData(&party[i], MON_DATA_HP_EV + j, &partyData[i].evs[j]);
+                }
+                break;
+            }
             }
 
         #if B_TRAINER_CLASS_POKE_BALLS >= GEN_7
             ball = (sTrainerBallTable[gTrainers[trainerNum].trainerClass]) ? sTrainerBallTable[gTrainers[trainerNum].trainerClass] : ITEM_POKE_BALL;
             SetMonData(&party[i], MON_DATA_POKEBALL, &ball);
         #endif
+            CalculateMonStats(&party[i]);
+            SetMonData(&party[i], MON_DATA_LEVEL, &level);
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
@@ -4085,6 +4120,7 @@ static void HandleTurnActionSelectionState(void)
                     }
 
                     if ((gBattleTypeFlags & (BATTLE_TYPE_LINK
+                                            | BATTLE_TYPE_LEAGUE
                                             | BATTLE_TYPE_FRONTIER_NO_PYRAMID
                                             | BATTLE_TYPE_RECORDED_LINK))
                                             // Or if currently held by Sky Drop
@@ -5108,6 +5144,12 @@ static void HandleEndTurn_BattleWon(void)
     gBattleMainFunc = HandleEndTurn_FinishBattle;
 }
 
+#define IS_TRAINER_BATTLE_WITH_VICTORY_TEXT                                             \
+    (gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC  \
+     || gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT        \
+     || gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE)                       \
+
+
 static void HandleEndTurn_BattleLost(void)
 {
     gCurrentActionFuncId = 0;
@@ -5138,6 +5180,7 @@ static void HandleEndTurn_BattleLost(void)
     }
     else
     {
+        gBattleCommunication[MULTIUSE_STATE] = (IS_TRAINER_BATTLE_WITH_VICTORY_TEXT && !VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE));
         gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
     }
 
@@ -5235,6 +5278,7 @@ static void HandleEndTurn_FinishBattle(void)
         RecordedBattle_SetPlaybackFinished();
         if (gTestRunnerEnabled)
             TestRunner_Battle_AfterLastTurn();
+        CalculateAndSetNewGlobalLevel();
         BeginFastPaletteFade(3);
         FadeOutMapMusic(5);
     #if B_TRAINERS_KNOCK_OFF_ITEMS == TRUE
@@ -5302,6 +5346,8 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
         FreeBattleResources();
         FreeBattleSpritesData();
     }
+    if (IsLeagueBattle())
+        RestorePlayerPartyEXPAndRestoreLvl();
 }
 
 static void TrySpecialEvolution(void) // Attempts to perform non-level related battle evolutions (not the script command).
@@ -5411,6 +5457,48 @@ void RunBattleScriptCommands(void)
 {
     if (gBattleControllerExecFlags == 0)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+}
+
+void CalculateAndSetNewGlobalLevel()
+{
+    u16 i, j, level, meanLevel = 0, teamCount = 0, meanTeamCount = 0;
+    u32 combinedLevel = 0, combinedQuarticLevel = 0;
+    u32 quarticLevels[PARTY_SIZE];
+    s8 newGlobalLevel = 5;
+    for(i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE)
+        {
+            level = GetLevelFromMonExp(&gPlayerParty[i]);
+            combinedLevel += level;
+            quarticLevels[i] = level * level * level * level;
+            teamCount++;
+        }
+        else
+            quarticLevels[i] = 0;
+    }
+    if (teamCount)
+    {
+        meanLevel = combinedLevel / teamCount;
+        for (j = 0; j < PARTY_SIZE; j++)
+        {
+            if(quarticLevels[j] > meanLevel / 2)
+            {
+                combinedQuarticLevel += quarticLevels[j];
+                meanTeamCount++;
+            }
+        }
+        newGlobalLevel = Sqrt(Sqrt(combinedQuarticLevel / meanTeamCount));
+        if (newGlobalLevel < 1)
+            newGlobalLevel = 5;
+    }
+    if (newGlobalLevel > gSaveBlock1Ptr->globalLevel)
+        SetGlobalLevel(newGlobalLevel);
+}
+
+void SetGlobalLevel(u8 number)
+{
+    gSaveBlock1Ptr->globalLevel = number;
 }
 
 void SetTypeBeforeUsingMove(u16 move, u8 battlerAtk)

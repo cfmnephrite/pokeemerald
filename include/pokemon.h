@@ -565,5 +565,8 @@ bool32 ShouldShowFemaleDifferences(u16 species, u32 personality);
 void TryToSetBattleFormChangeMoves(struct Pokemon *mon);
 u32 GetMonFriendshipScore(struct Pokemon *pokemon);
 void UpdateMonPersonality(struct BoxPokemon *boxMon, u32 personality);
+bool8 IsLeagueBattle(void);
+void BackupPlayerPartyEXPAndSetAllToLv50(void);
+void RestorePlayerPartyEXPAndRestoreLvl(void);
 
 #endif // GUARD_POKEMON_H
