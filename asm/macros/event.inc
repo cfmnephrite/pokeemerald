@@ -738,8 +738,8 @@
 	trainerbattle TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT, \trainer, 0, \lose_text
 	.endm
 
-	.macro trainerleaguebattle trainer:req, win_text:req, lose_text:req, event_script:req
-	trainerbattle TRAINER_BATTLE_LEAGUE, \trainer, 0, \win_text, \lose_text, \event_script
+	.macro trainerleaguebattle trainer:req, lose_text:req, win_text:req, event_script=FALSE
+	trainerbattle TRAINER_BATTLE_LEAGUE, \trainer, 0, \lose_text, \win_text, \event_script
 	.endm
 
 

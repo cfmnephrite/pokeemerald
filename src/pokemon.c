@@ -7258,3 +7258,27 @@ u8 *sub_806F4F8(u8 id, u8 arg1)
         return structPtr->byteArrays[arg1];
     }
 }
+
+void BackupPlayerPartyEXPAndSetAllToLv50(void)
+{
+    int i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        gPokemonStoragePtr->playerPartyEXPBackup[i] = GetMonData(&gPlayerParty[i], MON_DATA_EXP, NULL);
+        SetMonData(&gPlayerParty[i], MON_DATA_EXP,
+            &gExperienceTables[gBaseStats[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL)].growthRate][50]);
+        CalculateMonStats(&gPlayerParty[i]);
+    }
+}
+
+void RestorePlayerPartyEXPAndRestoreLvl(void)
+{
+    int i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        SetMonData(&gPlayerParty[i], MON_DATA_EXP, &gPokemonStoragePtr->playerPartyEXPBackup[i]);
+        CalculateMonStats(&gPlayerParty[i]);
+    }
+}

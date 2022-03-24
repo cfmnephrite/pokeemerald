@@ -23,6 +23,7 @@ struct PokemonStorage
     /*0x8344*/ u8 boxNames[TOTAL_BOXES_COUNT][9];
     /*0x83C2*/ u8 boxWallpapers[TOTAL_BOXES_COUNT];
     /*0x83D4*/ struct Pokemon playerParty[PARTY_SIZE];
+    /*0x862C*/ u16 playerPartyEXPBackup[PARTY_SIZE];
 };
 
 extern struct PokemonStorage *gPokemonStoragePtr;
