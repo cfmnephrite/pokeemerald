@@ -1,3 +1,48 @@
+const OBJ_EVENT_ID_GUARD_1		=	4
+const OBJ_EVENT_ID_GUARD_2		=	5
+
+
 mapscripts RustboroCity_DevonCorp_3F_MapScripts {
-	//
+	MAP_SCRIPT_ON_FRAME_TABLE [
+		VAR_RUSTBORO_CITY_STATE, 1: RustboroCity_DevonCorp_3F_EventScript_JosephStone
+	]
+}
+
+script RustboroCity_DevonCorp_3F_EventScript_JosephStone {
+	setvar(VAR_RUSTBORO_CITY_STATE, 2)
+	lock
+	special(SpawnCameraObject)
+	applymovement(OBJ_EVENT_ID_CAMERA, RustboroCity_DevonCorp_3F_Movement_MoveCameraUp9)
+	applymovement(OBJ_EVENT_ID_GUARD_1, Common_Movement_WalkUp4)
+	applymovement(OBJ_EVENT_ID_GUARD_2, Common_Movement_WalkUp4)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp5)
+	waitmovement(0)
+	msgbox(RustboroCity_DevonCorp_3F_Text_JosephStone1)
+	end
+}
+
+script RustboroCity_DevonCorp_3F_EventScript_RareRocksDisplay {
+	msgbox(RustboroCity_DevonCorp_3F_Text_RareRocksDisplay, MSGBOX_SIGN)
+}
+
+text RustboroCity_DevonCorp_3F_Text_JosephStone1 {
+	format(
+		"I'm very busy so I won't keep you for long.\p"
+		"I simply wanted to thank you for saving our truck in Petalburg.\p"
+		"Truly, you put most of security forces to shame!\p"
+		"I am prepared to pay 5,000 for you service and extend an offer for more work.\p"
+		"Which brings me to my next point...\p"
+		"I need reliable Trainers to escort some goods shipping from out from Rustborough to Slateport.\p"
+		"Be at the harbour when it arrives and the men will sort you out.\p"
+		"I am offering you 10,000 for the job and-"
+	)
+}
+
+text RustboroCity_DevonCorp_3F_Text_RareRocksDisplay {
+	"It's a collection of rare rocks and\n"
+	"stones assembled by the President."
+}
+
+movement RustboroCity_DevonCorp_3F_Movement_MoveCameraUp9 {
+	walk_up * 9
 }

@@ -682,7 +682,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MYSTERY_GIFT_MAN",
-      "x": 39,
+      "x": 38,
       "y": 41,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_NONE",
@@ -758,8 +758,8 @@
       "x": 39,
       "y": 37,
       "elevation": 0,
-      "dest_map": "MAP_RUSTBORO_CITY_DEVON_CORP_1F",
-      "dest_warp_id": 0
+      "dest_map": "MAP_RUSTBORO_CITY_DEVON_CORP_3F",
+      "dest_warp_id": 1
     },
     {
       "x": 29,
