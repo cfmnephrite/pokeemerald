@@ -142,6 +142,7 @@
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_1F (4 | (8 << 8))
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_2F (5 | (8 << 8))
 #define MAP_PETALBURG_CITY_MART              (6 | (8 << 8))
+#define MAP_PETALBURG_CITY_WALLYS_HOUSE2F    (7 | (8 << 8))
 
 // Map Group 9
 #define MAP_SLATEPORT_CITY_STERNS_SHIPYARD_1F      (0 | (9 << 8))

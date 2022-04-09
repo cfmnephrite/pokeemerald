@@ -594,7 +594,7 @@
     {
       "id": "LAYOUT_HOUSE2",
       "name": "House2_Layout",
-      "width": 11,
+      "width": 15,
       "height": 8,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_GenericBuilding",
@@ -4500,6 +4500,16 @@
       "secondary_tileset": "gTileset_Petalburg",
       "border_filepath": "data/layouts/Route102W/border.bin",
       "blockdata_filepath": "data/layouts/Route102W/map.bin"
+    },
+    {
+      "id": "LAYOUT_PETALBURG_CITY_WALLYS_HOUSE2F",
+      "name": "PetalburgCity_WallysHouse2F_Layout",
+      "width": 10,
+      "height": 8,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_GenericBuilding",
+      "border_filepath": "data/layouts/PetalburgCity_WallysHouse2F/border.bin",
+      "blockdata_filepath": "data/layouts/PetalburgCity_WallysHouse2F/map.bin"
     }
   ]
 }
