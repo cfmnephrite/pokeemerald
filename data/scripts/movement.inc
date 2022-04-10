@@ -144,3 +144,13 @@ Common_Movement_WalkUp5::
 	walk_up
 	walk_up
 	step_end
+
+Common_Movement_WalkRight:
+	walk_right
+	step_end
+
+Common_Movement_WalkLeft3:
+	walk_left
+	walk_left
+	walk_left
+	step_end

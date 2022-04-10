@@ -3,11 +3,11 @@ RustboroCity_DevonCorp_3F_MapScripts::
 	.byte 0
 
 RustboroCity_DevonCorp_3F_MapScripts_MAP_SCRIPT_ON_FRAME_TABLE:
-	map_script_2 VAR_RUSTBORO_CITY_STATE, 1, RustboroCity_DevonCorp_3F_EventScript_JosephStone
+	map_script_2 VAR_RUSTBORO_CITY_STATE, 1, RustboroCity_DevonCorp_3F_EventScript_JosephStoneIntro
 	.2byte 0
 
 
-RustboroCity_DevonCorp_3F_EventScript_JosephStone::
+RustboroCity_DevonCorp_3F_EventScript_JosephStoneIntro::
 	setvar VAR_RUSTBORO_CITY_STATE, 2
 	lock
 	special SpawnCameraObject
@@ -18,6 +18,47 @@ RustboroCity_DevonCorp_3F_EventScript_JosephStone::
 	waitmovement 0
 	delay 60
 	msgbox RustboroCity_DevonCorp_3F_Text_JosephStone1, MSGBOX_AUTOCLOSE
+	setvar VAR_0x8004, 1
+	setvar VAR_0x8005, 1
+	setvar VAR_0x8006, 16
+	setvar VAR_0x8007, 3
+	special ShakeCamera
+	playse SE_EFFECTIVE
+	goto RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise
+	return
+
+
+RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise::
+	applymovement 4, Common_Movement_ExclamationMark
+	applymovement 5, Common_Movement_ExclamationMark
+	applymovement 6, Common_Movement_ExclamationMark
+	applymovement 7, Common_Movement_ExclamationMark
+	applymovement 1, Common_Movement_ExclamationMark
+	waitmovement 0
+	delay 60
+	msgbox RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_0
+	applymovement 7, Common_Movement_WalkInPlaceDown
+	waitmovement 0
+	applymovement 1, Common_Movement_WalkInPlaceUp
+	waitmovement 0
+	msgbox RustboroCity_DevonCorp_3F_Text_RareRocksGuard4Dialogue
+	applymovement 1, Common_Movement_WalkInPlaceLeft
+	waitmovement 0
+	msgbox RustboroCity_DevonCorp_3F_Text_JosephStone2
+	applymovement 4, Common_Movement_WalkInPlaceRight
+	applymovement 5, Common_Movement_WalkInPlaceRight
+	waitmovement 0
+	msgbox RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_1
+	applymovement 4, RustboroCity_DevonCorp_3F_Guard1WalkRightFaceDown
+	applymovement 5, RustboroCity_DevonCorp_3F_Guard2WalkRightFaceUp
+	applymovement OBJ_EVENT_ID_PLAYER, RustboroCity_DevonCorp_3F_PlayerLookUpAndDown
+	msgbox RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_2
+	waitmovement 0
+	applymovement 4, Common_Movement_WalkLeft3
+	applymovement 5, Common_Movement_WalkLeft3
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkLeft3
+	waitmovement 0
+	warp MAP_RUSTBORO_CITY_DEVON_CORP_2F, 255, 2, 2
 	end
 
 
@@ -62,25 +103,53 @@ RustboroCity_DevonCorp_3F_Movement_CameraEntrance:
 	walk_slow_right
 	step_end
 
+RustboroCity_DevonCorp_3F_Guard1WalkRightFaceDown:
+	walk_right
+	face_down
+	step_end
+
+RustboroCity_DevonCorp_3F_Guard2WalkRightFaceUp:
+	walk_right
+	face_up
+	step_end
+
+RustboroCity_DevonCorp_3F_PlayerLookUpAndDown:
+	face_down
+	delay_16
+	face_up
+	delay_16
+	face_down
+	step_end
+
+RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_0:
+	.string "...what the hell was that?$"
+
+RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_1:
+	.string "Yes, sir!$"
+
+RustboroCity_DevonCorp_3F_EventScript_SuddenLargeNoise_Text_2:
+	.string "Let's go, newbie!$"
+
 RustboroCity_DevonCorp_3F_Text_JosephStone1::
-	.string "I'm very busy so I won't keep you for\n"
-	.string "long.\p"
-	.string "My name is Stone and I'm the President\n"
-	.string "of the Board of the Devon Corporation.\p"
-	.string "I simply wanted to thank you for saving\n"
-	.string "our truck in Petalburg.\p"
-	.string "Truly, you put most of security forces\n"
-	.string "to shame!\p"
-	.string "I am prepared to pay 5,000 for service\n"
-	.string "rendered and more for future work.\p"
-	.string "Which brings me to my next point...\p"
-	.string "I need reliable Trainers to escort some\n"
-	.string "goods from Rustborough to Slateport.\p"
-	.string "Be at the harbour when it arrives and\n"
-	.string "the men will sort you out.\p"
-	.string "I am offering you 10,000 for the job\n"
-	.string "and-$"
+	.string "TEXT$"
 
 RustboroCity_DevonCorp_3F_Text_RareRocksDisplay::
 	.string "It's a collection of rare rocks and\n"
 	.string "stones assembled by the President.$"
+
+RustboroCity_DevonCorp_3F_Text_RareRocksGuard4Dialogue::
+	.string "Sir! Security downstairs say there's\n"
+	.string "been a breach!\p"
+	.string "Magma activists have stormed the rear\n"
+	.string "entrance to the building!\p"
+	.string "We have to take you to the helipad!$"
+
+RustboroCity_DevonCorp_3F_Text_JosephStone2::
+	.string "I see...\p"
+	.string "Well, aren't we lucky?\p"
+	.string "What an excellent opportunity to put\n"
+	.string "your skills to use!\p"
+	.string "You three, go downstairs and deal with\n"
+	.string "these terrorists!\p"
+	.string "I have to get out of here as soon as\n"
+	.string "possible...$"
