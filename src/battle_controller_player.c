@@ -1390,8 +1390,9 @@ static void PlayerHandleGetMonData(void)
     u8 monToCheck;
     s32 i;
 
-    if (gBattleTypeFlags & BATTLE_TYPE_LEAGUE)
+    if (IsLeagueBattle())
         BackupPlayerPartyEXPAndSetAllToLv50();
+
     if (gBattleResources->bufferA[gActiveBattler][2] == 0)
     {
         size += CopyPlayerMonData(gBattlerPartyIndexes[gActiveBattler], monData);

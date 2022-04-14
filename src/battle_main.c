@@ -4961,7 +4961,7 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
         FreeBattleResources();
         FreeBattleSpritesData();
     }
-    if (gBattleTypeFlags & BATTLE_TYPE_LEAGUE)
+    if (IsLeagueBattle())
         RestorePlayerPartyEXPAndRestoreLvl();
 }
 
