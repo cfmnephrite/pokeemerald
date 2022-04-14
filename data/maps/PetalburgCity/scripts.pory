@@ -1,0 +1,41 @@
+mapscripts PetalburgCity_MapScripts {}
+
+script PetalburgCity_EventScript_Gentleman {
+	msgbox(PetalburgCity_Text_Gentleman, MSGBOX_NPC)
+	end
+}
+
+movement PetalburgCity_Movement_NormanLeaving {
+	face_up
+	walk_in_place_fastest_up
+	step_end
+}
+
+movement PetalburgCity_Movement_NormanEntersGym {
+	walk_up * 1
+	step_end
+}
+
+text PetalburgCity_Text_NormanIntro {
+	format (
+		"Hello. Are you a rookie Trainer?\p"
+		"My name is Norman. I'm the Gym Leader in this town.\p"
+		"... ... ...\p"
+		"Ah! So you're that Trainer my kid was talking about!\p"
+		"{PLAYER}, right?\p"
+		"Those Rockets... They are all over the news nowadays.\p"
+		"It's a mystery what those guys could be up to.\p"
+		"This world is changing, but young people like you and Brendan are the hope for this society.\p"
+		"Anyway! I love good fights, and after hearing of your feat, I'd really be glad of taking you as a challenger!\p"
+		"Take your time. If you want to give it a go, the guide inside will happily explain what you need.\p"
+		"I hope to see you soon!"
+	)
+}
+
+text PetalburgCity_Text_Gentleman {
+	format (
+		"Bah! I don't won't to hear about those immigrants anymore!\p"
+		"Actually, I don't even want to see them!\p"
+		"I don't trust them..."
+	)
+}

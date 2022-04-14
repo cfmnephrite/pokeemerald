@@ -50,7 +50,7 @@ AquaHideout_B2F_EventScript_SubmarineEscape:: @ 8233E25
 	waitmovement 0
 	msgbox AquaHideout_B2F_Text_MattPostBattle, MSGBOX_DEFAULT
 	setflag FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE
-	setflag FLAG_HIDE_LILYCOVE_CITY_AQUA_GRUNTS
+	setflag FLAG_UNUSED_0x50
 	release
 	end
 

@@ -89,9 +89,9 @@ MeteorFalls_1F_1R_EventScript_MagmaStealsMeteoriteScene:: @ 822BD5F
 	removeobject LOCALID_ARCHIE
 	removeobject LOCALID_AQUA_GRUNT_1
 	removeobject LOCALID_AQUA_GRUNT_2
-	setflag FLAG_HIDE_ROUTE_112_TEAM_MAGMA
+	setflag FLAG_UNUSED_0x50
 	setflag FLAG_MET_ARCHIE_METEOR_FALLS
-	setflag FLAG_HIDE_FALLARBOR_TOWN_BATTLE_TENT_SCOTT
+	setflag FLAG_UNUSED_0x50
 	setvar VAR_METEOR_FALLS_STATE, 1
 	releaseall
 	end

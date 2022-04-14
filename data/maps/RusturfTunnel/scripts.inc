@@ -353,7 +353,7 @@ RusturfTunnel_EventScript_Grunt:: @ 822D0C2
 	setflag FLAG_RECOVERED_DEVON_GOODS
 	setvar VAR_RUSTBORO_CITY_STATE, 4
 	setvar VAR_BRINEY_HOUSE_STATE, 1
-	setflag FLAG_HIDE_ROUTE_116_MR_BRINEY
+	setflag FLAG_UNUSED_0x50
 	release
 	end
 

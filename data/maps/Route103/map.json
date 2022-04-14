@@ -49,7 +49,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route103_EventScript_Rival",
-      "flag": "FLAG_HIDE_ROUTE_103_RIVAL"
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_WOMAN_2",
@@ -165,8 +165,8 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "ProfBirch_EventScript_RatePokedexOrRegister",
-      "flag": "FLAG_HIDE_ROUTE_103_BIRCH"
+      "script": "ProfBirch_EventScript_AskRatePokedex",
+      "flag": "FLAG_UNUSED_0x50"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_POKEFAN_M",
@@ -295,7 +295,9 @@
       "dest_warp_id": 0
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+
+  ],
   "bg_events": [
     {
       "type": "sign",

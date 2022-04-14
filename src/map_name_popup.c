@@ -207,7 +207,7 @@ bool8 sub_80D47D4(void)
 
 void ShowMapNamePopup(void)
 {
-    if (FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE)
+    if (FlagGet(FLAG_UNUSED_0x50) != TRUE)
     {
         if (!FuncIsActiveTask(Task_MapNamePopUpWindow))
         {

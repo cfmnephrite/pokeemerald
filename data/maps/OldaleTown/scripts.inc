@@ -286,7 +286,7 @@ OldaleTown_EventScript_RivalFinish:: @ 81E911A
 	waitmovement 0
 	removeobject LOCALID_RIVAL
 	setvar VAR_OLDALE_RIVAL_STATE, 2
-	setflag FLAG_HIDE_OLDALE_TOWN_RIVAL
+	setflag FLAG_UNUSED_0x50
 	releaseall
 	end
 

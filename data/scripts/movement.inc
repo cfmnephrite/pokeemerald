@@ -6,6 +6,26 @@ Common_Movement_ExclamationMark: @ 8272598
 	emote_exclamation_mark
 	step_end
 
+Common_Movement_ExclamationMarkLookUp:
+	emote_exclamation_mark
+	face_up
+	step_end
+
+Common_Movement_ExclamationMarkLookDown:
+	emote_exclamation_mark
+	face_down
+	step_end
+
+Common_Movement_ExclamationMarkLookLeft:
+	emote_exclamation_mark
+	face_left
+	step_end
+
+Common_Movement_ExclamationMarkLookRight:
+	emote_exclamation_mark
+	face_right
+	step_end
+
 Common_Movement_Delay48: @ 827259A
 	delay_16
 	delay_16
@@ -56,7 +76,11 @@ Common_Movement_FaceUp: @ 82725B2
 	face_up
 	step_end
 
-Common_Movement_WalkInPlaceDown: @ 82725B4
+Common_Movement_WalkInPlaceUp:
+	walk_in_place_up
+	step_end
+
+Common_Movement_WalkInPlaceDown:
 	walk_in_place_down
 	step_end
 

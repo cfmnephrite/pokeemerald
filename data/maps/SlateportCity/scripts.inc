@@ -36,7 +36,7 @@ SlateportCity_OnTransition: @ 81DCC6C
 SlateportCity_EventScript_EnterSlateport:: @ 81DCC8D
 	setflag FLAG_VISITED_SLATEPORT_CITY
 	setvar VAR_CONTEST_HALL_STATE, 0
-	setflag FLAG_HIDE_SLATEPORT_CITY_CONTEST_REPORTER
+	setflag FLAG_UNUSED_0x50
 	return
 
 SlateportCity_EventScript_MovePeopleForSternInterview:: @ 81DCC99
@@ -57,7 +57,7 @@ SlateportCity_EventScript_MovePeopleForSternInterview:: @ 81DCC99
 	return
 
 SlateportCity_EventScript_SetReadyForScottScene:: @ 81DCCE7
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	getplayerxy VAR_0x8004, VAR_0x8005
 	compare VAR_0x8004, 30
 	goto_if_eq SlateportCity_EventScript_MoveScottLeft
@@ -104,7 +104,7 @@ SlateportCity_EventScript_ScottScene:: @ 81DCD1C
 	removeobject LOCALID_SCOTT
 	setobjectxyperm LOCALID_SCOTT, 10, 12
 	setobjectmovementtype LOCALID_SCOTT, MOVEMENT_TYPE_FACE_DOWN
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_SLATEPORT_OUTSIDE_MUSEUM_STATE, 2
 	addvar VAR_SCOTT_STATE, 1
 	releaseall
@@ -628,10 +628,10 @@ SlateportCity_EventScript_CaptStern:: @ 81DD1F8
 	applymovement OBJ_EVENT_ID_PLAYER, SlateportCity_Movement_PlayerEnterHarbor
 	waitmovement 0
 	removeobject LOCALID_CAPT_STERN
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_CAPTAIN_STERN
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_SUBMARINE_SHADOW
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_AQUA_GRUNT
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_ARCHIE
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_SLATEPORT_CITY_STATE, 2
 	warp MAP_SLATEPORT_CITY_HARBOR, 255, 11, 14
 	waitstate

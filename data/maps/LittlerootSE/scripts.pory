@@ -1,0 +1,164 @@
+const OBJ_EVENT_ID_MAGMA_GRUNT_1	=	3
+const OBJ_EVENT_ID_MAGMA_GRUNT_2	=	4
+const OBJ_EVENT_ID_MAGMA_GRUNT_3	=	5
+const OBJ_EVENT_ID_ANABEL_1 		=	7
+const OBJ_EVENT_ID_ANABEL_2 		=	9
+const OBJ_EVENT_ID_ANABEL_3 		=	10
+const OBJ_EVENT_ID_ANABEL_4 		=	11
+const OBJ_EVENT_ID_ANABEL_5 		=	12
+const OBJ_EVENT_ID_AQUA_GRUNT_1		=	13
+const OBJ_EVENT_ID_AQUA_GRUNT_2		=	14
+const OBJ_EVENT_ID_AQUA_GRUNT_3		=	15
+const OBJ_EVENT_ID_AQUA_GRUNT_4		=	16
+
+mapscripts LittlerootSE_MapScripts {}
+
+script LittlerootSE_MagmaRallyTrigger {
+	lockall
+	goto(LittlerootSE_MagmaRally)
+	end
+}
+
+script LittlerootSE_MagmaRally {
+	msgbox(LittlerootSE_WeAreTeamMagma, MSGBOX_DEFAULT)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_1)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_2)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_3)
+	addobject(OBJ_EVENT_ID_AQUA_GRUNT_4)
+	msgbox("???: Hold it right there!")
+	waitmessage
+	playse(SE_PIN)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_1, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_2, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_3, Common_Movement_QuestionMark)
+	applymovement(OBJ_EVENT_ID_ANABEL_1, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_2, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_3, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_4, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_ANABEL_5, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_1, LittlerootSE_Movement_Grunt1GoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_2, LittlerootSE_Movement_OtherGruntsGoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_3, LittlerootSE_Movement_OtherGruntsGoungUp)
+	applymovement(OBJ_EVENT_ID_AQUA_GRUNT_4, LittlerootSE_Movement_OtherGruntsGoungUp)
+	msgbox(LittlerootSE_WeAreTeamAqua, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_MAGMA_GRUNT_1, Common_Movement_WalkInPlaceFastestDown)
+	msgbox(LittlerootSE_YouCowards, MSGBOX_DEFAULT)
+	applymovement(OBJ_EVENT_ID_ANABEL_1, LittlerootSE_Movement_CrowdDispersing1)
+	applymovement(OBJ_EVENT_ID_ANABEL_2, LittlerootSE_Movement_CrowdDispersing2)
+	applymovement(OBJ_EVENT_ID_ANABEL_3, LittlerootSE_Movement_CrowdDispersing3)
+	applymovement(OBJ_EVENT_ID_ANABEL_4, LittlerootSE_Movement_CrowdDispersing4)
+	applymovement(OBJ_EVENT_ID_ANABEL_5, LittlerootSE_Movement_CrowdDispersing5)
+	removeobject(OBJ_EVENT_ID_ANABEL_1)
+	removeobject(OBJ_EVENT_ID_ANABEL_2)
+	removeobject(OBJ_EVENT_ID_ANABEL_3)
+	removeobject(OBJ_EVENT_ID_ANABEL_4)
+	removeobject(OBJ_EVENT_ID_ANABEL_5)
+	msgbox(LittlerootSE_AreYouWithUsOrWithThem, MSGBOX_DEFAULT)
+	multichoice(0, 0, MULTI_AQUA_VS_MAGMA, FALSE)
+	switch(var(VAR_RESULT)){
+		case 0:
+			msgbox(LittlerootSE_SideWithAqua, MSGBOX_DEFAULT)
+		case 1:
+			msgbox(LittlerootSE_SideWithMagma, MSGBOX_DEFAULT)
+		case 2:
+			warp(MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB, 255, 6, 5)
+		}
+	release
+	end
+}
+	
+movement LittlerootSE_Movement_Grunt1GoungUp {
+	walk_up * 6
+	step_end
+}
+
+movement LittlerootSE_Movement_OtherGruntsGoungUp {
+	walk_up * 6
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing1 {
+	walk_fastest_right * 3
+	walk_fastest_down * 4
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing2 {
+	walk_fastest_left * 1
+	walk_fastest_down * 4
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing3 {
+	walk_fastest_left * 7
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing4 {
+	walk_fastest_left * 2
+	walk_fastest_up * 6
+	step_end
+}
+
+movement LittlerootSE_Movement_CrowdDispersing5 {
+	walk_fastest_right * 1
+	walk_fastest_up * 7
+	step_end
+}
+
+text LittlerootSE_WeAreTeamMagma {
+	format(
+		"Magma Grunt 1: Comrades! We live in desperate times!\p"
+		"Some of you have escaped from horrific violence.\p"
+		"Some of you have fled from the rising waters.\p"
+		"And some have been forced here by drought and famine.\p"
+		"We can't change the past, but the future is ours!\p"
+		"We must work together to build a better, fairer society!\p"
+		"We shall overthrow our corrupt, failing governments!\p"
+		"We can share resources, build shelters, schools, and hospitals so that everyone has a chance for a comfortable life.\p"
+		"We can no longer let the elite exploit us while they ravage our planet.\p"
+		"In time, science will help us to undo the damage."
+	)
+}
+
+text LittlerootSE_WeAreTeamAqua {
+	format(
+		"Aqua Grunt 1: What a load of nonsense. Surely you people aren't buying this?\p"
+		"You're all here because you are stronger than the rest.\p"
+		"Because you had the courage and determination to fight your way here.\p"
+		"Our planet has been ruined by the greedy, the weak and the faithless.\p"
+		"Don't give up your fight to join them and follow a bunch of spineless hypocrites.\p"
+		"No matter what these criminals might tell you, the end is near.\p"
+		"The heavens shall open and a great flood shall sweep the Earth.\p"
+		"The only path of salvation is through us - through Aqua!"
+	)
+}
+
+text LittlerootSE_YouCowards {
+	format(
+		"Magma Grunt 2: The words of these deranged bigots are meaningless!\p"
+		"You, Aqua, don't want to save anyone but your supporters.\p"
+		"You call us criminals, while you pigs stuff your pockets with dirty money!\p"
+		"Aqua Grunt 2: We're not here to argue with you violent thugs.\p"
+		"You should leave, you pathetic bleeding hearts!"
+	)
+}
+
+text LittlerootSE_AreYouWithUsOrWithThem {
+	format(
+		"Magma Grunt 1: Who are you? Are you with us or are you with them?"
+	)
+}
+
+text LittlerootSE_SideWithAqua {
+	format(
+		"lol"
+	)
+}
+
+text LittlerootSE_SideWithMagma {
+	format(
+		"lol"
+	)
+}

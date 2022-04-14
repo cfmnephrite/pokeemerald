@@ -28,15 +28,15 @@ NewMauville_Inside_OnTransition: @ 823741B
 	end
 
 NewMauville_Inside_EventScript_ShowVoltorb1:: @ 8237441
-	clearflag FLAG_HIDE_NEW_MAUVILLE_VOLTORB_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 NewMauville_Inside_EventScript_ShowVoltorb2:: @ 8237445
-	clearflag FLAG_HIDE_NEW_MAUVILLE_VOLTORB_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 NewMauville_Inside_EventScript_ShowVoltorb3:: @ 8237449
-	clearflag FLAG_HIDE_NEW_MAUVILLE_VOLTORB_3
+	clearflag FLAG_UNUSED_0x50
 	return
 
 NewMauville_Inside_OnLoad: @ 823744D

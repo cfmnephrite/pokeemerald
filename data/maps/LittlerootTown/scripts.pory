@@ -1,0 +1,55 @@
+mapscripts LittlerootTown_MapScripts {
+	MAP_SCRIPT_ON_TRANSITION {
+		if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+			setweather(WEATHER_SHADE)
+		}
+	}
+}
+
+script LittlerootTown_EventScript_CheckNextDoorForceMovement {
+	if (var(VAR_LITTLEROOT_INTRO_STATE) == 1) {
+		msgbox(gText_BetterCheckNextDoor)
+		closemessage
+		applymovement(OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp)
+		waitmovement(0)
+	} else {
+		setvar(VAR_LITTLEROOT_INTRO_STATE, 2)
+	}
+	releaseall
+	end
+}
+
+text gText_BetterCheckNextDoor {
+	format("Better check what's happening next door...")
+}
+
+script LittlerootTown_EventScript_FatMan {
+	msgbox("If you use a PC at a Pokémon Centre,\n"
+			"you can store up to 540 monsters!\p"
+			"The power of science is staggering!")
+	end
+}
+
+script LittlerootTown_EventScript_Boy{
+	msgbox(LittlerootTown_Text_BirchSpendsDaysInLab)
+	end
+}
+
+text LittlerootTown_Text_BirchSpendsDaysInLab {
+	"Prof. Birch spends days in his Lab\n"
+	"studying, then he'll suddenly go out in\l"
+	"the wild to do more research…\p"
+	"When does he spend time at home?"
+}
+
+script LittlerootTown_EventScript_Twin {
+	msgbox("Are you going to catch POKéMON?\n"
+			"Good luck!")
+	end
+}
+
+script LittlerootTown_EventScript_BirchsLabSign {
+	msgbox("BIRCH LABORATORY\n"
+			"Monster Research")
+}
+

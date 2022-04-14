@@ -1,0 +1,133 @@
+const OBJ_EVENT_ID_NORMAN = 12
+
+mapscripts PetalburgCity_Gym_MapScripts {}
+
+script PetalburgCity_Gym_EventScript_Norman {
+	lock
+	faceplayer
+	msgbox(PetalburgCity_Gym_NormanIntro, MSGBOX_DEFAULT)
+	release
+	end
+}
+
+script PetalburgCity_Gym_EventScript_GymGuide {
+	lock
+	faceplayer
+	msgbox(format(
+		"Welcome to Petalburg Gym!\n"
+		"Do you have any questions?"
+	))
+	multichoice(0, 0, MULTI_PETALBURG_GYM_GUIDE, FALSE)
+	switch(var(VAR_RESULT)){
+		case 0:
+			msgbox(PetalburgCity_Gym_TheGymSystem, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 1:
+			msgbox(PetalburgCity_Gym_TheNormalType, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 2:
+			msgbox(format("Feel free to ask if you have any questions!"))
+		}
+	release
+	end
+}
+
+script PetalburgCity_Gym_EventScript_GymGuideLoop {
+	msgbox(format(
+		"Is there something else you would like to ask?"
+	))
+	multichoice(0, 0, MULTI_PETALBURG_GYM_GUIDE, FALSE)
+	switch(var(VAR_RESULT)){
+		case 0:
+			msgbox(PetalburgCity_Gym_TheGymSystem, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 1:
+			msgbox(PetalburgCity_Gym_TheNormalType, MSGBOX_DEFAULT)
+			waitmessage
+			goto(PetalburgCity_Gym_EventScript_GymGuideLoop)
+		case 2:
+			msgbox(format("Feel free to ask if you have any questions!"))
+		}
+	release
+	end
+}
+
+script PetalburgCity_Gym_EventScript_LeftGymStatue {
+	lock
+	if (!flag(FLAG_BADGE05_GET)) { 
+		msgbox(PetalburgCity_Gym_GymStatue, MSGBOX_DEFAULT)
+		release
+		end
+	} else {
+		msgbox(PetalburgCity_Gym_GymStatueCertified, MSGBOX_DEFAULT)
+		release
+		end
+	}
+}
+
+script PetalburgCity_Gym_EventScript_RightGymStatue {
+	lock
+	if (!flag(FLAG_BADGE05_GET)) { 
+		msgbox(PetalburgCity_Gym_GymStatue, MSGBOX_DEFAULT)
+		release
+		end
+	} else {
+		msgbox(PetalburgCity_Gym_GymStatueCertified, MSGBOX_DEFAULT)
+		release
+		end
+	}
+}
+
+text PetalburgCity_Gym_NormanIntro {
+	format (
+		"Hello. Are you a rookie Trainer?\p"
+		"My name is Norman. I'm the Gym Leader in this town.\p"
+		"... ... ...\p"
+		"Ah! So you're that Trainer my kid was talking about!\p"
+		"{PLAYER}, right?\p"
+		"Those Rockets... They are all over the news nowadays.\p"
+		"It's a mystery what those guys could be up to.\p"
+		"This world is changing, but young people like you and Brendan are the hope for this society.\p"
+		"Anyway! I love good fights, and after hearing of your feat, I'd really be glad of taking you as a challenger!\p"
+		"Take your time. If you want to give it a go, the guide inside will happily explain what you need.\p"
+		"I hope to see you soon!"
+	)
+}
+
+text PetalburgCity_Gym_TheGymSystem {
+	"There are eight Gyms in the Hoenn\n"
+	"region.\p"
+	"In those Gyms, Trainers' skills are put\n"
+	"to the test against Gym Leaders.\p"
+	"You may challenge Gym Leaders and\n"
+	"obtain their Badges in any order.\p"
+	"Earning all eight Badges awards you\n"
+	"with the right of challenging\l"
+	"the prestigious Hoenn League!"
+}
+
+text PetalburgCity_Gym_TheNormalType {
+	"The Normal type is basically an\n"
+	"all-rounder type, with no notable\l"
+	"strength or weakness.\p"
+	"Unlike other Gym Leaders in Hoenn,\n"
+	"our Norman is a traditionalist.\p"
+	"He doesn't carry any wild card to cover\n"
+	"his type's weaknesses, preferring to\l"
+	"stick with his speciality type.\p"
+	"Don't think even for a moment that he\n"
+	"will go down easily, though!"
+}
+
+text PetalburgCity_Gym_GymStatue {
+	"Petalburg City Gym"
+}	
+
+text PetalburgCity_Gym_GymStatueCertified {
+	"Petalburg City Gym\p"
+	"Norman's Certified Trainers:\n"
+	"{PLAYER}"
+}

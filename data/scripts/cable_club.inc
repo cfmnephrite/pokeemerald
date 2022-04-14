@@ -13,11 +13,11 @@ CableClub_EventScript_HideOrShowMysteryGiftMan:: @ 8276AD5
 	end
 
 CableClub_EventScript_ShowMysteryGiftMan:: @ 8276AFB
-	clearflag FLAG_HIDE_POKEMON_CENTER_2F_MYSTERY_GIFT_MAN
+	clearflag FLAG_UNUSED_0x50
 	return
 
 CableClub_EventScript_HideMysteryGiftMan:: @ 8276AFF
-	setflag FLAG_HIDE_POKEMON_CENTER_2F_MYSTERY_GIFT_MAN
+	setflag FLAG_UNUSED_0x50
 	return
 
 CableClub_EventScript_MysteryGiftMan:: @ 8276B03

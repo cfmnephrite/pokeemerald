@@ -6,22 +6,22 @@ MossdeepCity_Gym_MapScripts:: @ 8220800
 
 @ All the below checks are leftover from RS. FLAG_MOSSDEEP_GYM_SWITCH_X is never set
 MossdeepCity_Gym_OnLoad: @ 8220806
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_1, MossdeepCity_Gym_EventScript_SetSwitch1Metatiles
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_SetSwitch1Metatiles
 	goto MossdeepCity_Gym_EventScript_CheckSwitch2
 	end
 
 MossdeepCity_Gym_EventScript_CheckSwitch2:: @ 8220815
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_2, MossdeepCity_Gym_EventScript_SetSwitch2Metatiles
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_SetSwitch2Metatiles
 	goto MossdeepCity_Gym_EventScript_CheckSwitch3
 	end
 
 MossdeepCity_Gym_EventScript_CheckSwitch3:: @ 8220824
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_3, MossdeepCity_Gym_EventScript_SetSwitch3Metatiles
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_SetSwitch3Metatiles
 	goto MossdeepCity_Gym_EventScript_CheckSwitch4
 	end
 
 MossdeepCity_Gym_EventScript_CheckSwitch4:: @ 8220833
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_4, MossdeepCity_Gym_EventScript_SetSwitch4Metatiles
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_SetSwitch4Metatiles
 	end
 
 @ All the below set metatile scripts are leftover from RS and are functionally unused
@@ -65,18 +65,18 @@ MossdeepCity_Gym_EventScript_TateAndLizaDefeated:: @ 82208D1
 	msgbox MossdeepCity_Gym_Text_ExplainMindBadgeTakeThis, MSGBOX_DEFAULT
 	setflag FLAG_DEFEATED_MOSSDEEP_GYM
 	setflag FLAG_BADGE07_GET
-	setflag FLAG_HIDE_AQUA_HIDEOUT_GRUNTS
-	clearflag FLAG_HIDE_SLATEPORT_CITY_STERNS_SHIPYARD_MR_BRINEY
-	clearflag FLAG_UNKNOWN_0x393
+	setflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_0x8008, 7
 	call Common_EventScript_SetGymTrainers
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_PATRONS
-	clearflag FLAG_HIDE_MOSSDEEP_CITY_TEAM_MAGMA
-	clearflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_1F_TEAM_MAGMA
-	clearflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_2F_TEAM_MAGMA
-	clearflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_2F_STEVEN
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	setvar VAR_MOSSDEEP_CITY_STATE, 1
-	setflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_1F_STEVEN
+	setflag FLAG_UNUSED_0x50
 	setvar VAR_MOSSDEEP_SPACE_CENTER_STATE, 1
 	call MossdeepCity_Gym_EventScript_GiveCalmMind
 	closemessage
@@ -115,8 +115,8 @@ MossdeepCity_Gym_EventScript_TateAndLizaRematch:: @ 822097E
 @ All the below switch scripts are leftover from RS and are functionally unused
 MossdeepCity_Gym_EventScript_Switch1:: @ 8220999
 	lockall
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_1, MossdeepCity_Gym_EventScript_ClearSwitch1
-	setflag FLAG_MOSSDEEP_GYM_SWITCH_1
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_ClearSwitch1
+	setflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 5, 5, METATILE_RS_MossdeepGym_RedArrow_Right, 0
@@ -131,7 +131,7 @@ MossdeepCity_Gym_EventScript_DrawMapAfterSwitchUsed:: @ 82209C8
 	end
 
 MossdeepCity_Gym_EventScript_ClearSwitch1:: @ 82209D0
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_1
+	clearflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 5, 5, METATILE_RS_MossdeepGym_RedArrow_Left, 0
@@ -141,8 +141,8 @@ MossdeepCity_Gym_EventScript_ClearSwitch1:: @ 82209D0
 
 MossdeepCity_Gym_EventScript_Switch2:: @ 82209F5
 	lockall
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_2, MossdeepCity_Gym_EventScript_ClearSwitch2
-	setflag FLAG_MOSSDEEP_GYM_SWITCH_2
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_ClearSwitch2
+	setflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 8, 14, METATILE_RS_MossdeepGym_RedArrow_Right, 0
@@ -151,7 +151,7 @@ MossdeepCity_Gym_EventScript_Switch2:: @ 82209F5
 	end
 
 MossdeepCity_Gym_EventScript_ClearSwitch2:: @ 8220A24
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_2
+	clearflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 8, 14, METATILE_RS_MossdeepGym_RedArrow_Down, 0
@@ -161,8 +161,8 @@ MossdeepCity_Gym_EventScript_ClearSwitch2:: @ 8220A24
 
 MossdeepCity_Gym_EventScript_Switch3:: @ 8220A49
 	lockall
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_3, MossdeepCity_Gym_EventScript_ClearSwitch3
-	setflag FLAG_MOSSDEEP_GYM_SWITCH_3
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_ClearSwitch3
+	setflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 15, 17, METATILE_RS_MossdeepGym_RedArrow_Left, 0
@@ -171,7 +171,7 @@ MossdeepCity_Gym_EventScript_Switch3:: @ 8220A49
 	end
 
 MossdeepCity_Gym_EventScript_ClearSwitch3:: @ 8220A78
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_3
+	clearflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 15, 17, METATILE_RS_MossdeepGym_RedArrow_Right, 0
@@ -181,8 +181,8 @@ MossdeepCity_Gym_EventScript_ClearSwitch3:: @ 8220A78
 
 MossdeepCity_Gym_EventScript_Switch4:: @ 8220A9D
 	lockall
-	goto_if_set FLAG_MOSSDEEP_GYM_SWITCH_4, MossdeepCity_Gym_EventScript_ClearSwitch4
-	setflag FLAG_MOSSDEEP_GYM_SWITCH_4
+	goto_if_set FLAG_UNUSED_0x50, MossdeepCity_Gym_EventScript_ClearSwitch4
+	setflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 1, 23, METATILE_RS_MossdeepGym_RedArrow_Up, 0
@@ -191,7 +191,7 @@ MossdeepCity_Gym_EventScript_Switch4:: @ 8220A9D
 	end
 
 MossdeepCity_Gym_EventScript_ClearSwitch4:: @ 8220ACC
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_4
+	clearflag FLAG_UNUSED_0x50
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_Gym_Movement_WaitAfterSwitchUse
 	waitmovement 0
 	setmetatile 1, 23, METATILE_RS_MossdeepGym_RedArrow_Right, 0

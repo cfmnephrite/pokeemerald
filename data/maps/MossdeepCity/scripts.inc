@@ -10,10 +10,10 @@ MossdeepCity_MapScripts:: @ 81E4A96
 	.byte 0
 
 MossdeepCity_OnTransition: @ 81E4A9C
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_1
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_2
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_3
-	clearflag FLAG_MOSSDEEP_GYM_SWITCH_4
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	call_if_set FLAG_SYS_WEATHER_CTRL, Common_EventScript_SetAbnormalWeather
 	end
 
@@ -102,7 +102,7 @@ MossdeepCity_EventScript_TeamMagmaEnterSpaceCenter:: @ 81E4B41
 	removeobject LOCALID_GRUNT_4
 	delay 30
 	setvar VAR_MOSSDEEP_CITY_STATE, 2
-	setflag FLAG_HIDE_MOSSDEEP_CITY_TEAM_MAGMA
+	setflag FLAG_UNUSED_0x50
 	releaseall
 	end
 

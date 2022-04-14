@@ -315,7 +315,7 @@ void Task_HandlePorthole(u8 taskId)
         break;
     case EXIT_PORTHOLE:
         FlagClear(FLAG_DONT_TRANSITION_MUSIC);
-        FlagClear(FLAG_HIDE_MAP_NAME_POPUP);
+        FlagClear(FLAG_UNUSED_0x50);
         SetWarpDestinationToDynamicWarp(0);
         DoDiveWarp();
         DestroyTask(taskId);
@@ -348,7 +348,7 @@ void LookThroughPorthole(void)
 {
     FlagSet(FLAG_SYS_CRUISE_MODE);
     FlagSet(FLAG_DONT_TRANSITION_MUSIC);
-    FlagSet(FLAG_HIDE_MAP_NAME_POPUP);
+    FlagSet(FLAG_UNUSED_0x50);
     SetDynamicWarp(0, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, -1);
     TrySetPortholeWarpDestination();
     DoPortholeWarp();

@@ -13,7 +13,7 @@ BattleFrontier_OutsideWest_MapScripts:: @ 823D3E1
 
 BattleFrontier_OutsideWest_OnTransition: @ 823D3E7
 	setvar VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, 0
-	setflag FLAG_HIDE_BATTLE_TOWER_REPORTER
+	setflag FLAG_UNUSED_0x50
 	end
 
 BattleFrontier_OutsideWest_EventScript_FerryAttendant:: @ 823D3F0

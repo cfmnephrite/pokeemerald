@@ -25,7 +25,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route110_TrickHouseEntrance_EventScript_TrickMaster",
-      "flag": "FLAG_HIDE_TRICK_HOUSE_ENTRANCE_MAN"
+      "flag": "FLAG_UNUSED_0x50"
     }
   ],
   "warp_events": [

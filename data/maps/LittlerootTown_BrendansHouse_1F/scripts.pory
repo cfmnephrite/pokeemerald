@@ -1,0 +1,35 @@
+mapscripts LittlerootTown_BrendansHouse_1F_MapScripts {
+	MAP_SCRIPT_ON_LOAD: LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual
+}
+
+script LittlerootTown_BrendansHouse_1F_EventScript_ShowRunningShoesManual {
+	setmetatile(3, 7, METATILE_BrendansMaysHouse_BookOnTable, 1)
+	return
+}
+
+script EventScript_RunningShoesManual {
+	msgbox(PlayersHouse_1F_Text_RunningShoesManual, MSGBOX_SIGN)
+	end
+}
+
+text PlayersHouse_1F_Text_RunningShoesManual {
+	"It's the instruction booklet for the\n"
+	"RUNNING SHOES.\p"
+	"“Press the B Button to run while\n"
+	"wearing your RUNNING SHOES.\p"
+	"“Lace up your RUNNING SHOES and hit\n"
+	"the road running!”"
+}
+
+text PlayersHouse_1F_Text_TheresAMusicVideoOnTV {
+	"There is a music video on TV.\p"
+	"...\p"
+	"Never gonna give you up\n"
+	"Never gonna let you down\p"
+	"Naver gonna run around and\n"
+	"desert you\p"
+	"Never gonna make you cry\n"
+	"Never gonna say goodbye\p"
+	"Never gonna tell a lie\n"
+	"and hurt you..."
+}

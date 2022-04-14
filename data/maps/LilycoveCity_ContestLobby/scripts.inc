@@ -20,13 +20,13 @@ LilycoveCity_ContestLobby_EventScript_TryShowBlendMaster:: @ 821A227
 	getpricereduction POKENEWS_BLENDMASTER
 	compare VAR_RESULT, TRUE
 	goto_if_eq LilycoveCity_ContestLobby_EventScript_ShowBlendMaster
-	clearflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER_REPLACEMENT
-	setflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER
+	clearflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowBlendMaster:: @ 821A23C
-	setflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER_REPLACEMENT
-	clearflag FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER
+	setflag FLAG_UNUSED_0x50
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_OnFrame: @ 821A243
@@ -35,7 +35,7 @@ LilycoveCity_ContestLobby_OnFrame: @ 821A243
 	.2byte 0
 
 LilycoveCity_ContestLobby_EventScript_TryDoContestArtist:: @ 821A255
-	goto_if_set FLAG_HIDE_LILYCOVE_MUSEUM_CURATOR, LilycoveCity_ContestLobby_EventScript_ContestArtist
+	goto_if_set FLAG_UNUSED_0x50, LilycoveCity_ContestLobby_EventScript_ContestArtist
 	setvar VAR_LILYCOVE_CONTEST_LOBBY_STATE, 0
 	end
 
@@ -118,23 +118,23 @@ LilycoveCity_ContestLobby_EventScript_UpdateMuseumPatrons:: @ 821A360
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowPatron1:: @ 821A3A2
-	clearflag FLAG_HIDE_LILYCOVE_MUSEUM_PATRON_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowPatron2:: @ 821A3A6
-	clearflag FLAG_HIDE_LILYCOVE_MUSEUM_PATRON_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowPatron3:: @ 821A3AA
-	clearflag FLAG_HIDE_LILYCOVE_MUSEUM_PATRON_3
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowPatron4:: @ 821A3AE
-	clearflag FLAG_HIDE_LILYCOVE_MUSEUM_PATRON_4
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_ShowTourists:: @ 821A3B2
-	clearflag FLAG_HIDE_LILYCOVE_MUSEUM_TOURISTS
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_ContestLobby_EventScript_SetPaintingFlag:: @ 821A3B6
@@ -209,7 +209,7 @@ LilycoveCity_ContestLobby_Movement_ArtistReturnToPlayer: @ 821A41E
 	step_end
 
 LilycoveCity_ContestLobby_EventScript_TryDoLinkContestArtist:: @ 821A427
-	goto_if_set FLAG_HIDE_LILYCOVE_MUSEUM_CURATOR, LilycoveCity_ContestLobby_EventScript_LinkContestArtist
+	goto_if_set FLAG_UNUSED_0x50, LilycoveCity_ContestLobby_EventScript_LinkContestArtist
 	setvar VAR_LILYCOVE_CONTEST_LOBBY_STATE, 0
 	end
 
@@ -364,7 +364,7 @@ LilycoveCity_ContestLobby_EventScript_SetMasterContestType:: @ 821A5C9
 
 @ Functionally unused
 LilycoveCity_ContestLobby_EventScript_SetDebug:: @ 821A5CF
-	setflag FLAG_HIDE_LILYCOVE_MUSEUM_CURATOR
+	setflag FLAG_UNUSED_0x50
 	copyvar VAR_LILYCOVE_MUSEUM_2F_STATE, 1
 	additem ITEM_CONTEST_PASS
 	setvar VAR_0x800B, 8

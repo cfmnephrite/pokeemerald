@@ -1,0 +1,153 @@
+mapscripts LittleRootSW_MapScripts {}
+
+script LittlerootSW_EventScript_First_NPC {
+    msgbox(LittlerootSW_FirstNPC_Text, MSGBOX_NPC)
+}
+
+script LittlerootSW_EventScript_BoyMissingFamily {
+    msgbox(format("Não gosto daqui... Tenho saudades da minha família."), MSGBOX_NPC)
+}
+
+script LittlerootSW_EventScript_GuyaneseMan {
+    msgbox(LittlerootSW_GuyaneseMan_Text, MSGBOX_NPC)
+    applymovement(VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection)
+    waitmovement(0)
+    end
+}
+
+script LittlerootSW_EventScript_GuyaneseGirl {
+    msgbox(LittlerootSW_GuyaneseGirl_Text, MSGBOX_NPC)
+    applymovement(VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection)
+    waitmovement(0)
+    end
+}
+
+script LittlerootSW_EventScript_OldManOnBeach {
+    checkplayergender
+    if (var(VAR_RESULT) == MALE) {
+        msgbox(LittlerootSW_OldManOnBeach_Male_Text, MSGBOX_NPC)
+    }
+    else {
+        msgbox(LittlerootSW_OldManOnBeach_Female_Text, MSGBOX_NPC)
+    }
+}
+
+script LittlerootSW_EventScript_OldWomanOnBeach {
+    if (!flag(FLAG_GAVE_MONEY_TO_OLD_LADY_REFUGEE)) {
+        lock
+        faceplayer
+        msgbox(format("Oh, hello, young man! Are you a volunteer?"))
+        checkmoney(100, 0)
+        if (var(VAR_RESULT)) {
+            showmoneybox(0, 0, 0)
+            msgbox(format(
+                "Can you spare some money for an old lady? Just ¥100 will do!"
+            ))
+            multichoicedefault(20, 8, MULTI_YESNO, 0, 1)
+            if (var(VAR_RESULT) == 0) { // YES is 0, for some reason
+                removemoney(100, 0)
+                updatemoneybox(0, 0)
+                setflag(FLAG_GAVE_MONEY_TO_OLD_LADY_REFUGEE)
+                msgbox(LittlerootSW_OldWomanOnBeach_Text)
+                giveitem(ITEM_MOON_STONE)
+            }
+            else {
+                msgbox(format(
+                    "I see..."
+                ), MSGBOX_NPC)
+            }
+            hidemoneybox
+        }
+        release
+        end
+    }
+    else {
+        msgbox(format(
+            "Hello again, young man! How are you today?"
+        ), MSGBOX_NPC)
+    }
+}
+
+const BOY_OBJ_ID = 3
+const GRUNT_OBJ_ID = BOY_OBJ_ID + 1
+
+script LittlerootSW_EventScript_BoyAndMagmaGruntConversation {
+    lock
+    applymovement(BOY_OBJ_ID, Common_Movement_WalkInPlaceFastestRight)
+    waitmovement(0)
+    msgbox(format(
+        "Boy: Ne me dis pas d'être calme!\p"
+        "J'ai besoin de trouver mon Couaneton!\p"
+        "Je vous en prie, c'est tout ce qu'il me reste..."
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_WalkInPlaceLeft)
+    waitmovement(0)
+    msgbox(format(
+        "Volunter: Uh, calmez vous, s'il vous plaît!\p"
+        "Uh, let's see...\p"
+        "Nous allons trouver le monstre vous!"
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_FacePlayer)
+    waitmovement(0)
+    msgbox(format(
+        "Volunter: This boy can't find his monster.\p"
+        "I believe it's a Ducklett?\p"
+        "Keep an eye out for it, would you? Thanks!"
+    ))
+    applymovement(GRUNT_OBJ_ID, Common_Movement_FaceLeft)
+    waitmovement(0)
+    release
+    end
+}
+
+text LittlerootSW_OldWomanOnBeach_Text {
+    format(
+        "Oh, thank you, so generous!\p"
+        "Please, let me say thank you with this!"
+    )
+}
+
+text LittlerootSW_FirstNPC_Text {
+    format(
+        "¡Tú! ¡No somos criminales!\p"
+        "¡Solo queremos vivir y trabajar con seguridad!\p"
+        "¿Por qué su gobierno nos trata como animales?"
+    )
+}
+
+text LittlerootSW_GuyaneseMan_Text {
+    format(
+        "My daughter and I are from Guyana.\p"
+        "When I was a kid, we lived on the Essequibo in a little town called Bartica.\p"
+        "When the town sank, my family moved into the forest to find a new home.\p"
+        "But the Brazilian soldiers came and took the forest. They forced us back towards the coast.\p"
+        "I had to build a raft out of driftwood, and took my daughter with me onto the open sea.\p"
+        "It's a miracle that we arrived here..."
+    )
+}
+
+text LittlerootSW_GuyaneseGirl_Text {
+    format(
+        "When we left home, we had to leave everyone else behind...\p"
+        "We wait here every day, hoping to see our friends again."
+    )
+}
+
+text LittlerootSW_OldManOnBeach_Male_Text {
+    format(
+        "Buenos días, joven.\lWhere are you from?\p"
+        "My family used to own sugar plantations in Nicaragua.\p"
+        "When the revolutionaries took over, they seized the farmlands.\p"
+        "I lost everything..."
+    )
+}
+
+text LittlerootSW_OldManOnBeach_Female_Text {
+    format(
+        "Buenos días, jovencita.\lWhere are you from?\p"
+        "My family used to own sugar plantations in Nicaragua.\p"
+        "When the revolutionaries took over, they seized the farmlands.\p"
+        "I lost everything..."
+    )
+}
+

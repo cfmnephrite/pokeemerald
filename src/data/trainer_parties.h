@@ -12428,3 +12428,92 @@ static const struct TrainerMonNoItemDefaultMoves sParty_MayLinkPlaceholder[] = {
     .species = SPECIES_KYOGRE,
     }
 };
+
+static const struct TrainerMonNoItemDefaultMoves sParty_IntroGrunt1[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_ZUBAT,
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_IntroGrunt2[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_POOCHYENA,
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt1[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_POOCHYENA,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_ZUBAT,
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt2[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_POOCHYENA,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_CORPHISH,
+    }
+};
+
+static const struct TrainerMonNoItemCustomMoves sParty_PetalburgWoodsBrendan[] = {
+    {
+    .iv = 255,
+    .lvl = 0,
+    .species = SPECIES_GROVYLE,
+    .moves = {MOVE_DETECT, MOVE_MEGA_DRAIN, MOVE_LEECH_SEED, MOVE_DRAGON_PULSE}
+    },
+    {
+    .iv = 255,
+    .lvl = 0,
+    .species = SPECIES_TAILLOW,
+    .moves = {MOVE_AERIAL_ACE, MOVE_ROOST, MOVE_QUICK_GUARD, MOVE_HEADBUTT}
+    },
+    {
+    .iv = 255,
+    .lvl = 0,
+    .species = SPECIES_SLUGMA,
+    .moves = {MOVE_FLAMETHROWER, MOVE_EARTH_POWER, MOVE_WILL_O_WISP, MOVE_RECOVER}
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt3[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_GUMSHOOS,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_MURKROW,
+    }
+};
+
+static const struct TrainerMonNoItemDefaultMoves sParty_PetalburgWoodsGrunt4[] = {
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_SNUBBULL,
+    },
+    {
+    .iv = 0,
+    .lvl = 5,
+    .species = SPECIES_SEVIPER,
+    }
+};

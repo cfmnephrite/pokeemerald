@@ -74,67 +74,67 @@ GabbyAndTy_EventScript_MoveForBattle9:: @ 828CD8B
 	return
 
 GabbyAndTy_EventScript_HideAtRoute111_1:: @ 828CD96
-	setflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_1
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute111_1:: @ 828CD9A
-	clearflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute118_1:: @ 828CD9E
-	setflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_1
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute118_1:: @ 828CDA2
-	clearflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute120_1:: @ 828CDA6
-	setflag FLAG_HIDE_ROUTE_120_GABBY_AND_TY_1
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute120_1:: @ 828CDAA
-	clearflag FLAG_HIDE_ROUTE_120_GABBY_AND_TY_1
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute111_3:: @ 828CDAE
-	setflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_3
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute111_3:: @ 828CDB2
-	clearflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_3
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute118_2:: @ 828CDB6
-	setflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_2
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute118_2:: @ 828CDBA
-	clearflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute120_2:: @ 828CDBE
-	setflag FLAG_HIDE_ROUTE_120_GABBY_AND_TY_2
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute120_2:: @ 828CDC2
-	clearflag FLAG_HIDE_ROUTE_120_GABBY_AND_TY_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute111_2:: @ 828CDC6
-	setflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_2
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute111_2:: @ 828CDCA
-	clearflag FLAG_HIDE_ROUTE_111_GABBY_AND_TY_2
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_HideAtRoute118_3:: @ 828CDCE
-	setflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_3
+	setflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_ShowAtRoute118_3:: @ 828CDD2
-	clearflag FLAG_HIDE_ROUTE_118_GABBY_AND_TY_3
+	clearflag FLAG_UNUSED_0x50
 	return
 
 GabbyAndTy_EventScript_GabbyBattle1:: @ 828CDD6

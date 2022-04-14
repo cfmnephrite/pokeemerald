@@ -1,0 +1,27 @@
+LittlerootTown_RefugeeCamp_Entrance_MapScripts::
+	.byte 0
+
+
+LittlerootTown_RefugeeCamp_EventScript_PapersPlease::
+	goto_if_unset FLAG_ENTERED_REFUGEE_CAMP, LittlerootTown_RefugeeCamp_EventScript_PapersPlease_2
+LittlerootTown_RefugeeCamp_EventScript_PapersPlease_1:
+	release
+	end
+
+LittlerootTown_RefugeeCamp_EventScript_PapersPlease_2:
+	lock
+	applymovement 1, Common_Movement_WalkInPlaceRight
+	msgbox LittlerootTown_RefugeeCamp_EventScript_PapersPlease_Text_0
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceLeft
+	waitmovement 0
+	applymovement 1, Common_Movement_WalkInPlaceRight
+	msgbox LittlerootTown_RefugeeCamp_EventScript_PapersPlease_Text_1
+	setflag FLAG_ENTERED_REFUGEE_CAMP
+	goto LittlerootTown_RefugeeCamp_EventScript_PapersPlease_1
+
+
+LittlerootTown_RefugeeCamp_EventScript_PapersPlease_Text_0:
+	.string "Papers, please...$"
+
+LittlerootTown_RefugeeCamp_EventScript_PapersPlease_Text_1:
+	.string "OK, you can pass.$"

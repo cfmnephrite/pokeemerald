@@ -17,14 +17,14 @@ SlateportCity_Harbor_OnTransition: @ 820C983
 	end
 
 SlateportCity_Harbor_EventScript_ShowSSTidal:: @ 820C9A5
-	clearflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_SS_TIDAL
+	clearflag FLAG_UNUSED_0x50
 	return
 
 SlateportCity_Harbor_EventScript_ReadyAquaEscapeScene:: @ 820C9A9
 	savebgm MUS_ENCOUNTER_AQUA
 	setobjectxyperm LOCALID_CAPT_STERN, 12, 13
 	setobjectmovementtype LOCALID_CAPT_STERN, MOVEMENT_TYPE_FACE_LEFT
-	setflag FLAG_HIDE_SLATEPORT_CITY_HARBOR_PATRONS
+	setflag FLAG_UNUSED_0x50
 	return
 
 SlateportCity_Harbor_EventScript_AquaEscapeTrigger0:: @ 820C9BB
@@ -70,7 +70,7 @@ SlateportCity_Harbor_EventScript_AquaEscapeScene:: @ 820C9F5
 	removeobject LOCALID_SUBMARINE
 	setvar VAR_SLATEPORT_HARBOR_STATE, 2
 	setflag FLAG_MET_TEAM_AQUA_HARBOR
-	setflag FLAG_HIDE_LILCOVE_MOTEL_SCOTT
+	setflag FLAG_UNUSED_0x50
 	compare VAR_0x8008, 0
 	call_if_eq SlateportCity_Harbor_EventScript_SternApproachPlayer0
 	compare VAR_0x8008, 1
@@ -81,8 +81,8 @@ SlateportCity_Harbor_EventScript_AquaEscapeScene:: @ 820C9F5
 	call_if_eq SlateportCity_Harbor_EventScript_SternApproachPlayer
 	msgbox SlateportCity_Harbor_Text_CaptSternWhyStealMySubmarine, MSGBOX_DEFAULT
 	closemessage
-	setflag FLAG_HIDE_AQUA_HIDEOUT_1F_GRUNT_1_BLOCKING_ENTRANCE
-	setflag FLAG_HIDE_AQUA_HIDEOUT_1F_GRUNT_2_BLOCKING_ENTRANCE
+	setflag FLAG_UNUSED_0x50
+	setflag FLAG_UNUSED_0x50
 	copyobjectxytoperm LOCALID_CAPT_STERN
 	setobjectmovementtype LOCALID_CAPT_STERN, MOVEMENT_TYPE_FACE_RIGHT
 	releaseall

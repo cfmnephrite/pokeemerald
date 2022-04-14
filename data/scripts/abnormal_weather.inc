@@ -159,7 +159,7 @@ AbnormalWeather_EventScript_PlaceTilesRoute129East:: @ 8273CA6
 	return
 
 AbnormalWeather_EventScript_HideMapNamePopup:: @ 8273D13
-	setflag FLAG_HIDE_MAP_NAME_POPUP
+	setflag FLAG_UNUSED_0x50
 	return
 
 AbnormalWeather_StartKyogreWeather:: @ 8273D17
@@ -186,7 +186,7 @@ AbnormalWeather_EventScript_EndEventAndCleanup_2:: @ 8273D31
 	special DrawWholeMapView
 	setvar VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_NONE
 	setvar VAR_SHOULD_END_ABNORMAL_WEATHER, 0
-	clearflag FLAG_HIDE_MAP_NAME_POPUP
+	clearflag FLAG_UNUSED_0x50
 	fadescreenswapbuffers FADE_FROM_BLACK
 	releaseall
 	end

@@ -63,13 +63,22 @@
 #define MAP_UNDERWATER_ROUTE129 (54 | (0 << 8))
 #define MAP_UNDERWATER_ROUTE105 (55 | (0 << 8))
 #define MAP_UNDERWATER_ROUTE125 (56 | (0 << 8))
+#define MAP_LITTLEROOT_WEST     (57 | (0 << 8))
+#define MAP_LITTLE_ROOT_SW      (58 | (0 << 8))
+#define MAP_LITTLEROOT_SE       (59 | (0 << 8))
+#define MAP_ROUTE102NE          (60 | (0 << 8))
+#define MAP_ROUTE102NW          (61 | (0 << 8))
+#define MAP_ROUTE102W           (62 | (0 << 8))
 
 // Map Group 1
-#define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F    (0 | (1 << 8))
-#define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F    (1 | (1 << 8))
-#define MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F        (2 | (1 << 8))
-#define MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F        (3 | (1 << 8))
-#define MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB (4 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_1F     (0 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F     (1 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F         (2 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_MAYS_HOUSE_2F         (3 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_PROFESSOR_BIRCHS_LAB  (4 | (1 << 8))
+#define MAP_LITTLEROOT_TOWN_REFUGEE_CAMP_ENTRANCE (5 | (1 << 8))
+#define MAP_LITTLEROOT_BEACH_CAFE                 (6 | (1 << 8))
+#define MAP_LITTLEROOT_BEACH_RESORT1              (7 | (1 << 8))
 
 // Map Group 2
 #define MAP_OLDALE_TOWN_HOUSE1            (0 | (2 << 8))
@@ -133,6 +142,7 @@
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_1F (4 | (8 << 8))
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_2F (5 | (8 << 8))
 #define MAP_PETALBURG_CITY_MART              (6 | (8 << 8))
+#define MAP_PETALBURG_CITY_WALLYS_HOUSE2F    (7 | (8 << 8))
 
 // Map Group 9
 #define MAP_SLATEPORT_CITY_STERNS_SHIPYARD_1F      (0 | (9 << 8))

@@ -12,14 +12,14 @@ NavelRock_Top_OnTransition: @ 826911E
 
 NavelRock_Top_EventScript_HideHoOh:: @ 8269131
 	setvar VAR_TEMP_1, 1
-	setflag FLAG_HIDE_HO_OH
+	setflag FLAG_UNUSED_0x50
 	return
 
 NavelRock_Top_EventScript_TryShowHoOh:: @ 826913A
 	setvar VAR_TEMP_1, 1
 	goto_if_set FLAG_DEFEATED_HO_OH, Common_EventScript_NopReturn
 	setvar VAR_TEMP_1, 0
-	clearflag FLAG_HIDE_HO_OH
+	clearflag FLAG_UNUSED_0x50
 	return
 
 NavelRock_Top_OnResume: @ 8269151

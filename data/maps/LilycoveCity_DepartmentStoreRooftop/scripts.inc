@@ -11,11 +11,11 @@ LilycoveCity_DepartmentStoreRooftop_OnTransition: @ 822020D
 	end
 
 LilycoveCity_DepartmentStoreRooftop_EventScript_ShowSaleWoman:: @ 8220227
-	clearflag FLAG_HIDE_LILYCOVE_DEPARTMENT_STORE_ROOFTOP_SALE_WOMAN
+	clearflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_DepartmentStoreRooftop_EventScript_HideSaleWoman:: @ 822022B
-	setflag FLAG_HIDE_LILYCOVE_DEPARTMENT_STORE_ROOFTOP_SALE_WOMAN
+	setflag FLAG_UNUSED_0x50
 	return
 
 LilycoveCity_DepartmentStoreRooftop_EventScript_SaleWoman:: @ 822022F
