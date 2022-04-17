@@ -2975,6 +2975,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                         && !(gBattleTypeFlags &
                              (BATTLE_TYPE_FRONTIER
                               | BATTLE_TYPE_LINK
+                              | BATTLE_TYPE_LEAGUE
                               | BATTLE_TYPE_x2000000
                               | BATTLE_TYPE_SECRET_BASE)))
                     {
@@ -2983,6 +2984,7 @@ void SetMoveEffect(bool32 primary, u32 certain, u8 multistring)
                     else if (!(gBattleTypeFlags &
                           (BATTLE_TYPE_FRONTIER
                            | BATTLE_TYPE_LINK
+                           | BATTLE_TYPE_LEAGUE
                            | BATTLE_TYPE_x2000000
                            | BATTLE_TYPE_SECRET_BASE))
                         && (gWishFutureKnock.knockedOffMons[side] & gBitTable[gBattlerPartyIndexes[gBattlerAttacker]]))
@@ -3696,6 +3698,7 @@ static void Cmd_getexp(void)
               | BATTLE_TYPE_x2000000
               | BATTLE_TYPE_TRAINER_HILL
               | BATTLE_TYPE_FRONTIER
+              | BATTLE_TYPE_LEAGUE
               | BATTLE_TYPE_SAFARI
               | BATTLE_TYPE_BATTLE_TOWER)))
         {
@@ -11604,92 +11607,64 @@ static void Cmd_trysethelpinghand(void)
 
 static void Cmd_tryswapitems(void) // trick
 {
-    // opponent can't swap items with player in regular battles
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL
-        || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
-            && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                                  | BATTLE_TYPE_FRONTIER
-                                  | BATTLE_TYPE_SECRET_BASE
-                                  | BATTLE_TYPE_x2000000))))
+    u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
+    u8 sideTarget = GetBattlerSide(gBattlerTarget);
+
+    // you can't swap certain items
+    if (!CanBattlerGetOrLoseItem(gBattlerAttacker, gBattleMons[gBattlerAttacker].item)
+        || !CanBattlerGetOrLoseItem(gBattlerTarget, gBattleMons[gBattlerTarget].item))
     {
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
     }
+    // check if ability prevents swapping
+    else if (gBattleMons[gBattlerTarget].ability == ABILITY_STICKY_HOLD)
+    {
+        gBattlescriptCurrInstr = BattleScript_StickyHoldActivates;
+        gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
+        RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
+    }
+    // took a while, but all checks passed and items can be safely swapped
     else
     {
-        u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
-        u8 sideTarget = GetBattlerSide(gBattlerTarget);
+        u16 oldItemAtk, *newItemAtk;
 
-        // you can't swap items if they were knocked off in regular battles
-        if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                             | BATTLE_TYPE_FRONTIER
-                             | BATTLE_TYPE_SECRET_BASE
-                             | BATTLE_TYPE_x2000000))
-            && (gWishFutureKnock.knockedOffMons[sideAttacker] & gBitTable[gBattlerPartyIndexes[gBattlerAttacker]]
-                || gWishFutureKnock.knockedOffMons[sideTarget] & gBitTable[gBattlerPartyIndexes[gBattlerTarget]]))
-        {
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-        }
-        // can't swap if two pokemon don't have an item
-        // or if either of them is an enigma berry or a mail
-        else if ((gBattleMons[gBattlerAttacker].item == 0 && gBattleMons[gBattlerTarget].item == 0)
-                 || !CanBattlerGetOrLoseItem(gBattlerAttacker, gBattleMons[gBattlerAttacker].item)
-                 || !CanBattlerGetOrLoseItem(gBattlerAttacker, gBattleMons[gBattlerTarget].item)
-                 || !CanBattlerGetOrLoseItem(gBattlerTarget, gBattleMons[gBattlerTarget].item)
-                 || !CanBattlerGetOrLoseItem(gBattlerTarget, gBattleMons[gBattlerAttacker].item))
-        {
-            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-        }
-        // check if ability prevents swapping
-        else if (gBattleMons[gBattlerTarget].ability == ABILITY_STICKY_HOLD)
-        {
-            gBattlescriptCurrInstr = BattleScript_StickyHoldActivates;
-            gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
-            RecordAbilityBattle(gBattlerTarget, gLastUsedAbility);
-        }
-        // took a while, but all checks passed and items can be safely swapped
+        newItemAtk = &gBattleStruct->changedItems[gBattlerAttacker];
+        oldItemAtk = gBattleMons[gBattlerAttacker].item;
+        *newItemAtk = gBattleMons[gBattlerTarget].item;
+
+        gBattleMons[gBattlerAttacker].item = 0;
+        gBattleMons[gBattlerTarget].item = oldItemAtk;
+
+        gActiveBattler = gBattlerAttacker;
+        BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, newItemAtk);
+        MarkBattlerForControllerExec(gBattlerAttacker);
+
+        gActiveBattler = gBattlerTarget;
+        BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gBattlerTarget].item);
+        MarkBattlerForControllerExec(gBattlerTarget);
+
+        gBattleStruct->choicedMove[gBattlerTarget] = 0;
+        gBattleStruct->choicedMove[gBattlerAttacker] = 0;
+
+        gBattlescriptCurrInstr += 5;
+
+        PREPARE_ITEM_BUFFER(gBattleTextBuff1, *newItemAtk)
+        PREPARE_ITEM_BUFFER(gBattleTextBuff2, oldItemAtk)
+        UpdateUnburden();
+
+        if (oldItemAtk != 0 && *newItemAtk != 0)
+            gBattleCommunication[MULTISTRING_CHOOSER] = 2; // attacker's item -> <- target's item
+        else if (oldItemAtk == 0 && *newItemAtk != 0)
+            {
+                if (GetBattlerAbility(gBattlerAttacker) == ABILITY_UNBURDEN && gBattleResources->flags->flags[gBattlerAttacker] & RESOURCE_FLAG_UNBURDEN)
+                    gBattleResources->flags->flags[gBattlerAttacker] &= ~(RESOURCE_FLAG_UNBURDEN);
+
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0; // nothing -> <- target's item
+            }
         else
         {
-            u16 oldItemAtk, *newItemAtk;
-
-            newItemAtk = &gBattleStruct->changedItems[gBattlerAttacker];
-            oldItemAtk = gBattleMons[gBattlerAttacker].item;
-            *newItemAtk = gBattleMons[gBattlerTarget].item;
-
-            gBattleMons[gBattlerAttacker].item = 0;
-            gBattleMons[gBattlerTarget].item = oldItemAtk;
-
-            gActiveBattler = gBattlerAttacker;
-            BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, newItemAtk);
-            MarkBattlerForControllerExec(gBattlerAttacker);
-
-            gActiveBattler = gBattlerTarget;
-            BtlController_EmitSetMonData(0, REQUEST_HELDITEM_BATTLE, 0, 2, &gBattleMons[gBattlerTarget].item);
-            MarkBattlerForControllerExec(gBattlerTarget);
-
-            gBattleStruct->choicedMove[gBattlerTarget] = 0;
-            gBattleStruct->choicedMove[gBattlerAttacker] = 0;
-			
-
-            gBattlescriptCurrInstr += 5;
-
-            PREPARE_ITEM_BUFFER(gBattleTextBuff1, *newItemAtk)
-            PREPARE_ITEM_BUFFER(gBattleTextBuff2, oldItemAtk)
-			UpdateUnburden();
-
-            if (oldItemAtk != 0 && *newItemAtk != 0)
-                gBattleCommunication[MULTISTRING_CHOOSER] = 2; // attacker's item -> <- target's item
-            else if (oldItemAtk == 0 && *newItemAtk != 0)
-                {
-                    if (GetBattlerAbility(gBattlerAttacker) == ABILITY_UNBURDEN && gBattleResources->flags->flags[gBattlerAttacker] & RESOURCE_FLAG_UNBURDEN)
-                        gBattleResources->flags->flags[gBattlerAttacker] &= ~(RESOURCE_FLAG_UNBURDEN);
-
-                    gBattleCommunication[MULTISTRING_CHOOSER] = 0; // nothing -> <- target's item
-                }
-            else
-            {
-                CheckSetUnburden(gBattlerAttacker);
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1; // attacker's item -> <- nothing
-            }
+            CheckSetUnburden(gBattlerAttacker);
+            gBattleCommunication[MULTISTRING_CHOOSER] = 1; // attacker's item -> <- nothing
         }
     }
 }

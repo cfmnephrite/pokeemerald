@@ -6041,7 +6041,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
             friendshipLevel++;
 
         if ((event != FRIENDSHIP_EVENT_WALKING || !(Random() & 1))
-         && (event != FRIENDSHIP_EVENT_LEAGUE_BATTLE || IS_LEAGUE_BATTLE))
+         && (event != FRIENDSHIP_EVENT_LEAGUE_BATTLE || IsLeagueBattle()))
         {
             s8 mod = sFriendshipEventModifiers[event][friendshipLevel];
             if (mod > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
@@ -7264,8 +7264,8 @@ bool8 IsLeagueBattle(void)
     return ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
         && (gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_ELITE_FOUR
         || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_LEADER
-        || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION))
-        || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_TEACHER));
+        || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_TEACHER
+        || gTrainers[gTrainerBattleOpponent_A].trainerClass == TRAINER_CLASS_CHAMPION));
 }
 
 void BackupPlayerPartyEXPAndSetAllToLv50(void)

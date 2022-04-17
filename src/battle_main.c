@@ -53,6 +53,7 @@
 #include "constants/abilities.h"
 #include "constants/battle_config.h"
 #include "constants/battle_move_effects.h"
+#include "constants/battle_setup.h"
 #include "constants/battle_string_ids.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
@@ -1791,11 +1792,16 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u32 nameHash = 0, ppBonuses = 255;
     u32 personalityValue = Random32();
     s32 i, j;
-    u8 fixedIV, monsCount, desiredNature, natureShift;
+    u8 fixedIV, monsCount, desiredNature, natureShift, level;
     u8 monPP[MAX_MON_MOVES];
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
+
+    if (IsLeagueBattle())
+        level = 50;
+    else
+        level = gSaveBlock1Ptr->globalLevel;
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
                                                                         | BATTLE_TYPE_TRAINER_HILL)))
@@ -1945,7 +1951,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 }
             }
             CalculateMonStats(&party[i]);
-            SetMonData(&party[i], MON_DATA_LEVEL, &gSaveBlock1Ptr->globalLevel);
+            SetMonData(&party[i], MON_DATA_LEVEL, &level);
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
@@ -3927,6 +3933,7 @@ static void HandleTurnActionSelectionState(void)
                     break;
                 case B_ACTION_USE_ITEM:
                     if (gBattleTypeFlags & (BATTLE_TYPE_LINK
+                                            | BATTLE_TYPE_LEAGUE
                                             | BATTLE_TYPE_FRONTIER_NO_PYRAMID
                                             | BATTLE_TYPE_x2000000))
                     {
@@ -4822,6 +4829,7 @@ static void HandleEndTurn_BattleLost(void)
     }
     else
     {
+        gBattleCommunication[MULTIUSE_STATE] = (gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE && !VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE));
         gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
     }
 

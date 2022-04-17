@@ -694,7 +694,7 @@
 	.elseif \type == TRAINER_BATTLE_HILL
 		.4byte \pointer1 @ text
 		.4byte \pointer2 @ text
-	.elseif \type == TRAINER_BATTLE_LEAGUE_SINGLE
+	.elseif \type == TRAINER_BATTLE_VICTORY_TEXT_SINGLE
 		.4byte \pointer1 @ text
 		.4byte \pointer2 @ text
 	.endif
@@ -741,8 +741,8 @@
 	trainerbattle TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT, \trainer, 0, \lose_text
 	.endm
 
-	.macro trainerbattle_league_single trainer:req, lose_text:req, win_text:req
-	trainerbattle TRAINER_BATTLE_LEAGUE_SINGLE, \trainer, 0, \lose_text, \win_text
+	.macro trainerbattle_victory_text_single trainer:req, lose_text:req, win_text:req
+	trainerbattle TRAINER_BATTLE_VICTORY_TEXT_SINGLE, \trainer, 0, \lose_text, \win_text
 	.endm
 
 
