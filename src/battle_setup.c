@@ -249,11 +249,24 @@ static const struct TrainerBattleParameter sTrainerVictoryTextSingleBattleParams
     {&gTrainerBattleMode,           TRAINER_PARAM_LOAD_VAL_8BIT},
     {&gTrainerBattleOpponent_A,     TRAINER_PARAM_LOAD_VAL_16BIT},
     {&sTrainerObjectEventLocalId,   TRAINER_PARAM_LOAD_VAL_16BIT},
-    {&sTrainerAIntroSpeech,         TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerAIntroSpeech,         TRAINER_PARAM_LOAD_VAL_32BIT},
     {&sTrainerADefeatSpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
     {&sTrainerVictorySpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
     {&sTrainerCannotBattleSpeech,   TRAINER_PARAM_CLEAR_VAL_32BIT},
     {&sTrainerABattleScriptRetAddr, TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerBattleEndScript,      TRAINER_PARAM_LOAD_SCRIPT_RET_ADDR},
+};
+
+static const struct TrainerBattleParameter sTrainerVictoryTextSingleContinueScriptBattleParams[] =
+{
+    {&gTrainerBattleMode,           TRAINER_PARAM_LOAD_VAL_8BIT},
+    {&gTrainerBattleOpponent_A,     TRAINER_PARAM_LOAD_VAL_16BIT},
+    {&sTrainerObjectEventLocalId,   TRAINER_PARAM_LOAD_VAL_16BIT},
+    {&sTrainerAIntroSpeech,         TRAINER_PARAM_LOAD_VAL_32BIT},
+    {&sTrainerADefeatSpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
+    {&sTrainerVictorySpeech,        TRAINER_PARAM_LOAD_VAL_32BIT},
+    {&sTrainerCannotBattleSpeech,   TRAINER_PARAM_CLEAR_VAL_32BIT},
+    {&sTrainerABattleScriptRetAddr, TRAINER_PARAM_LOAD_VAL_32BIT},
     {&sTrainerBattleEndScript,      TRAINER_PARAM_LOAD_SCRIPT_RET_ADDR},
 };
 
@@ -1144,7 +1157,17 @@ const u8 *BattleSetup_ConfigureTrainerBattle(const u8 *data)
     {
     case TRAINER_BATTLE_VICTORY_TEXT_SINGLE:
         TrainerBattleLoadArgs(sTrainerVictoryTextSingleBattleParams, data);
-        return EventScript_DoNoIntroTrainerBattle;
+        if (sTrainerAIntroSpeech)
+            return EventScript_TryDoNormalTrainerBattle;
+        else
+            return EventScript_DoNoIntroTrainerBattle;
+    case TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT:
+    case TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC:
+        TrainerBattleLoadArgs(sTrainerVictoryTextSingleContinueScriptBattleParams, data);
+        if (sTrainerAIntroSpeech)
+            return EventScript_TryDoNormalTrainerBattle;
+        else
+            return EventScript_DoNoIntroTrainerBattle;
     case TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT:
         TrainerBattleLoadArgs(sOrdinaryNoIntroBattleParams, data);
         return EventScript_DoNoIntroTrainerBattle;
@@ -1489,7 +1512,8 @@ void SetUpTrainerEncounterMusic(void)
         trainerId = gTrainerBattleOpponent_B;
 
     if (gTrainerBattleMode != TRAINER_BATTLE_CONTINUE_SCRIPT_NO_MUSIC
-        && gTrainerBattleMode != TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE_NO_MUSIC)
+        && gTrainerBattleMode != TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE_NO_MUSIC
+        && gTrainerBattleMode != TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC)
     {
         switch (GetTrainerEncounterMusicId(trainerId))
         {

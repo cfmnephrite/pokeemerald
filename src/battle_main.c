@@ -4799,6 +4799,12 @@ static void HandleEndTurn_BattleWon(void)
     gBattleMainFunc = HandleEndTurn_FinishBattle;
 }
 
+#define IS_TRAINER_BATTLE_WITH_VICTORY_TEXT                                             \
+    (gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC  \
+     || gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT        \
+     || gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE)                       \
+
+
 static void HandleEndTurn_BattleLost(void)
 {
     gCurrentActionFuncId = 0;
@@ -4829,7 +4835,7 @@ static void HandleEndTurn_BattleLost(void)
     }
     else
     {
-        gBattleCommunication[MULTIUSE_STATE] = (gTrainerBattleMode == TRAINER_BATTLE_VICTORY_TEXT_SINGLE && !VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE));
+        gBattleCommunication[MULTIUSE_STATE] = (IS_TRAINER_BATTLE_WITH_VICTORY_TEXT && !VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE));
         gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
     }
 

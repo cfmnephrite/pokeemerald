@@ -697,6 +697,17 @@
 	.elseif \type == TRAINER_BATTLE_VICTORY_TEXT_SINGLE
 		.4byte \pointer1 @ text
 		.4byte \pointer2 @ text
+		.4byte \pointer3 @ text
+	.elseif \type == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT
+		.4byte \pointer1 @ text
+		.4byte \pointer2 @ text
+		.4byte \pointer3 @ text
+		.4byte \pointer4 @ event script
+	.elseif \type == TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC
+		.4byte \pointer1 @ text
+		.4byte \pointer2 @ text
+		.4byte \pointer3 @ text
+		.4byte \pointer4 @ event script
 	.endif
 	.endm
 
@@ -741,8 +752,14 @@
 	trainerbattle TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT, \trainer, 0, \lose_text
 	.endm
 
-	.macro trainerbattle_victory_text_single trainer:req, lose_text:req, win_text:req
-	trainerbattle TRAINER_BATTLE_VICTORY_TEXT_SINGLE, \trainer, 0, \lose_text, \win_text
+	.macro trainerbattle_victory_text_single trainer:req, intro_text:req, lose_text:req, win_text:req, event_script=FALSE, music=TRUE
+	.if \event_script == FALSE
+	trainerbattle TRAINER_BATTLE_VICTORY_TEXT_SINGLE, \trainer, 0, \intro_text, \lose_text, \win_text
+	.elseif \music == TRUE
+	trainerbattle TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT, \trainer, 0, \intro_text, \lose_text, \win_text, \event_script
+	.else
+	trainerbattle TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC, \trainer, 0, \intro_text, \lose_text, \win_text, \event_script
+	.endif
 	.endm
 
 

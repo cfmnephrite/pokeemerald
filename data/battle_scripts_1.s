@@ -4883,6 +4883,8 @@ BattleScript_LocalBattleLost::
 	jumpifbattletype BATTLE_TYPE_TRAINER_HILL, BattleScript_LocalBattleLostPrintTrainersWinText
 	jumpifhalfword CMP_EQUAL, gTrainerBattleOpponent_A, 0x400, BattleScript_LocalBattleLostEnd
 	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE, BattleScript_LocalBattleLostPrintTrainersWinText
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT, BattleScript_LocalBattleLostPrintTrainersWinText
+	jumpifhalfword CMP_EQUAL, gTrainerBattleMode, TRAINER_BATTLE_VICTORY_TEXT_SINGLE_CONTINUE_SCRIPT_NO_MUSIC, BattleScript_LocalBattleLostPrintTrainersWinText
 BattleScript_LocalBattleLostPrintWhiteOut::
 	printstring STRINGID_PLAYERWHITEOUT
 	waitmessage 0x40
@@ -4910,7 +4912,7 @@ BattleScript_LocalBattleLostDoTrainer2WinText::
 	waitstate
 	printstring STRINGID_TRAINER2WINTEXT
 BattleScript_LocalBattleLostEnd_::
-	jumpifbyte CMP_EQUAL, gBattleCommunication, 0x1, BattleScript_LocalBattleLostPrintWhiteOut
+	jumpifbyte CMP_EQUAL, gBattleCommunication, 0x1, BattleScript_LocalBattleLostPrintWhiteOut @victory text, but still have to white out
 	end2
 
 BattleScript_82DAA0B::

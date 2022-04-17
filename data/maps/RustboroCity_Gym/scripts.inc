@@ -2,13 +2,12 @@ RustboroCity_Gym_MapScripts:: @ 8212F30
 	.byte 0
 
 RustboroCity_Gym_EventScript_Roxanne:: @ 8212F31
-	trainerbattle_victory_text_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_Text_RoxanneVictory
-	// trainerbattle_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_RoxanneIntro, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_EventScript_RoxanneDefeated, NO_MUSIC
-	// specialvar VAR_RESULT, ShouldTryRematchBattle
-	// compare VAR_RESULT, TRUE
-	// goto_if_eq RustboroCity_Gym_EventScript_RoxanneRematch
-	// goto_if_unset FLAG_RECEIVED_TM39, RustboroCity_Gym_EventScript_GiveRockTomb
-	// msgbox RustboroCity_Gym_Text_RoxannePostBattle, MSGBOX_DEFAULT
+	trainerbattle_single TRAINER_ROXANNE_1, RustboroCity_Gym_Text_RoxanneIntro, RustboroCity_Gym_Text_RoxanneDefeat, RustboroCity_Gym_EventScript_RoxanneDefeated, NO_MUSIC
+	specialvar VAR_RESULT, ShouldTryRematchBattle
+	compare VAR_RESULT, TRUE
+	goto_if_eq RustboroCity_Gym_EventScript_RoxanneRematch
+	goto_if_unset FLAG_RECEIVED_TM39, RustboroCity_Gym_EventScript_GiveRockTomb
+	msgbox RustboroCity_Gym_Text_RoxannePostBattle, MSGBOX_DEFAULT
 	release
 	end
 
