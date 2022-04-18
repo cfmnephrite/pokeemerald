@@ -4,9 +4,12 @@
 #include "global.h"
 #include "data.h"
 #include "constants/trainers.h"
+#include "data/random_mons.h"
 
-#define RANDOM_MON_CHIMECHO_1     0
-#define RANDOM_MON_CHIMECHO_2     0
+enum {
+    RANDOM_MON_CHIMECHO_1,
+    RANDOM_MON_CHIMECHO_2,
+};
 
 enum {
     ABILITY_SLOT_0,
@@ -43,7 +46,7 @@ struct RandomMon
     u16 maxLevelReplace; // if above the "maxLevel", replace with this mon
     u8 happiness;
     u8 setCount;
-    struct RandomMonSet sets[RANDOM_MON_MAX_SETS];
+    const struct RandomMonSet *sets[RANDOM_MON_MAX_SETS];
 };
 
 extern const struct RandomMon gRandomMons[];

@@ -7,17 +7,17 @@ const struct RandomMon gRandomMons[] =
         .flags = 0,
         .maxLevel = 30,
         .maxLevelReplace = RANDOM_MON_CHIMECHO_2,
-        .happiness = 0xFF,
+        .happiness = MAX_FRIENDSHIP,
         .setCount = 2,
-        .sets = {sChimecho_1_1, sChimecho_1_2}
+        .sets = {&sChimecho_1_1, &sChimecho_1_2}
     },
     [RANDOM_MON_CHIMECHO_2] = {
         .species = SPECIES_CHIMECHO,
         .flags = 0,
-        .maxLevel = 100,
-        .maxLevelReplace = NULL,
-        .happiness = 0xFF,
+        .maxLevel = MAX_LEVEL,
+        .maxLevelReplace = 0,
+        .happiness = MAX_FRIENDSHIP,
         .setCount = 2,
-        .sets = {sChimecho_1_1, sChimecho_1_2}
+        .sets = {&sChimecho_1_1, &sChimecho_1_2}
     }
-}
+};

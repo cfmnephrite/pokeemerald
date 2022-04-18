@@ -1946,18 +1946,18 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                     u16 move;
                     u8 ev, iv, randomNum = CreateRandomNumberForTrainer(trainerNum);
                     struct RandomMon randomMon = gRandomMons[GetRandomMonForTrainer(trainerNum, randomNum)];
-                    struct RandomMonSet randomMonSet = randomMon.sets[randomNum % randomMon.setCount];
+                    const struct RandomMonSet *randomMonSet = randomMon.sets[randomNum % randomMon.setCount];
 
                     // Set the custom nature
-                    personalityValue += (randomMonSet.natures[randomNum & 0x80] - (personalityValue % 25));
+                    personalityValue += (randomMonSet->natures[!!(randomNum & 0x80)] - (personalityValue % 25));
                     CreateMon(&party[i], randomMon.species, 100, 31, TRUE, personalityValue, OT_ID_PRESET, Random32());
-                    SetMonData(&party[i], MON_DATA_HELD_ITEM, &randomMonSet.items[randomNum & 0x40]);
+                    SetMonData(&party[i], MON_DATA_HELD_ITEM, &randomMonSet->items[!!(randomNum & 0x40)]);
                     SetMonData(&party[i], MON_DATA_PP_BONUSES, &ppBonuses);
-                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &randomMonSet.abilityNums[randomNum & 0x20]);
+                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &randomMonSet->abilityNums[!!(randomNum & 0x20)]);
 
                     for (j = 0; j < MAX_MON_MOVES; j++)
                     {
-                        move = randomMonSet.moves[j][randomNum & (0x2 << j)];
+                        move = randomMonSet->moves[j][!!(randomNum & (0x2 << j))];
                         SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
                         monPP[j] = gBattleMoves[move].pp * 8 / 5;
                         SetMonData(&party[i], MON_DATA_PP1 + j, &monPP[j]);
@@ -1966,12 +1966,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                     for (j = 0; j < NUM_STATS; j++)
                     {
                         // Below Lv 50, evs/ivs of trainer mons are reduced by multiplying by (lvl / 50)
-                        ev = randomMonSet.evs[j];
-                        iv = randomMonSet.ivs[j];
+                        ev = randomMonSet->evs[j];
+                        iv = randomMonSet->ivs[j];
                         if (gSaveBlock1Ptr->globalLevel < 50)
                         {
                             ev = ev * gSaveBlock1Ptr->globalLevel / 50;
-                            iv = iv * gSaveBlock1Ptr->globalLevel / 50;
+                            iv = (iv / 2) + iv * gSaveBlock1Ptr->globalLevel / 100;
                         }
                         SetMonData(&party[i], MON_DATA_HP_EV + j, &ev);
                         SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);

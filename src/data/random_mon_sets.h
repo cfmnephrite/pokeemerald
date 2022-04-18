@@ -9,7 +9,7 @@ static const struct RandomMonSet sChimecho_1_1 =
     .items = {ITEM_COLBUR_BERRY, ITEM_NONE},
     .moves = {
         {MOVE_PSYBEAM, MOVE_CONFUSION},
-        {MOVE_WRAP, MOVE_RECOVER},
+        {MOVE_WISH, MOVE_RECOVER},
         {MOVE_CALM_MIND, MOVE_CHARGE_BEAM},
         {MOVE_SHADOW_BALL, MOVE_DAZZLING_GLEAM}
     },
@@ -23,7 +23,7 @@ static const struct RandomMonSet sChimecho_1_2 =
     .abilityNums = {ABILITY_SLOT_1, ABILITY_SLOT_HIDDEN}, // SOUNDPROOF, MAGIC BOUNCE
     .items = {ITEM_LEFTOVERS, ITEM_NONE},
     .moves = {
-        {MOVE_PSYBEAM, MOVE_CONFUSION},
+        {MOVE_PSYBEAM, MOVE_PSYBEAM},
         {MOVE_RECOVER, MOVE_RECOVER},
         {MOVE_COSMIC_POWER, MOVE_CALM_MIND},
         {MOVE_HEAL_BELL, MOVE_STORED_POWER}
