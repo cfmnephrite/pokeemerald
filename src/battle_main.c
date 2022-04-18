@@ -45,6 +45,7 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
+#include "trainer_randomiser.h"
 #include "trig.h"
 #include "tv.h"
 #include "util.h"
@@ -1803,8 +1804,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     else
         level = gSaveBlock1Ptr->globalLevel;
 
-    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
-                                                                        | BATTLE_TYPE_TRAINER_HILL)))
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_TRAINER_HILL)))
     {
         if (firstTrainer == TRUE)
             ZeroEnemyPartyMons();
@@ -1823,14 +1823,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
         for (i = 0; i < monsCount; i++)
         {
-
-            // if (gTrainers[trainerNum].doubleBattle == TRUE)
-            //     personalityValue = 0x80;
-            // else if (gTrainers[trainerNum].encounterMusic_gender & 0x80)
-            //     personalityValue = 0x78;
-            // else
-            //     personalityValue = 0x88;
-
             for (j = 0; gTrainers[trainerNum].trainerName[j] != EOS; j++)
                 nameHash += gTrainers[trainerNum].trainerName[j];
 
@@ -1946,6 +1938,43 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                     {
                         SetMonData(&party[i], MON_DATA_HP_EV + j, &partyData[i].evs[j]);
                         SetMonData(&party[i], MON_DATA_HP_IV + j, &partyData[i].ivs[j]);
+                    }
+                    break;
+                }
+                case F_TRAINER_PARTY_RANDOM:
+                {
+                    u16 move;
+                    u8 ev, iv, randomNum = CreateRandomNumberForTrainer(trainerNum);
+                    struct RandomMon randomMon = gRandomMons[GetRandomMonForTrainer(trainerNum, randomNum)];
+                    struct RandomMonSet randomMonSet = randomMon.sets[randomNum % randomMon.setCount];
+
+                    // Set the custom nature
+                    personalityValue += (randomMonSet.natures[randomNum & 0x80] - (personalityValue % 25));
+                    CreateMon(&party[i], randomMon.species, 100, 31, TRUE, personalityValue, OT_ID_PRESET, Random32());
+                    SetMonData(&party[i], MON_DATA_HELD_ITEM, &randomMonSet.items[randomNum & 0x40]);
+                    SetMonData(&party[i], MON_DATA_PP_BONUSES, &ppBonuses);
+                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &randomMonSet.abilityNums[randomNum & 0x20]);
+
+                    for (j = 0; j < MAX_MON_MOVES; j++)
+                    {
+                        move = randomMonSet.moves[j][randomNum & (0x2 << j)];
+                        SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
+                        monPP[j] = gBattleMoves[move].pp * 8 / 5;
+                        SetMonData(&party[i], MON_DATA_PP1 + j, &monPP[j]);
+                    }
+
+                    for (j = 0; j < NUM_STATS; j++)
+                    {
+                        // Below Lv 50, evs/ivs of trainer mons are reduced by multiplying by (lvl / 50)
+                        ev = randomMonSet.evs[j];
+                        iv = randomMonSet.ivs[j];
+                        if (gSaveBlock1Ptr->globalLevel < 50)
+                        {
+                            ev = ev * gSaveBlock1Ptr->globalLevel / 50;
+                            iv = iv * gSaveBlock1Ptr->globalLevel / 50;
+                        }
+                        SetMonData(&party[i], MON_DATA_HP_EV + j, &ev);
+                        SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);
                     }
                     break;
                 }

@@ -377,5 +377,6 @@
 #define F_TRAINER_PARTY_HELD_ITEM               (1 << 1)
 #define F_TRAINER_PARTY_COMPETITIVE             (1 << 2)
 #define F_TRAINER_PARTY_COMPETITIVE_CUSTOM_IVS  (1 << 3)
+#define F_TRAINER_PARTY_RANDOM                  (1 << 4)
 
 #endif  // GUARD_TRAINERS_H

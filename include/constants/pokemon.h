@@ -159,9 +159,9 @@
 #define MON_DATA_HP_EV             26
 #define MON_DATA_ATK_EV            27
 #define MON_DATA_DEF_EV            28
-#define MON_DATA_SPEED_EV          29
-#define MON_DATA_SPATK_EV          30
-#define MON_DATA_SPDEF_EV          31
+#define MON_DATA_SPATK_EV          29
+#define MON_DATA_SPDEF_EV          30
+#define MON_DATA_SPEED_EV          31
 #define MON_DATA_FRIENDSHIP        32
 #define MON_DATA_SMART             33
 #define MON_DATA_POKERUS           34
