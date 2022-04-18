@@ -67,6 +67,7 @@
 #include "cable_club.h"
 #include "printf.h"
 #include "mgba.h"
+#include "data/random_mons.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;

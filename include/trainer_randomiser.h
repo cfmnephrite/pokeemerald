@@ -4,7 +4,6 @@
 #include "global.h"
 #include "data.h"
 #include "constants/trainers.h"
-#include "data/random_mons.h"
 
 enum {
     RANDOM_MON_CHIMECHO_1,
