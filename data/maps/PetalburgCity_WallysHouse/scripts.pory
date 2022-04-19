@@ -1,0 +1,20 @@
+const OBJ_EVENT_ID_WALLYS_DAD = 1
+
+mapscripts PetalburgCity_WallysHouse_MapScripts {}
+
+script PetalburgCity_WallysHouse_EventScript_WallysMom {
+	lock
+	faceplayer
+	msgbox(PetalburgCity_Text_WallysMom, MSGBOX_NPC)
+	release
+	end
+}
+
+text PetalburgCity_Text_WallysMom {
+	format (
+		"Oh! Are you one of those so-called... Trainers?\p"
+		"Those people who catch monsters and battle with them?\p"
+		"You would probably get along with my son. He's really passionate about monsters too.\p"
+		"But sometimes I wish that he focused more on his studies!"
+	)
+}

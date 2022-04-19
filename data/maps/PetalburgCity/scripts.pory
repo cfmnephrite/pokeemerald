@@ -1,7 +1,32 @@
 mapscripts PetalburgCity_MapScripts {}
 
+script PetalburgCity_EventScript_Woman {
+	lock
+	faceplayer
+	msgbox(PetalburgCity_Text_Woman, MSGBOX_NPC)
+	release
+	end
+}
+
 script PetalburgCity_EventScript_Gentleman {
+	lock
+	faceplayer
 	msgbox(PetalburgCity_Text_Gentleman, MSGBOX_NPC)
+	release
+	end
+}
+
+script PetalburgCity_EventScript_Boy1 {
+	lock
+	faceplayer
+	msgbox("Hey! Have you heard?", MSGBOX_YESNO)
+	if (var(VAR_RESULT) != 0) {
+		msgbox("A big mess, isn't it?")
+	}
+	else {
+	msgbox(PetalburgCity_Text_Boy1, MSGBOX_NPC)
+	}
+	release
 	end
 }
 
@@ -32,10 +57,26 @@ text PetalburgCity_Text_NormanIntro {
 	)
 }
 
+text PetalburgCity_Text_Woman {
+	format (
+		"Petalburg is a recently founded harbor city.\p"
+		"Outside of the local Gym, there aren't many interesting things here.\p"
+		"No wonder a lot of young people want to leave this town nowadays!"
+	)
+}
+
 text PetalburgCity_Text_Gentleman {
 	format (
-		"Bah! I don't won't to hear about those immigrants anymore!\p"
+		"Bah! I don't want to hear about those immigrants anymore!\p"
 		"Actually, I don't even want to see them!\p"
 		"I don't trust them..."
+	)
+}
+
+text PetalburgCity_Text_Boy1 {
+	format (
+		"There was a big ruckus in Littleroot Beach...\p"
+		"It was caused by those guys, Aqua and Magma, I believe they're called...?\p"
+		"Up there in Rustborough, their fights are commonplace."
 	)
 }
