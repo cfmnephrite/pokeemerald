@@ -2,6 +2,14 @@ PetalburgCity_MapScripts::
 	.byte 0
 
 
+PetalburgCity_EventScript_Norman::
+	lock
+	faceplayer
+	msgbox PetalburgCity_Text_NormanIntro, MSGBOX_DEFAULT
+	release
+	end
+
+
 PetalburgCity_EventScript_Woman::
 	lock
 	faceplayer
@@ -57,20 +65,21 @@ PetalburgCity_Text_NormanIntro::
 	.string "Ah! So you're that Trainer my kid was\n"
 	.string "talking about!\p"
 	.string "{PLAYER}, right?\p"
-	.string "Those Rockets... They are all over the\n"
-	.string "news nowadays.\p"
-	.string "It's a mystery what those guys could be\n"
-	.string "up to.\p"
-	.string "This world is changing, but young people\n"
-	.string "like you and Brendan are the hope for\l"
-	.string "this society.\p"
-	.string "Anyway! I love good fights, and after\n"
-	.string "hearing of your feat, I'd really be glad\l"
-	.string "of taking you as a challenger!\p"
-	.string "Take your time. If you want to give it a\n"
-	.string "go, the guide inside will happily explain\l"
-	.string "what you need.\p"
-	.string "I hope to see you soon!$"
+	.string "Brendan told me you helped him fend off\n"
+	.string "some Rocket thugs in the woods.\p"
+	.string "That was impressive!\p"
+	.string "You look very promising and I'd be happy\n"
+	.string "to accept your challenge in my Gym\l"
+	.string "but...\p"
+	.string "I'd recommend visiting Roxanne, a\n"
+	.string "colleague of mine and a teacher in\l"
+	.string "Rustborough.\p"
+	.string "She could teach you how League battles\n"
+	.string "work.\p"
+	.string "No offense, but I don't really enjoy\n"
+	.string "battling amateurs.\p"
+	.string "Come back here once you learned a thing\n"
+	.string "or two from her!$"
 
 PetalburgCity_Text_Woman::
 	.string "Petalburg is a recently founded harbor\n"

@@ -2,14 +2,6 @@ PetalburgCity_Gym_MapScripts::
 	.byte 0
 
 
-PetalburgCity_Gym_EventScript_Norman::
-	lock
-	faceplayer
-	msgbox PetalburgCity_Gym_NormanIntro, MSGBOX_DEFAULT
-	release
-	end
-
-
 PetalburgCity_Gym_EventScript_GymGuide::
 	lock
 	faceplayer
@@ -105,29 +97,6 @@ PetalburgCity_Gym_EventScript_GymGuide_Text_1:
 PetalburgCity_Gym_EventScript_GymGuideLoop_Text_0:
 	.string "Is there something else you would like\n"
 	.string "to ask?$"
-
-PetalburgCity_Gym_NormanIntro::
-	.string "Hello. Are you a rookie Trainer?\p"
-	.string "My name is Norman. I'm the Gym Leader in\n"
-	.string "this town.\p"
-	.string "... ... ...\p"
-	.string "Ah! So you're that Trainer my kid was\n"
-	.string "talking about!\p"
-	.string "{PLAYER}, right?\p"
-	.string "Those Rockets... They are all over the\n"
-	.string "news nowadays.\p"
-	.string "It's a mystery what those guys could be\n"
-	.string "up to.\p"
-	.string "This world is changing, but young people\n"
-	.string "like you and Brendan are the hope for\l"
-	.string "this society.\p"
-	.string "Anyway! I love good fights, and after\n"
-	.string "hearing of your feat, I'd really be glad\l"
-	.string "of taking you as a challenger!\p"
-	.string "Take your time. If you want to give it a\n"
-	.string "go, the guide inside will happily explain\l"
-	.string "what you need.\p"
-	.string "I hope to see you soon!$"
 
 PetalburgCity_Gym_TheGymSystem::
 	.string "There are eight Gyms in the Hoenn\n"

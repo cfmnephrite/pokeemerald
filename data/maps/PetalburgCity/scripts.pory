@@ -1,5 +1,13 @@
 mapscripts PetalburgCity_MapScripts {}
 
+script PetalburgCity_EventScript_Norman {
+	lock
+	faceplayer
+	msgbox(PetalburgCity_Text_NormanIntro, MSGBOX_DEFAULT)
+	release
+	end
+}
+
 script PetalburgCity_EventScript_Woman {
 	lock
 	faceplayer
@@ -48,12 +56,13 @@ text PetalburgCity_Text_NormanIntro {
 		"... ... ...\p"
 		"Ah! So you're that Trainer my kid was talking about!\p"
 		"{PLAYER}, right?\p"
-		"Those Rockets... They are all over the news nowadays.\p"
-		"It's a mystery what those guys could be up to.\p"
-		"This world is changing, but young people like you and Brendan are the hope for this society.\p"
-		"Anyway! I love good fights, and after hearing of your feat, I'd really be glad of taking you as a challenger!\p"
-		"Take your time. If you want to give it a go, the guide inside will happily explain what you need.\p"
-		"I hope to see you soon!"
+		"Brendan told me you helped him fend off some Rocket thugs in the woods.\p"
+		"That was impressive!\p"
+		"You look very promising and I'd be happy to accept your challenge in my Gym but...\p"
+		"I'd recommend visiting Roxanne, a colleague of mine and a teacher in Rustborough.\p"
+		"She could teach you how League battles work.\p"
+		"No offense, but I don't really enjoy battling amateurs.\p"
+		"Come back here once you learned a thing or two from her!"
 	)
 }
 

@@ -1,14 +1,4 @@
-const OBJ_EVENT_ID_NORMAN = 12
-
 mapscripts PetalburgCity_Gym_MapScripts {}
-
-script PetalburgCity_Gym_EventScript_Norman {
-	lock
-	faceplayer
-	msgbox(PetalburgCity_Gym_NormanIntro, MSGBOX_DEFAULT)
-	release
-	end
-}
 
 script PetalburgCity_Gym_EventScript_GymGuide {
 	lock
@@ -79,22 +69,6 @@ script PetalburgCity_Gym_EventScript_RightGymStatue {
 		release
 		end
 	}
-}
-
-text PetalburgCity_Gym_NormanIntro {
-	format (
-		"Hello. Are you a rookie Trainer?\p"
-		"My name is Norman. I'm the Gym Leader in this town.\p"
-		"... ... ...\p"
-		"Ah! So you're that Trainer my kid was talking about!\p"
-		"{PLAYER}, right?\p"
-		"Those Rockets... They are all over the news nowadays.\p"
-		"It's a mystery what those guys could be up to.\p"
-		"This world is changing, but young people like you and Brendan are the hope for this society.\p"
-		"Anyway! I love good fights, and after hearing of your feat, I'd really be glad of taking you as a challenger!\p"
-		"Take your time. If you want to give it a go, the guide inside will happily explain what you need.\p"
-		"I hope to see you soon!"
-	)
 }
 
 text PetalburgCity_Gym_TheGymSystem {
