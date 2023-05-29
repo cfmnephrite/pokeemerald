@@ -1907,6 +1907,13 @@ u16 CountBattledRematchTeams(u16 trainerId)
 
 void StartVsRayquazaDeoxysBattle(void)
 {
+    // Rayquaza must have all of Deoxys' HP/Def/SpDef
+    // Due to the way wild double battles work, Deoxys is in slot 3 of the enemy "party"
+    gEnemyParty[0].maxHP        += gEnemyParty[3].maxHP;
+    gEnemyParty[0].hp           += gEnemyParty[3].hp;
+    gEnemyParty[0].defense      += gEnemyParty[3].defense;
+    gEnemyParty[0].spDefense    += gEnemyParty[3].spDefense;
+
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_RAYQUAZA | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_2_VS_1_5 ;

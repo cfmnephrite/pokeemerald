@@ -16,6 +16,7 @@
 
 #define GET_BATTLER_SIDE(battler)         (GetBattlerPosition(battler) & BIT_SIDE)
 #define GET_BATTLER_SIDE2(battler)        (gBattlerPositions[battler] & BIT_SIDE)
+#define IS_OPPOSING_SIDE(battler)         (GET_BATTLER_SIDE(battler)) // Just to make it clear what we're using this for
 
 // Used to exclude moves learned temporarily by Transform or Mimic
 #define MOVE_IS_PERMANENT(battler, moveSlot)                        \
