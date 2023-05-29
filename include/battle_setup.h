@@ -68,4 +68,7 @@ bool8 IsTrainerReadyForRematch(void);
 void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
 
+// Necrite specials
+void StartVsRayquazaDeoxysBattle(void);
+
 #endif // GUARD_BATTLE_SETUP_H

@@ -1904,3 +1904,16 @@ u16 CountBattledRematchTeams(u16 trainerId)
 
     return i;
 }
+
+void StartVsRayquazaDeoxysBattle(void)
+{
+    LockPlayerFieldControls();
+    gMain.savedCallback = CB2_EndScriptedWildBattle;
+    gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_RAYQUAZA | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_2_VS_1_5 ;
+    CreateBattleStartTask(B_TRANSITION_BLUR, MUS_VS_RAYQUAZA);
+
+    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
+    IncrementGameStat(GAME_STAT_WILD_BATTLES);
+    IncrementDailyWildBattles();
+    TryUpdateGymLeaderRematchFromWild();
+}

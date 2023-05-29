@@ -2066,7 +2066,7 @@ void DoSpecialTrainerBattle(void)
         ZeroEnemyPartyMons();
         for (i = 0; i < (int)ARRAY_COUNT(gSaveBlock2Ptr->frontier.ereaderTrainer.party); i++)
             CreateBattleTowerMon(&gEnemyParty[i], &gSaveBlock2Ptr->frontier.ereaderTrainer.party[i]);
-        gBattleTypeFlags = BATTLE_TYPE_TRAINER | BATTLE_TYPE_EREADER_TRAINER;
+        gBattleTypeFlags = BATTLE_TYPE_TRAINER ;
         gTrainerBattleOpponent_A = 0;
         CreateTask(Task_StartBattleAfterTransition, 1);
         PlayMapChosenOrBattleBGM(0);
@@ -2901,26 +2901,6 @@ static void FillEReaderTrainerWithPlayerData(void)
         ConvertPokemonToBattleTowerPokemon(&gPlayerParty[i], &ereaderTrainer->party[i]);
 
     SetEReaderTrainerChecksum(ereaderTrainer);
-}
-
-u8 GetEreaderTrainerFrontSpriteId(void)
-{
-    return gFacilityClassToPicIndex[gSaveBlock2Ptr->frontier.ereaderTrainer.facilityClass];
-}
-
-u8 GetEreaderTrainerClassId(void)
-{
-    return gFacilityClassToTrainerClass[gSaveBlock2Ptr->frontier.ereaderTrainer.facilityClass];
-}
-
-void GetEreaderTrainerName(u8 *dst)
-{
-    s32 i;
-
-    for (i = 0; i < 5; i++)
-        dst[i] = gSaveBlock2Ptr->frontier.ereaderTrainer.name[i];
-
-    dst[i] = EOS;
 }
 
 // Checks if the saved E-Reader trainer is valid.

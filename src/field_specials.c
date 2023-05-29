@@ -1290,7 +1290,7 @@ u16 GetBattleTowerSinglesStreak(void)
 
 void BufferEReaderTrainerName(void)
 {
-    GetEreaderTrainerName(gStringVar1);
+    //
 }
 
 u16 GetSlotMachineId(void)

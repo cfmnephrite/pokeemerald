@@ -2070,8 +2070,7 @@ u32 GetBattlerFriendshipScore(u8 battlerId)
     if (side != B_SIDE_PLAYER)
         return FRIENDSHIP_NONE;
     else if (gSpeciesInfo[species].flags & SPECIES_FLAG_MEGA_EVOLUTION
-          || (gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER
-                                | BATTLE_TYPE_FRONTIER
+          || (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
                                 | BATTLE_TYPE_LINK
                                 | BATTLE_TYPE_RECORDED_LINK
                                 | BATTLE_TYPE_SECRET_BASE)))
@@ -10321,7 +10320,7 @@ bool32 SetIllusionMon(struct Pokemon *mon, u32 battlerId)
 bool8 ShouldGetStatBadgeBoost(u16 badgeFlag, u8 battlerId)
 {
 #if B_BADGE_BOOST == GEN_3
-    if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
+    if (gBattleTypeFlags & (BATTLE_TYPE_LINK  | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         return FALSE;
     else if (GetBattlerSide(battlerId) != B_SIDE_PLAYER)
         return FALSE;
@@ -10602,8 +10601,7 @@ bool32 CanStealItem(u8 battlerStealing, u8 battlerItem, u16 item)
     // Check if the battler trying to steal should be able to
     if (stealerSide == B_SIDE_OPPONENT
         && !(gBattleTypeFlags &
-             (BATTLE_TYPE_EREADER_TRAINER
-              | BATTLE_TYPE_FRONTIER
+             (BATTLE_TYPE_FRONTIER
               | BATTLE_TYPE_LINK
               | BATTLE_TYPE_RECORDED_LINK
               | BATTLE_TYPE_SECRET_BASE
@@ -10615,8 +10613,7 @@ bool32 CanStealItem(u8 battlerStealing, u8 battlerItem, u16 item)
         return FALSE;
     }
     else if (!(gBattleTypeFlags &
-          (BATTLE_TYPE_EREADER_TRAINER
-           | BATTLE_TYPE_FRONTIER
+          (BATTLE_TYPE_FRONTIER
            | BATTLE_TYPE_LINK
            | BATTLE_TYPE_RECORDED_LINK
            | BATTLE_TYPE_SECRET_BASE))

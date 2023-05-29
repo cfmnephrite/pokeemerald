@@ -3443,8 +3443,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                     side = GetBattlerSide(gBattlerAttacker);
                     if (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
                         && !(gBattleTypeFlags &
-                            (BATTLE_TYPE_EREADER_TRAINER
-                            | BATTLE_TYPE_FRONTIER
+                            (BATTLE_TYPE_FRONTIER
                             | BATTLE_TYPE_LINK
                             | BATTLE_TYPE_RECORDED_LINK
                             | BATTLE_TYPE_SECRET_BASE)))
@@ -3452,8 +3451,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                         gBattlescriptCurrInstr++;
                     }
                     else if (!(gBattleTypeFlags &
-                            (BATTLE_TYPE_EREADER_TRAINER
-                            | BATTLE_TYPE_FRONTIER
+                            (BATTLE_TYPE_FRONTIER
                             | BATTLE_TYPE_LINK
                             | BATTLE_TYPE_RECORDED_LINK
                             | BATTLE_TYPE_SECRET_BASE))
@@ -4128,7 +4126,7 @@ static void Cmd_getexp(void)
               | BATTLE_TYPE_FRONTIER
               | BATTLE_TYPE_SAFARI
               | BATTLE_TYPE_BATTLE_TOWER
-              | BATTLE_TYPE_EREADER_TRAINER)))
+              )))
         {
             gBattleScripting.getexpState = 6; // goto last case
         }
@@ -6330,7 +6328,6 @@ static void Cmd_switchinanim(void)
 
     if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
         && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                                 | BATTLE_TYPE_EREADER_TRAINER
                                  | BATTLE_TYPE_RECORDED_LINK
                                  | BATTLE_TYPE_TRAINER_HILL
                                  | BATTLE_TYPE_FRONTIER)))
@@ -14257,7 +14254,6 @@ static void Cmd_tryswapitems(void)
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL
         || (GetBattlerSide(gBattlerAttacker) == B_SIDE_OPPONENT
             && !(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                                  | BATTLE_TYPE_EREADER_TRAINER
                                   | BATTLE_TYPE_FRONTIER
                                   | BATTLE_TYPE_SECRET_BASE
                                   | BATTLE_TYPE_RECORDED_LINK
@@ -14275,7 +14271,6 @@ static void Cmd_tryswapitems(void)
 
         // You can't swap items if they were knocked off in regular battles
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
-                             | BATTLE_TYPE_EREADER_TRAINER
                              | BATTLE_TYPE_FRONTIER
                              | BATTLE_TYPE_SECRET_BASE
                              | BATTLE_TYPE_RECORDED_LINK))
