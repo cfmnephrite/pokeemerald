@@ -89,6 +89,8 @@
 #define BATTLE_TWO_VS_ONE_OPPONENT ((gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && gTrainerBattleOpponent_B == 0xFFFF))
 #define BATTLE_TYPE_HAS_AI          (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_SAFARI | BATTLE_TYPE_ROAMER | BATTLE_TYPE_INGAME_PARTNER)
 
+// Necrite macro to check if attacker is opponent in slot 3 during a 2v1.5 battle
+#define IS_HIDDEN_MON_IN_2_VS_1_5(battler) ((gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5 && GetBattlerPosition(battler) == B_POSITION_OPPONENT_RIGHT))
 
 // Battle Outcome defines
 #define B_OUTCOME_WON                  1

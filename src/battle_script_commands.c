@@ -11062,38 +11062,38 @@ static void Cmd_setprotectlike(void)
         {
             if (gBattleMoves[gCurrentMove].effect == EFFECT_ENDURE)
             {
-                gProtectStructs[gBattlerAttacker].endured = TRUE;
+                gProtectStructs[gBattlerTarget].endured = TRUE;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_BRACED_ITSELF;
             }
             else if (gCurrentMove == MOVE_DETECT || gCurrentMove == MOVE_PROTECT)
             {
-                gProtectStructs[gBattlerAttacker].protected = TRUE;
+                gProtectStructs[gBattlerTarget].protected = TRUE;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
             else if (gCurrentMove == MOVE_SPIKY_SHIELD)
             {
-                gProtectStructs[gBattlerAttacker].spikyShielded = TRUE;
+                gProtectStructs[gBattlerTarget].spikyShielded = TRUE;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
             else if (gCurrentMove == MOVE_KINGS_SHIELD)
             {
-                gProtectStructs[gBattlerAttacker].kingsShielded = TRUE;
+                gProtectStructs[gBattlerTarget].kingsShielded = TRUE;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
             else if (gCurrentMove == MOVE_BANEFUL_BUNKER)
             {
-                gProtectStructs[gBattlerAttacker].banefulBunkered = TRUE;
+                gProtectStructs[gBattlerTarget].banefulBunkered = TRUE;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
             else if (gCurrentMove == MOVE_OBSTRUCT)
             {
-                gProtectStructs[gBattlerAttacker].obstructed = TRUE;
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                gProtectStructs[gBattlerTarget].obstructed = TRUE;
+                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
             else if (gCurrentMove == MOVE_SILK_TRAP)
             {
-                gProtectStructs[gBattlerAttacker].silkTrapped = TRUE;
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                gProtectStructs[gBattlerTarget].silkTrapped = TRUE;
+                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED_ITSELF;
             }
 
             gDisableStructs[gBattlerAttacker].protectUses++;
@@ -11214,8 +11214,8 @@ static void Cmd_tryhealhalfhealth(void)
 
     const u8 *failInstr = cmd->failInstr;
 
-    if (cmd->battler == BS_ATTACKER)
-        gBattlerTarget = gBattlerAttacker;
+    // if (cmd->battler == BS_ATTACKER)
+    //     gBattlerTarget = gBattlerAttacker;
 
     gBattleMoveDamage = gBattleMons[gBattlerTarget].maxHP / 2;
     if (gBattleMoveDamage == 0)
@@ -11680,7 +11680,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     bool32 affectsUser = (flags & MOVE_EFFECT_AFFECTS_USER);
     bool32 mirrorArmored = (flags & STAT_CHANGE_MIRROR_ARMOR);
 
-    if (affectsUser)
+    if (affectsUser && !IS_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker))
         gActiveBattler = gBattlerAttacker;
     else
         gActiveBattler = gBattlerTarget;

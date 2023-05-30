@@ -33,6 +33,7 @@
 #include "mail.h"
 #include "field_weather.h"
 #include "constants/abilities.h"
+#include "constants/battle.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
@@ -373,7 +374,7 @@ void HandleAction_UseMove(void)
             {
                 if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
                 {
-                    if (Random() & 1)
+                    if (Random() & 1 || gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5)
                         gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
                     else
                         gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
@@ -434,7 +435,7 @@ void HandleAction_UseMove(void)
     {
         if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
         {
-            if (Random() & 1)
+            if (Random() & 1 || gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5)
                 gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
             else
                 gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
@@ -460,12 +461,17 @@ void HandleAction_UseMove(void)
         else
             gBattlerTarget = gBattlerAttacker;
     }
+    else if ((moveTarget == MOVE_TARGET_USER || moveTarget == MOVE_TARGET_USER_OR_SELECTED)
+          && IS_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker))
+    {
+        gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    }
     else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE
           && moveTarget == MOVE_TARGET_FOES_AND_ALLY)
     {
         for (gBattlerTarget = 0; gBattlerTarget < gBattlersCount; gBattlerTarget++)
         {
-            if (gBattlerTarget == gBattlerAttacker)
+            if (gBattlerTarget == gBattlerAttacker || IS_HIDDEN_MON_IN_2_VS_1_5(gBattlerTarget))
                 continue;
             if (IsBattlerAlive(gBattlerTarget))
                 break;

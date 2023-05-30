@@ -638,19 +638,12 @@ static void HandleInputChooseMove(void)
         }
         else // double battle
         {
-            if (gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5 && !IS_OPPOSING_SIDE(gActiveBattler))
+            if (gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5)
                 canSelectTarget = 0;
             else if (!(moveTarget & (MOVE_TARGET_RANDOM | MOVE_TARGET_BOTH | MOVE_TARGET_DEPENDS | MOVE_TARGET_FOES_AND_ALLY | MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_USER | MOVE_TARGET_ALLY)))
                 canSelectTarget = 1; // either selected or user
             if (moveTarget == (MOVE_TARGET_USER | MOVE_TARGET_ALLY) && IsBattlerAlive(BATTLE_PARTNER(gActiveBattler)))
-            {
-                if (gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5 && IS_OPPOSING_SIDE(gActiveBattler))
-                {
-                    gMultiUsePlayerCursor = 1; //On the opposing side in a 2v1, all self-targeting moves target the ally
-                    canSelectTarget = 0;
-                }
                 canSelectTarget = 1;
-            }
 
             if (moveInfo->currentPp[gMoveSelectionCursor[gActiveBattler]] == 0)
             {
@@ -662,25 +655,26 @@ static void HandleInputChooseMove(void)
                 canSelectTarget = 0;
             }
 
-        #if B_SHOW_TARGETS == TRUE
-            // Show all available targets for multi-target moves
-            if ((moveTarget & MOVE_TARGET_ALL_BATTLERS) == MOVE_TARGET_ALL_BATTLERS)
+            if (!(gBattleTypeFlags & BATTLE_TYPE_2_VS_1_5))
             {
-                u32 i = 0;
-                for (i = 0; i < gBattlersCount; i++)
-                    TryShowAsTarget(i);
+                // Show all available targets for multi-target moves
+                if ((moveTarget & MOVE_TARGET_ALL_BATTLERS) == MOVE_TARGET_ALL_BATTLERS)
+                {
+                    u32 i = 0;
+                    for (i = 0; i < gBattlersCount; i++)
+                        TryShowAsTarget(i);
 
-                canSelectTarget = 3;
+                    canSelectTarget = 3;
+                }
+                else if (moveTarget & (MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
+                {
+                    TryShowAsTarget(gMultiUsePlayerCursor);
+                    TryShowAsTarget(BATTLE_PARTNER(gMultiUsePlayerCursor));
+                    if (moveTarget & MOVE_TARGET_FOES_AND_ALLY)
+                        TryShowAsTarget(BATTLE_PARTNER(gActiveBattler));
+                    canSelectTarget = 2;
+                }
             }
-            else if (moveTarget & (MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
-            {
-                TryShowAsTarget(gMultiUsePlayerCursor);
-                TryShowAsTarget(BATTLE_PARTNER(gMultiUsePlayerCursor));
-                if (moveTarget & MOVE_TARGET_FOES_AND_ALLY)
-                    TryShowAsTarget(BATTLE_PARTNER(gActiveBattler));
-                canSelectTarget = 2;
-            }
-        #endif
         }
 
         switch (canSelectTarget)

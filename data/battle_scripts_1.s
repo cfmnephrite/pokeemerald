@@ -3799,13 +3799,13 @@ BattleScript_EffectRestoreHp::
 	attackcanceler
 	attackstring
 	ppreduce
-	tryhealhalfhealth BattleScript_AlreadyAtFullHp, BS_ATTACKER
+	tryhealhalfhealth BattleScript_AlreadyAtFullHp, BS_TARGET
 	attackanimation
 	waitanimation
 BattleScript_RestoreHp:
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
 	printstring STRINGID_PKMNREGAINEDHEALTH
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
@@ -6154,13 +6154,13 @@ BattleScript_EffectCosmicPower::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_DEF, MAX_STAT_STAGE, BattleScript_CosmicPowerDoMoveAnim
-	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPDEF, MAX_STAT_STAGE, BattleScript_CantRaiseMultipleStats
+	jumpifstat BS_TARGET, CMP_LESS_THAN, STAT_DEF, MAX_STAT_STAGE, BattleScript_CosmicPowerDoMoveAnim
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_SPDEF, MAX_STAT_STAGE, BattleScript_CantRaiseMultipleStats
 BattleScript_CosmicPowerDoMoveAnim::
 	attackanimation
 	waitanimation
 	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, 0
+	playstatchangeanimation BS_TARGET, BIT_DEF | BIT_SPDEF, 0
 	setstatchanger STAT_DEF, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CosmicPowerTrySpDef
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_CosmicPowerTrySpDef
