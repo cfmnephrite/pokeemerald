@@ -5332,7 +5332,8 @@ static u32 GetNextTarget(u32 moveTarget)
         if (i != gBattlerAttacker
             && IsBattlerAlive(i)
             && !(gBattleStruct->targetsDone[gBattlerAttacker] & gBitTable[i])
-            && (GetBattlerSide(i) != GetBattlerSide(gBattlerAttacker) || moveTarget == MOVE_TARGET_FOES_AND_ALLY))
+            && (GetBattlerSide(i) != GetBattlerSide(gBattlerAttacker) || moveTarget == MOVE_TARGET_FOES_AND_ALLY)
+            && !(IS_HIDDEN_MON_IN_2_VS_1_5(i)))
                 break;
     }
     return i;
