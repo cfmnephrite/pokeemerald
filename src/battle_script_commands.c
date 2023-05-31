@@ -1448,6 +1448,9 @@ static void Cmd_attackcanceler(void)
 
     s32 i, moveType;
     u16 attackerAbility = GetBattlerAbility(gBattlerAttacker);
+    bool32 partnerHasProteanOnOpponentSideIn2V1_5 = (IS_HIDDEN_MON_IN_2_VS_1_5(BATTLE_PARTNER(gBattlerAttacker))
+        && GetBattlerAbility(BATTLE_PARTNER(gBattlerAttacker) == ABILITY_PROTEAN));
+    u8 proteanBattler = IS_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker) ? BATTLE_PARTNER(gBattlerAttacker) : gBattlerAttacker;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
 
@@ -1498,14 +1501,17 @@ static void Cmd_attackcanceler(void)
     }
 
     // Check Protean activation.
-    if ((attackerAbility == ABILITY_PROTEAN || attackerAbility == ABILITY_LIBERO)
-        && (gBattleMons[gBattlerAttacker].type1 != moveType || gBattleMons[gBattlerAttacker].type2 != moveType ||
-            (gBattleMons[gBattlerAttacker].type3 != moveType && gBattleMons[gBattlerAttacker].type3 != TYPE_MYSTERY))
+    if ((attackerAbility == ABILITY_PROTEAN || attackerAbility == ABILITY_LIBERO || partnerHasProteanOnOpponentSideIn2V1_5)
+        && (gBattleMons[proteanBattler].type1 != moveType || gBattleMons[proteanBattler].type2 != moveType ||
+            (gBattleMons[proteanBattler].type3 != moveType && gBattleMons[proteanBattler].type3 != TYPE_MYSTERY))
         && gCurrentMove != MOVE_STRUGGLE)
     {
         PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
-        SET_BATTLER_TYPE(gBattlerAttacker, moveType);
-        gBattlerAbility = gBattlerAttacker;
+        SET_BATTLER_TYPE(proteanBattler, moveType);
+        if (partnerHasProteanOnOpponentSideIn2V1_5)
+            gBattlerAbility = BATTLE_PARTNER(gBattlerAttacker);
+        else
+            gBattlerAbility = gBattlerAttacker;
         BattleScriptPushCursor();
         PrepareStringBattle(STRINGID_EMPTYSTRING3, gBattlerAttacker);
         gBattleCommunication[MSG_DISPLAY] = 1;
