@@ -1788,9 +1788,9 @@ static s16 AI_CheckBadMove(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
         case EFFECT_RESTORE_HP:
         case EFFECT_SOFTBOILED:
         case EFFECT_ROOST:
-            if (AtMaxHp(battlerAtk))
+            if (AtMaxHp(PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(battlerAtk)))
                 score -= 10;
-            else if (AI_DATA->hpPercents[battlerAtk] >= 90)
+            else if (AI_DATA->hpPercents[PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(battlerAtk)] >= 90)
                 score -= 9; //No point in healing, but should at least do it if nothing better
             break;
         case EFFECT_MORNING_SUN:
@@ -3470,7 +3470,7 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     case EFFECT_MORNING_SUN:
     case EFFECT_SYNTHESIS:
     case EFFECT_MOONLIGHT:
-        if (ShouldRecover(battlerAtk, battlerDef, move, 50))
+        if (ShouldRecover(PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(battlerAtk), battlerDef, move, 50))
             score += 3;
         if (AI_DATA->holdEffects[battlerAtk] == HOLD_EFFECT_BIG_ROOT)
             score++;

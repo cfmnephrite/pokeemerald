@@ -2463,7 +2463,7 @@ void AnimTask_IsAttackerBehindSubstitute(u8 taskId)
 
 void AnimTask_SetTargetToEffectBattler(u8 taskId)
 {
-    gBattleAnimTarget = gEffectBattler;
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gEffectBattler);
     DestroyAnimVisualTask(taskId);
 }
 
@@ -2758,8 +2758,8 @@ void AnimTask_GetTrappedMoveAnimId(u8 taskId)
 
 void AnimTask_GetBattlersFromArg(u8 taskId)
 {
-    gBattleAnimAttacker = gBattleSpritesDataPtr->animationData->animArg;
-    gBattleAnimTarget = gBattleSpritesDataPtr->animationData->animArg >> 8;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattleSpritesDataPtr->animationData->animArg);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattleSpritesDataPtr->animationData->animArg >> 8);
     DestroyAnimVisualTask(taskId);
 }
 

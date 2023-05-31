@@ -1009,8 +1009,8 @@ void AnimTask_IsContest(u8 taskId)
 
 void AnimTask_SetAnimAttackerAndTargetForEffectTgt(u8 taskId)
 {
-    gBattleAnimAttacker = gBattlerTarget;
-    gBattleAnimTarget = gEffectBattler;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerTarget);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gEffectBattler);
     DestroyAnimVisualTask(taskId);
 }
 
@@ -1026,14 +1026,14 @@ void AnimTask_IsTargetSameSide(u8 taskId)
 
 void AnimTask_SetAnimTargetToBattlerTarget(u8 taskId)
 {
-    gBattleAnimTarget = gBattlerTarget;
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerTarget);
     DestroyAnimVisualTask(taskId);
 }
 
 void AnimTask_SetAnimAttackerAndTargetForEffectAtk(u8 taskId)
 {
-    gBattleAnimAttacker = gBattlerAttacker;
-    gBattleAnimTarget = gEffectBattler;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gEffectBattler);
     DestroyAnimVisualTask(taskId);
 }
 
@@ -1087,6 +1087,6 @@ void AnimTask_SetInvisible(u8 taskId)
 
 void AnimTask_SetAnimTargetToAttackerOpposite(u8 taskId)
 {
-    gBattleAnimTarget = BATTLE_OPPOSITE(gBattleAnimAttacker);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(BATTLE_OPPOSITE(gBattleAnimAttacker));
     DestroyAnimVisualTask(taskId);
 }

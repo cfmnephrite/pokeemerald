@@ -1450,7 +1450,7 @@ static void Cmd_attackcanceler(void)
     u16 attackerAbility = GetBattlerAbility(gBattlerAttacker);
     bool32 partnerHasProteanOnOpponentSideIn2V1_5 = (IS_HIDDEN_MON_IN_2_VS_1_5(BATTLE_PARTNER(gBattlerAttacker))
         && GetBattlerAbility(BATTLE_PARTNER(gBattlerAttacker) == ABILITY_PROTEAN));
-    u8 proteanBattler = IS_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker) ? BATTLE_PARTNER(gBattlerAttacker) : gBattlerAttacker;
+    u8 proteanBattler = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker);
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
 

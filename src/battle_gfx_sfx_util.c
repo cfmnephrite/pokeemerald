@@ -460,8 +460,8 @@ bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattler, u8 atkBattler, u8 de
         gBattleStruct->illusion[activeBattler].on = 0;
     }
 
-    gBattleAnimAttacker = atkBattler;
-    gBattleAnimTarget = defBattler;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(atkBattler);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(defBattler);
     gBattleSpritesDataPtr->animationData->animArg = argument;
     LaunchBattleAnimation(ANIM_TYPE_GENERAL, tableId);
     taskId = CreateTask(Task_ClearBitWhenBattleTableAnimDone, 10);
@@ -505,8 +505,8 @@ void InitAndLaunchSpecialAnimation(u8 activeBattler, u8 atkBattler, u8 defBattle
 {
     u8 taskId;
 
-    gBattleAnimAttacker = atkBattler;
-    gBattleAnimTarget = defBattler;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(atkBattler);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(defBattler);
     LaunchBattleAnimation(ANIM_TYPE_SPECIAL, tableId);
     taskId = CreateTask(Task_ClearBitWhenSpecialAnimDone, 10);
     gTasks[taskId].tBattlerId = activeBattler;

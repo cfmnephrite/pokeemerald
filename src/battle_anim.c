@@ -210,8 +210,8 @@ void ClearBattleAnimationVars(void)
 
 void DoMoveAnim(u16 move)
 {
-    gBattleAnimAttacker = gBattlerAttacker;
-    gBattleAnimTarget = gBattlerTarget;
+    gBattleAnimAttacker = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerAttacker);
+    gBattleAnimTarget = PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(gBattlerTarget);
     // Make sure the anim target of moves hitting everyone is at the opposite side.
     if (GetBattlerMoveTargetType(gBattlerAttacker, move) & MOVE_TARGET_FOES_AND_ALLY && IsDoubleBattle())
     {

@@ -8645,7 +8645,7 @@ static u16 CalcMoveBasePower(u16 move, u8 battlerAtk, u8 battlerDef)
             basePower = 200;
         break;
     case EFFECT_STORED_POWER:
-        basePower += (CountBattlerStatIncreases(IS_HIDDEN_MON_IN_2_VS_1_5(battlerAtk) ? BATTLE_PARTNER(battleAtk) : battlerAtk, TRUE) * 20);
+        basePower += (CountBattlerStatIncreases(PARTNER_IF_HIDDEN_MON_IN_2_VS_1_5(battlerAtk), TRUE) * 20);
         break;
     case EFFECT_ELECTRO_BALL:
         speed = GetBattlerTotalSpeedStat(battlerAtk) / GetBattlerTotalSpeedStat(battlerDef);
