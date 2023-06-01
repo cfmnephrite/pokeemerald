@@ -3409,7 +3409,7 @@ static void DoBattleIntro(void)
                         MarkBattlerForControllerExec(gActiveBattler);
                     }
                 }
-                else if (IsBattlerAlive(gActiveBattler)) // wild mon 2 if alive
+                else if (IsBattlerAlive(gActiveBattler) && !IS_HIDDEN_MON_IN_2_VS_1_5(gActiveBattler)) // wild mon 2 if alive
                 {
                     BtlController_EmitLoadMonSprite(BUFFER_A);
                     MarkBattlerForControllerExec(gActiveBattler);

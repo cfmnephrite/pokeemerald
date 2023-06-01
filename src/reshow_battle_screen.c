@@ -182,7 +182,7 @@ static void ClearBattleBgCntBaseBlocks(void)
 
 static bool8 LoadBattlerSpriteGfx(u8 battler)
 {
-    if (battler < gBattlersCount)
+    if (battler < gBattlersCount && !IS_HIDDEN_MON_IN_2_VS_1_5(battler))
     {
         if (GetBattlerSide(battler) != B_SIDE_PLAYER)
         {
@@ -221,6 +221,8 @@ static void CreateBattlerSprite(u8 battler)
             if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0)
                 return;
             if (gBattleScripting.monCaught) // Don't create opponent sprite if it has been caught.
+                return;
+            if (IS_HIDDEN_MON_IN_2_VS_1_5(battler))
                 return;
 
             SetMultiuseSpriteTemplateToPokemon(GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES), GetBattlerPosition(battler));
@@ -308,7 +310,7 @@ static void CreateHealthboxSprite(u8 battler)
 
         if (GetBattlerSide(battler) != B_SIDE_PLAYER)
         {
-            if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0)
+            if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0 || IS_HIDDEN_MON_IN_2_VS_1_5(battler))
                 SetHealthboxSpriteInvisible(healthboxSpriteId);
         }
         else if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
