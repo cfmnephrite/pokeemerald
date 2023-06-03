@@ -1049,7 +1049,7 @@ void UpdateOamPriorityInAllHealthboxes(u8 priority, bool32 hideHPBoxes)
             gSprites[indicatorSpriteId].oam.priority = priority;
 
     #if B_HIDE_HEALTHBOX_IN_ANIMS
-        if (hideHPBoxes && IsBattlerAlive(i))
+        if (hideHPBoxes && IsBattlerAlive(i) && !IS_HIDDEN_MON_IN_2_VS_1_5(i))
             TryToggleHealboxVisibility(priority, healthboxLeftSpriteId, healthboxRightSpriteId, healthbarSpriteId, indicatorSpriteId);
     #endif
     }

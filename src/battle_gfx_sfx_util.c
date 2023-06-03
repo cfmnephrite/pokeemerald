@@ -784,8 +784,7 @@ bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId)
         }
         break;
     case 4:
-        if (!IS_HIDDEN_MON_IN_2_VS_1_5(*battlerId))
-            InitBattlerHealthboxCoords(*battlerId);
+        InitBattlerHealthboxCoords(*battlerId);
         if (gBattlerPositions[*battlerId] <= B_POSITION_OPPONENT_LEFT)
             DummyBattleInterfaceFunc(gHealthboxSpriteIds[*battlerId], FALSE);
         else

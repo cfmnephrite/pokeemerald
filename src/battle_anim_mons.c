@@ -923,7 +923,7 @@ bool8 IsBattlerSpritePresent(u8 battlerId)
         {
             if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
             {
-                if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0)
+                if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0 || IS_HIDDEN_MON_IN_2_VS_1_5(battlerId))
                     return FALSE;
             }
             else
