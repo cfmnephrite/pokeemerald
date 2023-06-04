@@ -784,6 +784,8 @@ u32 WhichBattleCoords(u32 battlerId) // 0 - singles, 1 - doubles
         && gPlayerPartyCount == 1
         && !(gBattleTypeFlags & BATTLE_TYPE_MULTI))
         return 0;
+    else if (IS_HIDDEN_MON_IN_2_VS_1_5(BATTLE_PARTNER(battlerId)))
+         return 0;
     else
         return IsDoubleBattle();
 }
