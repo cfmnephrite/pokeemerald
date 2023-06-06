@@ -1907,12 +1907,27 @@ u16 CountBattledRematchTeams(u16 trainerId)
 
 void StartVsRayquazaDeoxysBattle(void)
 {
+    u8 i, pp = 99;
+    u16 rayquazaMoves[] = {MOVE_OUTRAGE, MOVE_INFERNO, MOVE_DRAGON_DANCE, MOVE_ROOST};
+    u16 deoxysMoves[] = {MOVE_STORED_POWER, MOVE_COSMIC_POWER, MOVE_PROTECT, MOVE_RECOVER};
     // Rayquaza must have all of Deoxys' HP/Def/SpDef
     // Due to the way wild double battles work, Deoxys is in slot 3 of the enemy "party"
     gEnemyParty[0].maxHP        += gEnemyParty[3].maxHP;
     gEnemyParty[0].hp           += gEnemyParty[3].hp;
     gEnemyParty[0].defense      += gEnemyParty[3].defense;
     gEnemyParty[0].spDefense    += gEnemyParty[3].spDefense;
+
+    // Set wild mon moves
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        SetMonData(&gEnemyParty[0], MON_DATA_MOVE1 + i, &rayquazaMoves[i]);
+        SetMonData(&gEnemyParty[0], MON_DATA_PP1 + i, &pp);
+        SetMonData(&gEnemyParty[3], MON_DATA_MOVE1 + i, &deoxysMoves[i]);
+        SetMonData(&gEnemyParty[3], MON_DATA_PP1 + i, &pp);
+    }
+
+    // Set wild Deoxys' nickname to Rayquaza
+    SetMonData(&gEnemyParty[3], MON_DATA_NICKNAME, &gSpeciesNames[SPECIES_RAYQUAZA]);
 
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;

@@ -2974,7 +2974,9 @@ u8 DoBattlerEndTurnEffects(void)
                  && (gBattleMons[gActiveBattler].status2 & STATUS2_MULTIPLETURNS))
                 {
                     gBattleMons[gActiveBattler].status2 &= ~STATUS2_MULTIPLETURNS;
-                    if (!(gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION))
+                    if (!(gBattleMons[gActiveBattler].status2 & STATUS2_CONFUSION)
+                        && !(gBattleTypeFlags & BATTLE_TYPE_LEGENDARY && gSpeciesInfo[gBattleMons[gActiveBattler].species].flags & SPECIES_FLAG_LEGENDARY)
+                    )
                     {
                         gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER;
                         SetMoveEffect(TRUE, 0);
