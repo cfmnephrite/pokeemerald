@@ -1663,6 +1663,7 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_MAGICAL_TORQUE] = _("MagiclTorque"),
 };
 #endif
+const u8 gText_Bloom_Doom[] = _("Bloom Doom");
 
 static const u8 sText_Breakneck_Blitz[] = _("Breakneck Blitz");
 static const u8 sText_All_Out_Pummeling[] = _("All Out Pummeling");

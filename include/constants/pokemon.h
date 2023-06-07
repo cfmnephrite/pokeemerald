@@ -237,6 +237,7 @@
 #define FLAG_TWO_STRIKES                          (1 << 27) // A move with this flag will strike twice, and may apply its effect on each hit
 #define FLAG_WIND_MOVE                            (1 << 28)
 #define FLAG_SLICING_MOVE                         (1 << 29)
+#define FLAG_Z_MOVE                               (1 << 30)
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0

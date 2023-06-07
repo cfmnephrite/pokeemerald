@@ -2416,6 +2416,10 @@ static const u8 sLeafStormDescription[] = _(
     "Whips up a storm of leaves.\n"
     "Harshly lowers the Sp. Atk.");
 
+static const u8 sCatastropikaDescription[] = _(
+    "To do"
+);
+
 static const u8 sShoreUpDescription[] = _(
     "Restores the user's HP.\n"
     "More HP in a sandstorm.");
@@ -2615,6 +2619,10 @@ static const u8 sZingZapDescription[] = _(
 static const u8 sNaturesMadnessDescription[] = _(
     "Halves the foe's HP with\n"
     "the power of nature.");
+
+static const u8 s10MvThunderboltDescription[] = _(
+    "To do"
+);
 
 static const u8 sMultiAttackDescription[] = _(
     "An attack that changes\n"
@@ -3866,6 +3874,7 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_PRECIPICE_BLADES - 1] = sPrecipiceBladesDescription,
     [MOVE_DRAGON_ASCENT - 1] = sCloseCombatDescription,
     [MOVE_HYPERSPACE_FURY - 1] = sHyperspaceHoleDescription,
+    [MOVE_CATASTROPIKA - 1] = sCatastropikaDescription,
     [MOVE_SHORE_UP - 1] = sShoreUpDescription,
     [MOVE_FIRST_IMPRESSION - 1] = sFirstImpressionDescription,
     [MOVE_BANEFUL_BUNKER - 1] = sBanefulBunkerDescription,
@@ -3916,6 +3925,7 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_TEARFUL_LOOK - 1] = sTearfulLookDescription,
     [MOVE_ZING_ZAP - 1] = sZingZapDescription,
     [MOVE_NATURES_MADNESS - 1] = sNaturesMadnessDescription,
+    [MOVE_10000000_VOLT_THUNDERBOLT - 1] = s10MvThunderboltDescription,
     [MOVE_MULTI_ATTACK - 1] = sMultiAttackDescription,
     [MOVE_MIND_BLOWN - 1] = sMindBlownDescription,
     [MOVE_PLASMA_FISTS - 1] = sPlasmaFistsDescription,
