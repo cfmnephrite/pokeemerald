@@ -969,11 +969,8 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
     case EFFECT_MIND_BLOWN:
     case EFFECT_STEEL_BEAM:
         return TRUE;
-    case EFFECT_RECOIL_25:
     case EFFECT_RECOIL_IF_MISS:
-    case EFFECT_RECOIL_50:
-    case EFFECT_RECOIL_33:
-    case EFFECT_RECOIL_33_STATUS:
+    case EFFECT_RECOIL:
         if (AI_IsDamagedByRecoil(battlerAtk))
             return TRUE;
         break;

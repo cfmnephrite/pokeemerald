@@ -412,9 +412,10 @@ struct BattleMove
     u8 pp;
     u8 secondaryEffectChance;
     u16 target;
+    u8 secondaryData;
     s8 priority;
-    u8 split;
     u16 argument;
+    u8 split;
     u8 zMoveEffect;
     // Flags
     u32 makesContact:1;

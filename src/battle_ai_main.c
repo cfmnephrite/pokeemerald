@@ -719,6 +719,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     // move data
     s8 atkPriority = GetMovePriority(battlerAtk, move);
     u32 moveEffect = gBattleMoves[move].effect;
+    u8 secondaryData = gBattleMoves[move].secondaryData;
     s32 moveType;
     u32 moveTarget = AI_GetBattlerMoveTargetType(battlerAtk, move);
     struct AiLogicData *aiData = AI_DATA;
@@ -1854,29 +1855,10 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->moveAccuracy[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] < 75)
                 ADJUST_SCORE(-6);
             break;
-        case EFFECT_RECOIL_25:
+        case EFFECT_RECOIL:
             if (AI_IsDamagedByRecoil(battlerAtk))
             {
-                u32 recoilDmg = max(1, aiData->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 4);
-                if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
-                    ADJUST_SCORE(-10);
-                break;
-            }
-            break;
-        case EFFECT_RECOIL_33:
-        case EFFECT_RECOIL_33_STATUS:
-            if (AI_IsDamagedByRecoil(battlerAtk))
-            {
-                u32 recoilDmg = max(1, aiData->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 3);
-                if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
-                    ADJUST_SCORE(-10);
-                break;
-            }
-            break;
-        case EFFECT_RECOIL_50:
-            if (AI_IsDamagedByRecoil(battlerAtk))
-            {
-                u32 recoilDmg = max(1, aiData->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 2);
+                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(2, secondaryData));
                 if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
                     ADJUST_SCORE(-10);
                 break;
