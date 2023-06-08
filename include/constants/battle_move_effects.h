@@ -48,7 +48,7 @@
 #define EFFECT_RECOIL_IF_MISS               44
 #define EFFECT_MIST                         45
 #define EFFECT_FOCUS_ENERGY                 46
-#define EFFECT_RECOIL_25                    47
+#define EFFECT_RECOIL                       47
 #define EFFECT_CONFUSE                      48
 #define EFFECT_ATTACK_UP_2                  49
 #define EFFECT_DEFENSE_UP_2                 50
@@ -197,7 +197,7 @@
 #define EFFECT_SNATCH                       193
 #define EFFECT_LOW_KICK                     194
 #define EFFECT_SECRET_POWER                 195
-#define EFFECT_RECOIL_33                    196
+#define EFFECT_UNUSED_196                   196
 #define EFFECT_TEETER_DANCE                 197
 #define EFFECT_HIT_ESCAPE                   198
 #define EFFECT_MUD_SPORT                    199
@@ -287,9 +287,9 @@
 #define EFFECT_GROWTH                       281
 #define EFFECT_CLOSE_COMBAT                 282
 #define EFFECT_LAST_RESORT                  283
-#define EFFECT_RECOIL_33_STATUS             284
+#define EFFECT_UNUSED_284                   284
 #define EFFECT_FLINCH_STATUS                285
-#define EFFECT_RECOIL_50                    286
+#define EFFECT_UNUSED_286                   286
 #define EFFECT_SHELL_SMASH                  287
 #define EFFECT_SHIFT_GEAR                   288
 #define EFFECT_DEFENSE_UP_3                 289

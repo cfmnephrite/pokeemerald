@@ -343,10 +343,11 @@ struct BattleMove
     u8 pp;
     u8 secondaryEffectChance;
     u16 target;
+    u8 secondaryData;
     s8 priority;
     u32 flags;
-    u8 split;
     u16 argument;
+    u8 split;
     u8 zMoveEffect;
 };
 

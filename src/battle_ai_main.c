@@ -674,6 +674,7 @@ static s16 AI_CheckBadMove(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     // move data
     u8 atkPriority = GetMovePriority(battlerAtk, move);
     u16 moveEffect = gBattleMoves[move].effect;
+    u8 secondaryData = gBattleMoves[move].secondaryData;
     s32 moveType;
     u16 moveTarget = AI_GetBattlerMoveTargetType(battlerAtk, move);
     u16 accuracy = AI_GetMoveAccuracy(battlerAtk, battlerDef, move);
@@ -1840,29 +1841,10 @@ static s16 AI_CheckBadMove(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
             if (AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_GetMoveAccuracy(battlerAtk, battlerDef, move) < 75)
                 score -= 6;
             break;
-        case EFFECT_RECOIL_25:
+        case EFFECT_RECOIL:
             if (AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->abilities[battlerAtk] != ABILITY_ROCK_HEAD)
             {
-                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 4);
-                if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
-                    score -= 10;
-                break;
-            }
-            break;
-        case EFFECT_RECOIL_33:
-        case EFFECT_RECOIL_33_STATUS:
-            if (AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->abilities[battlerAtk] != ABILITY_ROCK_HEAD)
-            {
-                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 3);
-                if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
-                    score -= 10;
-                break;
-            }
-            break;
-        case EFFECT_RECOIL_50:
-            if (AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->abilities[battlerAtk] != ABILITY_ROCK_HEAD)
-            {
-                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / 2);
+                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(2, secondaryData));
                 if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
                     score -= 10;
                 break;

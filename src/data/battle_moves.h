@@ -605,13 +605,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_TAKE_DOWN] =
     {
-        .effect = EFFECT_RECOIL_25,
+        .effect = EFFECT_RECOIL,
         .power = 90,
         .type = TYPE_NORMAL,
         .accuracy = 85,
         .pp = 20,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 4,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -640,13 +641,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_DOUBLE_EDGE] =
     {
-        .effect = EFFECT_RECOIL_33,
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -1124,12 +1126,13 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .pp = 25,
         #endif
-        .effect = EFFECT_RECOIL_25,
+        .effect = EFFECT_RECOIL,
         .power = 80,
         .type = TYPE_FIGHTING,
         .accuracy = 80,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 4,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -2796,7 +2799,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .accuracy = 100,
             .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED,
-            .effect = EFFECT_RECOIL_25,
+            .effect = EFFECT_RECOIL,
         #endif
         .power = 50,
         .type = TYPE_NORMAL,
@@ -5860,17 +5863,16 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     [MOVE_VOLT_TACKLE] =
     {
         #if B_UPDATED_MOVE_DATA >= GEN_4
-            .effect = EFFECT_RECOIL_33_STATUS,
             .argument = STATUS1_PARALYSIS,
-        #else
-            .effect = EFFECT_RECOIL_33,
         #endif
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST | FLAG_SHEER_FORCE_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -6710,13 +6712,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_FLARE_BLITZ] =
     {
-        .effect = EFFECT_RECOIL_33_STATUS,
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_FIRE,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 10,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST | FLAG_RECKLESS_BOOST | FLAG_THAW_USER,
         .split = SPLIT_PHYSICAL,
@@ -7035,13 +7038,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_BRAVE_BIRD] =
     {
-        .effect = EFFECT_RECOIL_33,
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_FLYING,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -7674,13 +7678,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_WOOD_HAMMER] =
     {
-        .effect = EFFECT_RECOIL_33,
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -7749,13 +7754,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_HEAD_SMASH] =
     {
-        .effect = EFFECT_RECOIL_50,
+        .effect = EFFECT_RECOIL,
         .power = 150,
         .type = TYPE_ROCK,
         .accuracy = 80,
         .pp = 5,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 2,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -8902,13 +8908,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_WILD_CHARGE] =
     {
-        .effect = EFFECT_RECOIL_25,
+        .effect = EFFECT_RECOIL,
         .power = 90,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 4,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -9139,13 +9146,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_HEAD_CHARGE] =
     {
-        .effect = EFFECT_RECOIL_25,
+        .effect = EFFECT_RECOIL,
         .power = 120,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 15,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 4,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_PHYSICAL,
@@ -10299,13 +10307,14 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_LIGHT_OF_RUIN] =
     {
-        .effect = EFFECT_RECOIL_50,
+        .effect = EFFECT_RECOIL,
         .power = 140,
         .type = TYPE_FAIRY,
         .accuracy = 90,
         .pp = 5,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 2,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED | FLAG_RECKLESS_BOOST,
         .split = SPLIT_SPECIAL,
@@ -12596,12 +12605,13 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .power = 75,
         #endif
-        .effect = EFFECT_RECOIL_33,
+        .effect = EFFECT_RECOIL,
         .type = TYPE_WATER,
         .accuracy = 100,
         .pp = 10,
         .secondaryEffectChance = 100,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 3,
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED,
         .split = SPLIT_PHYSICAL,
@@ -12615,12 +12625,13 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .power = 120,
         #endif
-        .effect = EFFECT_RECOIL_50,
+        .effect = EFFECT_RECOIL,
         .type = TYPE_GRASS,
         .accuracy = 95,
         .pp = 5,
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
+        .secondaryData = 2,
         .priority = 0,
         .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGS_ROCK_AFFECTED,
         .split = SPLIT_SPECIAL,

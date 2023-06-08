@@ -5633,28 +5633,13 @@ static void Cmd_moveend(void)
             {
                 switch (gBattleMoves[gCurrentMove].effect)
                 {
-                case EFFECT_RECOIL_25: // Take Down, 25% recoil
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / 4);
+                case EFFECT_RECOIL: // Take Down, 25% recoil
+                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / max(2, gBattleMoves[gCurrentMove].secondaryData));
                     BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
-                    effect = TRUE;
-                    break;
-                case EFFECT_RECOIL_33: // Double Edge, 33 % recoil
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / 3);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
-                    effect = TRUE;
-                    break;
-                case EFFECT_RECOIL_50: // Head Smash, 50 % recoil
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / 2);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
-                    effect = TRUE;
-                    break;
-                case EFFECT_RECOIL_33_STATUS: // Flare Blitz - can burn, Volt Tackle - can paralyze
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / 3);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
+                    if (gBattleMoves[gCurrentMove].argument) // Flare Blitz - can burn, Volt Tackle - can paralyze
+                        gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
+                    else
+                        gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                     effect = TRUE;
                     break;
                 }
