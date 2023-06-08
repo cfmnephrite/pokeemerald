@@ -2758,9 +2758,7 @@ void BufferStringBattle(u16 stringID)
         }
         break;
     case STRINGID_USEDMOVE: // pokemon used a move msg
-        if (gBattleStruct->zmove.active && gBattleStruct->zmove.activeSplit != SPLIT_STATUS)
-            StringCopy(gBattleTextBuff3, GetZMoveName(gBattleMsgDataPtr->currentMove));
-        else if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT)
+        if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT)
             StringCopy(gBattleTextBuff3, sATypeMove_Table[*(&gBattleStruct->stringMoveType)]);
         else
             StringCopy(gBattleTextBuff3, gMoveNames[gBattleMsgDataPtr->currentMove]);
@@ -3181,17 +3179,13 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                if (gBattleStruct->zmove.active)
-                    toCpy = GetZMoveName(gBattleMsgDataPtr->currentMove);
-                else if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT)
+                if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT)
                     toCpy = sATypeMove_Table[gBattleStruct->stringMoveType];
                 else
                     toCpy = gMoveNames[gBattleMsgDataPtr->currentMove];
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                if (gBattleStruct->zmove.active)
-                    toCpy = GetZMoveName(gBattleMsgDataPtr->originallyUsedMove);
-                else if (gBattleMsgDataPtr->originallyUsedMove >= MOVES_COUNT)
+                if (gBattleMsgDataPtr->originallyUsedMove >= MOVES_COUNT)
                     toCpy = sATypeMove_Table[gBattleStruct->stringMoveType];
                 else
                     toCpy = gMoveNames[gBattleMsgDataPtr->originallyUsedMove];

@@ -143,7 +143,7 @@ static const struct SpriteTemplate sSpriteTemplate_ZMoveTrigger =
 // Functions
 bool8 IsZMove(u16 move)
 {
-    return move >= FIRST_Z_MOVE && move <= LAST_Z_MOVE;
+    return gBattleMoves[move].flags & FLAG_Z_MOVE;
 }
 
 void QueueZMove(u8 battlerId, u16 baseMove)
@@ -514,12 +514,12 @@ bool32 MoveSelectionDisplayZMove(u16 zmove)
             // Damaging move -> status z move
             StringCopy(gDisplayedStringBattle, sText_StatsPlus2);
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_3);
-            StringCopy(gDisplayedStringBattle, GetZMoveName(zmove));
+            StringCopy(gDisplayedStringBattle, gMoveNames[zmove]);
         }
         else
         {
             ZMoveSelectionDisplayPower(move, zmove);
-            StringCopy(gDisplayedStringBattle, GetZMoveName(zmove));
+            StringCopy(gDisplayedStringBattle, gMoveNames[zmove]);
         }
         BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_NAME_1);
 
@@ -579,14 +579,6 @@ static void ZMoveSelectionDisplayMoveType(u16 zMove)
 
     StringCopy(txtPtr, gTypeNames[zMoveType]);
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MOVE_TYPE);
-}
-
-const u8 *GetZMoveName(u16 move)
-{
-    if (IsZMove(move))
-        return gZMoveNames[move - FIRST_Z_MOVE];
-    else
-        return gZMoveNames[0];   // Failsafe
 }
 
 #define Z_EFFECT_BS_LENGTH  3
