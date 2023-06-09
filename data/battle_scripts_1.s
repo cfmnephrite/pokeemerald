@@ -3201,7 +3201,7 @@ BattleScript_MoveMissed::
 
 BattleScript_EffectDarkVoid::
 .if B_DARK_VOID_FAIL >= GEN_7
-	jumpiftype BS_ATTACKER, TYPE_DARK, BattleScript_EffectSleep
+	jumpifspecies BS_ATTACKER, SPECIES_DARKRAI, BattleScript_EffectSleep
 	goto BattleScript_PokemonCantUseTheMove
 .endif
 BattleScript_EffectSleep::
@@ -6270,6 +6270,16 @@ BattleScript_EffectCamouflage::
 	printstring STRINGID_PKMNCHANGEDTYPE
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
+
+BattleScript_SOSCallAlly::
+	printstring STRINGID_SOSBOSSCALLALLY
+	switchinanim BS_FAINTED, FALSE
+	printstring STRINGID_OPPONENTMON2APPEARED
+	waitmessage B_WAIT_TIME_MED
+	switchineffects BS_OPPONENT2
+	printstring STRINGID_EMPTYSTRING3
+	waitmessage 1
+	end2
 
 BattleScript_FaintAttacker::
 	tryillusionoff BS_ATTACKER

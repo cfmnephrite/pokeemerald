@@ -8397,7 +8397,7 @@ u32 IsAbilityStatusProtected(u32 battler)
         || IsShieldsDownProtected(battler);
 }
 
-static void RecalcBattlerStats(u32 battler, struct Pokemon *mon)
+void RecalcBattlerStats(u32 battler, struct Pokemon *mon)
 {
     CalculateMonStats(mon);
     gBattleMons[battler].level = GetMonData(mon, MON_DATA_LEVEL);

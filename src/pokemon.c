@@ -7660,9 +7660,7 @@ void ClearBattleMonForms(void)
 
 u16 GetBattleBGM(void)
 {
-    if (gBattleTypeFlags & BATTLE_TYPE_KYOGRE_GROUDON)
-        return MUS_VS_KYOGRE_GROUDON;
-    else if (gBattleTypeFlags & BATTLE_TYPE_REGI)
+    if (gBattleTypeFlags & BATTLE_TYPE_REGI)
         return MUS_VS_REGI;
     else if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
         return MUS_VS_TRAINER;

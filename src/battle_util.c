@@ -3405,6 +3405,34 @@ bool8 HandleFaintedMonActions(void)
     return FALSE;
 }
 
+bool8 HandleSOSBattleAllyCall(void)
+{
+    s32 i;
+    gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+    DebugPrintf("species: %d", gBattleMons[gActiveBattler].species);
+    if((gBattleTypeFlags & BATTLE_TYPE_NECROZMA) && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
+        && gBattleMons[gActiveBattler].hp == 0)
+    {
+        CreateMon(&gEnemyParty[3], SPECIES_GYARADOS, gBattleMons[gActiveBattler].level, USE_RANDOM_IVS, 0, 0, OT_ID_PLAYER_ID, 0);
+        //BtlController_EmitSetMonData(BUFFER_A, REQUEST_ALL_BATTLE, 0, sizeof(struct BattlePokemon), &gBattleMons[gActiveBattler]);
+        // BtlController_EmitSetMonData(BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMons[gActiveBattler].hp), &gBattleMons[gActiveBattler].maxHP);
+        // MarkBattlerForControllerExec(gActiveBattler);
+        gBattleMons[gActiveBattler].species = GetMonData(&gEnemyParty[3], MON_DATA_SPECIES);
+        for(i = 0; i < MAX_MON_MOVES; i++)
+        {
+            gBattleMons[gActiveBattler].moves[i] = GetMonData(&gEnemyParty[3], MON_DATA_MOVE1 + i);
+            gBattleMons[gActiveBattler].pp[i] = GetMonData(&gEnemyParty[3], MON_DATA_PP1 + i);
+        }
+        DebugPrintf("species: %d", gBattleMons[gActiveBattler].species);
+        RecalcBattlerStats(gActiveBattler, &gEnemyParty[3]);
+        gBattlerAbility = gActiveBattler;
+        PREPARE_SPECIES_BUFFER(gBattleTextBuff1, gBattleMons[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)].species);
+        BattleScriptExecute(BattleScript_SOSCallAlly);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 void TryClearRageAndFuryCutter(void)
 {
     s32 i;

@@ -135,6 +135,7 @@ s32 GetDrainedBigRootHp(u32 battler, s32 hp);
 u8 DoBattlerEndTurnEffects(void);
 bool8 HandleWishPerishSongOnTurnEnd(void);
 bool8 HandleFaintedMonActions(void);
+bool8 HandleSOSBattleAllyCall(void);
 void TryClearRageAndFuryCutter(void);
 u8 AtkCanceller_UnableToUseMove(void);
 u8 AtkCanceller_UnableToUseMove2(void);

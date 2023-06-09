@@ -3817,6 +3817,8 @@ void BattleTurnPassed(void)
     gBattleStruct->faintedActionsState = 0;
     if (HandleWishPerishSongOnTurnEnd())
         return;
+    if (HandleSOSBattleAllyCall())
+        return;
 
     TurnValuesCleanUp(FALSE);
     gHitMarker &= ~HITMARKER_NO_ATTACKSTRING;

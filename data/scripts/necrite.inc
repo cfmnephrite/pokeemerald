@@ -10,3 +10,14 @@ SpecialBattle_EventScript_VsRayquazaDeoxys::
 	waitstate
 	release
 	end
+
+SpecialBattle_EventScript_VsNecrozma::
+	lock
+	faceplayer
+	waitse
+	setwildbattle SPECIES_NECROZMA, 1, ITEM_NONE, SPECIES_KRICKETUNE, 1, ITEM_NONE
+	special StartVsNecrozmaBattle
+	waitstate
+	release
+	end
+	

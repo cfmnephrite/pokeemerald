@@ -565,23 +565,6 @@ void BattleSetup_StartLegendaryBattle(void)
     TryUpdateGymLeaderRematchFromWild();
 }
 
-void StartGroudonKyogreBattle(void)
-{
-    LockPlayerFieldControls();
-    gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_KYOGRE_GROUDON;
-
-    if (gGameVersion == VERSION_RUBY)
-        CreateBattleStartTask(B_TRANSITION_ANGLED_WIPES, MUS_VS_KYOGRE_GROUDON); // GROUDON
-    else
-        CreateBattleStartTask(B_TRANSITION_RIPPLE, MUS_VS_KYOGRE_GROUDON); // KYOGRE
-
-    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
-    IncrementGameStat(GAME_STAT_WILD_BATTLES);
-    IncrementDailyWildBattles();
-    TryUpdateGymLeaderRematchFromWild();
-}
-
 void StartRegiBattle(void)
 {
     u8 transitionId;
@@ -1934,6 +1917,20 @@ void StartVsRayquazaDeoxysBattle(void)
     gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_RAYQUAZA | BATTLE_TYPE_DOUBLE | BATTLE_TYPE_2_VS_1_5 ;
     CreateBattleStartTask(B_TRANSITION_BLUR, MUS_VS_RAYQUAZA);
 
+    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
+    IncrementGameStat(GAME_STAT_WILD_BATTLES);
+    IncrementDailyWildBattles();
+    TryUpdateGymLeaderRematchFromWild();
+}
+
+void StartVsNecrozmaBattle(void)
+{
+    LockPlayerFieldControls();
+    FreezeObjectEvents();
+    StopPlayerAvatar();
+    gMain.savedCallback = CB2_EndWildBattle;
+    gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_NECROZMA | BATTLE_TYPE_DOUBLE;
+    CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
     IncrementDailyWildBattles();

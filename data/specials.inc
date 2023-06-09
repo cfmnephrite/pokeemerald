@@ -321,7 +321,6 @@ gSpecials::
 	def_special IsPokerusInParty
 	def_special SetSootopolisGymCrackedIceMetatiles
 	def_special ShakeCamera
-	def_special StartGroudonKyogreBattle
 	def_special BattleSetup_StartLegendaryBattle
 	def_special StartRegiBattle
 	def_special SetTrainerFacingDirection
@@ -537,3 +536,4 @@ gSpecials::
 	def_special SetTotemBoost
 	def_special TrySpecialOverworldEvo
 	def_special StartVsRayquazaDeoxysBattle
+	def_special StartVsNecrozmaBattle
