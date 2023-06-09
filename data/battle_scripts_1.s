@@ -4798,12 +4798,6 @@ BattleScript_EffectTripleKick::
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
 	ppreduce
-	jumpifmove MOVE_TRIPLE_AXEL BS_TripleAxel
-	addbyte sTRIPLE_KICK_POWER, 10 @ triple kick gets +10 power
-	goto BattleScript_HitFromAtkString
-
-BS_TripleAxel:
-	addbyte sTRIPLE_KICK_POWER, 20 @ triple axel gets +20 power
 	goto BattleScript_HitFromAtkString
 
 BattleScript_EffectThief::
@@ -6262,23 +6256,32 @@ BattleScript_TickleDoMoveAnim::
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_DEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_MULTIPLE_STATS
-	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
-	setstatchanger STAT_ATK, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleTryLowerDef
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleTryLowerDef
-	printfromtable gStatDownStringIds
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_TickleTryLowerDef::
-	playstatchangeanimation BS_TARGET, BIT_DEF, STAT_CHANGE_NEGATIVE
-	setstatchanger STAT_DEF, 1, TRUE
+	sethword sSTATCHANGER, STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_NEGATIVE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleEnd
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleEnd
-	printfromtable gStatDownStringIds
-	waitmessage B_WAIT_TIME_LONG
 BattleScript_TickleEnd::
 	goto BattleScript_MoveEnd
+
+@BattleScript_TickleDoMoveAnim::
+@	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
+@	attackanimation
+@	waitanimation
+@	setbyte sSTAT_ANIM_PLAYED, FALSE
+@	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_DEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_MULTIPLE_STATS
+@	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
+@	setstatchanger STAT_ATK, 1, TRUE
+@	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleTryLowerDef
+@	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleTryLowerDef
+@	printfromtable gStatDownStringIds
+@	waitmessage B_WAIT_TIME_LONG
+@BattleScript_TickleTryLowerDef::
+@	playstatchangeanimation BS_TARGET, BIT_DEF, STAT_CHANGE_NEGATIVE
+@	setstatchanger STAT_DEF, 1, TRUE
+@	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleEnd
+@	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleEnd
+@	printfromtable gStatDownStringIds
+@	waitmessage B_WAIT_TIME_LONG
+@BattleScript_TickleEnd::
+@	goto BattleScript_MoveEnd
 
 BattleScript_CantLowerMultipleStats::
 	pause B_WAIT_TIME_SHORT
@@ -8544,7 +8547,7 @@ BattleScript_MoodyActivates::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_MoodyLower:
 	jumpifbyteequal sSAVED_STAT_CHANGER, sZero, BattleScript_MoodyEnd
-	copybyte sSTATCHANGER, sSAVED_STAT_CHANGER
+	copyhword sSTATCHANGER, sSAVED_STAT_CHANGER
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_MoodyEnd
 	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, B_MSG_DEFENDER_STAT_FELL, BattleScript_MoodyEnd
 	setgraphicalstatchangevalues
@@ -10181,7 +10184,7 @@ BattleScript_ZMoveActivateStatus::
 	playanimation BS_ATTACKER, B_ANIM_ZMOVE_ACTIVATE, NULL
 	setzeffect
 	restoretarget
-	copybyte sSTATCHANGER, sSAVED_STAT_CHANGER
+	copyhword sSTATCHANGER, sSAVED_STAT_CHANGER
 	return
 
 BattleScript_ZEffectPrintString::

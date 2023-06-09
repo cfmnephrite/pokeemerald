@@ -16,6 +16,16 @@ struct StatFractions
     u8 divisor;
 };
 
+struct StatBuffsHelper {
+    bool32 certain;
+    bool32 notProtectAffected;
+    bool32 affectsUser;
+    bool32 mirrorArmored;
+    u32 index;
+    u8 statBuffStrings[NUM_BATTLE_STATS - 1];
+    u16 activeBattlerAbility;
+};
+
 s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility);
 s8 GetInverseCritChance(u8 battlerAtk, u8 battlerDef, u32 move);
 u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u32 defAbility, u32 atkHoldEffect, u32 defHoldEffect);

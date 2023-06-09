@@ -339,7 +339,7 @@ static const u16 sWhiteOutBadgeMoney[9] = { 8, 16, 24, 36, 48, 64, 80, 100, 120 
 static bool8 IsTwoTurnsMove(u16 move);
 static void TrySetDestinyBondToHappen(void);
 static u8 AttacksThisTurn(u8 battlerId, u16 move); // Note: returns 1 if it's a charging turn, otherwise 2.
-static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr);
+static u32 ChangeStatBuffs(s16 statValue, u32 statId, u32 flags, const u8 *BS_ptr);
 static bool32 IsMonGettingExpSentOut(void);
 static void InitLevelUpBanner(void);
 static bool8 SlideInLevelUpBanner(void);
@@ -2929,13 +2929,13 @@ void StealTargetItem(u8 battlerStealer, u8 battlerItem)
 #define INCREMENT_RESET_RETURN                  \
 {                                               \
     gBattlescriptCurrInstr++;                   \
-    gBattleScripting.moveEffect = 0; \
+    gBattleScripting.moveEffect = 0;            \
     return;                                     \
 }
 
 #define RESET_RETURN                            \
 {                                               \
-    gBattleScripting.moveEffect = 0; \
+    gBattleScripting.moveEffect = 0;            \
     return;                                     \
 }
 
@@ -5298,6 +5298,12 @@ static void Cmd_setgraphicalstatchangevalues(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+static void StatChangeAnimation(u32 statAnimId)
+{
+    BtlController_EmitBattleAnimation(BUFFER_A, B_ANIM_STATS_CHANGE, statAnimId);
+    MarkBattlerForControllerExec(gActiveBattler);
+}
+
 static void Cmd_playstatchangeanimation(void)
 {
     CMD_ARGS(u8 battler, u8 stats, u8 flags);
@@ -5398,8 +5404,7 @@ static void Cmd_playstatchangeanimation(void)
     }
     else if (changeableStatsCount != 0 && !gBattleScripting.statAnimPlayed)
     {
-        BtlController_EmitBattleAnimation(BUFFER_A, B_ANIM_STATS_CHANGE, statAnimId);
-        MarkBattlerForControllerExec(gActiveBattler);
+        StatChangeAnimation(statAnimId);
         if (flags & STAT_CHANGE_MULTIPLE_STATS && changeableStatsCount > 1)
             gBattleScripting.statAnimPlayed = TRUE;
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -11847,7 +11852,7 @@ static u16 ReverseStatChangeMoveEffect(u16 moveEffect)
     }
 }
 
-static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr)
+static u32 ChangeStatBuffs(s16 statValue, u32 statId, u32 flags, const u8 *BS_ptr)
 {
     bool32 certain = FALSE;
     bool32 notProtectAffected = FALSE;
@@ -12116,6 +12121,311 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     return STAT_CHANGE_WORKED;
 }
 
+static u8 GetStatBuff(u16 statValue, u8 stat)
+{
+    u8 result = (statValue >> (2 * (stat - 1))) & 0x3;
+    if (statValue & STAT_BUFF_DOUBLED)
+        result *= 2;
+
+    return result;
+}
+
+static u8 GetStatBuffStringIndex(u8 stat)
+{
+    switch (stat)
+    {
+        case STAT_SPATK:
+        case STAT_SPDEF:
+            return stat - 2;
+        case STAT_SPEED:
+            return stat + 1;
+        default:
+            return stat - 1;
+    }
+}
+
+static u8 TryLowerStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBuffsHelper, u32 *statAnimId, const u8 *BS_ptr)
+{
+    u8 i, drop;
+    u8 statsChanged = FALSE;
+    // Try various ways to fail
+    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    {
+        if ((drop = GetStatBuff(statValue, i)))
+        {
+            if (gSideTimers[GET_BATTLER_SIDE(gActiveBattler)].mistTimer
+                && !statBuffsHelper->certain && gCurrentMove != MOVE_CURSE
+                && !(gActiveBattler == gBattlerTarget && GetBattlerAbility(gBattlerAttacker) == ABILITY_INFILTRATOR))
+            {
+                if (flags == STAT_CHANGE_ALLOW_PTR)
+                {
+                    if (gSpecialStatuses[gActiveBattler].statLowered)
+                    {
+                        gBattlescriptCurrInstr = BS_ptr;
+                    }
+                    else
+                    {
+                        BattleScriptPush(BS_ptr);
+                        gBattleScripting.battler = gActiveBattler;
+                        gBattlescriptCurrInstr = BattleScript_MistProtected;
+                        gSpecialStatuses[gActiveBattler].statLowered = TRUE;
+                    }
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+                }
+            }
+            else if (gCurrentMove != MOVE_CURSE
+                    && statBuffsHelper->notProtectAffected != TRUE && JumpIfMoveAffectedByProtect(0))
+            {
+                gBattlescriptCurrInstr = BattleScript_ButItFailed;
+                statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+            }
+            else if ((GetBattlerHoldEffect(gActiveBattler, TRUE) == HOLD_EFFECT_CLEAR_AMULET
+                    || statBuffsHelper->activeBattlerAbility == ABILITY_CLEAR_BODY
+                    || statBuffsHelper->activeBattlerAbility == ABILITY_FULL_METAL_BODY
+                    || statBuffsHelper->activeBattlerAbility == ABILITY_WHITE_SMOKE)
+                    && (!statBuffsHelper->affectsUser || statBuffsHelper->mirrorArmored)
+                    && !statBuffsHelper->certain && gCurrentMove != MOVE_CURSE)
+            {
+                if (GetBattlerHoldEffect(gActiveBattler, TRUE) == HOLD_EFFECT_CLEAR_AMULET)
+                {
+                    RecordItemEffectBattle(gActiveBattler, HOLD_EFFECT_CLEAR_AMULET);
+                }
+
+                if (flags == STAT_CHANGE_ALLOW_PTR)
+                {
+                    if (gSpecialStatuses[gActiveBattler].statLowered)
+                    {
+                        gBattlescriptCurrInstr = BS_ptr;
+                    }
+                    else
+                    {
+                        BattleScriptPush(BS_ptr);
+                        gBattleScripting.battler = gActiveBattler;
+                        gBattlerAbility = gActiveBattler;
+                        gBattlescriptCurrInstr = BattleScript_AbilityNoStatLoss;
+                        gLastUsedAbility = statBuffsHelper->activeBattlerAbility;
+                        RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
+                        gSpecialStatuses[gActiveBattler].statLowered = TRUE;
+                    }
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+                }
+            }
+            else if ((statBuffsHelper->index = IsFlowerVeilProtected(gActiveBattler)) && !statBuffsHelper->certain)
+            {
+                if (flags == STAT_CHANGE_ALLOW_PTR)
+                {
+                    if (gSpecialStatuses[gActiveBattler].statLowered)
+                    {
+                        gBattlescriptCurrInstr = BS_ptr;
+                    }
+                    else
+                    {
+                        BattleScriptPush(BS_ptr);
+                        gBattleScripting.battler = gActiveBattler;
+                        gBattlerAbility = statBuffsHelper->index - 1;
+                        gBattlescriptCurrInstr = BattleScript_FlowerVeilProtectsRet;
+                        gLastUsedAbility = ABILITY_FLOWER_VEIL;
+                        gSpecialStatuses[gActiveBattler].statLowered = TRUE;
+                    }
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+                }
+            }
+            else if (!statBuffsHelper->certain
+                    && ((statBuffsHelper->activeBattlerAbility == ABILITY_KEEN_EYE && i == STAT_ACC)
+                    || (statBuffsHelper->activeBattlerAbility == ABILITY_HYPER_CUTTER && i == STAT_ATK)
+                    || (statBuffsHelper->activeBattlerAbility == ABILITY_BIG_PECKS && i == STAT_DEF)))
+            {
+                if (flags == STAT_CHANGE_ALLOW_PTR)
+                {
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+                    BattleScriptPush(BS_ptr);
+                    gBattleScripting.battler = gActiveBattler;
+                    gBattlerAbility = gActiveBattler;
+                    gBattlescriptCurrInstr = BattleScript_AbilityNoSpecificStatLoss;
+                    gLastUsedAbility = statBuffsHelper->activeBattlerAbility;
+                    RecordAbilityBattle(gActiveBattler, gLastUsedAbility);
+                }
+            }
+            else if (statBuffsHelper->activeBattlerAbility == ABILITY_MIRROR_ARMOR && !statBuffsHelper->affectsUser
+                && !statBuffsHelper->mirrorArmored && gBattlerAttacker != gBattlerTarget && gActiveBattler == gBattlerTarget)
+            {
+                if (flags == STAT_CHANGE_ALLOW_PTR)
+                {
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+                    /* SET_STATCHANGER(statId, GET_STAT_BUFF_VALUE(statValue) | STAT_BUFF_NEGATIVE, TRUE); */
+                    BattleScriptPush(BS_ptr);
+                    gBattleScripting.battler = gActiveBattler;
+                    gBattlerAbility = gActiveBattler;
+                    gBattlescriptCurrInstr = BattleScript_MirrorArmorReflect;
+                    RecordAbilityBattle(gActiveBattler, gBattleMons[gActiveBattler].ability);
+                }
+            }
+            else if (statBuffsHelper->activeBattlerAbility == ABILITY_SHIELD_DUST && flags == 0)
+            {
+                RecordAbilityBattle(gActiveBattler, ABILITY_SHIELD_DUST);
+                statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+            }
+            else if (flags == 0 && GetBattlerHoldEffect(gActiveBattler, TRUE) == HOLD_EFFECT_COVERT_CLOAK)
+            {
+                RecordItemEffectBattle(gActiveBattler, HOLD_EFFECT_COVERT_CLOAK);
+                statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_BLOCKED;
+            }
+            else
+            {
+                if ((drop = min(gBattleMons[gActiveBattler].statStages[i], drop)))
+                {
+                    // Successful stat drop!
+                    gBattleMons[gActiveBattler].statStages[i] -= drop;
+                    statsChanged = TRUE;
+                    switch (drop)
+                    {
+                        case 1:
+                            if (!(*statAnimId))
+                                *statAnimId = STAT_ANIM_MINUS1 + i - 1;
+                            else if ((*statAnimId) && (*statAnimId) < STAT_ANIM_MINUS2)
+                                *statAnimId = STAT_ANIM_MULTIPLE_MINUS1;
+                            statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_FELL;
+                            break;
+                        case 2:
+                            if (!(*statAnimId))
+                                *statAnimId = STAT_ANIM_MINUS2 + i - 1;
+                            else
+                                *statAnimId = STAT_ANIM_MULTIPLE_MINUS2;
+                            statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_SHARPLY_FELL;
+                            break;
+                        default:
+                            if (!(*statAnimId))
+                                *statAnimId = STAT_ANIM_MINUS2 + i - 1;
+                            else
+                                *statAnimId = STAT_ANIM_MULTIPLE_MINUS2;
+                            statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_SEVERELY_FELL;
+                            break;
+                    }
+                }
+                else
+                {
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_WONT_GO_LOWER;
+                }
+            }
+        }
+    }
+
+    return statsChanged;
+}
+
+static u8 TryRaiseStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBuffsHelper, u32 *statAnimId, const u8 *BS_ptr)
+{
+    
+    u8 i, boost, statsChanged = 0;
+    // Try various ways to fail
+    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    {
+        if ((boost = min(MAX_STAT_STAGE - gBattleMons[gActiveBattler].statStages[i], GetStatBuff(statValue, i))))
+        {
+            // Successful stat boost!
+            gBattleMons[gActiveBattler].statStages[i] += boost;
+            statsChanged++;
+            switch (boost)
+            {
+                case 1:
+                    if (!(*statAnimId))
+                        *statAnimId = STAT_ANIM_PLUS1 + i - 1;
+                    else if ((*statAnimId) && (*statAnimId) < STAT_ANIM_PLUS2)
+                        *statAnimId = STAT_ANIM_MULTIPLE_PLUS1;
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_ROSE;
+                    break;
+                case 2:
+                    if (!(*statAnimId))
+                        *statAnimId = STAT_ANIM_PLUS2 + i - 1;
+                    else
+                        *statAnimId = STAT_ANIM_MULTIPLE_PLUS2;
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_SHARPLY_ROSE;
+                    break;
+                    if (!(*statAnimId))
+                        *statAnimId = STAT_ANIM_PLUS2 + i - 1;
+                    else
+                        *statAnimId = STAT_ANIM_MULTIPLE_PLUS2;
+                default:
+                    statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_DRASTICALLY_ROSE;
+                    break;
+            }
+        }
+        else
+        {
+            statBuffsHelper->statBuffStrings[GetStatBuffStringIndex(i)] = STAT_CHANGE_WONT_GO_HIGHER;
+        }
+    }
+
+    return statsChanged;
+}
+
+static bool16 TryChangeStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBuffsHelper, u32 *statAnimId, const u8 *BS_ptr)
+{
+    if (statValue & STAT_BUFF_NEGATIVE)
+        return TryLowerStats(statValue, flags, statBuffsHelper, statAnimId, BS_ptr);
+    else
+        return TryRaiseStats(statValue, flags, statBuffsHelper, statAnimId, BS_ptr);
+}
+
+static u32 _ChangeStatBuffs(u16 statValue, u32 flags, const u8 *BS_ptr)
+{
+    struct StatBuffsHelper statBuffsHelper = {
+        .certain = (flags & MOVE_EFFECT_CERTAIN),
+        .notProtectAffected = (flags & STAT_CHANGE_NOT_PROTECT_AFFECTED),
+        .affectsUser = (flags & MOVE_EFFECT_AFFECTS_USER),
+        .mirrorArmored = (flags & STAT_CHANGE_MIRROR_ARMOR),
+        .statBuffStrings = { 0 }
+    };
+    u8 statsChanged = 0;
+    u32 statAnimId = 0;
+
+    // Check who it affects, Contrary, Simple
+    if (statBuffsHelper.affectsUser)
+        gActiveBattler = gBattlerAttacker;
+    else
+        gActiveBattler = gBattlerTarget;
+
+    statBuffsHelper.activeBattlerAbility = GetBattlerAbility(gActiveBattler);
+    gSpecialStatuses[gActiveBattler].changedStatsBattlerId = gBattlerAttacker;
+    flags &= ~(MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_MIRROR_ARMOR |
+        MOVE_EFFECT_CERTAIN | STAT_CHANGE_NOT_PROTECT_AFFECTED );
+
+    if (statBuffsHelper.activeBattlerAbility == ABILITY_CONTRARY)
+    {
+        statValue ^= STAT_BUFF_NEGATIVE;
+        gBattleScripting.statChanger ^= STAT_BUFF_NEGATIVE;
+        if (flags & STAT_CHANGE_UPDATE_MOVE_EFFECT)
+        {
+            flags &= ~STAT_CHANGE_UPDATE_MOVE_EFFECT;
+            gBattleScripting.moveEffect = ReverseStatChangeMoveEffect(gBattleScripting.moveEffect);
+        }
+    }
+    else if (statBuffsHelper.activeBattlerAbility == ABILITY_SIMPLE)
+    {
+        statValue ^= STAT_BUFF_DOUBLED;
+    }
+
+    // Try apply statValue1 first
+
+    if (statValue)
+    {
+        // Do animation
+        if ((statsChanged = TryChangeStats(statValue, flags, &statBuffsHelper, &statAnimId, BS_ptr)))
+            StatChangeAnimation(statAnimId);
+        DebugPrintf("statAnimId: %d", statAnimId);
+        // Do string
+    }
+    // DEBUG
+    DebugPrintf("Atk: %d", statBuffsHelper.statBuffStrings[0]);
+    DebugPrintf("Def: %d", statBuffsHelper.statBuffStrings[1]);
+    return STAT_CHANGE_WORKED;
+    // Then reset and statValue2
+    // if (statValue)
+    // {
+    //     statBuffsHelper.statValue1Success = TryChangeStats(statValue, flags, &statBuffsHelper, BS_ptr);
+    // }
+}
+
 static void Cmd_statbuffchange(void)
 {
     CMD_ARGS(u16 flags, const u8 *failInstr);
@@ -12124,7 +12434,8 @@ static void Cmd_statbuffchange(void)
     const u8 *ptrBefore = gBattlescriptCurrInstr;
     const u8 *failInstr = cmd->failInstr;
 
-    if (ChangeStatBuffs(GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger), GET_STAT_BUFF_ID(gBattleScripting.statChanger), flags, failInstr) == STAT_CHANGE_WORKED)
+    // if (ChangeStatBuffs(GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger), GET_STAT_BUFF_ID(gBattleScripting.statChanger), flags, failInstr) == STAT_CHANGE_WORKED)
+    if (_ChangeStatBuffs(gBattleScripting.statChanger, flags, failInstr) == STAT_CHANGE_WORKED)
         gBattlescriptCurrInstr = cmd->nextInstr;
     else if (gBattlescriptCurrInstr == ptrBefore) // Prevent infinite looping.
         gBattlescriptCurrInstr = failInstr;

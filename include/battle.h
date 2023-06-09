@@ -719,7 +719,24 @@ struct BattleStruct
 #define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
 #define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40
-#define STAT_BUFF_NEGATIVE 0x80                     // 0x80, the sign bit
+#define GET_STAT_BUFF_STRING_INDEX(stat)            \
+{                                                   \
+    switch (stat) {                                 \
+        case STAT_SPATK:                            \
+        case STAT_SPDEF:                            \
+            return stat - 2;                        \
+        case STAT_SPEED:                            \
+            return stat + 1;                        \
+        default:                                    \
+            return stat - 1;                        \
+    }                                               \
+}
+#define GET_STAT_BUFF(result, statValue, stat)                  \
+{                                                       \
+    result = (statValue >> (2 * (stat - 1))) & 0x3;     \
+    if (statValue & STAT_BUFF_DOUBLED)                  \
+        result *= 2;                                    \
+}                                                       \
 
 #define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
 
@@ -748,14 +765,13 @@ struct BattleScripting
     u8 twoTurnsMoveStringId;
     u8 animArg1;
     u8 animArg2;
-    u16 tripleKickPower;
-    u8 moveendState;
-    u8 savedStatChanger; // For further use, if attempting to change stat two times(ex. Moody)
+    u16 statChanger;
+    u16 savedStatChanger; // For further use, if attempting to change stat two times(ex. Moody)
     u8 shiftSwitched; // When the game tells you the next enemy's pokemon and you switch. Option for noobs but oh well.
     u8 battler;
     u8 animTurn;
     u8 animTargetsHit;
-    u8 statChanger;
+    u8 moveendState;
     bool8 statAnimPlayed;
     u8 getexpState;
     u8 battleStyle;
