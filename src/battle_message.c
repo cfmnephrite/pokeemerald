@@ -314,11 +314,12 @@ static const u8 sText_PkmnsXPreventsYsZ[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK
 static const u8 sText_PkmnsAbilityPreventsAbility[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nprevents {B_DEF_NAME_WITH_PREFIX}'s\l{B_DEF_ABILITY} from working!");
 static const u8 sText_PkmnsXCuredItsYProblem[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\ncured its {B_BUFF1} problem!");
 static const u8 sText_PkmnsXHadNoEffectOnY[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nhad no effect on {B_EFF_NAME_WITH_PREFIX}!");
-const u8 gText_StatSharply[] = _("sharply ");
+const u8 gText_StatSharply[] = _("sharply");
 const u8 gText_StatRose[] = _("rose!");
-static const u8 sText_StatHarshly[] = _("harshly ");
+static const u8 sText_StatHarshly[] = _("harshly");
 static const u8 sText_StatFell[] = _("fell!");
 static const u8 sText_AttackersStatRose[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
+static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1}");
 const u8 gText_DefendersStatRose[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_UsingItemTheStatOfPkmnRose[] = _("Using {B_LAST_ITEM}, the {B_BUFF1}\nof {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
 static const u8 sText_AttackersStatFell[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
@@ -660,8 +661,8 @@ static const u8 sText_HealBlockPreventsUsage[] = _("{B_ATK_NAME_WITH_PREFIX} was
 static const u8 sText_MegaEvoReacting[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ITEM} is\nreacting to {B_ATK_TRAINER_NAME}'s Mega Ring!");
 static const u8 sText_FerventWishReached[] = _("{B_ATK_TRAINER_NAME}'s fervent wish\nhas reached {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_MegaEvoEvolved[] = _("{B_ATK_NAME_WITH_PREFIX} has Mega Evolved into\nMega {B_BUFF1}!");
-static const u8 sText_drastically[] = _("drastically ");
-static const u8 sText_severely[] = _("severely ");
+static const u8 sText_drastically[] = _("drastically");
+static const u8 sText_severely[] = _("severely");
 static const u8 sText_Infestation[] = _("{B_DEF_NAME_WITH_PREFIX} has been afflicted\nwith an infestation by {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_NoEffectOnTarget[] = _("It had no effect\non {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_BurstingFlames[] = _("The bursting flames\nhit {B_SCR_ACTIVE_NAME_WITH_PREFIX}!");
@@ -1370,6 +1371,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_FOREWARNACTIVATES - BATTLESTRINGS_TABLE_START] = sText_ForewarnActivates,
     [STRINGID_ICEBODYHPGAIN - BATTLESTRINGS_TABLE_START] = sText_IceBodyHpGain,
     [STRINGID_SNOWWARNINGHAIL - BATTLESTRINGS_TABLE_START] = sText_SnowWarningHail,
+    [STRINGID_STATSCHANGED - BATTLESTRINGS_TABLE_START] = sText_StatsChanged,
     [STRINGID_SNOWWARNINGSNOW - BATTLESTRINGS_TABLE_START] = sText_SnowWarningSnow,
     [STRINGID_FRISKACTIVATES - BATTLESTRINGS_TABLE_START] = sText_FriskActivates,
     [STRINGID_UNNERVEENTERS - BATTLESTRINGS_TABLE_START] = sText_UnnerveEnters,
@@ -1971,6 +1973,7 @@ const u8 gText_Paralysis[] = _("paralysis");
 const u8 gText_Ice[] = _("ice");
 const u8 gText_Confusion[] = _("confusion");
 const u8 gText_Love[] = _("love");
+const u8 gText_AndSpace[] = _("and ");
 const u8 gText_SpaceAndSpace[] = _(" and ");
 const u8 gText_CommaSpace[] = _(", ");
 const u8 gText_Space2[] = _(" ");
@@ -3598,6 +3601,21 @@ static void IllusionNickHack(u32 battlerId, u32 partyId, u8 *dst)
     GetMonData(mon, MON_DATA_NICKNAME, dst);
 }
 
+static const u8 sText_StatWontGoHigher[] = _("won't go higher!");
+static const u8 sText_StatWontGoLower[] = _("won't go lower!");
+
+static const u8 *const sStatChangeStringsTable[] =
+{
+    [STAT_CHANGE_WONT_GO_HIGHER]    = sText_StatWontGoHigher,
+    [STAT_CHANGE_WONT_GO_LOWER]     = sText_StatWontGoLower,
+    [STAT_CHANGE_ROSE]              = gText_StatRose,
+    [STAT_CHANGE_SHARPLY_ROSE]      = gText_StatSharply,
+    [STAT_CHANGE_DRASTICALLY_ROSE]  = sText_drastically,
+    [STAT_CHANGE_FELL]              = sText_StatFell,
+    [STAT_CHANGE_SHARPLY_FELL]      = sText_StatHarshly,
+    [STAT_CHANGE_SEVERELY_FELL]     = sText_severely
+};
+
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 {
     u32 srcID = 1;
@@ -3610,6 +3628,83 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
     {
         switch (src[srcID])
         {
+        case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
+            srcID = gBattleCommunication[MULTISTRING_CHOOSER] + 1;
+            // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
+            text[0] = src[srcID] & 0xF;
+
+            // 0 = rose/fell, 1 = harshly/sharply, 2 = drastically/severely
+            text[1] = text[0] % 3;
+
+            // Stat count - number of stats that will be boosted
+            switch (text[2] = ((src[srcID++] & 0xF0) >> 0x4))
+            {
+                case 1:
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    if (text[0] < 3 || text[1])
+                        StringAppend(dst, gText_NewLine);
+                    else
+                        StringAppend(dst, gText_Space2);
+                    break;
+                case 2:
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    StringAppend(dst, gText_SpaceAndSpace);
+                    StringAppend(dst, gText_NewLine);
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    StringAppend(dst, gText_Space2);
+                    break;
+                case 3:
+                case 4:
+                case 5:
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    StringAppend(dst, gText_CommaSpace);
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    StringAppend(dst, gText_CommaSpace);
+                    StringAppend(dst, gText_NewLine);
+                    if (text[2] > 3)
+                    {
+                        StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                        if (text[2] == 5)
+                        {
+                            StringAppend(dst, gText_CommaSpace);
+                            StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                            StringAppend(dst, gText_CommaSpace);
+                        }
+                        else
+                        {
+                            StringAppend(dst, gText_CommaSpace);
+                            StringAppend(dst, gText_AndSpace);
+                        }
+                    }
+                    else
+                        StringAppend(dst, gText_AndSpace);
+                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    StringAppend(dst, gText_Space2);
+                    break;
+                default:
+                    break;
+            }
+
+            // Rose/fell
+            StringAppend(dst, sStatChangeStringsTable[text[0]]);
+
+            // In case it's harshly/sharply etc.
+            if (text[0] > 3 && text[1])
+            {
+                StringAppend(dst, gText_Space2);
+                StringAppend(dst, sStatChangeStringsTable[text[0] - text[1]]);
+            }
+
+            // If next thing is another B_BUFF_STAT_CHANGE_STRING,
+            // then set MULTISTRING_CHOOSER and quit this function
+            if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
+            {
+                gBattleCommunication[MULTISTRING_CHOOSER] = srcID;
+                return;
+            }
+            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTISTRING_CHOOSER to zero
+                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            break;
         case B_BUFF_STRING: // battle string
             hword = T1_READ_16(&src[srcID + 1]);
             StringAppend(dst, gBattleStringsTable[hword - BATTLESTRINGS_TABLE_START]);

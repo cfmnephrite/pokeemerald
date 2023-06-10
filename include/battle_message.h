@@ -84,6 +84,7 @@
 #define B_BUFF_NEGATIVE_FLAVOR          8
 #define B_BUFF_ABILITY                  9
 #define B_BUFF_ITEM                     10
+#define B_BUFF_STAT_CHANGE_STRING       11
 
 #define B_BUFF_PLACEHOLDER_BEGIN        0xFD
 #define B_BUFF_EOS                      0xFF
@@ -286,6 +287,7 @@ extern const u8 gText_Paralysis[];
 extern const u8 gText_Ice[];
 extern const u8 gText_Confusion[];
 extern const u8 gText_Love[];
+extern const u8 gText_AndSpace[];
 extern const u8 gText_SpaceAndSpace[];
 extern const u8 gText_CommaSpace[];
 extern const u8 gText_Space2[];

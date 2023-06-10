@@ -2305,3 +2305,20 @@
 	various 0, VARIOUS_TRY_REVIVAL_BLESSING
 	.4byte \jumpInstr
 	.endm
+
+	.macro trychangestats stats:req, ptr=NULL
+	sethword sSTATCHANGER, \stats
+	statbuffchange STAT_CHANGE_ALLOW_PTR, \ptr
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	1:
+	.endm

@@ -1,6 +1,9 @@
 #ifndef GUARD_CONSTANTS_BATTLE_STRING_IDS_H
 #define GUARD_CONSTANTS_BATTLE_STRING_IDS_H
 
+// Have to define this here...
+#define TEXT_BUFF3_ARRAY_COUNT      30
+
 #define STRINGID_INTROMSG       0
 #define STRINGID_INTROSENDOUT   1
 #define STRINGID_RETURNMON      2
@@ -664,8 +667,9 @@
 #define STRINGID_SNOWCONTINUES                        662
 #define STRINGID_SNOWSTOPPED                          663
 #define STRINGID_SNOWWARNINGSNOW                      664
+#define STRINGID_STATSCHANGED                         665
 
-#define BATTLESTRINGS_COUNT                           665
+#define BATTLESTRINGS_COUNT                           666
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

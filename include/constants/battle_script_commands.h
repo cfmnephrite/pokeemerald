@@ -316,7 +316,7 @@
 #define STAT_BUFF_EVA_2             (2 << 12)
 #define STAT_BUFF_EVA_3             (3 << 12)
 #define STAT_BUFF_NEGATIVE          (1 << 14)
-#define STAT_BUFF_DOUBLED           (1 << 15)
+#define STAT_BUFF_DOUBLED           (1 << 15) // DOES NOT STACK WITH SIMPLE
 
 // Some short cuts
 #define STAT_BUFF_ALL_STATS_1       (STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_SPA_1 | STAT_BUFF_SPD_1 | STAT_BUFF_SPE_1)
@@ -329,15 +329,15 @@
 #define STAT_BUFF_DEF_SPD_SPE_1     (STAT_BUFF_DEF_1 | STAT_BUFF_SPD_1 | STAT_BUFF_SPE_1)
 
 // Stat change results
-#define STAT_CHANGE_BLOCKED             0
-#define STAT_CHANGE_WONT_GO_HIGHER      (STAT_CHANGE_BLOCKED + 1)
-#define STAT_CHANGE_WONT_GO_LOWER       (STAT_CHANGE_BLOCKED + 2)
-#define STAT_CHANGE_ROSE                (STAT_CHANGE_BLOCKED + 3)
-#define STAT_CHANGE_SHARPLY_ROSE        (STAT_CHANGE_BLOCKED + 4)
-#define STAT_CHANGE_DRASTICALLY_ROSE    (STAT_CHANGE_BLOCKED + 5)
-#define STAT_CHANGE_FELL                (STAT_CHANGE_BLOCKED + 6)
-#define STAT_CHANGE_SHARPLY_FELL        (STAT_CHANGE_BLOCKED + 7)
-#define STAT_CHANGE_SEVERELY_FELL       (STAT_CHANGE_BLOCKED + 8)
+#define STAT_CHANGE_NONE                0
+#define STAT_CHANGE_WONT_GO_HIGHER      1
+#define STAT_CHANGE_WONT_GO_LOWER       2
+#define STAT_CHANGE_ROSE                3
+#define STAT_CHANGE_SHARPLY_ROSE        4
+#define STAT_CHANGE_DRASTICALLY_ROSE    5
+#define STAT_CHANGE_FELL                6
+#define STAT_CHANGE_SHARPLY_FELL        7
+#define STAT_CHANGE_SEVERELY_FELL       8
 #define STAT_CHANGE_SUCCESS(n) ((n > STAT_CHANGE_WONT_GO_LOWER))
 
 #define PARTY_SCREEN_OPTIONAL (1 << 7) // Flag for first argument to openpartyscreen
