@@ -718,30 +718,12 @@ struct BattleStruct
 
 #define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
-#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40
-#define GET_STAT_BUFF_STRING_INDEX(stat)            \
-{                                                   \
-    switch (stat) {                                 \
-        case STAT_SPATK:                            \
-        case STAT_SPDEF:                            \
-            return stat - 2;                        \
-        case STAT_SPEED:                            \
-            return stat + 1;                        \
-        default:                                    \
-            return stat - 1;                        \
-    }                                               \
-}
-#define GET_STAT_BUFF(result, statValue, stat)                  \
-{                                                       \
-    result = (statValue >> (2 * (stat - 1))) & 0x3;     \
-    if (statValue & STAT_BUFF_DOUBLED)                  \
-        result *= 2;                                    \
-}                                                       \
+#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40                                                \
 
 #define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
 
-#define SET_STATCHANGER(statId, stage, goesDown)(gBattleScripting.statChanger = (statId) + ((stage) << 3) + (goesDown << 7))
-#define SET_STATCHANGER2(dst, statId, stage, goesDown)(dst = (statId) + ((stage) << 3) + (goesDown << 7))
+#define SET_STATCHANGER(statId, stage, goesDown)(SET_STATCHANGER2(gBattleScripting.statChanger, statId, stage, goesDown))
+#define SET_STATCHANGER2(dst, statId, stage, goesDown)(dst = (min(3, stage) << (2 * (statId - 1))) | (goesDown << 14))
 
 static inline struct Pokemon *GetSideParty(u32 side)
 {

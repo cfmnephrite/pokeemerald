@@ -3447,7 +3447,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 {
                     gBattleScripting.battler = gEffectBattler;
                     BattleScriptPush(gBattlescriptCurrInstr);
-                    gBattlescriptCurrInstr = BattleScript_StatUp;
+                    gBattlescriptCurrInstr = BattleScript_StatUpMsg;
                 }
                 break;
             case MOVE_EFFECT_ATK_MINUS_1:
@@ -3485,7 +3485,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 {
                     gBattleScripting.battler = gEffectBattler;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_StatUp;
+                    gBattlescriptCurrInstr = BattleScript_StatUpMsg;
                 }
                 break;
             case MOVE_EFFECT_RECHARGE:
@@ -3576,7 +3576,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
                 if (!NoAliveMonsForEitherParty())
                 {
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_AtkDefDown;
+                    gBattlescriptCurrInstr = BattleScript_StatUp;
                 }
                 break;
             case MOVE_EFFECT_DEF_SPDEF_DOWN: // Close Combat
@@ -5220,40 +5220,40 @@ static void Cmd_playanimation_var(void)
 
 static void Cmd_setgraphicalstatchangevalues(void)
 {
-    CMD_ARGS();
+    // CMD_ARGS();
 
-    u8 value = GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger);
+    // u8 value = GET_STAT_BUFF_VALUE_WITH_SIGN(gBattleScripting.statChanger);
 
-    switch (value)
-    {
-    case SET_STAT_BUFF_VALUE(1): // +1
-        value = STAT_ANIM_PLUS1;
-        break;
-    case SET_STAT_BUFF_VALUE(2): // +2
-        value = STAT_ANIM_PLUS2;
-        break;
-    case SET_STAT_BUFF_VALUE(3): // +3
-        value = STAT_ANIM_PLUS2;
-        break;
-    case SET_STAT_BUFF_VALUE(1) | STAT_BUFF_NEGATIVE: // -1
-        value = STAT_ANIM_MINUS1;
-        break;
-    case SET_STAT_BUFF_VALUE(2) | STAT_BUFF_NEGATIVE: // -2
-        value = STAT_ANIM_MINUS2;
-        break;
-    case SET_STAT_BUFF_VALUE(3) | STAT_BUFF_NEGATIVE: // -3
-        value = STAT_ANIM_MINUS2;
-        break;
-    default: // <-12,-4> and <4, 12>
-        if (value & STAT_BUFF_NEGATIVE)
-            value = STAT_ANIM_MINUS2;
-        else
-            value = STAT_ANIM_PLUS2;
-        break;
-    }
-    gBattleScripting.animArg1 = GET_STAT_BUFF_ID(gBattleScripting.statChanger) + value - 1;
-    gBattleScripting.animArg2 = 0;
-    gBattlescriptCurrInstr = cmd->nextInstr;
+    // switch (value)
+    // {
+    // case SET_STAT_BUFF_VALUE(1): // +1
+    //     value = STAT_ANIM_PLUS1;
+    //     break;
+    // case SET_STAT_BUFF_VALUE(2): // +2
+    //     value = STAT_ANIM_PLUS2;
+    //     break;
+    // case SET_STAT_BUFF_VALUE(3): // +3
+    //     value = STAT_ANIM_PLUS2;
+    //     break;
+    // case SET_STAT_BUFF_VALUE(1) | STAT_BUFF_NEGATIVE: // -1
+    //     value = STAT_ANIM_MINUS1;
+    //     break;
+    // case SET_STAT_BUFF_VALUE(2) | STAT_BUFF_NEGATIVE: // -2
+    //     value = STAT_ANIM_MINUS2;
+    //     break;
+    // case SET_STAT_BUFF_VALUE(3) | STAT_BUFF_NEGATIVE: // -3
+    //     value = STAT_ANIM_MINUS2;
+    //     break;
+    // default: // <-12,-4> and <4, 12>
+    //     if (value & STAT_BUFF_NEGATIVE)
+    //         value = STAT_ANIM_MINUS2;
+    //     else
+    //         value = STAT_ANIM_PLUS2;
+    //     break;
+    // }
+    // gBattleScripting.animArg1 = GET_STAT_BUFF_ID(gBattleScripting.statChanger) + value - 1;
+    // gBattleScripting.animArg2 = 0;
+    // gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 static void StatChangeAnimation(u32 statAnimId)
@@ -11912,14 +11912,12 @@ static u8 TryLowerStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBu
             else if (statBuffsHelper->activeBattlerAbility == ABILITY_MIRROR_ARMOR && !statBuffsHelper->affectsUser
                 && !statBuffsHelper->mirrorArmored && gBattlerAttacker != gBattlerTarget && gActiveBattler == gBattlerTarget)
             {
-                DebugPrintf("FLAGS: %d", flags);
                 if (flags == STAT_CHANGE_ALLOW_PTR)
                 {
                     /* SET_STATCHANGER(statId, GET_STAT_BUFF_VALUE(statValue) | STAT_BUFF_NEGATIVE, TRUE); */
                     gBattleScripting.statChanger = statValue;
                     gBattleScripting.battler = gBattlerAttacker;
                     gBattlerAbility = gActiveBattler;
-                    DebugPrintf("BattleScript_MirrorArmorReflect: %d", BattleScript_MirrorArmorReflect);
                     BattleScriptPush(BS_ptr);
                     gBattlescriptCurrInstr = BattleScript_MirrorArmorReflect;
                     RecordAbilityBattle(gActiveBattler, gBattleMons[gActiveBattler].ability);
@@ -12153,6 +12151,7 @@ static void Cmd_statbuffchange(void)
     gBattleScripting.animArg2 = 0;
     gBattlescriptCurrInstr = cmd->nextInstr;
     ChangeStatBuffs(&gBattleScripting.statChanger, flags, BS_ptr);
+    gBattleScripting.battler = gActiveBattler;
 }
 
 bool32 TryResetBattlerStatChanges(u8 battler)

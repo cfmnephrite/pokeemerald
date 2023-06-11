@@ -2209,13 +2209,16 @@
 	1:
 	.endm
 
-	.macro setallytonexttarget jumpInstr:req
+	.macro setallytonexttarget jumpInstr=NULL
 	jumpifbyte CMP_GREATER_THAN, gBattlerTarget, 0x1, 1f
 	addbyte gBattlerTarget, 0x2
-	goto \jumpInstr
+	goto 2f
 	1:
 	subbyte gBattlerTarget, 0x2
-	goto \jumpInstr
+	2:
+	.if \jumpInstr != NULL
+		goto \jumpInstr
+	.endif
 	.endm
 
 	.macro jumpifleafguardprotected battler:req, jumpInstr:req
@@ -2327,4 +2330,75 @@
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
 	2:
+	.endm
+
+	.macro jumpifcanlower battler:req, stat:req, ptr:req
+	jumpifstat \battler, CMP_GREATER_THAN, \stat, MIN_STAT_STAGE, \ptr
+	.endm
+
+	.macro jumpifcannotlower battler:req, stat:req, ptr:req
+	jumpifstat \battler, CMP_GREATER_THAN, \stat, MIN_STAT_STAGE, 1f
+	goto \ptr
+	1:
+	.endm
+
+	.macro jumpifcanlower2 battler:req, stat1:req, stat2:req, ptr:req
+	jumpifstat \battler, CMP_GREATER_THAN, \stat1, MIN_STAT_STAGE, \ptr
+	jumpifstat \battler, CMP_GREATER_THAN, \stat2, MIN_STAT_STAGE, \ptr
+	.endm
+
+	.macro jumpifcannotlower2 battler:req, stat1:req, stat2:req, ptr:req
+	jumpifstat \battler, CMP_GREATER_THAN, \stat1, MIN_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_EQUAL, \stat2, MIN_STAT_STAGE, \ptr
+	1:
+	.endm
+
+	.macro jumpifcannotlower3 battler:req, stat1:req, stat2:req, stat3:req, ptr:req
+	jumpifstat \battler, CMP_GREATER_THAN, \stat1, MIN_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_GREATER_THAN, \stat2, MIN_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_EQUAL, \stat3, MIN_STAT_STAGE, \ptr
+	1:
+	.endm
+
+	.macro jumpifcanraise battler:req, stat:req, ptr:req
+	jumpifstat \battler, CMP_LESS_THAN, \stat, MAX_STAT_STAGE, \ptr
+	.endm
+
+	.macro jumpifcannotraise battler:req, stat:req, ptr:req
+	jumpifstat \battler, CMP_LESS_THAN, \stat, MAX_STAT_STAGE, 1f
+	goto \ptr
+	1:
+	.endm
+
+	.macro jumpifcannotraise2 battler:req, stat1:req, stat2:req, ptr:req
+	jumpifstat \battler, CMP_LESS_THAN, \stat1, MAX_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_EQUAL, \stat2, MAX_STAT_STAGE, \ptr
+	1:
+	.endm
+
+	.macro jumpifcannotraise3 battler:req, stat1:req, stat2:req, stat3:req, ptr:req
+	jumpifstat \battler, CMP_LESS_THAN, \stat1, MAX_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_LESS_THAN, \stat2, MAX_STAT_STAGE, 1f
+	jumpifstat \battler, CMP_EQUAL, \stat3, MAX_STAT_STAGE, \ptr
+	1:
+	.endm
+
+	.macro tryangershell ptr:req
+	jumpifstat BS_TARGET, CMP_LESS_THAN, STAT_ATK, MAX_STAT_STAGE, 1f
+	jumpifstat BS_TARGET, CMP_LESS_THAN, STAT_SPATK, MAX_STAT_STAGE, 1f
+	jumpifstat BS_TARGET, CMP_LESS_THAN, STAT_SPEED, MAX_STAT_STAGE, 1f
+	jumpifstat BS_TARGET, CMP_GREATER_THAN, STAT_DEF, MIN_STAT_STAGE, 1f
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_SPDEF, MIN_STAT_STAGE, \ptr
+	1:
+	.endm
+
+	.macro trytopsyturvy ptr:req
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_ATK, 6, 1f
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_DEF, 6, 1f
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_SPATK, 6, 1f
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_SPDEF, 6, 1f
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_SPEED, 6, 1f
+	jumpifstat BS_TARGET, CMP_NOT_EQUAL, STAT_ACC, 6, 1f
+	jumpifstat BS_TARGET, CMP_EQUAL, STAT_EVASION, 6, \ptr
+	1:
 	.endm

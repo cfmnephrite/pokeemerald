@@ -10223,9 +10223,9 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_POWER_UP_PUNCH] =
     {
-        .effect = EFFECT_DEFENSE_DOWN_HIT,
-        .power = 10,
-        .type = TYPE_NORMAL,
+        .effect = EFFECT_ATTACK_UP_HIT,
+        .power = 40,
+        .type = TYPE_FIGHTING,
         .accuracy = 100,
         .pp = 20,
         .secondaryEffectChance = 100,

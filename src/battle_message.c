@@ -321,7 +321,7 @@ static const u8 sText_StatFell[] = _("fell!");
 static const u8 sText_AttackersStatRose[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF2}");
 const u8 gText_DefendersStatRose[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
-static const u8 sText_UsingItemTheStatOfPkmnRose[] = _("Using {B_LAST_ITEM}, the {B_BUFF1}\nof {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
+static const u8 sText_PkmnItemActivated[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} activated\nits {B_LAST_ITEM}!");
 static const u8 sText_AttackersStatFell[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_DefendersStatFell[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_StatsWontIncrease2[] = _("{B_ATK_NAME_WITH_PREFIX}'s stats won't\ngo any higher!");
@@ -1230,7 +1230,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_SOOTHINGAROMA - BATTLESTRINGS_TABLE_START] = sText_SoothingAroma,
     [STRINGID_ITEMSCANTBEUSEDNOW - BATTLESTRINGS_TABLE_START] = sText_ItemsCantBeUsedNow,
     [STRINGID_FORXCOMMAYZ - BATTLESTRINGS_TABLE_START] = sText_ForXCommaYZ,
-    [STRINGID_USINGITEMSTATOFPKMNROSE - BATTLESTRINGS_TABLE_START] = sText_UsingItemTheStatOfPkmnRose,
+    [STRINGID_PKMNITEMACTIVATED - BATTLESTRINGS_TABLE_START] = sText_PkmnItemActivated,
     [STRINGID_PKMNUSEDXTOGETPUMPED - BATTLESTRINGS_TABLE_START] = sText_PkmnUsedXToGetPumped,
     [STRINGID_PKMNSXMADEYUSELESS - BATTLESTRINGS_TABLE_START] = sText_PkmnsXMadeYUseless,
     [STRINGID_PKMNTRAPPEDBYSANDTOMB - BATTLESTRINGS_TABLE_START] = sText_PkmnTrappedBySandTomb,
@@ -1668,7 +1668,7 @@ const u16 gStatUpStringIds[] =
     [B_MSG_DEFENDER_STAT_ROSE] = STRINGID_DEFENDERSSTATROSE,
     [B_MSG_STAT_WONT_INCREASE] = STRINGID_STATSWONTINCREASE,
     [B_MSG_STAT_ROSE_EMPTY]    = STRINGID_EMPTYSTRING3,
-    [B_MSG_STAT_ROSE_ITEM]     = STRINGID_USINGITEMSTATOFPKMNROSE,
+    [B_MSG_STAT_ROSE_ITEM]     = STRINGID_PKMNITEMACTIVATED,
     [B_MSG_USED_DIRE_HIT]      = STRINGID_PKMNUSEDXTOGETPUMPED,
 };
 
@@ -3629,7 +3629,6 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
         switch (src[srcID])
         {
         case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
-            DebugPrintf("gBattleCommunication[MULTIUSE_STATE]", gBattleCommunication[MULTIUSE_STATE]);
             srcID = gBattleCommunication[MULTIUSE_STATE] + 1;
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             text[0] = src[srcID] & 0xF;

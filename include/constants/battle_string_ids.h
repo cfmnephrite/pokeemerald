@@ -326,7 +326,7 @@
 #define STRINGID_SOOTHINGAROMA                        322
 #define STRINGID_ITEMSCANTBEUSEDNOW                   323
 #define STRINGID_FORXCOMMAYZ                          324
-#define STRINGID_USINGITEMSTATOFPKMNROSE              325
+#define STRINGID_PKMNITEMACTIVATED              325
 #define STRINGID_PKMNUSEDXTOGETPUMPED                 326
 #define STRINGID_PKMNSXMADEYUSELESS                   327
 #define STRINGID_PKMNTRAPPEDBYSANDTOMB                328
