@@ -166,7 +166,7 @@
 #define VARIOUS_TRY_THIRD_TYPE                       72
 #define VARIOUS_ACUPRESSURE                          73
 #define VARIOUS_SET_POWDER                           74
-#define VARIOUS_SPECTRAL_THIEF                       75
+#define VARIOUS_UNUSED_75                            75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS             76
 #define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS        77
 #define VARIOUS_JUMP_IF_ROAR_FAILS                   78

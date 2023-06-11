@@ -3629,6 +3629,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
         switch (src[srcID])
         {
         case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
+            DebugPrintf("gBattleCommunication[MULTIUSE_STATE]", gBattleCommunication[MULTIUSE_STATE]);
             srcID = gBattleCommunication[MULTIUSE_STATE] + 1;
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             text[0] = src[srcID] & 0xF;
