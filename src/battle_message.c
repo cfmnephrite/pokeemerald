@@ -319,7 +319,7 @@ const u8 gText_StatRose[] = _("rose!");
 static const u8 sText_StatHarshly[] = _("harshly");
 static const u8 sText_StatFell[] = _("fell!");
 static const u8 sText_AttackersStatRose[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
-static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1}");
+static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF2}");
 const u8 gText_DefendersStatRose[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_UsingItemTheStatOfPkmnRose[] = _("Using {B_LAST_ITEM}, the {B_BUFF1}\nof {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
 static const u8 sText_AttackersStatFell[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
@@ -3629,7 +3629,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
         switch (src[srcID])
         {
         case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
-            srcID = gBattleCommunication[MULTISTRING_CHOOSER] + 1;
+            srcID = gBattleCommunication[MULTIUSE_STATE] + 1;
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             text[0] = src[srcID] & 0xF;
 
@@ -3696,14 +3696,14 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             }
 
             // If next thing is another B_BUFF_STAT_CHANGE_STRING,
-            // then set MULTISTRING_CHOOSER and quit this function
+            // then set STAT_CHANGE_COUNTER and quit this function
             if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
             {
-                gBattleCommunication[MULTISTRING_CHOOSER] = srcID;
+                gBattleCommunication[MULTIUSE_STATE] = srcID;
                 return;
             }
-            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTISTRING_CHOOSER to zero
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            else if (src[srcID] == B_BUFF_EOS) // end string, set STAT_CHANGE_COUNTER to zero
+                gBattleCommunication[MULTIUSE_STATE] = 0;
             break;
         case B_BUFF_STRING: // battle string
             hword = T1_READ_16(&src[srcID + 1]);

@@ -2309,16 +2309,20 @@
 	.macro trychangestats stats:req, ptr=NULL
 	sethword sSTATCHANGER, \stats
 	statbuffchange STAT_CHANGE_ALLOW_PTR, \ptr
-	printstring STRINGID_STATSCHANGED
-	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
-	printstring STRINGID_STATSCHANGED
-	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
-	printstring STRINGID_STATSCHANGED
-	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x0, 1f
-	printstring STRINGID_STATSCHANGED
-	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	jumpifbyte CMP_EQUAL, sB_ANIM_ARG1, 0x0, 1f
+	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	1:
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	printstring STRINGID_STATSCHANGED
+	waitmessage B_WAIT_TIME_LONG
+	2:
 	.endm

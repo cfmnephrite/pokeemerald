@@ -51,10 +51,13 @@
 #define MULTISTRING_CHOOSER     5
 #define MISS_TYPE               6
 #define MSG_DISPLAY             7
+// #define STAT_CHANGE_COUNTER     8
 #define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
 
-#define cMULTISTRING_CHOOSER (gBattleCommunication + MULTISTRING_CHOOSER)
-#define cMISS_TYPE           (gBattleCommunication + MISS_TYPE)
+#define cMULTIUSE_STATE         (gBattleCommunication + MULTIUSE_STATE)
+#define cMULTISTRING_CHOOSER    (gBattleCommunication + MULTISTRING_CHOOSER)
+#define cMISS_TYPE              (gBattleCommunication + MISS_TYPE)
+// #define cSTAT_CHANGE_COUNTER    (gBattleCommunication + STAT_CHANGE_COUNTER)
 
 // Battle Script defines for getting the wanted battler
 #define BS_TARGET                   0
