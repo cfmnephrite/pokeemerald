@@ -3629,7 +3629,11 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
         switch (src[srcID])
         {
         case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
-            srcID = gBattleCommunication[MULTIUSE_STATE] + 1;
+            // gBattleTextBuff2 can contain up to four strings so we
+            // keep track of the offset as we loop through strings
+            // with MULTISTATE - but it's initially used to track whether or
+            // not a stat change worked, so we need this max function initially
+            srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             text[0] = src[srcID] & 0xF;
 
@@ -3696,14 +3700,14 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             }
 
             // If next thing is another B_BUFF_STAT_CHANGE_STRING,
-            // then set STAT_CHANGE_COUNTER and quit this function
+            // then set MULTIUSE_STATE and quit this function
             if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
             {
                 gBattleCommunication[MULTIUSE_STATE] = srcID;
                 return;
             }
-            else if (src[srcID] == B_BUFF_EOS) // end string, set STAT_CHANGE_COUNTER to zero
-                gBattleCommunication[MULTIUSE_STATE] = 0;
+            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to zero
+                gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
             break;
         case B_BUFF_STRING: // battle string
             hword = T1_READ_16(&src[srcID + 1]);

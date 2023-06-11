@@ -1495,8 +1495,9 @@
 	various \battler, VARIOUS_PLAY_TRAINER_DEFEATED_MUSIC
 	.endm
 
-	.macro stattextbuffer battler:req
-	various \battler, VARIOUS_STAT_TEXT_BUFFER
+	.macro stattextbuffer1 stat:req
+	various BS_SCRIPTING, VARIOUS_STAT_TEXT_BUFFER
+	.byte \stat
 	.endm
 
 	.macro switchinabilities battler:req
@@ -2101,7 +2102,11 @@
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req
-	sethword sSTATCHANGER, \stat | \stages << 3 | \down << 7
+	.if \stages > 3
+		sethword sSTATCHANGER, 3 << (2 * (\stat - 1)) | \down << 14
+	.else
+	sethword sSTATCHANGER, \stages << (2 * (\stat - 1)) | \down << 14
+	.endif
 	.endm
 
 	.macro setmoveeffect effect:req
@@ -2305,28 +2310,47 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro trychangestats stats:req, flags:req, ptr=NULL
+	.macro trychangestats stats:req, flags:req, ptr=NULL, failPtr=NULL, anim=TRUE
 	.if \stats != NULL
 		sethword sSTATCHANGER, \stats
 	.endif
 	statbuffchange \flags, \ptr
-	statchangeanimationandstrings
+	.if \failPtr != NULL
+		.if \failPtr == TRUE @ if TRUE, just skip to end
+			jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_DIDNT_WORK, 2f
+		.else
+			jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_DIDNT_WORK, \failPtr
+		.endif
+	.endif
+	.if \anim == TRUE
+		statchangeanimationandstrings
+	.endif
 	.endm
 
-	.macro statchangeanimationandstrings @fall-through
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
-	jumpifbyte CMP_EQUAL, sB_ANIM_ARG1, 0x0, 1f
+	.macro statchangeanimation
 	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	.endm
+
+	.macro statchangestrings
+	statchangeanimationandstrings FALSE
+	.endm
+
+	.macro statchangeanimationandstrings anim=TRUE
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
+	jumpifbyte CMP_EQUAL, sB_ANIM_ARG1, 0x0, 1f
+	.if anim == TRUE
+		statchangeanimation
+	.endif
 	1:
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, 0x0, 2f
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
 	2:

@@ -328,9 +328,6 @@ static const u16 sBadgeFlags[8] = {
 
 static const u16 sWhiteOutBadgeMoney[9] = { 8, 16, 24, 36, 48, 64, 80, 100, 120 };
 
-#define STAT_CHANGE_WORKED      0
-#define STAT_CHANGE_DIDNT_WORK  1
-
 #define LEVEL_UP_BANNER_START 416
 #define LEVEL_UP_BANNER_END   512
 
@@ -7141,7 +7138,6 @@ static void Cmd_switchineffects(void)
     {
         gSideStatuses[GetBattlerSide(gActiveBattler)] |= SIDE_STATUS_STICKY_WEB_DAMAGED;
         gBattleScripting.battler = gActiveBattler;
-        SET_STATCHANGER(STAT_SPEED, 1, TRUE);
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_StickyWebOnSwitchIn;
     }
@@ -9372,8 +9368,8 @@ static void Cmd_various(void)
     }
     case VARIOUS_STAT_TEXT_BUFFER:
     {
-        VARIOUS_ARGS();
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, gBattleCommunication[0]);
+        VARIOUS_ARGS(u8 statId);
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, cmd->statId);
         break;
     }
     case VARIOUS_SWITCHIN_ABILITIES:
@@ -11914,7 +11910,6 @@ static u8 TryLowerStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBu
             {
                 if (flags == STAT_CHANGE_ALLOW_PTR)
                 {
-                    /* SET_STATCHANGER(statId, GET_STAT_BUFF_VALUE(statValue) | STAT_BUFF_NEGATIVE, TRUE); */
                     gBattleScripting.statChanger = statValue;
                     gBattleScripting.battler = gBattlerAttacker;
                     gBattlerAbility = gActiveBattler;
@@ -11959,6 +11954,8 @@ static u8 TryLowerStats(u16 statValue, u32 flags, struct StatBuffsHelper *statBu
                             statBuffsHelper->statBuffStrings[GetStringIndexForStatBuff(i)] = STAT_CHANGE_SHARPLY_FELL + (drop > 2);
                             break;
                     }
+                    // For the vanilla text....
+                    PREPARE_STAT_BUFFER(gBattleTextBuff1, i);
                 }
                 else
                 {
@@ -11998,8 +11995,10 @@ static u8 TryRaiseStats(u16 statValue, u32 flags, u8 *statBuffStrings, u8 *statA
                     *(statBuffStrings + GetStringIndexForStatBuff(i)) = STAT_CHANGE_SHARPLY_ROSE + (boost > 2);
                     break;
             }
+            // For the vanilla text....
+            PREPARE_STAT_BUFFER(gBattleTextBuff1, i);
         }
-        else if (gBattleMons[gActiveBattler].statStages[i] == MAX_STAT_STAGE)
+        else if (GetStatBuff(statValue, i) > 0 && gBattleMons[gActiveBattler].statStages[i] == MAX_STAT_STAGE)
             *(statBuffStrings + GetStringIndexForStatBuff(i)) = STAT_CHANGE_WONT_GO_HIGHER;
     }
 
@@ -12040,7 +12039,6 @@ static void PrepareStatBuffString(u8 *statBuffStrings)
     // Looping indices - index will be a loop over the elements of gBattleTextBuff2
     u8 i, j, index = 0, statCountForCurrentString;
     gBattleTextBuff2[index++] = B_BUFF_PLACEHOLDER_BEGIN;
-    gBattleCommunication[MULTIUSE_STATE] = index; // VERY IMPORTANT
     for (i = 0; i < NUM_BATTLE_STATS - 1; i++)
     {
         if ((*(statBuffStrings + i)) && printedStats[i] == 0)
@@ -12125,10 +12123,10 @@ static u32 ChangeStatBuffs(u16 *statValue, u32 flags, const u8 *BS_ptr)
 
         // Do string
         if (statsChanged || statBuffsHelper.certain || statBuffsHelper.affectsUser)
-        {
             PrepareStatBuffString(statBuffsHelper.statBuffStrings);
-            return STAT_CHANGE_WORKED;
-        }
+
+        DebugPrintf("statsChanged: %d", statsChanged);
+        return STAT_CHANGE_DIDNT_WORK + (statsChanged > 0);
     }
     return STAT_CHANGE_DIDNT_WORK;
 }
@@ -12138,7 +12136,7 @@ static void Cmd_statbuffchange(void)
     CMD_ARGS(u16 flags, const u8 *BS_ptr);
 
     u16 flags = cmd->flags;
-    // const u8 *ptrBefore = gBattlescriptCurrInstr;
+    const u8 *ptrBefore = gBattlescriptCurrInstr;
     const u8 *BS_ptr;
     if (cmd->BS_ptr)
         BS_ptr = cmd->BS_ptr;
@@ -12146,11 +12144,12 @@ static void Cmd_statbuffchange(void)
         BS_ptr = cmd->nextInstr;
 
     // Set initial parameters
-    gBattleCommunication[MULTIUSE_STATE] = 0;
     gBattleScripting.animArg1 = 0;
     gBattleScripting.animArg2 = 0;
     gBattlescriptCurrInstr = cmd->nextInstr;
-    ChangeStatBuffs(&gBattleScripting.statChanger, flags, BS_ptr);
+
+    // This is how we record whether or not the change succeeded or failed
+    gBattleCommunication[MULTIUSE_STATE] = ChangeStatBuffs(&gBattleScripting.statChanger, flags, BS_ptr);
     gBattleScripting.battler = gActiveBattler;
 }
 

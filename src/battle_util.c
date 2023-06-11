@@ -4456,7 +4456,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 {
                     SET_STATCHANGER(statId, 1, FALSE);
                     gBattlerAttacker = battler;
-                    PREPARE_STAT_BUFFER(gBattleTextBuff1, statId);
                     BattleScriptPushCursorAndCallback(BattleScript_AttackerAbilityStatRaiseEnd3);
                     effect++;
                 }
@@ -4820,7 +4819,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
             case ABILITY_SPEED_BOOST:
                 if (CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN) && gDisableStructs[battler].isFirstTurn != 2)
                 {
-                    SET_STATCHANGER(STAT_SPEED, 1, FALSE);
                     BattleScriptPushCursorAndCallback(BattleScript_SpeedBoostActivates);
                     gBattleScripting.battler = battler;
                     effect++;
@@ -5071,7 +5069,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 break;
             }
 
-            if (effect == 1) // Drain Hp ability.
+            if (effect == 1) // Restore Hp ability.
             {
 #if B_HEAL_BLOCKING >= GEN_5
                 if (BATTLER_MAX_HP(battler) || gStatuses3[battler] & STATUS3_HEAL_BLOCK)
@@ -5087,9 +5085,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 else
                 {
                     if (gProtectStructs[gBattlerAttacker].notFirstStrike)
-                        gBattlescriptCurrInstr = BattleScript_MoveHPDrain;
+                        gBattlescriptCurrInstr = BattleScript_MoveHPRecoveryFromHit;
                     else
-                        gBattlescriptCurrInstr = BattleScript_MoveHPDrain_PPLoss;
+                        gBattlescriptCurrInstr = BattleScript_MoveHPRecoveryFromHit_PPLoss;
 
                     gBattleMoveDamage = gBattleMons[battler].maxHP / 4;
                     if (gBattleMoveDamage == 0)
@@ -5109,9 +5107,9 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
                 else
                 {
                     if (gProtectStructs[gBattlerAttacker].notFirstStrike)
-                        gBattlescriptCurrInstr = BattleScript_MoveStatDrain;
+                        gBattlescriptCurrInstr = BattleScript_MoveStatBoostFromHit;
                     else
-                        gBattlescriptCurrInstr = BattleScript_MoveStatDrain_PPLoss;
+                        gBattlescriptCurrInstr = BattleScript_MoveStatBoostFromHit_PPLoss;
 
                     SET_STATCHANGER(statId, statAmount, FALSE);
                 #if B_ABSORBING_ABILITY_STRING < GEN_5
@@ -5333,6 +5331,8 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u16 ability, u8 special, u16 move
              && CompareStat(battler, STAT_ATK, MAX_STAT_STAGE, CMP_LESS_THAN))
             {
                 SET_STATCHANGER(STAT_ATK, MAX_STAT_STAGE - gBattleMons[battler].statStages[STAT_ATK], FALSE);
+                // Cheat!
+                gBattleMons[battler].statStages[STAT_ATK] = max(MAX_STAT_STAGE - 3, gBattleMons[battler].statStages[STAT_ATK]);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_TargetsStatWasMaxedOut;
                 effect++;
@@ -6911,7 +6911,6 @@ static u8 ItemEffectMoveEnd(u32 battlerId, u16 holdEffect)
         {
             gStatuses4[gEffectBattler] |= STATUS4_INFINITE_CONFUSION;
         }
-        SET_STATCHANGER(STAT_ATK, 2, FALSE);
 
         gBattleScripting.animArg1 = 14 + STAT_ATK;
         gBattleScripting.animArg2 = 0;
@@ -7174,7 +7173,6 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 {
                     gStatuses4[gEffectBattler] |= STATUS4_INFINITE_CONFUSION;
                 }
-                SET_STATCHANGER(STAT_ATK, 2, FALSE);
 
                 gBattleScripting.animArg1 = 14 + STAT_ATK;
                 gBattleScripting.animArg2 = 0;
@@ -7478,8 +7476,6 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 {
                     gStatuses4[gEffectBattler] |= STATUS4_INFINITE_CONFUSION;
                 }
-                SET_STATCHANGER(STAT_ATK, 2, FALSE);
-
                 gBattleScripting.animArg1 = 14 + STAT_ATK;
                 gBattleScripting.animArg2 = 0;
 
@@ -7625,7 +7621,6 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
              && !NoAliveMonsForEitherParty())   // Don't activate if battle will end
             {
                 gLastUsedItem = atkItem;
-                gBattleScripting.battler = gBattlerAttacker;
                 SET_STATCHANGER(STAT_SPATK, 1, FALSE);
                 effect = ITEM_STATS_CHANGE;
                 BattleScriptPushCursor();
