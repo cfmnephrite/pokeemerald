@@ -314,12 +314,12 @@ static const u8 sText_PkmnsXPreventsYsZ[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK
 static const u8 sText_PkmnsAbilityPreventsAbility[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nprevents {B_DEF_NAME_WITH_PREFIX}'s\l{B_DEF_ABILITY} from working!");
 static const u8 sText_PkmnsXCuredItsYProblem[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\ncured its {B_BUFF1} problem!");
 static const u8 sText_PkmnsXHadNoEffectOnY[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nhad no effect on {B_EFF_NAME_WITH_PREFIX}!");
-const u8 gText_StatSharply[] = _("sharply");
+const u8 gText_StatSharply[] = _("sharply ");
 const u8 gText_StatRose[] = _("rose!");
-static const u8 sText_StatHarshly[] = _("harshly");
+static const u8 sText_StatHarshly[] = _("harshly ");
 static const u8 sText_StatFell[] = _("fell!");
 static const u8 sText_AttackersStatRose[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
-static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF2}");
+static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF3}");
 const u8 gText_DefendersStatRose[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_PkmnItemActivated[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} activated\nits {B_LAST_ITEM}!");
 static const u8 sText_AttackersStatFell[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
@@ -661,8 +661,8 @@ static const u8 sText_HealBlockPreventsUsage[] = _("{B_ATK_NAME_WITH_PREFIX} was
 static const u8 sText_MegaEvoReacting[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ITEM} is\nreacting to {B_ATK_TRAINER_NAME}'s Mega Ring!");
 static const u8 sText_FerventWishReached[] = _("{B_ATK_TRAINER_NAME}'s fervent wish\nhas reached {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_MegaEvoEvolved[] = _("{B_ATK_NAME_WITH_PREFIX} has Mega Evolved into\nMega {B_BUFF1}!");
-static const u8 sText_drastically[] = _("drastically");
-static const u8 sText_severely[] = _("severely");
+static const u8 sText_drastically[] = _("drastically ");
+static const u8 sText_severely[] = _("severely ");
 static const u8 sText_Infestation[] = _("{B_DEF_NAME_WITH_PREFIX} has been afflicted\nwith an infestation by {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_NoEffectOnTarget[] = _("It had no effect\non {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_BurstingFlames[] = _("The bursting flames\nhit {B_SCR_ACTIVE_NAME_WITH_PREFIX}!");
@@ -3629,19 +3629,20 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
         switch (src[srcID])
         {
         case B_BUFF_STAT_CHANGE_STRING: // advanced stat change strings
-            // gBattleTextBuff2 can contain up to four strings so we
+            // gBattleTextBuff3 can contain up to seven strings so we
             // keep track of the offset as we loop through strings
             // with MULTISTATE - but it's initially used to track whether or
             // not a stat change worked, so we need this max function initially
             srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
-            text[0] = src[srcID] & 0xF;
+            text[0] = src[srcID++];
 
             // 0 = rose/fell, 1 = harshly/sharply, 2 = drastically/severely
             text[1] = text[0] % 3;
 
             // Stat count - number of stats that will be boosted
-            switch (text[2] = ((src[srcID++] & 0xF0) >> 0x4))
+            // (can display up to 5 in one string)
+            switch (text[2] = src[srcID++])
             {
                 case 1:
                     StringAppend(dst, gStatNamesTable[src[srcID++]]);
@@ -3694,19 +3695,16 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 
             // In case it's harshly/sharply etc.
             if (text[0] > 3 && text[1])
-            {
-                StringAppend(dst, gText_Space2);
                 StringAppend(dst, sStatChangeStringsTable[text[0] - text[1]]);
-            }
 
             // If next thing is another B_BUFF_STAT_CHANGE_STRING,
             // then set MULTIUSE_STATE and quit this function
             if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
             {
-                gBattleCommunication[MULTIUSE_STATE] = srcID;
+                gBattleCommunication[MULTIUSE_STATE] = srcID + 1;
                 return;
             }
-            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to zero
+            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
                 gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
             break;
         case B_BUFF_STRING: // battle string
