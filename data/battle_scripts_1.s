@@ -474,8 +474,8 @@ BattleScript_EffectAttackUpUserAlly:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcanraise BS_ATTACKER, STAT_ATK, BattleScript_EffectAttackUpUserAlly_Works
-	jumpifcannotraise BS_ATTACKER_PARTNER, STAT_ATK, BattleScript_ButItFailed
+	jumpifcanraise BS_ATTACKER, BIT_ATK, BattleScript_EffectAttackUpUserAlly_Works
+	jumpifcannotraise BS_ATTACKER_PARTNER, BIT_ATK, BattleScript_ButItFailed
 BattleScript_EffectAttackUpUserAlly_Works:
 	attackanimation
 	waitanimation
@@ -520,7 +520,7 @@ BattleScript_Teatimesorb:
 	goto BattleScript_MoveEnd
 BattleScript_Teatimerod:
 	call BattleScript_AbilityPopUpTarget
-	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_BY_TWO
+	@playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_BY_TWO
 	setstatchanger STAT_SPATK, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
@@ -532,7 +532,7 @@ BattleScript_Teatimerod:
 	goto BattleScript_MoveEnd
 BattleScript_Teatimemotor:
 	call BattleScript_AbilityPopUpTarget
-	playstatchangeanimation BS_TARGET, BIT_SPEED, STAT_CHANGE_BY_TWO
+	@playstatchangeanimation BS_TARGET, BIT_SPEED, STAT_CHANGE_BY_TWO
 	setstatchanger STAT_SPEED, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
@@ -962,7 +962,7 @@ BattleScript_EffectOctolock:
 
 BattleScript_OctolockEndTurn::
 	setbyte sSTAT_ANIM_PLAYED, FALSE
-	jumpifcannotlower2 BS_TARGET, STAT_DEF, STAT_SPDEF, BattleScript_OctolockEnd2
+	jumpifcannotlower BS_TARGET, BIT_DEF | BIT_SPDEF, BattleScript_OctolockEnd2
 	trychangestats STAT_BUFF_DEF_SPD_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_ALLOW_PTR
 BattleScript_OctolockEnd2::
 	end2
@@ -1224,7 +1224,7 @@ BattleScript_EffectDecorate:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_ButItFailed
+	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_SPA_1, STAT_CHANGE_ALLOW_PTR
@@ -1262,14 +1262,10 @@ BattleScript_EffectCoaching:
 	attackstring
 	ppreduce
 	jumpifnoally BS_ATTACKER, BattleScript_ButItFailed
-	copybyte gBattlerTarget, gBattlerAttacker
-	setallytonexttarget EffectCoaching_CheckAllyStats
-	goto BattleScript_ButItFailed
-EffectCoaching_CheckAllyStats:
-	jumpifcannotraise2 BS_TARGET, STAT_ATK, STAT_DEF, BattleScript_ButItFailed   @ ally at max atk, def
+	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_DEF, BattleScript_ButItFailed   @ ally at max atk, def
 	attackanimation
 	waitanimation
-	trychangestats STAT_BUFF_ATK_DEF_1, STAT_CHANGE_ALLOW_PTR
+	trychangestats STAT_BUFF_ATK_DEF_1, STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectJungleHealing:
@@ -1509,7 +1505,7 @@ BattleScript_EffectPartingShot::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotlower2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_CantLowerMultipleStats
+	jumpifcannotlower BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_CantLowerMultipleStats
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
@@ -1561,7 +1557,7 @@ BattleScript_EffectAromaticMist:
 	jumpiftargetally BattleScript_EffectAromaticMistWorks
 	goto BattleScript_ButItFailed
 BattleScript_EffectAromaticMistWorks:
-	jumpifcannotraise BS_TARGET, STAT_SPDEF, BattleScript_ButItFailed
+	jumpifcannotraise BS_TARGET, BIT_SPDEF, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_SPD_1, STAT_CHANGE_ALLOW_PTR
@@ -1577,7 +1573,7 @@ BattleScript_EffectMagneticFluxStart:
 	jumpifability BS_TARGET, ABILITY_PLUS, BattleScript_EffectMagneticFluxCheckStats
 	goto BattleScript_EffectMagneticFluxLoop
 BattleScript_EffectMagneticFluxCheckStats:
-	jumpifcannotraise2 BS_TARGET, STAT_DEF, STAT_SPDEF, BattleScript_EffectMagneticFluxLoop
+	jumpifcannotraise BS_TARGET, BIT_DEF | BIT_SPDEF, BattleScript_EffectMagneticFluxLoop
 	jumpifbyte CMP_NOT_EQUAL, gBattleCommunication, 0, BattleScript_EffectMagneticFluxSkipAnim
 	attackanimation
 	waitanimation
@@ -1601,7 +1597,7 @@ BattleScript_EffectGearUpStart:
 	jumpifability BS_TARGET, ABILITY_PLUS, BattleScript_EffectGearUpCheckStats
 	goto BattleScript_EffectGearUpLoop
 BattleScript_EffectGearUpCheckStats:
-	jumpifcannotraise2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_EffectGearUpLoop
+	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_EffectGearUpLoop
 	jumpifbyte CMP_NOT_EQUAL, gBattleCommunication, 0, BattleScript_EffectGearUpSkipAnim
 	attackanimation
 	waitanimation
@@ -1690,7 +1686,7 @@ BattleScript_EffectRototiller:
 	setbyte gBattlerTarget, 0
 BattleScript_RototillerLoop:
 	movevaluescleanup
-	jumpifcannotraise2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_RototillerCantRaiseMultipleStats
+	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_RototillerCantRaiseMultipleStats
 	jumpifnotrototilleraffected BS_TARGET, BattleScript_RototillerNoEffect
 BattleScript_RototillerAffected:
 	trychangestats STAT_BUFF_ATK_SPA_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -1848,7 +1844,7 @@ BattleScript_EffectHitEnemyHealAlly:
 BattleScript_EffectDefog:
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_DefogIfCanClearHazards
-	jumpifcanlower BS_TARGET, STAT_EVASION, BattleScript_DefogWorks
+	jumpifcanlower BS_TARGET, BIT_EVASION, BattleScript_DefogWorks
 BattleScript_DefogIfCanClearHazards:
 	defogclear BS_ATTACKER, FALSE, BattleScript_ButItFailedAtkStringPpReduce
 BattleScript_DefogWorks:
@@ -1971,7 +1967,7 @@ BattleScript_EffectClearSmog:
 BattleScript_EffectToxicThread:
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_ButItFailedAtkStringPpReduce
-	jumpifcanlower BS_TARGET, STAT_SPEED, BattleScript_ToxicThreadWorks
+	jumpifcanlower BS_TARGET, BIT_SPEED, BattleScript_ToxicThreadWorks
 	jumpifstatus BS_TARGET, STATUS1_PSN_ANY, BattleScript_ButItFailedAtkStringPpReduce
 BattleScript_ToxicThreadWorks:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -1991,7 +1987,7 @@ BattleScript_EffectVenomDrench:
 	jumpifstatus BS_TARGET, STATUS1_PSN_ANY, BattleScript_EffectVenomDrenchCanBeUsed
 	goto BattleScript_ButItFailed
 BattleScript_EffectVenomDrenchCanBeUsed:
-	jumpifcannotlower3 BS_TARGET, STAT_ATK, STAT_SPATK, STAT_SPEED, BattleScript_CantLowerMultipleStats
+	jumpifcannotlower BS_TARGET, BIT_ATK | BIT_SPATK | BIT_SPEED, BattleScript_CantLowerMultipleStats
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
@@ -2002,7 +1998,7 @@ BattleScript_EffectNobleRoar:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotlower2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_CantLowerMultipleStats
+	jumpifcannotlower BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_CantLowerMultipleStats
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
@@ -2013,12 +2009,10 @@ BattleScript_EffectShellSmash:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcanlower2 BS_ATTACKER, STAT_DEF, STAT_SPDEF, BattleScript_ShellSmashTryDef
-	jumpifcannotraise3 BS_ATTACKER, STAT_ATK, STAT_SPATK, STAT_SPEED, BattleScript_ButItFailed
-BattleScript_ShellSmashTryDef::
+	jumpifcannotlower1raise2 BS_ATTACKER, BIT_DEF | BIT_SPDEF, BIT_ATK | BIT_SPATK | BIT_SPEED, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	trychangestats STAT_BUFF_ATK_DEF_1 | STAT_BUFF_NEGATIVE, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN
+	trychangestats STAT_BUFF_DEF_SPD_1 | STAT_BUFF_NEGATIVE, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN
 	trychangestats STAT_BUFF_ATK_SPA_SPE_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
 	goto BattleScript_MoveEnd
 
@@ -2034,7 +2028,7 @@ BattleScript_EffectGrowth:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_SPATK, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_SPATK, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	jumpifweatheraffected BS_ATTACKER, B_WEATHER_SUN, BattleScript_GrowthX2
@@ -2088,7 +2082,7 @@ BattleScript_EffectShiftGear:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_SPEED, STAT_ATK, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_SPEED | BIT_ATK, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_SPE_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2098,7 +2092,7 @@ BattleScript_EffectCoil:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise3 BS_ATTACKER, STAT_ATK, STAT_DEF, STAT_ACC, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_ACC, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_DEF_ACC_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2108,7 +2102,7 @@ BattleScript_EffectQuiverDance:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise3 BS_ATTACKER, STAT_SPATK, STAT_SPDEF, STAT_SPEED, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_SPATK | BIT_SPDEF | BIT_SPEED, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_SPA_SPD_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2118,7 +2112,7 @@ BattleScript_EffectVictoryDance:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise3 BS_ATTACKER, STAT_ATK, STAT_DEF, STAT_SPEED, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_SPEED, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_DEF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2142,7 +2136,7 @@ BattleScript_EffectAttackSpAttackUp:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_SPATK, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_SPATK, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_SPA_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2152,7 +2146,7 @@ BattleScript_EffectAttackAccUp:
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_ACC, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_ACC, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_ACC_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -2179,7 +2173,7 @@ BattleScript_EffectTopsyTurvy:
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	trytopsyturvy BattleScript_ButItFailed
+	jumpifcannotlower1raise2 BS_TARGET, BIT_ALL_STATS, BIT_ALL_STATS, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	invertstatstages BS_TARGET
@@ -3896,7 +3890,7 @@ BattleScript_GeomancySecondTurn:
 	clearstatusfromeffect BS_ATTACKER
 	orword gHitMarker, HITMARKER_NO_PPDEDUCT
 	attackstring
-	jumpifcannotraise3 BS_ATTACKER, STAT_SPATK, STAT_SPDEF, STAT_SPEED, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_SPATK | BIT_SPDEF | BIT_SPEED, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_SPA_SPE_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -4252,8 +4246,6 @@ BattleScript_PartyHealEnd::
 BattleScript_EffectTripleKick::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
 	goto BattleScript_HitFromAtkString
 
 BattleScript_EffectThief::
@@ -4315,9 +4307,7 @@ BattleScript_EffectCurse::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcanlower BS_ATTACKER, STAT_SPEED, BattleScript_CurseTrySpeed
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_DEF, BattleScript_ButItFailed
-BattleScript_CurseTrySpeed::
+	jumpifcannotlower1raise2 BS_ATTACKER, BIT_SPEED, BIT_ATK | BIT_DEF, BattleScript_ButItFailed
 	copybyte gBattlerTarget, gBattlerAttacker
 	setbyte sB_ANIM_TURN, 1
 	attackanimation
@@ -5032,8 +5022,7 @@ BattleScript_EffectStockpile::
 	goto BattleScript_EffectStockpileEnd
 	.endif
 	jumpifmovehadnoeffect BattleScript_EffectStockpileEnd
-	jumpifcannotraise2 BS_ATTACKER, STAT_DEF, STAT_SPDEF, BattleScript_EffectStockpileEnd
-	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
+	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, NULL, TRUE
 BattleScript_EffectStockpileEnd:
 	stockpile 1
 	goto BattleScript_MoveEnd
@@ -5178,7 +5167,7 @@ BattleScript_EffectMemento::
 	attackanimation
 	waitanimation
 	jumpifsubstituteblocks BattleScript_EffectMementoPrintNoEffect
-	jumpifcannotlower2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_EffectMementoPrintNoEffect
+	jumpifcannotlower BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_EffectMementoPrintNoEffect
 	trychangestats STAT_BUFF_ATK_SPA_2 | STAT_BUFF_NEGATIVE, STAT_CHANGE_ALLOW_PTR
 BattleScript_EffectMementoPrintNoEffect:
 	printstring STRINGID_BUTNOEFFECT
@@ -5617,7 +5606,7 @@ BattleScript_EffectTickle::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotlower2 BS_TARGET, STAT_ATK, STAT_DEF, BattleScript_ButItFailed
+	jumpifcannotlower BS_TARGET, BIT_ATK | BIT_DEF, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
@@ -5635,7 +5624,7 @@ BattleScript_EffectCosmicPower::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_DEF, STAT_SPDEF, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_DEF | BIT_SPDEF, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -5648,7 +5637,7 @@ BattleScript_EffectBulkUp::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_DEF, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_DEF, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_DEF_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -5658,7 +5647,7 @@ BattleScript_EffectCalmMind::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_SPATK, STAT_SPDEF, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_SPATK | BIT_SPDEF, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_SPA_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -5675,7 +5664,7 @@ BattleScript_EffectDragonDance::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifcannotraise2 BS_ATTACKER, STAT_ATK, STAT_SPEED, BattleScript_CantRaiseMultipleStats
+	jumpifcannotraise BS_ATTACKER, BIT_ATK | BIT_SPEED, BattleScript_CantRaiseMultipleStats
 	attackanimation
 	waitanimation
 	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
@@ -6404,7 +6393,7 @@ BattleScript_RoarSuccessRet_Ret:
 
 BattleScript_WeaknessPolicy::
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_WEAKNESS_POLICY, BattleScript_WeaknessPolicyRet
-	jumpifcannotraise2 BS_TARGET, STAT_ATK, STAT_SPATK, BattleScript_WeaknessPolicyRet
+	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_WeaknessPolicyRet
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	printstring STRINGID_PKMNITEMACTIVATED
@@ -6644,7 +6633,7 @@ BattleScript_SeedSowerActivates::
 
 BattleScript_AngerShellActivates::
 	call BattleScript_AbilityPopUp
-	tryangershell BattleScript_ButItFailed
+	jumpifcannotlower1raise2 BS_TARGET, BIT_DEF | BIT_SPDEF, BIT_ATK | BIT_SPATK | BIT_SPEED, BattleScript_ButItFailed
 	trychangestats STAT_BUFF_DEF_SPD_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_ALLOW_PTR
 	trychangestats STAT_BUFF_ATK_SPA_SPE_1, STAT_CHANGE_ALLOW_PTR
 	return
@@ -6940,18 +6929,8 @@ BattleScript_PrintMonIsRooted::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_AtkDefDown::
-	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_NEGATIVE, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
-	return
-
-BattleScript_DefSpDefDown::
-	trychangestats STAT_BUFF_DEF_SPD_1 | STAT_BUFF_NEGATIVE, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
-	return
-
 BattleScript_DefDownSpeedUp::
-	jumpifcanlower BS_ATTACKER, STAT_DEF, BattleScript_DefDownSpeedUpTryDef
-	jumpifcannotraise BS_ATTACKER, STAT_SPEED, BattleScript_DefDownSpeedUpRet
-BattleScript_DefDownSpeedUpTryDef::
+	jumpifcannotlower1raise2 BS_ATTACKER, BIT_DEF, BIT_SPEED, BattleScript_DefDownSpeedUpRet
 	trychangestats STAT_BUFF_DEF_1 | STAT_BUFF_NEGATIVE, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
 	trychangestats STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
 BattleScript_DefDownSpeedUpRet::
@@ -7801,7 +7780,7 @@ BattleScript_ActivateWeatherAbilities_Increment:
 BattleScript_TryAdrenalineOrb::
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_ADRENALINE_ORB, BattleScript_TryAdrenalineOrbRet
 	copybyte sBATTLER, gBattlerTarget
-	jumpifcannotraise BS_TARGET, STAT_SPEED, BattleScript_TryAdrenalineOrbRet
+	jumpifcannotraise BS_TARGET, BIT_SPEED, BattleScript_TryAdrenalineOrbRet
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	printstring STRINGID_PKMNITEMACTIVATED
@@ -9454,7 +9433,7 @@ BattleScript_CouldntFullyProtect::
 
 BattleScript_BerserkGeneRet::
 BattleScript_BerserkGeneRet_Anim:
-	jumpifcannotraise BS_SCRIPTING, STAT_ATK, BattleScript_BerserkGeneRet_TryConfuse
+	jumpifcannotraise BS_SCRIPTING, BIT_ATK, BattleScript_BerserkGeneRet_TryConfuse
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
 	call BattleScript_StatChange
 BattleScript_BerserkGeneRet_TryConfuse:

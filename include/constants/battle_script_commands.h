@@ -280,13 +280,7 @@
 #define STAT_CHANGE_NOT_PROTECT_AFFECTED    (1 << 5)
 #define STAT_CHANGE_UPDATE_MOVE_EFFECT      (1 << 6)
 
-// stat change flags for Cmd_playstatchangeanimation
-#define STAT_CHANGE_NEGATIVE             (1 << 0)
-#define STAT_CHANGE_BY_TWO               (1 << 1)
-#define STAT_CHANGE_MULTIPLE_STATS       (1 << 2)
-#define STAT_CHANGE_CANT_PREVENT         (1 << 3)
-
-// stat flags for Cmd_playstatchangeanimation
+// stat bit flags
 #define BIT_HP                      (1 << 0)
 #define BIT_ATK                     (1 << 1)
 #define BIT_DEF                     (1 << 2)
@@ -295,6 +289,8 @@
 #define BIT_SPDEF                   (1 << 5)
 #define BIT_ACC                     (1 << 6)
 #define BIT_EVASION                 (1 << 7)
+#define BIT_ALL_STATS               (BIT_ATK | BIT_DEF | BIT_SPEED | BIT_SPATK | BIT_SPDEF) // except HP
+#define BIT_ALL_BATTLE_STATS        (BIT_ALL_STATS | BIT_ACC | BIT_EVASION) // except HP
 
 // stat flags for Cmd_statbuffchange
 #define STAT_BUFF_ATK_1             (1 << 0)
@@ -336,9 +332,9 @@
 #define STAT_BUFF_SPA_SPD_SPE_1     (STAT_BUFF_SPA_1 | STAT_BUFF_SPD_1 | STAT_BUFF_SPE_1)
 #define STAT_BUFF_ATK_DEF_SPE_1     (STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_SPE_1)
 
-#define STAT_CHANGE_COMPLETE    0
-#define STAT_CHANGE_DIDNT_WORK  1
-#define STAT_CHANGE_WORKED      2
+#define STAT_CHANGE_COMPLETE        0
+#define STAT_CHANGE_DIDNT_WORK      1
+#define STAT_CHANGE_WORKED          2
 
 // Stat change results
 #define STAT_CHANGE_NONE                0
