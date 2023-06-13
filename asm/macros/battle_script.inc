@@ -2307,16 +2307,15 @@
 	statchangeanimationandstrings \multistring, FALSE
 	.endm
 
-	.macro statchangeanimationandstrings multistring=0, anim = TRUE
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
+	.macro statchangeanimationandstrings multistring=0, anim=TRUE
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 1f
 	.if \anim == TRUE
 		displaystatchangeanimation
 	.endif
-	1:
 	printstring STRINGID_STATSCHANGED
 	waitmessage B_WAIT_TIME_LONG
-	jumpifbyte CMP_NOT_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 1b
-	2:
+	statchangeanimationandstrings \multistring, FALSE
+	1:
 	.endm
 
 	.macro jumpifstatscheck battler:req, stats:req, ptr:req, cmp:req, stage:req, stat_bit=BIT_EVASION, stat_id=STAT_EVASION

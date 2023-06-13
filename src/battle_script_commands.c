@@ -11745,7 +11745,6 @@ static u8 TryLowerStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 *
             {
                 BattleScriptPush(failPtr);
                 gBattlescriptCurrInstr = BattleScript_ButItFailed;
-                statBuffsHelper->statBuffStrings[GetStringIndexForStatBuff(i)] = STAT_CHANGE_NONE;
                 return 0;
             }
             else if ((GetBattlerHoldEffect(gActiveBattler, TRUE) == HOLD_EFFECT_CLEAR_AMULET
@@ -11914,14 +11913,14 @@ static u8 TryChangeStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 
         return TryRaiseStats(flags, statBuffsHelper->statBuffStrings, statAnimId);
 }
 
-static u8 AddStatIndicesToStringBuffer(u8 *statBuffStrings, u8 stringTag, u8 statCount, u8 *printedStats, u8 index)
+static u8 AddStatIndicesToStringBuffer(u8 *statBuffStrings, u8 stringTagIndex, u8 statCount, u8 *printedStats, u8 index)
 {
-    u8 i = 0, j = 0;
+    u8 i = stringTagIndex, j = 0;
     gBattleTextBuff3[index++] = B_BUFF_STAT_CHANGE_STRING;
-    gBattleTextBuff3[index++] = stringTag;
+    gBattleTextBuff3[index++] = *(statBuffStrings + stringTagIndex);
     gBattleTextBuff3[index++] = statCount;
     do {
-        if ((*(statBuffStrings + i)) == stringTag && *(printedStats + i) == 0)
+        if ((*(statBuffStrings + i)) == *(statBuffStrings + stringTagIndex) && *(printedStats + i) == 0)
         {
             gBattleTextBuff3[index++] = GetStatFromBuffStringIndex(i);
             *(printedStats + i) = 1; // mark string as printed
@@ -11946,7 +11945,7 @@ static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCoun
         // Print stats that have some sort of message to display
         // But if some were successful and others were unsuccessful,
         // only print the successful ones
-        if ((*(statBuffStrings + i)) > STAT_CHANGE_NONE && printedStats[i] == 0
+        if ((*(statBuffStrings + i)) >= STAT_CHANGE_WONT_GO_HIGHER && printedStats[i] == 0
             && !(successfulStatBuffCount > 0 && !STAT_CHANGE_SUCCESS(*(statBuffStrings + i))))
         {
             statCountForCurrentString = 1;
@@ -11980,7 +11979,7 @@ static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCoun
                     }
                 }
             }
-            index = AddStatIndicesToStringBuffer(statBuffStrings, *(statBuffStrings + i), statCountForCurrentString, printedStats, index);
+            index = AddStatIndicesToStringBuffer(statBuffStrings, i, statCountForCurrentString, printedStats, index);
         }
     }
     gBattleTextBuff3[index] = B_BUFF_EOS;
@@ -12063,7 +12062,11 @@ static void Cmd_statbuffchange(void)
     // should stat changing fail
     if (((gBattleCommunication[MULTIUSE_STATE] = ChangeStatBuffs(cmd->flags, failPtr)) == STAT_CHANGE_DIDNT_WORK)
         && gBattlescriptCurrInstr == nextInstr)
+    {
         gBattlescriptCurrInstr = failPtr;
+        if (cmd->flags & STAT_CHANGE_SKIP_FAILED_STRINGS)
+            gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
+    }
 
     // Make sure subsequent strings print the correct battler...
     gBattleScripting.battler = gActiveBattler;

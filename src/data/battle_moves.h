@@ -10094,6 +10094,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_SPDEF_UP_1,
+        .argument = STAT_BUFF_DEF_SPD_1
     },
 
     [MOVE_HAPPY_HOUR] =
@@ -10624,6 +10625,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_SPATK_UP_1,
+        .argument = STAT_BUFF_ATK_SPA_1
     },
 
     [MOVE_THROAT_CHOP] =

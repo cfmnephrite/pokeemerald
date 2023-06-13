@@ -338,7 +338,6 @@
 #define STAT_CHANGE_WORKED          2
 
 // Stat change results
-#define STAT_CHANGE_NONE                0
 #define STAT_CHANGE_WONT_GO_HIGHER      1
 #define STAT_CHANGE_WONT_GO_LOWER       2
 #define STAT_CHANGE_ROSE                3
