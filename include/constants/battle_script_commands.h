@@ -348,6 +348,17 @@
 #define STAT_CHANGE_SEVERELY_FELL       8
 #define STAT_CHANGE_SUCCESS(n) ((n > STAT_CHANGE_WONT_GO_LOWER))
 
+// string choosers
+#define B_MSG_STAT_CHANGE_GENERIC           0
+#define B_MSG_STAT_CHANGE_ITEM              1
+#define B_MSG_STAT_CHANGE_OWN_ABILITY       2
+#define B_MSG_STAT_CHANGE_FOE_ABILITY       3
+
+// Just for strings
+#define STAT_CHANGE_RAISED              (STAT_CHANGE_ROSE | 0x40)
+#define STAT_CHANGE_LOWERED             (STAT_CHANGE_FELL | 0x40)
+#define STAT_CHANGE_CUT                 (STAT_CHANGE_FELL | 0x80)
+
 #define PARTY_SCREEN_OPTIONAL (1 << 7) // Flag for first argument to openpartyscreen
 
 // cases for Cmd_moveend

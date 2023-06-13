@@ -214,10 +214,10 @@
 #define STRINGID_STATROSE                             210
 #define STRINGID_STATHARSHLY                          211
 #define STRINGID_STATFELL                             212
-#define STRINGID_ATTACKERSSTATROSE                    213
-#define STRINGID_DEFENDERSSTATROSE                    214
-#define STRINGID_ATTACKERSSTATFELL                    215
-#define STRINGID_DEFENDERSSTATFELL                    216
+#define STRINGID_UNUSED213                            213
+#define STRINGID_UNUSED214                            214
+#define STRINGID_UNUSED215                            215
+#define STRINGID_UNUSED216                            216
 #define STRINGID_CRITICALHIT                          217
 #define STRINGID_ONEHITKO                             218
 #define STRINGID_123POOF                              219
@@ -326,7 +326,7 @@
 #define STRINGID_SOOTHINGAROMA                        322
 #define STRINGID_ITEMSCANTBEUSEDNOW                   323
 #define STRINGID_FORXCOMMAYZ                          324
-#define STRINGID_PKMNITEMACTIVATED                    325
+#define STRINGID_PKMNITEMCHANGEDSTATS                    325
 #define STRINGID_PKMNUSEDXTOGETPUMPED                 326
 #define STRINGID_PKMNSXMADEYUSELESS                   327
 #define STRINGID_PKMNTRAPPEDBYSANDTOMB                328
@@ -452,9 +452,9 @@
 #define STRINGID_MISTYTERRAINENDS                     447
 #define STRINGID_PSYCHICTERRAINENDS                   448
 #define STRINGID_GRASSYTERRAINENDS                    449
-#define STRINGID_TARGETABILITYSTATRAISE               450
+#define STRINGID_WEAKNESSPOLICYCHANGEDSTATS           450
 #define STRINGID_TARGETSSTATWASMAXEDOUT               451
-#define STRINGID_ATTACKERABILITYSTATRAISE             452
+#define STRINGID_UNUSED452                            452
 #define STRINGID_POISONHEALHPUP                       453
 #define STRINGID_BADDREAMSDMG                         454
 #define STRINGID_MOLDBREAKERENTERS                    455
@@ -484,8 +484,8 @@
 #define STRINGID_LUNARDANCECAMETRUE                   479
 #define STRINGID_CUSEDBODYDISABLED                    480
 #define STRINGID_ATTACKERACQUIREDABILITY              481
-#define STRINGID_TARGETABILITYSTATLOWER               482
-#define STRINGID_TARGETSTATWONTGOHIGHER               483
+#define STRINGID_UNUSED482                            482
+#define STRINGID_UNUSED483                            483
 #define STRINGID_PKMNMOVEBOUNCEDABILITY               484
 #define STRINGID_IMPOSTERTRANSFORM                    485
 #define STRINGID_ASSAULTVESTDOESNTALLOW               486
@@ -560,10 +560,10 @@
 #define STRINGID_COMATOSEENTERS                       555
 #define STRINGID_SCREENCLEANERENTERS                  556
 #define STRINGID_FETCHEDPOKEBALL                      557
-#define STRINGID_BATTLERABILITYRAISEDSTAT             558
+#define STRINGID_UNUSED_558                           558
 #define STRINGID_ASANDSTORMKICKEDUP                   559
 #define STRINGID_PKMNSWILLPERISHIN3TURNS              560
-#define STRINGID_ABILITYRAISEDSTATDRASTICALLY         561
+#define STRINGID_UNUSED_561                           561
 #define STRINGID_AURAFLAREDTOLIFE                     562
 #define STRINGID_ASONEENTERS                          563
 #define STRINGID_CURIOUSMEDICINEENTERS                564
@@ -680,20 +680,6 @@
 // used to determine which of a set of messages to print.
 // They are assigned to the MULTISTRING_CHOOSER byte of gBattleCommunication
 // and read when e.g. the command printfromtable is used.
-
-// gStatUpStringIds
-#define B_MSG_ATTACKER_STAT_ROSE 0
-#define B_MSG_DEFENDER_STAT_ROSE 1
-#define B_MSG_STAT_WONT_INCREASE 2
-#define B_MSG_STAT_ROSE_EMPTY    3
-#define B_MSG_STAT_ROSE_ITEM     4
-#define B_MSG_USED_DIRE_HIT      5
-
-// gStatDownStringIds
-#define B_MSG_ATTACKER_STAT_FELL 0
-#define B_MSG_DEFENDER_STAT_FELL 1
-#define B_MSG_STAT_WONT_DECREASE 2
-#define B_MSG_STAT_FELL_EMPTY    3
 
 // gMissStringIds
 #define B_MSG_MISSED       0

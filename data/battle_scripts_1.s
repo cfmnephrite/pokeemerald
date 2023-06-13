@@ -524,7 +524,7 @@ BattleScript_Teatimerod:
 	setstatchanger STAT_SPATK, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
-	printfromtable gStatUpStringIds
+	@printfromtable gStatUpStringIds
 	waitmessage 0x40
 	moveendto MOVEEND_NEXT_TARGET
 	jumpifnexttargetvalid BattleScript_TeatimeLoop
@@ -536,7 +536,7 @@ BattleScript_Teatimemotor:
 	setstatchanger STAT_SPEED, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
-	printfromtable gStatUpStringIds
+	@printfromtable gStatUpStringIds
 	waitmessage 0x40
 	moveendto MOVEEND_NEXT_TARGET
 	jumpifnexttargetvalid BattleScript_TeatimeLoop
@@ -6273,11 +6273,11 @@ BattleScript_RoarSuccessRet_Ret:
 
 BattleScript_WeaknessPolicy::
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_WEAKNESS_POLICY, BattleScript_WeaknessPolicyRet
-	jumpifcannotraise BS_TARGET, BIT_ATK | BIT_SPATK, BattleScript_WeaknessPolicyRet
+	trychangestats STAT_BUFF_ATK_SPA_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicyRet, FALSE
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	printstring STRINGID_PKMNITEMACTIVATED
-	trychangestats STAT_BUFF_ATK_SPA_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
+	printstring STRINGID_WEAKNESSPOLICYCHANGEDSTATS
+	waitmessage B_WAIT_TIME_LONG
 	removeitem BS_TARGET
 BattleScript_WeaknessPolicyRet:
 	return
@@ -6287,8 +6287,7 @@ BattleScript_TargetItemStatRaise::
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	removeitem BS_TARGET
-	printstring STRINGID_PKMNITEMACTIVATED
-	statchangeanimationandstrings
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 BattleScript_TargetItemStatRaiseRemoveItemRet:
 	return
 
@@ -6297,8 +6296,7 @@ BattleScript_AttackerItemStatRaise::
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	removeitem BS_ATTACKER
-	printstring STRINGID_PKMNITEMACTIVATED
-	statchangeanimationandstrings
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 BattleScript_AttackerItemStatRaiseRet:
 	return
 
@@ -6492,7 +6490,7 @@ BattleScript_GulpMissileNoDmgGulping:
 	handleformchange BS_TARGET, 0
 	playanimation BS_TARGET, B_ANIM_FORM_CHANGE
 	waitanimation
-	swapattackerwithtarget @ to make gStatDownStringIds down below print the right battler
+	swapattackerwithtarget
 	trychangestats STAT_BUFF_DEF_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_NOT_PROTECT_AFFECTED
 	swapattackerwithtarget @ restore the battlers, just in case
 	return
@@ -7224,10 +7222,7 @@ BattleScript_TryActivateSteadFast:
 	trychangestats STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_MoveEnd, FALSE
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	stattextbuffer1 STAT_SPEED
-	printstring STRINGID_ATTACKERABILITYSTATRAISE
-	waitmessage B_WAIT_TIME_LONG
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_OWN_ABILITY
 	goto BattleScript_MoveEnd
 
 BattleScript_PrintUproarOverTurns::
@@ -7663,7 +7658,7 @@ BattleScript_TryAdrenalineOrb::
 	jumpifcannotraise BS_TARGET, BIT_SPEED, BattleScript_TryAdrenalineOrbRet
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	printstring STRINGID_PKMNITEMACTIVATED
+	printstring STRINGID_PKMNITEMCHANGEDSTATS
 	trychangestats STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
 	removeitem BS_TARGET
 BattleScript_TryAdrenalineOrbRet:
@@ -7691,7 +7686,7 @@ BattleScript_IntimidateLoop:
 .endif
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_IntimidateInReverse
 	copybyte sBATTLER, gBattlerAttacker
-	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR
+	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, NULL, TRUE, B_MSG_STAT_CHANGE_FOE_ABILITY
 	copybyte sBATTLER, gBattlerTarget
 	call BattleScript_TryAdrenalineOrb
 BattleScript_IntimidateLoopIncrement:
@@ -8120,7 +8115,6 @@ BattleScript_AbilityNoSpecificStatLoss::
 BattleScript_AbilityNoSpecificStatLossPrint:
 	printstring STRINGID_PKMNSXPREVENTSYLOSS
 	waitmessage B_WAIT_TIME_LONG
-	setbyte cMULTISTRING_CHOOSER, B_MSG_STAT_FELL_EMPTY
 	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
 	return
 
@@ -8187,7 +8181,7 @@ BattleScript_WanderingSpiritActivates::
 BattleScript_TargetsStatWasMaxedOut::
 	call BattleScript_AbilityPopUp
 	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, NULL
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	displaystatchangeanimation
 	printstring STRINGID_TARGETSSTATWASMAXEDOUT
 	waitmessage B_WAIT_TIME_LONG
 	return
@@ -8195,23 +8189,15 @@ BattleScript_TargetsStatWasMaxedOut::
 BattleScript_BattlerAbilityStatRaiseOnSwitchIn::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, NULL
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	waitanimation
-	printstring STRINGID_BATTLERABILITYRAISEDSTAT
-	waitmessage B_WAIT_TIME_LONG
+	trychangestats NULL, STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN, NULL, TRUE, B_MSG_STAT_CHANGE_OWN_ABILITY
 	end3
 
-BattleScript_ScriptingAbilityStatRaise::
+BattleScript_SoulHeartStatRaise::
 	copybyte gBattlerAbility, sBATTLER
 	call BattleScript_AbilityPopUp
 	copybyte sSAVED_DMG, gBattlerAttacker
 	copybyte gBattlerAttacker, sBATTLER
-	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN, NULL
-	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	waitanimation
-	printstring STRINGID_ATTACKERABILITYSTATRAISE
-	waitmessage B_WAIT_TIME_LONG
+	trychangestats NULL, STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN, NULL, TRUE, B_MSG_STAT_CHANGE_OWN_ABILITY
 	copybyte gBattlerAttacker, sSAVED_DMG
 	return
 
@@ -8236,10 +8222,7 @@ BattleScript_AttackerAbilityStatRaise::
 	trychangestats NULL, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackerAbilityStatRaise_End, FALSE
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	waitanimation
-	printstring STRINGID_ATTACKERABILITYSTATRAISE
-	waitmessage B_WAIT_TIME_LONG
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_OWN_ABILITY
 BattleScript_AttackerAbilityStatRaise_End:
 	return
 
@@ -8777,9 +8760,7 @@ BattleScript_BerryStatRaiseEnd2_AbilityPopup:
 BattleScript_BerryStatRaiseEnd2_Anim:
 	trychangestats NULL, STAT_CHANGE_ALLOW_PTR, BattleScript_BerryStatRaiseEnd2_End, FALSE
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
-	printstring STRINGID_TARGETATEITEM
-	waitmessage B_WAIT_TIME_LONG
-	statchangeanimationandstrings
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 BattleScript_BerryStatRaiseEnd2_End::
 	end2
 

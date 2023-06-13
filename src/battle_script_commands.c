@@ -9423,7 +9423,7 @@ static void Cmd_various(void)
                 SET_STATCHANGER(STAT_SPATK, 1, FALSE);
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, STAT_SPATK);
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_ScriptingAbilityStatRaise;
+                gBattlescriptCurrInstr = BattleScript_SoulHeartStatRaise;
                 return;
             }
         }

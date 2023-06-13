@@ -5481,7 +5481,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_COSMIC_POWER] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_COSMIC_POWER,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -7735,6 +7735,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_DEF_UP_1,
+        .argument = STAT_BUFF_DEF_SPD_1
     },
 
     [MOVE_HEAL_ORDER] =
@@ -7940,7 +7941,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_HONE_CLAWS] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_ATTACK_ACCURACY_UP,
         .power = 0,
         .type = TYPE_DARK,
         .accuracy = 0,
@@ -8183,7 +8184,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_QUIVER_DANCE] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_QUIVER_DANCE,
         .power = 0,
         .type = TYPE_BUG,
         .accuracy = 0,
@@ -8283,7 +8284,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_COIL] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_COIL,
         .power = 0,
         .type = TYPE_POISON,
         .accuracy = 0,
@@ -8881,7 +8882,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_WORK_UP] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_ATTACK_SPATK_UP,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -12656,7 +12657,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_VICTORY_DANCE] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_VICTORY_DANCE,
         .power = 0,
         .type = TYPE_FIGHTING,
         .accuracy = 0,

@@ -849,7 +849,7 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
     case STRINGID_CRITICALHIT:
         AddMovePoints(PTS_CRITICAL_HIT, moveSlot, 0, 0);
         break;
-    case STRINGID_ATTACKERSSTATROSE:
+    case STRINGID_UNUSED213        :
         if (gBattleTextBuff1[2] != 0)
         {
             if (*statStringId == STRINGID_STATSHARPLY)
@@ -858,7 +858,7 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
                 AddMovePoints(PTS_STAT_INCREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
         }
         break;
-    case STRINGID_DEFENDERSSTATROSE:
+    case STRINGID_UNUSED214        :
         if (gBattleTextBuff1[2] != 0)
         {
             if (gBattlerAttacker == gBattlerTarget)
@@ -874,11 +874,11 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
             }
         }
         break;
-    case STRINGID_ATTACKERSSTATFELL:
+    case STRINGID_UNUSED215        :
         if (gBattleTextBuff1[2] != 0)
             AddMovePoints(PTS_STAT_DECREASE_SELF, moveSlot, gBattleTextBuff1[2] - 1, 0);
         break;
-    case STRINGID_DEFENDERSSTATFELL:
+    case STRINGID_UNUSED216        :
         if (gBattleTextBuff1[2] != 0)
         {
             if (*statStringId == STRINGID_STATHARSHLY)

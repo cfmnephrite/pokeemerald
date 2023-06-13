@@ -289,7 +289,7 @@ static const u8 sText_PkmnPreventsPoisoningWith[] = _("{B_EFF_NAME_WITH_PREFIX}'
 static const u8 sText_PkmnPreventsConfusionWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nprevents confusion!");
 static const u8 sText_PkmnRaisedFirePowerWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nraised its FIRE power!");
 static const u8 sText_PkmnAnchorsItselfWith[] = _("{B_DEF_NAME_WITH_PREFIX} anchors\nitself with {B_DEF_ABILITY}!");
-static const u8 sText_PkmnCutsAttackWith[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\ncuts {B_DEF_NAME_WITH_PREFIX}'s attack!");
+static const u8 sText_PkmnCutsAttackWith[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\n{B_BUFF3}");//"cuts {B_DEF_NAME_WITH_PREFIX}'s attack!");
 static const u8 sText_PkmnPreventsStatLossWith[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nprevents stat loss!");
 static const u8 sText_PkmnHurtsWith[] = _("{B_ATK_NAME_WITH_PREFIX} was hurt by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_PkmnTraced[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} TRACED\n{B_BUFF1}'s {B_BUFF2}!");
@@ -318,10 +318,10 @@ const u8 gText_StatSharply[] = _("sharply ");
 const u8 gText_StatRose[] = _("rose!");
 static const u8 sText_StatHarshly[] = _("harshly ");
 static const u8 sText_StatFell[] = _("fell!");
-static const u8 sText_AttackersStatRose[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_StatsChanged[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF3}");
 const u8 gText_DefendersStatRose[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
-static const u8 sText_PkmnItemActivated[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} activated\nits {B_LAST_ITEM}!");
+static const u8 sText_PkmnWeaknessPolicyChangedStats[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s Weakness\nPolicy{B_BUFF3}!");
+static const u8 sText_PkmnItemChangedStats[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM}\n{B_BUFF3}!");
 static const u8 sText_AttackersStatFell[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_DefendersStatFell[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\n{B_BUFF2}");
 static const u8 sText_StatsWontIncrease2[] = _("{B_ATK_NAME_WITH_PREFIX}'s stats won't\ngo any higher!");
@@ -595,10 +595,7 @@ static const u8 sText_MudSportEnds[] = _("The effects of Mud Sport have faded.")
 static const u8 sText_WaterSportEnds[] = _("The effects of Water Sport have faded.");
 static const u8 sText_GravityEnds[] = _("Gravity returned to normal!");
 static const u8 sText_AquaRingHeal[] = _("Aqua Ring restored\n{B_ATK_NAME_WITH_PREFIX}'s HP!");
-static const u8 sText_TargetAbilityRaisedStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nraised its {B_BUFF1}!");
-static const u8 sText_TargetAbilityLoweredStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nlowered its {B_BUFF1}!");
-static const u8 sText_AttackerAbilityRaisedStat[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY}\nraised its {B_BUFF1}!");
-static const u8 sText_ScriptingAbilityRaisedStat[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nraised its {B_BUFF1}!");
+static const u8 sText_ScriptingAbilityRaisedStat[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\n{B_BUFF3}!");
 static const u8 sText_AuroraVeilEnds[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nwore off!");
 static const u8 sText_ElectricTerrainEnds[] = _("The electricity disappeared\nfrom the battlefield.");
 static const u8 sText_MistyTerrainEnds[] = _("The mist disappeared\nfrom the battlefield.");
@@ -635,7 +632,6 @@ static const u8 sText_HealingWishHealed[] = _("{B_ATK_NAME_WITH_PREFIX} regained
 static const u8 sText_LunarDanceCameTrue[] = _("{B_ATK_NAME_WITH_PREFIX} became cloaked\nin mystical moonlight!");
 static const u8 sText_CursedBodyDisabled[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} was disabled\nby {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!");
 static const u8 sText_AttackerAquiredAbility[] = _("{B_ATK_NAME_WITH_PREFIX} acquired\n{B_LAST_ABILITY}!");
-static const u8 sText_TargetStatWontGoHigher[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}\nwon't go higher!");
 static const u8 sText_PkmnMoveBouncedViaAbility[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was\nbounced back by {B_DEF_NAME_WITH_PREFIX}'s\l{B_DEF_ABILITY}!");
 static const u8 sText_ImposterTransform[] = _("{B_ATK_NAME_WITH_PREFIX} transformed into\n{B_DEF_NAME_WITH_PREFIX} using {B_LAST_ABILITY}!");
 static const u8 sText_NotDoneYet[] = _("This move effect is not done yet!\p");
@@ -712,10 +708,8 @@ static const u8 sText_AuraBreakActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} 
 static const u8 sText_ComatoseActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is drowsing!");
 static const u8 sText_ScreenCleanerActivates[] = _("All screens on the field were\ncleansed!");
 static const u8 sText_FetchedPokeBall[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} found\na {B_LAST_ITEM}!");
-static const u8 sText_BattlerAbilityRaisedStat[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nraised its {B_BUFF1}!");
 static const u8 sText_ASandstormKickedUp[] = _("A sandstorm kicked up!");
 static const u8 sText_PkmnsWillPerishIn3Turns[] = _("Both Pokémon will perish\nin three turns!");
-static const u8 sText_AbilityRaisedStatDrastically[] = _("{B_DEF_ABILITY} raised {B_DEF_NAME_WITH_PREFIX}'s\n{B_BUFF1} drastically!");
 static const u8 sText_AsOneEnters[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} has two Abilities!");
 static const u8 sText_CuriousMedicineEnters[] = _("{B_EFF_NAME_WITH_PREFIX}'s\nstat changes were reset!");
 static const u8 sText_CanActFaster[] = _("{B_ATK_NAME_WITH_PREFIX} can act faster,\nthanks to {B_BUFF1}!");
@@ -880,10 +874,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_CANACTFASTERTHANKSTO - BATTLESTRINGS_TABLE_START] = sText_CanActFaster,
     [STRINGID_CURIOUSMEDICINEENTERS - BATTLESTRINGS_TABLE_START] = sText_CuriousMedicineEnters,
     [STRINGID_ASONEENTERS - BATTLESTRINGS_TABLE_START] = sText_AsOneEnters,
-    [STRINGID_ABILITYRAISEDSTATDRASTICALLY - BATTLESTRINGS_TABLE_START] = sText_AbilityRaisedStatDrastically,
     [STRINGID_PKMNSWILLPERISHIN3TURNS - BATTLESTRINGS_TABLE_START] = sText_PkmnsWillPerishIn3Turns,
     [STRINGID_ASANDSTORMKICKEDUP - BATTLESTRINGS_TABLE_START] = sText_ASandstormKickedUp,
-    [STRINGID_BATTLERABILITYRAISEDSTAT - BATTLESTRINGS_TABLE_START] = sText_BattlerAbilityRaisedStat,
     [STRINGID_FETCHEDPOKEBALL - BATTLESTRINGS_TABLE_START] = sText_FetchedPokeBall,
     [STRINGID_STATWASNOTLOWERED - BATTLESTRINGS_TABLE_START] = sText_StatWasNotLowered,
     [STRINGID_CLOAKEDINAFREEZINGLIGHT - BATTLESTRINGS_TABLE_START] = sText_CloakedInAFreezingLight,
@@ -1115,10 +1107,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_STATROSE - BATTLESTRINGS_TABLE_START] = gText_StatRose,
     [STRINGID_STATHARSHLY - BATTLESTRINGS_TABLE_START] = sText_StatHarshly,
     [STRINGID_STATFELL - BATTLESTRINGS_TABLE_START] = sText_StatFell,
-    [STRINGID_ATTACKERSSTATROSE - BATTLESTRINGS_TABLE_START] = sText_AttackersStatRose,
-    [STRINGID_DEFENDERSSTATROSE - BATTLESTRINGS_TABLE_START] = gText_DefendersStatRose,
-    [STRINGID_ATTACKERSSTATFELL - BATTLESTRINGS_TABLE_START] = sText_AttackersStatFell,
-    [STRINGID_DEFENDERSSTATFELL - BATTLESTRINGS_TABLE_START] = sText_DefendersStatFell,
     [STRINGID_CRITICALHIT - BATTLESTRINGS_TABLE_START] = sText_CriticalHit,
     [STRINGID_ONEHITKO - BATTLESTRINGS_TABLE_START] = sText_OneHitKO,
     [STRINGID_123POOF - BATTLESTRINGS_TABLE_START] = sText_123Poof,
@@ -1230,7 +1218,8 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_SOOTHINGAROMA - BATTLESTRINGS_TABLE_START] = sText_SoothingAroma,
     [STRINGID_ITEMSCANTBEUSEDNOW - BATTLESTRINGS_TABLE_START] = sText_ItemsCantBeUsedNow,
     [STRINGID_FORXCOMMAYZ - BATTLESTRINGS_TABLE_START] = sText_ForXCommaYZ,
-    [STRINGID_PKMNITEMACTIVATED - BATTLESTRINGS_TABLE_START] = sText_PkmnItemActivated,
+    [STRINGID_PKMNITEMCHANGEDSTATS - BATTLESTRINGS_TABLE_START] = sText_PkmnItemChangedStats,
+    [STRINGID_WEAKNESSPOLICYCHANGEDSTATS - BATTLESTRINGS_TABLE_START] = sText_PkmnWeaknessPolicyChangedStats,
     [STRINGID_PKMNUSEDXTOGETPUMPED - BATTLESTRINGS_TABLE_START] = sText_PkmnUsedXToGetPumped,
     [STRINGID_PKMNSXMADEYUSELESS - BATTLESTRINGS_TABLE_START] = sText_PkmnsXMadeYUseless,
     [STRINGID_PKMNTRAPPEDBYSANDTOMB - BATTLESTRINGS_TABLE_START] = sText_PkmnTrappedBySandTomb,
@@ -1355,9 +1344,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_MISTYTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_MistyTerrainEnds,
     [STRINGID_PSYCHICTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_PsychicTerrainEnds,
     [STRINGID_GRASSYTERRAINENDS - BATTLESTRINGS_TABLE_START] = sText_GrassyTerrainEnds,
-    [STRINGID_TARGETABILITYSTATRAISE - BATTLESTRINGS_TABLE_START] = sText_TargetAbilityRaisedStat,
     [STRINGID_TARGETSSTATWASMAXEDOUT - BATTLESTRINGS_TABLE_START] = sText_TargetsStatWasMaxedOut,
-    [STRINGID_ATTACKERABILITYSTATRAISE - BATTLESTRINGS_TABLE_START] = sText_AttackerAbilityRaisedStat,
     [STRINGID_POISONHEALHPUP - BATTLESTRINGS_TABLE_START] = sText_PoisonHealHpUp,
     [STRINGID_BADDREAMSDMG - BATTLESTRINGS_TABLE_START] = sText_BadDreamsDmg,
     [STRINGID_MOLDBREAKERENTERS - BATTLESTRINGS_TABLE_START] = sText_MoldBreakerEnters,
@@ -1389,8 +1376,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_LUNARDANCECAMETRUE - BATTLESTRINGS_TABLE_START] = sText_LunarDanceCameTrue,
     [STRINGID_CUSEDBODYDISABLED - BATTLESTRINGS_TABLE_START] = sText_CursedBodyDisabled,
     [STRINGID_ATTACKERACQUIREDABILITY - BATTLESTRINGS_TABLE_START] = sText_AttackerAquiredAbility,
-    [STRINGID_TARGETABILITYSTATLOWER - BATTLESTRINGS_TABLE_START] = sText_TargetAbilityLoweredStat,
-    [STRINGID_TARGETSTATWONTGOHIGHER - BATTLESTRINGS_TABLE_START] = sText_TargetStatWontGoHigher,
     [STRINGID_PKMNMOVEBOUNCEDABILITY - BATTLESTRINGS_TABLE_START] = sText_PkmnMoveBouncedViaAbility,
     [STRINGID_IMPOSTERTRANSFORM - BATTLESTRINGS_TABLE_START] = sText_ImposterTransform,
     [STRINGID_ASSAULTVESTDOESNTALLOW - BATTLESTRINGS_TABLE_START] = sText_AssaultVestDoesntAllow,
@@ -1660,24 +1645,6 @@ const u16 gUproarAwakeStringIds[] =
 {
     [B_MSG_CANT_SLEEP_UPROAR]  = STRINGID_PKMNCANTSLEEPINUPROAR2,
     [B_MSG_UPROAR_KEPT_AWAKE]  = STRINGID_UPROARKEPTPKMNAWAKE,
-};
-
-const u16 gStatUpStringIds[] =
-{
-    [B_MSG_ATTACKER_STAT_ROSE] = STRINGID_ATTACKERSSTATROSE,
-    [B_MSG_DEFENDER_STAT_ROSE] = STRINGID_DEFENDERSSTATROSE,
-    [B_MSG_STAT_WONT_INCREASE] = STRINGID_STATSWONTINCREASE,
-    [B_MSG_STAT_ROSE_EMPTY]    = STRINGID_EMPTYSTRING3,
-    [B_MSG_STAT_ROSE_ITEM]     = STRINGID_PKMNITEMACTIVATED,
-    [B_MSG_USED_DIRE_HIT]      = STRINGID_PKMNUSEDXTOGETPUMPED,
-};
-
-const u16 gStatDownStringIds[] =
-{
-    [B_MSG_ATTACKER_STAT_FELL] = STRINGID_ATTACKERSSTATFELL,
-    [B_MSG_DEFENDER_STAT_FELL] = STRINGID_DEFENDERSSTATFELL,
-    [B_MSG_STAT_WONT_DECREASE] = STRINGID_STATSWONTDECREASE,
-    [B_MSG_STAT_FELL_EMPTY]    = STRINGID_EMPTYSTRING3,
 };
 
 // Index read from sTWOTURN_STRINGID
@@ -1974,6 +1941,7 @@ const u8 gText_Ice[] = _("ice");
 const u8 gText_Confusion[] = _("confusion");
 const u8 gText_Love[] = _("love");
 const u8 gText_AndSpace[] = _("and ");
+const u8 gText_ItsSpace[] = _("its ");
 const u8 gText_SpaceAndSpace[] = _(" and ");
 const u8 gText_CommaSpace[] = _(", ");
 const u8 gText_Space2[] = _(" ");
@@ -3601,8 +3569,19 @@ static void IllusionNickHack(u32 battlerId, u32 partyId, u8 *dst)
     GetMonData(mon, MON_DATA_NICKNAME, dst);
 }
 
-static const u8 sText_StatWontGoHigher[] = _("won't go higher!");
-static const u8 sText_StatWontGoLower[] = _("won't go lower!");
+const u16 gStatChangeStringIds[] =
+{
+    [B_MSG_STAT_CHANGE_GENERIC]     = STRINGID_STATSCHANGED,
+    [B_MSG_STAT_CHANGE_ITEM]        = STRINGID_PKMNITEMCHANGEDSTATS,
+    [B_MSG_STAT_CHANGE_OWN_ABILITY] = STRINGID_SCRIPTINGABILITYSTATRAISE,
+    [B_MSG_STAT_CHANGE_FOE_ABILITY] = STRINGID_PKMNCUTSATTACKWITH
+};
+
+static const u8 sText_StatWontGoHigher[]    = _("won't go higher!");
+static const u8 sText_StatWontGoLower[]     = _("won't go lower!");
+static const u8 sText_StatRaised[]          = _("raised ");
+static const u8 sText_StatLowered[]         = _("lowered ");
+static const u8 sText_StatCut[]             = _("cut ");
 
 static const u8 *const sStatChangeStringsTable[] =
 {
@@ -3613,8 +3592,31 @@ static const u8 *const sStatChangeStringsTable[] =
     [STAT_CHANGE_DRASTICALLY_ROSE]  = sText_drastically,
     [STAT_CHANGE_FELL]              = sText_StatFell,
     [STAT_CHANGE_SHARPLY_FELL]      = sText_StatHarshly,
-    [STAT_CHANGE_SEVERELY_FELL]     = sText_severely
+    [STAT_CHANGE_SEVERELY_FELL]     = sText_severely,
+    [STAT_CHANGE_RAISED]            = sText_StatRaised,
+    [STAT_CHANGE_LOWERED]           = sText_StatLowered,
+    [STAT_CHANGE_CUT]               = sText_StatCut,
 };
+
+void AddQuantifiersToString(u8 *dst, u8 stringTag, u8 degree)
+{
+    // Rose/fell
+    StringAppend(dst, sStatChangeStringsTable[stringTag]);
+
+    // In case it's harshly/sharply etc.
+    // Really dumb way of picking but oh, well
+    if (STAT_CHANGE_SUCCESS(stringTag) && degree > 0)
+    {
+        StringAppend(dst, sStatChangeStringsTable[(stringTag - degree)
+            | (((gBattleCommunication[MULTISTRING_CHOOSER] + 1) / 2) * 0x40)]);
+    }
+}
+
+void StringAppendCountStat(u8 *dst, const u8 *src, u32 *counter)
+{
+    StringAppend(dst, src);
+    *(counter)++;
+}
 
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 {
@@ -3622,6 +3624,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
     u32 value = 0;
     u8 text[12];
     u16 hword;
+    const u8 *toCpy = NULL;
 
     *dst = EOS;
     while (src[srcID] != B_BUFF_EOS)
@@ -3632,81 +3635,131 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             // gBattleTextBuff3 can contain up to seven strings so we
             // keep track of the offset as we loop through strings
             // with MULTISTATE - but it's initially used to track whether or
-            // not a stat change worked, so we need this max function initially
+            // not a stat change worked, so we need this max function to start
             srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
+
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             text[0] = src[srcID++];
 
-            // 0 = rose/fell, 1 = harshly/sharply, 2 = drastically/severely
+            // "degree" - 0 = rose/fell, 1 = harshly/sharply, 2 = drastically/severely
             text[1] = text[0] % 3;
 
             // Stat count - number of stats that will be boosted
             // (can display up to 5 in one string)
-            switch (text[2] = src[srcID++])
+            text[2] = src[srcID++];
+
+            // Failure messages SHOULD always use the default string chooser
+            switch (gBattleCommunication[MULTISTRING_CHOOSER])
             {
-                case 1:
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                    if (text[0] < 3 || text[1])
-                        StringAppend(dst, gText_NewLine);
-                    else
-                        StringAppend(dst, gText_Space2);
-                    break;
-                case 2:
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                    StringAppend(dst, gText_SpaceAndSpace);
-                    StringAppend(dst, gText_NewLine);
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                    StringAppend(dst, gText_Space2);
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                    StringAppend(dst, gText_CommaSpace);
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                    StringAppend(dst, gText_CommaSpace);
-                    StringAppend(dst, gText_NewLine);
-                    if (text[2] > 3)
+                case B_MSG_STAT_CHANGE_FOE_ABILITY:
+                    // Most natural sounding way:
+                    // "X harshly cut Y's defence!"
+                    // So we have to put mon name in the middle
+                    AddQuantifiersToString(dst, text[0], text[1]);
+                    if (GetBattlerSide(gBattlerTarget) != B_SIDE_PLAYER)
                     {
-                        StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                        if (text[2] == 5)
-                        {
-                            StringAppend(dst, gText_CommaSpace);
-                            StringAppend(dst, gStatNamesTable[src[srcID++]]);
-                            StringAppend(dst, gText_CommaSpace);
-                        }
+                        if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+                            StringAppend(dst, sText_FoePkmnPrefix);
                         else
-                        {
-                            StringAppend(dst, gText_CommaSpace);
-                            StringAppend(dst, gText_AndSpace);
-                        }
+                            StringAppend(dst, sText_WildPkmnPrefix);
                     }
-                    else
-                        StringAppend(dst, gText_AndSpace);
-                    StringAppend(dst, gStatNamesTable[src[srcID++]]);
+                    GetBattlerNick(gBattlerTarget, dst);
+                    StringAppend(dst, sText_ApostropheS);
                     StringAppend(dst, gText_Space2);
+                    // limited to just 1 if severe/drastic
+                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                    if (text[2] > 1 && text[1] <= 1)
+                    {
+                        StringAppend(dst, gText_CommaSpace);
+                        StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                    }
                     break;
-                default:
+                case B_MSG_STAT_CHANGE_ITEM:
+                    // Weakness policy has a special string, yay
+                    text[3] = (gLastUsedItem == ITEM_WEAKNESS_POLICY);
+                case B_MSG_STAT_CHANGE_OWN_ABILITY:
+                    AddQuantifiersToString(dst, text[0], text[1]);
+                    StringAppend(dst, gText_ItsSpace);
+                    // Stat 1
+                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                    // Can we fit another?
+                    if (text[2] > 1 && text[1] <= 1)
+                    {
+                        if (text[3]) // Weakness Policy
+                            StringAppend(dst, gText_CommaSpace);
+                        else
+                            StringAppend(dst, gText_SpaceAndSpace);
+                        // Stat 2, yay!
+                        StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                    }
                     break;
+                default: // generic string
+                    switch (text[2]) // number of stats to print
+                    {
+                        case 1:
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            if (text[0] < 3 || text[1])
+                                StringAppend(dst, gText_NewLine);
+                            else
+                                StringAppend(dst, gText_Space2);
+                            break;
+                        case 2:
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            StringAppend(dst, gText_SpaceAndSpace);
+                            StringAppend(dst, gText_NewLine);
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            StringAppend(dst, gText_Space2);
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            StringAppend(dst, gText_CommaSpace);
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            StringAppend(dst, gText_CommaSpace);
+                            StringAppend(dst, gText_NewLine);
+                            if (text[2] > 3)
+                            {
+                                StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                                if (text[2] == 5)
+                                {
+                                    StringAppend(dst, gText_CommaSpace);
+                                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                                    StringAppend(dst, gText_CommaSpace);
+                                }
+                                else
+                                {
+                                    StringAppend(dst, gText_CommaSpace);
+                                    StringAppend(dst, gText_AndSpace);
+                                }
+                            }
+                            else
+                                StringAppend(dst, gText_AndSpace);
+                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            StringAppend(dst, gText_Space2);
+                            break;
+                        default:
+                            break;
+                    }
+                    AddQuantifiersToString(dst, text[0], text[1]);
+                break;
             }
 
-            // Rose/fell
-            StringAppend(dst, sStatChangeStringsTable[text[0]]);
-
-            // In case it's harshly/sharply etc.
-            if (text[0] > 3 && text[1])
-                StringAppend(dst, sStatChangeStringsTable[text[0] - text[1]]);
-
-            // If next thing is another B_BUFF_STAT_CHANGE_STRING,
-            // then set MULTIUSE_STATE and quit this function
+            // We found the next set of stats to buff
             if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
-            {
                 gBattleCommunication[MULTIUSE_STATE] = srcID + 1;
-                return;
-            }
-            else if (src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
+            else if (value >= text[2] || src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
                 gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
-            break;
+            else // not the end? oh dear, recovery time
+            {
+                // An ability or item probably tried to raise too many stats
+                // to fit in a single string
+                //MAKE SURE WE'RE USING BUFFER 3
+                gBattleTextBuff3[--srcID] = text[2] - value; // stat count
+                gBattleTextBuff3[--srcID] = text[0]; // string tag
+                gBattleCommunication[MULTIUSE_STATE] = srcID;
+            }
+            return;
         case B_BUFF_STRING: // battle string
             hword = T1_READ_16(&src[srcID + 1]);
             StringAppend(dst, gBattleStringsTable[hword - BATTLESTRINGS_TABLE_START]);

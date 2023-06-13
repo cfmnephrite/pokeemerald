@@ -2307,14 +2307,17 @@
 	statchangeanimationandstrings \multistring, FALSE
 	.endm
 
-	.macro statchangeanimationandstrings multistring=0, anim=TRUE
+	.macro statchangeanimationandstrings multistring=0, anim=TRUE, loop=0
 	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 1f
-	.if \anim == TRUE
-		displaystatchangeanimation
+	setbyte cMULTISTRING_CHOOSER, \multistring
+	.if \loop < NUM_BATTLE_STATS - 1 @prevents infinite loops
+		.if \anim == TRUE
+			displaystatchangeanimation
+		.endif
+		printfromtable gStatChangeStringIds
+		waitmessage B_WAIT_TIME_LONG
+		statchangeanimationandstrings \multistring, FALSE, \loop + 1
 	.endif
-	printstring STRINGID_STATSCHANGED
-	waitmessage B_WAIT_TIME_LONG
-	statchangeanimationandstrings \multistring, FALSE
 	1:
 	.endm
 
