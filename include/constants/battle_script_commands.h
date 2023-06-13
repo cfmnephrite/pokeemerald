@@ -279,6 +279,7 @@
 #define STAT_CHANGE_MIRROR_ARMOR            (1 << 1)   // Stat change redirection caused by Mirror Armor ability.
 #define STAT_CHANGE_NOT_PROTECT_AFFECTED    (1 << 5)
 #define STAT_CHANGE_UPDATE_MOVE_EFFECT      (1 << 6)
+#define STAT_CHANGE_SKIP_FAILED_STRINGS     (1 << 7)
 
 // stat bit flags
 #define BIT_HP                      (1 << 0)

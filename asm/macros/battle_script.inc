@@ -405,11 +405,8 @@
 	.byte \data
 	.endm
 
-	.macro setstatchangertomoveargument battler:req, stats:req, flags:req
+	.macro copymoveargumenttostatchanger
 	.byte 0x48
-	.byte \battler
-	.byte \stats
-	.byte \flags
 	.endm
 
 	.macro moveend endMode:req, endState:req
@@ -1958,6 +1955,12 @@
 	.4byte \jumpInstr
 	.endm
 
+	.macro jumpifnotweatheraffected battler:req, flags:req, jumpInstr:req
+	jumpifweatheraffected \battler, \flags, 1f
+	goto \jumpInstr
+	1:
+	.endm
+
 	.macro jumpifspecies battler:req, species:req, jumpInstr:req
 	various \battler, VARIOUS_JUMP_IF_SPECIES
 	.2byte \species
@@ -2280,36 +2283,34 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro trychangestats stats:req, flags:req, ptr=NULL, failPtr=NULL, anim=TRUE
+	@ you can set failPtr=TRUE if you don't even want to buffer strings on stat change failure
+	@ otherwise, failed stat changes are buffered and can be printed later using displaystatchangestrings
+	.macro trychangestats stats:req, flags=0, failPtr=NULL, animandstrings=TRUE, multistring=0
 	.if \stats != NULL
 		sethword sSTATCHANGER, \stats
 	.endif
-	statbuffchange \flags, \ptr
-	.if \failPtr != NULL
-		.if \failPtr == TRUE @ if TRUE, just skip to end
-			jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_DIDNT_WORK, 2f
-		.else
-			jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_DIDNT_WORK, \failPtr
-		.endif
+	.if \failPtr == TRUE
+		statbuffchange \flags | STAT_CHANGE_SKIP_FAILED_STRINGS, NULL
+	.else
+		statbuffchange \flags, \failPtr
 	.endif
-	.if \anim == TRUE
-		statchangeanimationandstrings
+	.if \failPtr != TRUE && \animandstrings
+		statchangeanimationandstrings \multistring
 	.endif
 	.endm
 
-	.macro statchangeanimation
+	.macro displaystatchangeanimation
 	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	.endm
 
-	.macro statchangestrings
-	statchangeanimationandstrings FALSE
+	.macro displaystatchangestrings multistring=0
+	statchangeanimationandstrings \multistring, FALSE
 	.endm
 
-	.macro statchangeanimationandstrings anim=TRUE
+	.macro statchangeanimationandstrings multistring=0, anim = TRUE
 	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 2f
-	jumpifbyte CMP_EQUAL, sB_ANIM_ARG1, 0x0, 1f
 	.if \anim == TRUE
-		statchangeanimation
+		displaystatchangeanimation
 	.endif
 	1:
 	printstring STRINGID_STATSCHANGED

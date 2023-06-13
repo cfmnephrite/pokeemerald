@@ -90,7 +90,7 @@ BattleScript_ItemHealAndCureStatus::
 BattleScript_ItemIncreaseStat::
     call BattleScript_UseItemMessage
     itemincreasestat
-    trychangestats NULL, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, NULL, TRUE
+    trychangestats NULL, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, TRUE
     end
 
 BattleScript_ItemSetMist::

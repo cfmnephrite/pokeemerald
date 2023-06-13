@@ -1276,6 +1276,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_SPATK_UP_1,
+        .argument = STAT_BUFF_ATK_SPA_1
     },
 
     [MOVE_RAZOR_LEAF] =
@@ -5480,7 +5481,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_COSMIC_POWER] =
     {
-        .effect = EFFECT_COSMIC_POWER,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -5491,6 +5492,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_SPDEF_UP_1,
+        .argument = STAT_BUFF_DEF_SPD_1
     },
 
     [MOVE_WATER_SPOUT] =
@@ -5769,7 +5771,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_BULK_UP] =
     {
-        .effect = EFFECT_BULK_UP,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_FIGHTING,
         .accuracy = 0,
@@ -5780,6 +5782,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_ATK_UP_1,
+        .argument = STAT_BUFF_ATK_DEF_1
     },
 
     [MOVE_BOUNCE] =
@@ -5909,7 +5912,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_CALM_MIND] =
     {
-        .effect = EFFECT_CALM_MIND,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -5920,6 +5923,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_RESET_STATS,
+        .argument = STAT_BUFF_SPA_SPD_1
     },
 
     [MOVE_LEAF_BLADE] =
@@ -5943,7 +5947,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_DRAGON_DANCE] =
     {
-        .effect = EFFECT_DRAGON_DANCE,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_DRAGON,
         .accuracy = 0,
@@ -5954,6 +5958,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_RESET_STATS,
+        .argument = STAT_BUFF_ATK_1 | STAT_BUFF_SPE_1
     },
 
     [MOVE_ROCK_BLAST] =
@@ -7935,7 +7940,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_HONE_CLAWS] =
     {
-        .effect = EFFECT_ATTACK_ACCURACY_UP,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_DARK,
         .accuracy = 0,
@@ -7946,6 +7951,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_ATK_UP_1,
+        .argument = STAT_BUFF_ATK_1 | STAT_BUFF_ACC_1
     },
 
     [MOVE_WIDE_GUARD] =
@@ -8177,7 +8183,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_QUIVER_DANCE] =
     {
-        .effect = EFFECT_QUIVER_DANCE,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_BUG,
         .accuracy = 0,
@@ -8188,6 +8194,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_RESET_STATS,
+        .argument = STAT_BUFF_SPA_SPD_SPE_1
     },
 
     [MOVE_HEAVY_SLAM] =
@@ -8276,7 +8283,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_COIL] =
     {
-        .effect = EFFECT_COIL,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_POISON,
         .accuracy = 0,
@@ -8287,6 +8294,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_RESET_STATS,
+        .argument = STAT_BUFF_ATK_DEF_ACC_1
     },
 
     [MOVE_LOW_SWEEP] =
@@ -8585,6 +8593,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_RESET_STATS,
+        .argument = STAT_BUFF_ATK_1 | STAT_BUFF_SPE_2
     },
 
     [MOVE_CIRCLE_THROW] =
@@ -8872,7 +8881,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_WORK_UP] =
     {
-        .effect = EFFECT_ATTACK_SPATK_UP,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -8883,6 +8892,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_ATK_UP_1,
+        .argument = STAT_BUFF_ATK_SPA_1
     },
 
     [MOVE_ELECTROWEB] =
@@ -12644,7 +12654,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_VICTORY_DANCE] =
     {
-        .effect = EFFECT_VICTORY_DANCE,
+        .effect = EFFECT_SHIFT_GEAR,
         .power = 0,
         .type = TYPE_FIGHTING,
         .accuracy = 0,
@@ -12655,6 +12665,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         .flags = FLAG_SNATCH_AFFECTED | FLAG_DANCE,
         .split = SPLIT_STATUS,
         .zMoveEffect = Z_EFFECT_NONE,
+        .argument = STAT_BUFF_ATK_DEF_SPE_1
     },
 
     [MOVE_HEADLONG_RUSH] =
