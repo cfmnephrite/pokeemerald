@@ -289,7 +289,7 @@ static const u8 sText_PkmnPreventsPoisoningWith[] = _("{B_EFF_NAME_WITH_PREFIX}'
 static const u8 sText_PkmnPreventsConfusionWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nprevents confusion!");
 static const u8 sText_PkmnRaisedFirePowerWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nraised its FIRE power!");
 static const u8 sText_PkmnAnchorsItselfWith[] = _("{B_DEF_NAME_WITH_PREFIX} anchors\nitself with {B_DEF_ABILITY}!");
-static const u8 sText_PkmnCutsAttackWith[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\n{B_BUFF3}");//"cuts {B_DEF_NAME_WITH_PREFIX}'s attack!");
+static const u8 sText_PkmnCutsAttackWith[] = _("{B_ATK_NAME_WITH_PREFIX}'s ability {B_BUFF3}!");
 static const u8 sText_PkmnPreventsStatLossWith[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nprevents stat loss!");
 static const u8 sText_PkmnHurtsWith[] = _("{B_ATK_NAME_WITH_PREFIX} was hurt by\n{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!");
 static const u8 sText_PkmnTraced[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} TRACED\n{B_BUFF1}'s {B_BUFF2}!");
@@ -429,7 +429,9 @@ static const u8 sText_Trainer1WithdrewPkmn[] = _("{B_TRAINER1_CLASS} {B_TRAINER1
 static const u8 sText_LinkTrainer1WithdrewPkmn[] = _("{B_LINK_OPPONENT1_NAME} withdrew\n{B_BUFF1}!");
 static const u8 sText_LinkTrainer2WithdrewPkmn[] = _("{B_LINK_SCR_TRAINER_NAME} withdrew\n{B_BUFF1}!");
 static const u8 sText_WildPkmnPrefix[] = _("Wild ");
+static const u8 sText_WildPkmnLowercasePrefix[] = _("wild ");
 static const u8 sText_FoePkmnPrefix[] = _("Foe ");
+static const u8 sText_FoePkmnLowercasePrefix[] = _("foe ");
 static const u8 sText_EmptyString8[] = _("");
 static const u8 sText_FoePkmnPrefix2[] = _("Foe");
 static const u8 sText_AllyPkmnPrefix[] = _("Ally");
@@ -1219,7 +1221,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ITEMSCANTBEUSEDNOW - BATTLESTRINGS_TABLE_START] = sText_ItemsCantBeUsedNow,
     [STRINGID_FORXCOMMAYZ - BATTLESTRINGS_TABLE_START] = sText_ForXCommaYZ,
     [STRINGID_PKMNITEMCHANGEDSTATS - BATTLESTRINGS_TABLE_START] = sText_PkmnItemChangedStats,
-    [STRINGID_WEAKNESSPOLICYCHANGEDSTATS - BATTLESTRINGS_TABLE_START] = sText_PkmnWeaknessPolicyChangedStats,
     [STRINGID_PKMNUSEDXTOGETPUMPED - BATTLESTRINGS_TABLE_START] = sText_PkmnUsedXToGetPumped,
     [STRINGID_PKMNSXMADEYUSELESS - BATTLESTRINGS_TABLE_START] = sText_PkmnsXMadeYUseless,
     [STRINGID_PKMNTRAPPEDBYSANDTOMB - BATTLESTRINGS_TABLE_START] = sText_PkmnTrappedBySandTomb,
@@ -1941,6 +1942,7 @@ const u8 gText_Ice[] = _("ice");
 const u8 gText_Confusion[] = _("confusion");
 const u8 gText_Love[] = _("love");
 const u8 gText_AndSpace[] = _("and ");
+const u8 gText_SpaceAmpersandSpace[] = _(" & ");
 const u8 gText_ItsSpace[] = _("its ");
 const u8 gText_SpaceAndSpace[] = _(" and ");
 const u8 gText_CommaSpace[] = _(", ");
@@ -3571,10 +3573,10 @@ static void IllusionNickHack(u32 battlerId, u32 partyId, u8 *dst)
 
 const u16 gStatChangeStringIds[] =
 {
-    [B_MSG_STAT_CHANGE_GENERIC]     = STRINGID_STATSCHANGED,
-    [B_MSG_STAT_CHANGE_ITEM]        = STRINGID_PKMNITEMCHANGEDSTATS,
-    [B_MSG_STAT_CHANGE_OWN_ABILITY] = STRINGID_SCRIPTINGABILITYSTATRAISE,
-    [B_MSG_STAT_CHANGE_FOE_ABILITY] = STRINGID_PKMNCUTSATTACKWITH
+    [B_MSG_STAT_CHANGE_GENERIC]         = STRINGID_STATSCHANGED,
+    [B_MSG_STAT_CHANGE_ITEM]            = STRINGID_PKMNITEMCHANGEDSTATS,
+    [B_MSG_STAT_CHANGE_OWN_ABILITY]     = STRINGID_SCRIPTINGABILITYSTATRAISE,
+    [B_MSG_STAT_CHANGE_FOE_ABILITY]     = STRINGID_PKMNCUTSATTACKWITH
 };
 
 static const u8 sText_StatWontGoHigher[]    = _("won't go higher!");
@@ -3598,24 +3600,40 @@ static const u8 *const sStatChangeStringsTable[] =
     [STAT_CHANGE_CUT]               = sText_StatCut,
 };
 
-void AddQuantifiersToString(u8 *dst, u8 stringTag, u8 degree)
+const u8 *const GetApproriateString(u8 stringTag)
+{
+    u8 id = gBattleCommunication[MULTISTRING_CHOOSER];
+    if (stringTag == STAT_CHANGE_FELL && (id))
+        return sStatChangeStringsTable[STAT_CHANGE_LOWERED + (id == B_MSG_STAT_CHANGE_FOE_ABILITY)];
+    else if (stringTag == STAT_CHANGE_ROSE && (id))
+        return sStatChangeStringsTable[STAT_CHANGE_RAISED];
+    else
+        return sStatChangeStringsTable[stringTag];
+}
+
+static void AddQuantifiersToStringWtihInbetween(u8 *dst, u8 stringTag, u8 degree, const u8 *inbetween)
 {
     // Rose/fell
-    StringAppend(dst, sStatChangeStringsTable[stringTag]);
+    StringAppend(dst, GetApproriateString(stringTag));
+
+    if (inbetween)
+        StringAppend(dst, inbetween);
 
     // In case it's harshly/sharply etc.
     // Really dumb way of picking but oh, well
     if (STAT_CHANGE_SUCCESS(stringTag) && degree > 0)
-    {
-        StringAppend(dst, sStatChangeStringsTable[(stringTag - degree)
-            | (((gBattleCommunication[MULTISTRING_CHOOSER] + 1) / 2) * 0x40)]);
-    }
+        StringAppend(dst, GetApproriateString(stringTag - degree));
 }
 
-void StringAppendCountStat(u8 *dst, const u8 *src, u32 *counter)
+void AddQuantifiersToString(u8 *dst, u8 stringTag, u8 degree)
+{
+    AddQuantifiersToStringWtihInbetween(dst, stringTag, degree, 0);
+}
+
+u8 StringAppendCountStat(u8 *dst, const u8 *src, u32 counter)
 {
     StringAppend(dst, src);
-    *(counter)++;
+    return counter + 1;
 }
 
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
@@ -3623,6 +3641,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
     u32 srcID = 1;
     u32 value = 0;
     u8 text[12];
+    u8 stringTag, degree, statCount;
     u16 hword;
     const u8 *toCpy = NULL;
 
@@ -3639,92 +3658,98 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
 
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
-            text[0] = src[srcID++];
+            stringTag = src[srcID++];
 
             // "degree" - 0 = rose/fell, 1 = harshly/sharply, 2 = drastically/severely
-            text[1] = text[0] % 3;
+            degree = stringTag % 3;
 
             // Stat count - number of stats that will be boosted
             // (can display up to 5 in one string)
-            text[2] = src[srcID++];
+            statCount = src[srcID++];
 
-            // Failure messages SHOULD always use the default string chooser
             switch (gBattleCommunication[MULTISTRING_CHOOSER])
             {
                 case B_MSG_STAT_CHANGE_FOE_ABILITY:
                     // Most natural sounding way:
                     // "X harshly cut Y's defence!"
                     // So we have to put mon name in the middle
-                    AddQuantifiersToString(dst, text[0], text[1]);
+                    if (stringTag == STAT_CHANGE_DRASTICALLY_ROSE)
+                        AddQuantifiersToStringWtihInbetween(dst, stringTag, degree, gText_NewLine);
+                    else
+                    {
+                        AddQuantifiersToString(dst, stringTag, degree);
+                        StringAppend(dst, gText_NewLine);
+                    }
                     if (GetBattlerSide(gBattlerTarget) != B_SIDE_PLAYER)
                     {
                         if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-                            StringAppend(dst, sText_FoePkmnPrefix);
+                            StringAppend(dst, sText_FoePkmnLowercasePrefix);
                         else
-                            StringAppend(dst, sText_WildPkmnPrefix);
+                            StringAppend(dst, sText_WildPkmnLowercasePrefix);
                     }
-                    GetBattlerNick(gBattlerTarget, dst);
+                    // I don't know why I have to do this
+                    GetBattlerNick(gBattlerTarget, text);
+                    StringAppend(dst, text);
                     StringAppend(dst, sText_ApostropheS);
                     StringAppend(dst, gText_Space2);
-                    // limited to just 1 if severe/drastic
-                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
-                    if (text[2] > 1 && text[1] <= 1)
+                    value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
+                    // Try and add a second string if we're not going drastic
+                    if (statCount > 1 && src[srcID] < STAT_ACC && stringTag != STAT_CHANGE_DRASTICALLY_ROSE)
                     {
-                        StringAppend(dst, gText_CommaSpace);
-                        StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                        StringAppend(dst, gText_SpaceAmpersandSpace);
+                        value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                     }
                     break;
                 case B_MSG_STAT_CHANGE_ITEM:
-                    // Weakness policy has a special string, yay
-                    text[3] = (gLastUsedItem == ITEM_WEAKNESS_POLICY);
                 case B_MSG_STAT_CHANGE_OWN_ABILITY:
-                    AddQuantifiersToString(dst, text[0], text[1]);
+                    AddQuantifiersToString(dst, stringTag, degree);
                     StringAppend(dst, gText_ItsSpace);
                     // Stat 1
-                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
-                    // Can we fit another?
-                    if (text[2] > 1 && text[1] <= 1)
+                    value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
+                    // Can we fit another? Definitely not evasion, accuracy if not drastic
+                    if (statCount > 1 && src[srcID] < (STAT_EVASION - (stringTag == STAT_CHANGE_DRASTICALLY_ROSE)))
                     {
-                        if (text[3]) // Weakness Policy
-                            StringAppend(dst, gText_CommaSpace);
+                        // Stat 2, yay!
+                        if (statCount > 1 || src[srcID] == STAT_ACC)
+                            StringAppend(dst, gText_SpaceAmpersandSpace);
                         else
                             StringAppend(dst, gText_SpaceAndSpace);
-                        // Stat 2, yay!
-                        StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                        value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                     }
                     break;
                 default: // generic string
-                    switch (text[2]) // number of stats to print
+                    switch (statCount) // number of stats to print
                     {
                         case 1:
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
-                            if (text[0] < 3 || text[1])
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
+                            // New line if we want to add harshly/sharply
+                            if (!STAT_CHANGE_SUCCESS(stringTag) || degree > 0)
                                 StringAppend(dst, gText_NewLine);
                             else
                                 StringAppend(dst, gText_Space2);
                             break;
                         case 2:
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                             StringAppend(dst, gText_SpaceAndSpace);
                             StringAppend(dst, gText_NewLine);
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                             StringAppend(dst, gText_Space2);
                             break;
                         case 3:
                         case 4:
                         case 5:
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                             StringAppend(dst, gText_CommaSpace);
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                             StringAppend(dst, gText_CommaSpace);
                             StringAppend(dst, gText_NewLine);
-                            if (text[2] > 3)
+                            if (statCount > 3)
                             {
-                                StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
-                                if (text[2] == 5)
+                                value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
+                                if (statCount == 5)
                                 {
                                     StringAppend(dst, gText_CommaSpace);
-                                    StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                                    value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                                     StringAppend(dst, gText_CommaSpace);
                                 }
                                 else
@@ -3735,28 +3760,28 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                             }
                             else
                                 StringAppend(dst, gText_AndSpace);
-                            StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], &value);
+                            value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
                             StringAppend(dst, gText_Space2);
                             break;
                         default:
                             break;
                     }
-                    AddQuantifiersToString(dst, text[0], text[1]);
-                break;
+                    AddQuantifiersToString(dst, stringTag, degree);
+                    break;
             }
 
             // We found the next set of stats to buff
             if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
                 gBattleCommunication[MULTIUSE_STATE] = srcID + 1;
-            else if (value >= text[2] || src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
+            else if (value >= statCount || src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
                 gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
             else // not the end? oh dear, recovery time
             {
                 // An ability or item probably tried to raise too many stats
                 // to fit in a single string
-                //MAKE SURE WE'RE USING BUFFER 3
-                gBattleTextBuff3[--srcID] = text[2] - value; // stat count
-                gBattleTextBuff3[--srcID] = text[0]; // string tag
+                // MAKE SURE WE'RE USING BUFFER 3
+                gBattleTextBuff3[--srcID] = statCount - value; // stat count
+                gBattleTextBuff3[--srcID] = stringTag; // string tag
                 gBattleCommunication[MULTIUSE_STATE] = srcID;
             }
             return;

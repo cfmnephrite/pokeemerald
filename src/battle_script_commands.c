@@ -3473,7 +3473,6 @@ void SetMoveEffect(bool32 primary, u32 certain)
 
                 if (SetStatChangerAndChangeStatBuffs(statValue, flags | STAT_CHANGE_UPDATE_MOVE_EFFECT, gBattlescriptCurrInstr + 1) == STAT_CHANGE_WORKED)
                 {
-                    DebugPrintf("gBattlescriptCurrInstr: %d", gBattlescriptCurrInstr);
                     if (!mirrorArmorReflected)
                         gBattlescriptCurrInstr++;
                 }
@@ -8970,6 +8969,16 @@ static void Cmd_various(void)
         gBattleMons[gActiveBattler].status2 |= STATUS2_POWDER;
         break;
     }
+    case VARIOUS_UNUSED_75:
+    {
+        VARIOUS_ARGS(u8 byte1, u8 byte2);
+        if (cmd->byte1)
+            DebugPrintf("DEBUG 1:%d", cmd->byte1);
+        if (cmd->byte2)
+            DebugPrintf("DEBUG 2:%d", cmd->byte2);
+        gBattlescriptCurrInstr = cmd->nextInstr;
+        break;
+    }
     case VARIOUS_ACUPRESSURE:
     {
         VARIOUS_ARGS(const u8 *failInstr);
@@ -11983,6 +11992,10 @@ static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCoun
         }
     }
     gBattleTextBuff3[index] = B_BUFF_EOS;
+    // for (i = 0; i < 30; i++)
+    // {
+    //     DebugPrintf("gBattleTextBuff3[%d]: %d", i, gBattleTextBuff3[i]);
+    // }
 }
 
 static u32 SetStatChangerAndChangeStatBuffs(u16 statValue, u32 flags, const u8 *failPtr)
@@ -12040,7 +12053,7 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
         if (statsChanged || (!skipFailedStrings && (statBuffsHelper.certain || statBuffsHelper.affectsUser)))
             PrepareStatBuffString(statBuffsHelper.statBuffStrings, statsChanged, statBuffsHelper.activeBattlerAbility);
     }
-    return STAT_CHANGE_DIDNT_WORK + (statsChanged > 0);
+    return gBattleCommunication[MULTIUSE_STATE] = (STAT_CHANGE_DIDNT_WORK + (statsChanged > 0));
 }
 
 static void Cmd_statbuffchange(void)
@@ -12060,7 +12073,7 @@ static void Cmd_statbuffchange(void)
     // failed for the sake of string printer. Unless we've been redirected
     // elsewhere already by an ability or Mist, try to jump to a valid failPtr
     // should stat changing fail
-    if (((gBattleCommunication[MULTIUSE_STATE] = ChangeStatBuffs(cmd->flags, failPtr)) == STAT_CHANGE_DIDNT_WORK)
+    if ((ChangeStatBuffs(cmd->flags, failPtr) == STAT_CHANGE_DIDNT_WORK)
         && gBattlescriptCurrInstr == nextInstr)
     {
         gBattlescriptCurrInstr = failPtr;

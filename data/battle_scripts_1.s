@@ -6273,22 +6273,22 @@ BattleScript_RoarSuccessRet_Ret:
 
 BattleScript_WeaknessPolicy::
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_WEAKNESS_POLICY, BattleScript_WeaknessPolicyRet
-	trychangestats STAT_BUFF_ATK_SPA_2, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicyRet, FALSE
+	trychangestats STAT_BUFF_ATK_SPA_2, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicyRet, FALSE
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	printstring STRINGID_WEAKNESSPOLICYCHANGEDSTATS
-	waitmessage B_WAIT_TIME_LONG
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 	removeitem BS_TARGET
 BattleScript_WeaknessPolicyRet:
 	return
 
 BattleScript_TargetItemStatRaise::
-	trychangestats NULL, 0, BattleScript_TargetItemStatRaiseRemoveItemRet, FALSE
+	trychangestats NULL, STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_TargetItemStatRaiseRemoveItemRet, FALSE
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	removeitem BS_TARGET
 	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 BattleScript_TargetItemStatRaiseRemoveItemRet:
+	removeitem BS_TARGET
 	return
 
 BattleScript_AttackerItemStatRaise::
@@ -6297,6 +6297,7 @@ BattleScript_AttackerItemStatRaise::
 	waitanimation
 	removeitem BS_ATTACKER
 	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
+	removeitem BS_TARGET
 BattleScript_AttackerItemStatRaiseRet:
 	return
 
@@ -7694,7 +7695,6 @@ BattleScript_IntimidateLoopIncrement:
 	jumpifbytenotequal gBattlerTarget, gBattlersCount, BattleScript_IntimidateLoop
 	copybyte sBATTLER, gBattlerAttacker
 	destroyabilitypopup
-	pause B_WAIT_TIME_MED
 	end3
 
 BattleScript_IntimidatePrevented:
@@ -8760,7 +8760,10 @@ BattleScript_BerryStatRaiseEnd2_AbilityPopup:
 BattleScript_BerryStatRaiseEnd2_Anim:
 	trychangestats NULL, STAT_CHANGE_ALLOW_PTR, BattleScript_BerryStatRaiseEnd2_End, FALSE
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
+	printstring STRINGID_TARGETATEITEM
+	waitmessage B_WAIT_TIME_MED
 	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
+	removeitem BS_ATTACKER
 BattleScript_BerryStatRaiseEnd2_End::
 	end2
 
@@ -8773,8 +8776,9 @@ BattleScript_BerryStatRaiseRet_Anim:
 	trychangestats NULL, STAT_CHANGE_ALLOW_PTR, BattleScript_BerryStatRaiseEnd2_End, FALSE
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
 	printstring STRINGID_TARGETATEITEM
-	waitmessage B_WAIT_TIME_LONG
-	statchangeanimationandstrings
+	waitmessage B_WAIT_TIME_MED
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
+	removeitem BS_SCRIPTING
 BattleScript_BerryStatRaiseRet_End:
 	return
 

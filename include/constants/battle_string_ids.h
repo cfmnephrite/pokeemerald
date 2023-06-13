@@ -452,7 +452,7 @@
 #define STRINGID_MISTYTERRAINENDS                     447
 #define STRINGID_PSYCHICTERRAINENDS                   448
 #define STRINGID_GRASSYTERRAINENDS                    449
-#define STRINGID_WEAKNESSPOLICYCHANGEDSTATS           450
+#define STRINGID_ATTACKERITEMCHANGEDSTATS             450
 #define STRINGID_TARGETSSTATWASMAXEDOUT               451
 #define STRINGID_UNUSED452                            452
 #define STRINGID_POISONHEALHPUP                       453
