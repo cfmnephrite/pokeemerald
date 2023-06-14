@@ -6648,6 +6648,7 @@ static u8 TryConsumeMirrorHerb(u8 battlerId, bool32 execute)
 {
     u8 effect = 0;
 
+    DebugPrintf("When do you call me?");
     if (gProtectStructs[battlerId].eatMirrorHerb) {
         gLastUsedItem = gBattleMons[battlerId].item;
         gBattleScripting.savedBattler = gBattlerAttacker;
@@ -7122,9 +7123,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                     gStatuses4[gEffectBattler] |= STATUS4_INFINITE_CONFUSION;
                 }
 
-                gBattleScripting.animArg1 = 14 + STAT_ATK;
-                gBattleScripting.animArg2 = 0;
-
+                SET_STATCHANGER(STAT_ATK, 2, FALSE);
                 BattleScriptPushCursorAndCallback(BattleScript_BerserkGeneRet);
                 effect = ITEM_STATS_CHANGE;
                 break;

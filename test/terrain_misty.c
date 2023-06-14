@@ -31,7 +31,7 @@ SINGLE_BATTLE_TEST("Misty Terrain activates Misty Seed and Mimicry")
         TURN { MOVE(player, MOVE_MISTY_TERRAIN); }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("Using Misty Seed, the Sp. Def of Wobbuffet rose!");
+        MESSAGE("Wobbuffet's Misty Seed raised its Sp. Def!");
         ABILITY_POPUP(opponent);
         MESSAGE("Foe Stunfisk's type changed to Fairy!");
     } THEN {

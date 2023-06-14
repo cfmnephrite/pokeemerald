@@ -3777,8 +3777,8 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                 gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
             else // not the end? oh dear, recovery time
             {
-                // An ability or item probably tried to raise too many stats
-                // to fit in a single string
+                // An ability or item probably tried to raise
+                // too many stats to fit in a single string
                 // MAKE SURE WE'RE USING BUFFER 3
                 gBattleTextBuff3[--srcID] = statCount - value; // stat count
                 gBattleTextBuff3[--srcID] = stringTag; // string tag

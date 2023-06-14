@@ -75,6 +75,7 @@
 #define B_CHARGE_SPDEF_RAISE        GEN_LATEST // In Gen5+, Charge raises the user's Special Defense by 1 stage.
 #define B_MINIMIZE_EVASION          GEN_LATEST // In Gen5+, Minimize raises evasion by 2 stages instead of 1.
 #define B_GROWTH_STAT_RAISE         GEN_LATEST // In Gen5+, Growth raises Attack in addition to Special Attack by 1 stage each. Under the effects of the sun, it raises them by 2 stages each instead.
+#define B_FANCY_STAT_STRINGS        FALSE      // Compacts stat boosts strings - custom feature by thechurchofcage / Cancer Fairy
 
 // Other move settings
 #define B_SOUND_SUBSTITUTE          GEN_LATEST // In Gen6+, sound moves bypass Substitute.

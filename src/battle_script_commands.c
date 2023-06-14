@@ -3608,7 +3608,7 @@ void SetMoveEffect(bool32 primary, u32 certain)
             case MOVE_EFFECT_SP_ATK_TWO_DOWN: // Overheat
                 if (!NoAliveMonsForEitherParty())
                 {
-                    SetStatChangerAndChangeStatBuffs((STAT_BUFF_DEF_SPD_1 | STAT_BUFF_NEGATIVE), MOVE_EFFECT_AFFECTS_USER, 0);
+                    SetStatChangerAndChangeStatBuffs((STAT_BUFF_SPA_2 | STAT_BUFF_NEGATIVE), MOVE_EFFECT_AFFECTS_USER, 0);
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_StatChangeMsg;
                 }
@@ -9270,8 +9270,8 @@ static void Cmd_various(void)
     }
     case VARIOUS_STAT_TEXT_BUFFER:
     {
-        VARIOUS_ARGS(u8 statId);
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, cmd->statId);
+        VARIOUS_ARGS();
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, gBattleCommunication[0]);
         break;
     }
     case VARIOUS_SWITCHIN_ABILITIES:
@@ -11958,7 +11958,7 @@ static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCoun
             && !(successfulStatBuffCount > 0 && !STAT_CHANGE_SUCCESS(*(statBuffStrings + i))))
         {
             statCountForCurrentString = 1;
-            if (!(activeBattlerAbility == ABILITY_DEFIANT || activeBattlerAbility == ABILITY_COMPETITIVE))
+            if (B_FANCY_STAT_STRINGS && !(activeBattlerAbility == ABILITY_DEFIANT || activeBattlerAbility == ABILITY_COMPETITIVE))
             {
                 for (j = i + 1; j < NUM_BATTLE_STATS - 1; j++)
                 {
@@ -12018,7 +12018,9 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
     gBattleScripting.animArg1 = 0;
     gBattleScripting.animArg2 = 0;
 
-    if ((gBattleScripting.statChanger & 0x3FF)) // make sure that there are actual stats to buff
+    // DebugPrintf("Hello? %d", gBattleScripting.statChanger);
+
+    if ((gBattleScripting.statChanger & 0x3FFF)) // make sure that there are actual stats to buff
     {
         // Check who it affects, Contrary, Simple
         if (statBuffsHelper.affectsUser)
@@ -12051,7 +12053,16 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
 
         // Buffer string to gBattleTextBuffer3
         if (statsChanged || (!skipFailedStrings && (statBuffsHelper.certain || statBuffsHelper.affectsUser)))
+        {
+            // Make sure subsequent strings print the correct battler...
+            gBattleScripting.battler = gActiveBattler;
             PrepareStatBuffString(statBuffsHelper.statBuffStrings, statsChanged, statBuffsHelper.activeBattlerAbility);
+        }
+
+        // for (statAnimId = 0; statAnimId < 30; statAnimId++)
+        // {
+        //     DebugPrintf("gBattleTextBuff3[%d]: %d", statAnimId, gBattleTextBuff3[statAnimId]);
+        // }
     }
     return gBattleCommunication[MULTIUSE_STATE] = (STAT_CHANGE_DIDNT_WORK + (statsChanged > 0));
 }
@@ -12080,9 +12091,6 @@ static void Cmd_statbuffchange(void)
         if (cmd->flags & STAT_CHANGE_SKIP_FAILED_STRINGS)
             gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
     }
-
-    // Make sure subsequent strings print the correct battler...
-    gBattleScripting.battler = gActiveBattler;
 }
 
 bool32 TryResetBattlerStatChanges(u8 battler)

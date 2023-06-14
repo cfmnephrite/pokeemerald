@@ -20,7 +20,7 @@ SINGLE_BATTLE_TEST("Berserk Gene sharply raises attack at the start of battle", 
         if (useItem)
         {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Using Berserk Gene, the Attack of Wobbuffet sharply rose!");
+            // MESSAGE("Wobbuffet's Berserk Gene sharply raised its Attack!");
             ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_CONFUSION, player);
             MESSAGE("Wobbuffet became confused!");
         }
@@ -46,7 +46,7 @@ SINGLE_BATTLE_TEST("Berserk Gene activates on switch in", s16 damage)
         if (useItem)
         {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Using Berserk Gene, the Attack of Wobbuffet sharply rose!");
+            MESSAGE("Wobbuffet's Berserk Gene sharply raised its Attack!");
             ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_CONFUSION, player);
             MESSAGE("Wobbuffet became confused!");
         }
@@ -72,7 +72,7 @@ SINGLE_BATTLE_TEST("Berserk Gene does not confuse a Pokemon with Own Tempo but s
         if (useItem)
         {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Using Berserk Gene, the Attack of Slowbro sharply rose!");
+            MESSAGE("Slowbro's Berserk Gene sharply raised its Attack!");
             ABILITY_POPUP(player, ABILITY_OWN_TEMPO);
             MESSAGE("Slowbro's Own Tempo prevents confusion!");
         }
@@ -98,7 +98,7 @@ SINGLE_BATTLE_TEST("Berserk Gene does not confuse on Misty Terrain but still rai
         }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("Using Berserk Gene, the Attack of Tapu Fini sharply rose!");
+        MESSAGE("Tapu Fini's Berserk Gene sharply raised its Attack!");
         NONE_OF
         {
             MESSAGE("Tapu Fini became confused!");
@@ -117,7 +117,7 @@ SINGLE_BATTLE_TEST("Berserk Gene does not confuse when Safeguard is active")
         TURN { SWITCH(player, 1); }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("Using Berserk Gene, the Attack of Wobbuffet sharply rose!");
+        MESSAGE("Wobbuffet's Berserk Gene sharply raised its Attack!");
         MESSAGE("Wobbuffet's party is protected by SAFEGUARD!");
         NONE_OF
         {

@@ -149,6 +149,7 @@ SINGLE_BATTLE_TEST("Stockpile temporarily raises Def and Sp. Def", s16 dmgPyhsic
     PARAMETRIZE {move = MOVE_CELEBRATE;}
     GIVEN {
         ASSUME(B_STOCKPILE_RAISES_DEFS >= GEN_4);
+        ASSUME(B_FANCY_STAT_STRINGS == FALSE);
         ASSUME(gBattleMoves[MOVE_TACKLE].split == SPLIT_PHYSICAL);
         ASSUME(gBattleMoves[MOVE_GUST].split == SPLIT_SPECIAL);
         PLAYER(SPECIES_WOBBUFFET) {Speed(2); }

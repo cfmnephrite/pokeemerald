@@ -350,7 +350,7 @@
 #define STAT_CHANGE_RAISED              9
 #define STAT_CHANGE_LOWERED             10
 #define STAT_CHANGE_CUT                 11
-#define STAT_CHANGE_SUCCESS(n) ((n > STAT_CHANGE_WONT_GO_LOWER))
+#define STAT_CHANGE_SUCCESS(n) ((n >= STAT_CHANGE_ROSE))
 
 // string choosers
 #define B_MSG_STAT_CHANGE_GENERIC           0

@@ -23,7 +23,7 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after switch ou
         {
             ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Foe Arbok's Intimidate cuts Wobbuffet's attack!");
+            MESSAGE("Foe Arbok's ability cut \nWobbuffet's Attack!");
         }
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
@@ -49,7 +49,7 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after KO", s16 
         {
             ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Foe Arbok's Intimidate cuts Wobbuffet's attack!");
+            MESSAGE("Foe Arbok's ability cut \nWobbuffet's Attack!");
         }
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
@@ -84,19 +84,19 @@ DOUBLE_BATTLE_TEST("Intimidate doesn't activate on an empty field in a double ba
 
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-        MESSAGE("Ekans's Intimidate cuts Foe Arbok's attack!");
+        MESSAGE("Ekans's ability cut \nfoe Arbok's Attack!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Ekans's Intimidate cuts Foe Wynaut's attack!");
+        MESSAGE("Ekans's ability cut \nfoe Wynaut's Attack!");
 
         ABILITY_POPUP(opponentLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
-        MESSAGE("Foe Arbok's Intimidate cuts Ekans's attack!");
+        MESSAGE("Foe Arbok's ability cut \nEkans's Attack!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
-        MESSAGE("Foe Arbok's Intimidate cuts Abra's attack!");
+        MESSAGE("Foe Arbok's ability cut \nAbra's Attack!");
     }
 }
 
-SINGLE_BATTLE_TEST("Intimidate and Eject Button force the opponent to Attack")
+SINGLE_BATTLE_TEST("Intimidate and Eject Button force the opponent to attack")
 {
     GIVEN {
         ASSUME(gItems[ITEM_EJECT_BUTTON].holdEffect == HOLD_EFFECT_EJECT_BUTTON);
@@ -115,7 +115,7 @@ SINGLE_BATTLE_TEST("Intimidate and Eject Button force the opponent to Attack")
         MESSAGE("Foe Wobbuffet is switched out with the Eject Button!");
         MESSAGE("2 sent out Hitmontop!");
         ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
-        MESSAGE("Foe Hitmontop's Intimidate cuts Wobbuffet's attack!");
+        MESSAGE("Foe Hitmontop's ability cut \nWobbuffet's Attack!");
         NONE_OF {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
             MESSAGE("Foe Hitmontop used Tackle!");
@@ -153,9 +153,9 @@ DOUBLE_BATTLE_TEST("Intimidate activates on an empty slot")
         MESSAGE("Go! Hitmontop!");
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         NONE_OF {
-            MESSAGE("Hitmontop's Intimidate cuts Foe Ralts's attack!");
+            MESSAGE("Hitmontop's ability cut \nfoe Ralts's Attack!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Hitmontop's Intimidate cuts Foe Azurill's attack!");
+        MESSAGE("Hitmontop's ability cut \nfoe Azurill's Attack!");
     }
 }

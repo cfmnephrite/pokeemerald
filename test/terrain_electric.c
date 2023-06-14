@@ -31,7 +31,8 @@ SINGLE_BATTLE_TEST("Electric Terrain activates Electric Seed and Mimicry")
         TURN { MOVE(player, MOVE_ELECTRIC_TERRAIN); }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("Using Electric Seed, the Defense of Wobbuffet rose!");
+        // MESSAGE("Using Electric Seed, the Defense of Wobbuffet rose!");
+        MESSAGE("Wobbuffet's Electric Seed raised its Defense!");
         ABILITY_POPUP(opponent);
         MESSAGE("Foe Stunfisk's type changed to Electr!");
     } THEN {

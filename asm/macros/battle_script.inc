@@ -1493,7 +1493,7 @@
 	various \battler, VARIOUS_PLAY_TRAINER_DEFEATED_MUSIC
 	.endm
 
-	.macro stattextbuffer1 stat:req
+	.macro stattextbuffer stat:req
 	various BS_SCRIPTING, VARIOUS_STAT_TEXT_BUFFER
 	.byte \stat
 	.endm
@@ -2283,6 +2283,12 @@
 	.4byte \jumpInstr
 	.endm
 
+	.macro debugprintf byte1=NULL, byte2=NULL
+	various BS_SCRIPTING, VARIOUS_UNUSED_75
+	.byte \byte1
+	.byte \byte2
+	.endm
+
 	@ you can set failPtr=TRUE if you don't even want to buffer strings on stat change failure
 	@ otherwise, failed stat changes are buffered and can be printed later using displaystatchangestrings
 	.macro trychangestats stats:req, flags=0, failPtr=NULL, animandstrings=TRUE, multistring=0
@@ -2294,7 +2300,7 @@
 	.else
 		statbuffchange \flags, \failPtr
 	.endif
-	.if \failPtr != TRUE && \animandstrings
+	.if \animandstrings == TRUE
 		statchangeanimationandstrings \multistring
 	.endif
 	.endm
@@ -2308,17 +2314,25 @@
 	.endm
 
 	.macro statchangeanimationandstrings multistring=0, anim=TRUE, loop=0
-	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 1f
-	setbyte cMULTISTRING_CHOOSER, \multistring
-	.if \loop < NUM_BATTLE_STATS - 1 @prevents infinite loops
+	jumpifbyte CMP_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_COMPLETE, 3f
+	.if \loop == 0
+		@ if stat change failure, always use the generic message
+		jumpifbyte CMP_NOT_EQUAL, cMULTIUSE_STATE, STAT_CHANGE_DIDNT_WORK, 1f
+		setbyte cMULTISTRING_CHOOSER, 0
+		goto 2f
+		1:
+		setbyte cMULTISTRING_CHOOSER, \multistring
+		2:
+	.endif
+	.if \loop < 7 @prevents infinite loops - up to seven strings
 		.if \anim == TRUE
 			displaystatchangeanimation
 		.endif
 		printfromtable gStatChangeStringIds
 		waitmessage B_WAIT_TIME_LONG
-		statchangeanimationandstrings \multistring, FALSE, \loop + 1
+		statchangeanimationandstrings cMULTISTRING_CHOOSER, FALSE, \loop + 1
 	.endif
-	1:
+	3:
 	.endm
 
 	.macro jumpifstatscheck battler:req, stats:req, ptr:req, cmp:req, stage:req, stat_bit=BIT_EVASION, stat_id=STAT_EVASION

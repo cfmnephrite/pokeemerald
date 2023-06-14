@@ -19,9 +19,8 @@ SINGLE_BATTLE_TEST("Contrary raises Attack when Intimidated", s16 damage)
     } SCENE {
         ABILITY_POPUP(player, ABILITY_INTIMIDATE);
         if (ability == ABILITY_CONTRARY) {
-            ABILITY_POPUP(opponent, ABILITY_CONTRARY);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-            MESSAGE("Foe Spinda's Attack rose!");
+            MESSAGE("Mightyena's ability raised \nfoe Spinda's Attack!");
         }
         HP_BAR(player, captureDamage: &results[i].damage);
     }
@@ -49,11 +48,11 @@ SINGLE_BATTLE_TEST("Contrary raises stats after using a move which would normall
         if (ability == ABILITY_CONTRARY) {
             // ABILITY_POPUP(opponent, ABILITY_CONTRARY);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-            MESSAGE("Foe Spinda's Sp. Atk sharply rose!");
+            MESSAGE("Foe Spinda's Sp. Atk\nsharply rose!");
         }
         else {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-            MESSAGE("Foe Spinda's Sp. Atk harshly fell!");
+            MESSAGE("Foe Spinda's Sp. Atk\nharshly fell!");
         }
 
         // MESSAGE("Foe Spinda used Overheat!");
@@ -61,11 +60,11 @@ SINGLE_BATTLE_TEST("Contrary raises stats after using a move which would normall
         if (ability == ABILITY_CONTRARY) {
             // ABILITY_POPUP(opponent, ABILITY_CONTRARY);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-            MESSAGE("Foe Spinda's Sp. Atk sharply rose!");
+            MESSAGE("Foe Spinda's Sp. Atk\nsharply rose!");
         }
         else {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-            MESSAGE("Foe Spinda's Sp. Atk harshly fell!");
+            MESSAGE("Foe Spinda's Sp. Atk\nharshly fell!");
         }
     }
     FINALLY {

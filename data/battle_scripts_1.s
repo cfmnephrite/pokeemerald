@@ -3124,7 +3124,7 @@ BattleScript_StatChangeDoAnim::
 	goto BattleScript_MoveEnd
 
 BattleScript_StatChange::
-	trychangestats NULL, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, FALSE
+	trychangestats NULL, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, NULL, FALSE
 BattleScript_StatChangeMsg::
 	statchangeanimationandstrings
 	return
@@ -4956,7 +4956,7 @@ BattleScript_EffectStockpile::
 	goto BattleScript_EffectStockpileEnd
 	.endif
 	jumpifmovehadnoeffect BattleScript_EffectStockpileEnd
-	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, TRUE
+	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
 BattleScript_EffectStockpileEnd:
 	stockpile 1
 	goto BattleScript_MoveEnd
@@ -7501,7 +7501,7 @@ BattleScript_AbilityPopUp:
 BattleScript_SpeedBoostActivates::
 	trychangestats STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_SpeedBoostActivatesEnd, FALSE
 	call BattleScript_AbilityPopUp
-	statchangeanimationandstrings
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_OWN_ABILITY
 BattleScript_SpeedBoostActivatesEnd:
 	end3
 
@@ -7701,7 +7701,8 @@ BattleScript_IntimidatePrevented:
 	call BattleScript_AbilityPopUp
 	pause B_WAIT_TIME_LONG
 BattleScript_IntimidatePrevented_Item:
-	stattextbuffer1 STAT_ATK
+	setbyte gBattleCommunication STAT_ATK
+	stattextbuffer BS_TARGET
 	printstring STRINGID_STATWASNOTLOWERED
 	waitmessage B_WAIT_TIME_LONG
 	call BattleScript_TryAdrenalineOrb
@@ -9298,9 +9299,10 @@ BattleScript_CouldntFullyProtect::
 
 BattleScript_BerserkGeneRet::
 BattleScript_BerserkGeneRet_Anim:
-	jumpifcannotraise BS_SCRIPTING, BIT_ATK, BattleScript_BerserkGeneRet_TryConfuse
+	trychangestats STAT_BUFF_ATK_2, MOVE_EFFECT_AFFECTS_USER, BattleScript_BerserkGeneRet_TryConfuse, FALSE
+	copybyte gBattlerTarget, sBATTLER
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
-	call BattleScript_StatChange
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 BattleScript_BerserkGeneRet_TryConfuse:
 	jumpifability BS_SCRIPTING, ABILITY_OWN_TEMPO, BattleScript_BerserkGeneRet_OwnTempoPrevents
 	jumpifsafeguard BattleScript_BerserkGeneRet_SafeguardProtected
