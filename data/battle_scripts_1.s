@@ -6273,6 +6273,7 @@ BattleScript_EffectCamouflage::
 
 BattleScript_SOSCallAlly::
 	printstring STRINGID_SOSBOSSCALLALLY
+	switchindataupdate BS_FAINTED
 	switchinanim BS_FAINTED, FALSE
 	printstring STRINGID_OPPONENTMON2APPEARED
 	waitmessage B_WAIT_TIME_MED
