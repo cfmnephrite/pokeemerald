@@ -30,7 +30,7 @@ SINGLE_BATTLE_TEST("Psychic Terrain activates Psychic Seed and Mimicry")
         TURN { MOVE(player, MOVE_PSYCHIC_TERRAIN); }
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("Wobbuffet's Psychic Seed raised its Sp Def!");
+        MESSAGE("Wobbuffet's Psychic Seed raised its Sp. Def!");
         ABILITY_POPUP(opponent);
         MESSAGE("Foe Stunfisk's type changed to Psychc!");
     } THEN {

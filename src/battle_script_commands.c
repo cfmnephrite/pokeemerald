@@ -3673,9 +3673,10 @@ void SetMoveEffect(bool32 primary, u32 certain)
                             boost = min(MAX_STAT_STAGE - gBattleMons[gBattlerAttacker].statStages[i], gBattleMons[gBattlerTarget].statStages[i] - DEFAULT_STAT_STAGE);
                             if (boost > 3)
                             {
-                                // A little cheat...
-                                gBattleMons[gBattlerAttacker].statStages[i] += (boost - 3);
-                                boost = 3;
+                                // A little cheat...if boosting goes over 3, add bytes to gBattleStruct->stolenStats
+                                gBattleStruct->stolenStats[0] = TRUE;
+                                gBattleStruct->stolenStats[i] = boost;
+                                boost = 3; // for the sake of fitting into sSTATCHANGER
                             }
                             gBattleScripting.statChanger |= (boost << ((i - 1) * 2));
                             gBattleMons[gBattlerTarget].statStages[i] = DEFAULT_STAT_STAGE;
@@ -10149,10 +10150,9 @@ static void Cmd_various(void)
             {
                 if (gTotemBoosts[gActiveBattler].stats & (1 << i))
                 {
-                    if (gTotemBoosts[gActiveBattler].statChanges[i] <= -1)
-                        SET_STATCHANGER(i + 1, abs(gTotemBoosts[gActiveBattler].statChanges[i]), TRUE);
-                    else
-                        SET_STATCHANGER(i + 1, gTotemBoosts[gActiveBattler].statChanges[i], FALSE);
+                    // These can be large (thanks to Mirror Herb) so use the stolenStats array
+                    gBattleStruct->stolenStats[0] = TRUE;
+                    gBattleStruct->stolenStats[i + 1] = gTotemBoosts[gActiveBattler].statChanges[i];
 
                     gTotemBoosts[gActiveBattler].stats &= ~(1 << i);
                     gBattleScripting.battler = gActiveBattler;
@@ -11690,7 +11690,10 @@ static u16 ReverseStatChangeMoveEffect(u16 moveEffect)
 
 static u8 GetStatBuff(u16 statValue, u8 stat)
 {
-    u8 result = (statValue >> (2 * (stat - 1))) & 0x3;
+    u8 result = gBattleStruct->stolenStats[0] ?
+        gBattleStruct->stolenStats[stat] :
+        (statValue >> (2 * (stat - 1))) & 0x3;
+
     if (statValue & STAT_BUFF_DOUBLED)
         result *= 2;
 
@@ -11842,6 +11845,7 @@ static u8 TryLowerStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 *
                     // Successful stat drop!
                     gProtectStructs[gActiveBattler].statFell = TRUE;   // Eject pack, lash out
                     gBattleMons[gActiveBattler].statStages[i] -= drop;
+                    statBuffsHelper->successfulBuffs[i - 1] = -drop;
                     statsChanged++;
                     switch (drop)
                     {
@@ -11874,7 +11878,7 @@ static u8 TryLowerStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 *
     return statsChanged;
 }
 
-static u8 TryRaiseStats(u32 flags, u8 *statBuffStrings, u8 *statAnimId)
+static u8 TryRaiseStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 *statAnimId)
 {
     u8 i, boost, statsChanged = 0;
     for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
@@ -11885,6 +11889,7 @@ static u8 TryRaiseStats(u32 flags, u8 *statBuffStrings, u8 *statAnimId)
             {
                 // Successful stat boost!
                 gBattleMons[gActiveBattler].statStages[i] += boost;
+                statBuffsHelper->successfulBuffs[i - 1] = boost;
                 statsChanged++;
                 switch (boost)
                 {
@@ -11893,21 +11898,21 @@ static u8 TryRaiseStats(u32 flags, u8 *statBuffStrings, u8 *statAnimId)
                             *statAnimId = STAT_ANIM_PLUS1 + i - 1;
                         else if ((*statAnimId) && (*statAnimId) < STAT_ANIM_PLUS2)
                             *statAnimId = STAT_ANIM_MULTIPLE_PLUS1;
-                        *(statBuffStrings + GetStringIndexForStatBuff(i)) = STAT_CHANGE_ROSE;
+                        statBuffsHelper->statBuffStrings[GetStringIndexForStatBuff(i)] = STAT_CHANGE_ROSE;
                         break;
                     default:
                         if (!(*statAnimId))
                             *statAnimId = STAT_ANIM_PLUS2 + i - 1;
                         else
                             *statAnimId = STAT_ANIM_MULTIPLE_PLUS2;                      // or STAT_CHANGE_DRASTICALLY_ROSE
-                        *(statBuffStrings + GetStringIndexForStatBuff(i)) = STAT_CHANGE_SHARPLY_ROSE + (boost > 2);
+                        statBuffsHelper->statBuffStrings[GetStringIndexForStatBuff(i)] = STAT_CHANGE_SHARPLY_ROSE + (boost > 2);
                         break;
                 }
                 // For the vanilla text....
                 PREPARE_STAT_BUFFER(gBattleTextBuff1, i);
             }
             else
-                *(statBuffStrings + GetStringIndexForStatBuff(i)) = STAT_CHANGE_WONT_GO_HIGHER;
+                statBuffsHelper->statBuffStrings[GetStringIndexForStatBuff(i)] = STAT_CHANGE_WONT_GO_HIGHER;
         }
     }
 
@@ -11919,7 +11924,7 @@ static u8 TryChangeStats(u32 flags, struct StatBuffsHelper *statBuffsHelper, u8 
     if (gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
         return TryLowerStats(flags, statBuffsHelper, statAnimId, failPtr);
     else
-        return TryRaiseStats(flags, statBuffsHelper->statBuffStrings, statAnimId);
+        return TryRaiseStats(flags, statBuffsHelper, statAnimId);
 }
 
 static u8 AddStatIndicesToStringBuffer(u8 *statBuffStrings, u8 stringTagIndex, u8 statCount, u8 *printedStats, u8 index)
@@ -12011,16 +12016,15 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
         .notProtectAffected = (flags & STAT_CHANGE_NOT_PROTECT_AFFECTED),
         .affectsUser = (flags & MOVE_EFFECT_AFFECTS_USER),
         .mirrorArmored = (flags & STAT_CHANGE_MIRROR_ARMOR),
-        .statBuffStrings = { 0 }
+        .statBuffStrings = { 0 },
+        .successfulBuffs = { 0 }
     };
     bool32 skipFailedStrings = (flags & STAT_CHANGE_SKIP_FAILED_STRINGS);
-    u8 statsChanged = 0, statAnimId = 0;
+    u8 i, j, statsChanged = 0, statAnimId = 0;
     gBattleScripting.animArg1 = 0;
     gBattleScripting.animArg2 = 0;
 
-    // DebugPrintf("Hello? %d", gBattleScripting.statChanger);
-
-    if ((gBattleScripting.statChanger & 0x3FFF)) // make sure that there are actual stats to buff
+    if ((gBattleScripting.statChanger & 0x3FFF) || gBattleStruct->stolenStats[0] == TRUE) // make sure that there are actual stats to buff
     {
         // Check who it affects, Contrary, Simple
         if (statBuffsHelper.affectsUser)
@@ -12049,7 +12053,18 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
 
         // Try and change stats then do animation
         if ((statsChanged = TryChangeStats(flags, &statBuffsHelper, &statAnimId, failPtr)))
+        {
+            // Post-boost checks and data settings
+            if (!(gBattleScripting.statChanger & STAT_BUFF_NEGATIVE))
+            {
+                gProtectStructs[gActiveBattler].statRaised = TRUE;
+                TriggerMirrorHerbOnOpposingSide(gActiveBattler, statBuffsHelper.successfulBuffs);
+            } else
+                gSpecialStatuses[gActiveBattler].statLowered = TRUE;
+
+            // Set stat animation argument
             gBattleScripting.animArg1 = statAnimId;
+        }
 
         // Buffer string to gBattleTextBuffer3
         if (statsChanged || (!skipFailedStrings && (statBuffsHelper.certain || statBuffsHelper.affectsUser)))
@@ -12064,6 +12079,7 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
         //     DebugPrintf("gBattleTextBuff3[%d]: %d", statAnimId, gBattleTextBuff3[statAnimId]);
         // }
     }
+    memset(gBattleStruct->stolenStats, 0, sizeof(gBattleStruct->stolenStats));  // erase this, just to be safe
     return gBattleCommunication[MULTIUSE_STATE] = (STAT_CHANGE_DIDNT_WORK + (statsChanged > 0));
 }
 
@@ -13882,6 +13898,7 @@ static void Cmd_maxattackhalvehp(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
+    u8 boosts[NUM_BATTLE_STATS - 1] = {12, 0, 0, 0, 0, 0, 0};
     u32 halfHp = gBattleMons[gBattlerAttacker].maxHP / 2;
 
     if (!(gBattleMons[gBattlerAttacker].maxHP / 2))
@@ -13895,6 +13912,10 @@ static void Cmd_maxattackhalvehp(void)
         gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 2;
         if (gBattleMoveDamage == 0)
             gBattleMoveDamage = 1;
+
+        // Triggering Mirror Herb - it also gets +12 regardless of how
+        // however many stages either either mon is at
+        TriggerMirrorHerbOnOpposingSide(gActiveBattler, boosts);
 
         gBattlescriptCurrInstr = cmd->nextInstr;
     }

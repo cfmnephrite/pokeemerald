@@ -23,6 +23,7 @@ struct StatBuffsHelper {
     bool32 mirrorArmored;
     u32 index;
     u8 statBuffStrings[NUM_BATTLE_STATS - 1];
+    s8 successfulBuffs[NUM_BATTLE_STATS - 1];
     u16 activeBattlerAbility;
 };
 

@@ -8965,7 +8965,6 @@ BattleScript_ApplyTotemVarBoost:
 	trychangestats NULL, STAT_CHANGE_ALLOW_PTR, BattleScript_TotemVarEnd
 	goto BattleScript_TotemVar_Ret  @loop until stats bitfield is empty
 
-
 BattleScript_AnnounceAirLockCloudNine::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_AIRLOCKACTIVATES

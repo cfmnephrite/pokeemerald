@@ -6644,11 +6644,31 @@ static bool32 GetMentalHerbEffect(u8 battlerId)
     return ret;
 }
 
+// assume statBuffs[0] refers to attack buff
+void TriggerMirrorHerbOnOpposingSide(u8 battlerId, u8 *statBuffs)
+{
+    u8 j, i;
+    for (i = (battlerId + 1) % 2; i < gBattlersCount; i += 2)
+    {
+        if (GetBattlerHoldEffect(i, TRUE) == HOLD_EFFECT_MIRROR_HERB)
+        {
+            for (j = STAT_ATK; j < NUM_BATTLE_STATS; j++)
+            {
+                if (gBattleMons[i].statStages[j] < MAX_STAT_STAGE && *(statBuffs + j - 1) > 0)
+                {
+                    gProtectStructs[i].eatMirrorHerb = TRUE;
+                    gTotemBoosts[i].stats |= (1 << (j - 1));    // -1 to start at atk
+                    gTotemBoosts[i].statChanges[j - 1] = *(statBuffs + j - 1);
+                }
+            }
+        }
+    }
+}
+
 static u8 TryConsumeMirrorHerb(u8 battlerId, bool32 execute)
 {
-    u8 effect = 0;
+    u8 effect = 0, i, j;
 
-    DebugPrintf("When do you call me?");
     if (gProtectStructs[battlerId].eatMirrorHerb) {
         gLastUsedItem = gBattleMons[battlerId].item;
         gBattleScripting.savedBattler = gBattlerAttacker;
