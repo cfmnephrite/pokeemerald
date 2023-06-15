@@ -9764,44 +9764,44 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->failInstr;
         return;
     }
-    case VARIOUS_ARGUMENT_STATUS_EFFECT:
+case VARIOUS_ARGUMENT_STATUS_EFFECT:
+{
+    VARIOUS_ARGS();
+    switch (gBattleMoves[gCurrentMove].argument)
     {
-        VARIOUS_ARGS();
-        switch (gBattleMoves[gCurrentMove].argument)
-        {
-        case STATUS1_SLEEP:
-            gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
-            break;
-        case STATUS1_BURN:
-            gBattleScripting.moveEffect = MOVE_EFFECT_BURN;
-            break;
-        case STATUS1_FREEZE:
-            gBattleScripting.moveEffect = MOVE_EFFECT_FREEZE;
-            break;
-        case STATUS1_PARALYSIS:
-            gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
-            break;
-        case STATUS1_POISON:
-            gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
-            break;
-        case STATUS1_TOXIC_POISON:
-            gBattleScripting.moveEffect = MOVE_EFFECT_TOXIC;
-            break;
-        case STATUS1_FROSTBITE:
-            gBattleScripting.moveEffect = MOVE_EFFECT_FROSTBITE;
-            break;
-        default:
-            gBattleScripting.moveEffect = 0;
-            break;
-        }
-        if (gBattleScripting.moveEffect != 0)
-        {
-            BattleScriptPush(cmd->nextInstr);
-            gBattlescriptCurrInstr = BattleScript_EffectWithChance;
-            return;
-        }
+    case STATUS1_SLEEP:
+        gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
+        break;
+    case STATUS1_BURN:
+        gBattleScripting.moveEffect = MOVE_EFFECT_BURN;
+        break;
+    case STATUS1_FREEZE:
+        gBattleScripting.moveEffect = MOVE_EFFECT_FREEZE;
+        break;
+    case STATUS1_PARALYSIS:
+        gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
+        break;
+    case STATUS1_POISON:
+        gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+        break;
+    case STATUS1_TOXIC_POISON:
+        gBattleScripting.moveEffect = MOVE_EFFECT_TOXIC;
+        break;
+    case STATUS1_FROSTBITE:
+        gBattleScripting.moveEffect = MOVE_EFFECT_FROSTBITE;
+        break;
+    default:
+        gBattleScripting.moveEffect = 0;
         break;
     }
+    if (gBattleScripting.moveEffect != 0)
+    {
+        BattleScriptPush(cmd->nextInstr);
+        gBattlescriptCurrInstr = BattleScript_EffectWithChance;
+        return;
+    }
+    break;
+}
     case VARIOUS_TRY_HIT_SWITCH_TARGET:
     {
         VARIOUS_ARGS(const u8 *failInstr);
@@ -11937,7 +11937,7 @@ static u8 AddStatIndicesToStringBuffer(u8 *statBuffStrings, u8 stringTagIndex, u
         if ((*(statBuffStrings + i)) == *(statBuffStrings + stringTagIndex) && *(printedStats + i) == 0)
         {
             gBattleTextBuff3[index++] = GetStatFromBuffStringIndex(i);
-            *(printedStats + i) = 1; // mark string as printed
+            *(printedStats + i) = TRUE; // mark string as printed
             j++;
         }
         i++;
@@ -11948,8 +11948,8 @@ static u8 AddStatIndicesToStringBuffer(u8 *statBuffStrings, u8 stringTagIndex, u
 
 static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCount, u16 activeBattlerAbility)
 {
-    // Keeps track of which stats have already been printed (redundant if using string compaction)
-    u8 printedStats[NUM_BATTLE_STATS - 1] = { 0 };
+    // Keeps track of which stats have already been added to string buffer
+    bool8 printedStats[NUM_BATTLE_STATS - 1] = { FALSE };
 
     // Looping indices - index will be a loop over the elements of gBattleTextBuff3
     u8 i, j, index = 0, statCountForCurrentString;
@@ -12055,12 +12055,12 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
         if ((statsChanged = TryChangeStats(flags, &statBuffsHelper, &statAnimId, failPtr)))
         {
             // Post-boost checks and data settings
-            if (!(gBattleScripting.statChanger & STAT_BUFF_NEGATIVE))
+            if (gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
+                gSpecialStatuses[gActiveBattler].statLowered = TRUE;
             {
                 gProtectStructs[gActiveBattler].statRaised = TRUE;
                 TriggerMirrorHerbOnOpposingSide(gActiveBattler, statBuffsHelper.successfulBuffs);
-            } else
-                gSpecialStatuses[gActiveBattler].statLowered = TRUE;
+            }
 
             // Set stat animation argument
             gBattleScripting.animArg1 = statAnimId;
@@ -12080,6 +12080,7 @@ static u32 ChangeStatBuffs(u32 flags, const u8 *failPtr)
         // }
     }
     memset(gBattleStruct->stolenStats, 0, sizeof(gBattleStruct->stolenStats));  // erase this, just to be safe
+    // Record stat change success/failure in gBattleCommunication[MULTIUSE_STATE]
     return gBattleCommunication[MULTIUSE_STATE] = (STAT_CHANGE_DIDNT_WORK + (statsChanged > 0));
 }
 
@@ -12096,10 +12097,8 @@ static void Cmd_statbuffchange(void)
     else
         failPtr = nextInstr;
 
-    // This is how we record whether or not the change succeeded or
-    // failed for the sake of string printer. Unless we've been redirected
-    // elsewhere already by an ability or Mist, try to jump to a valid failPtr
-    // should stat changing fail
+    // Unless we've been redirected elsewhere already by an ability
+    // or Mist, try to jump to a valid failPtr should stat changing fail
     if ((ChangeStatBuffs(cmd->flags, failPtr) == STAT_CHANGE_DIDNT_WORK)
         && gBattlescriptCurrInstr == nextInstr)
     {

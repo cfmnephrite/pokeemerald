@@ -3603,9 +3603,9 @@ static const u8 *const sStatChangeStringsTable[] =
 const u8 *const GetApproriateString(u8 stringTag)
 {
     u8 id = gBattleCommunication[MULTISTRING_CHOOSER];
-    if (stringTag == STAT_CHANGE_FELL && (id))
+    if (stringTag == STAT_CHANGE_FELL && id > B_MSG_STAT_CHANGE_GENERIC)
         return sStatChangeStringsTable[STAT_CHANGE_LOWERED + (id == B_MSG_STAT_CHANGE_FOE_ABILITY)];
-    else if (stringTag == STAT_CHANGE_ROSE && (id))
+    else if (stringTag == STAT_CHANGE_ROSE && id > B_MSG_STAT_CHANGE_GENERIC)
         return sStatChangeStringsTable[STAT_CHANGE_RAISED];
     else
         return sStatChangeStringsTable[stringTag];

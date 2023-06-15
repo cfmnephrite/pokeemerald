@@ -57,6 +57,23 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after KO", s16 
     }
 }
 
+SINGLE_BATTLE_TEST("Intimidate activates Rattled")
+{
+    GIVEN {
+        ASSUME(B_UPDATED_INTIMIDATE >= GEN_8);
+        PLAYER(SPECIES_DUNSPARCE) { Ability(ABILITY_RATTLED); };
+        OPPONENT(SPECIES_EKANS) { Ability(ABILITY_INTIMIDATE); };
+    } WHEN {
+        TURN { }
+    } SCENE {
+        ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        ABILITY_POPUP(player, ABILITY_RATTLED);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Dunsparce's Rattled raised its Speed!");
+    }
+}
+
 DOUBLE_BATTLE_TEST("Intimidate doesn't activate on an empty field in a double battle")
 {
     GIVEN {

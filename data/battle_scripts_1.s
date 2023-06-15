@@ -2110,7 +2110,7 @@ BattleScript_EffectTopsyTurvy:
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	jumpifcannotlower1raise2 BS_TARGET, BIT_ALL_STATS, BIT_ALL_STATS, BattleScript_ButItFailed
+	jumpifstatscheck BS_TARGET, BIT_ALL_STATS, BattleScript_ButItFailed, CMP_EQUAL, DEFAULT_STAT_STAGE
 	attackanimation
 	waitanimation
 	invertstatstages BS_TARGET
@@ -4952,11 +4952,10 @@ BattleScript_EffectStockpile::
 	waitanimation
 	printfromtable gStockpileUsedStringIds
 	waitmessage B_WAIT_TIME_LONG
-	.if B_STOCKPILE_RAISES_DEFS < GEN_4
-	goto BattleScript_EffectStockpileEnd
-	.endif
 	jumpifmovehadnoeffect BattleScript_EffectStockpileEnd
-	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
+	.if B_STOCKPILE_RAISES_DEFS >= GEN_4
+	trychangestats STAT_BUFF_DEF_SPD_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, TRUE
+	.endif
 BattleScript_EffectStockpileEnd:
 	stockpile 1
 	goto BattleScript_MoveEnd
@@ -7484,7 +7483,7 @@ BattleScript_DrizzleActivates::
 BattleScript_AbilityRaisesDefenderStat::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
-	trychangestats NULL, 0
+	trychangestats NULL, STAT_CHANGE_NOT_PROTECT_AFFECTED, NULL, TRUE, B_MSG_STAT_CHANGE_OWN_ABILITY
 	return
 
 BattleScript_AbilityPopUpTarget:
@@ -7689,6 +7688,7 @@ BattleScript_IntimidateLoop:
 	copybyte sBATTLER, gBattlerAttacker
 	trychangestats STAT_BUFF_ATK_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, NULL, TRUE, B_MSG_STAT_CHANGE_FOE_ABILITY
 	copybyte sBATTLER, gBattlerTarget
+	call BattleScript_IntimidateActivatesRattled
 	call BattleScript_TryAdrenalineOrb
 BattleScript_IntimidateLoopIncrement:
 	addbyte gBattlerTarget, 1
@@ -7705,6 +7705,7 @@ BattleScript_IntimidatePrevented_Item:
 	stattextbuffer BS_TARGET
 	printstring STRINGID_STATWASNOTLOWERED
 	waitmessage B_WAIT_TIME_LONG
+	call BattleScript_IntimidateActivatesRattled
 	call BattleScript_TryAdrenalineOrb
 	goto BattleScript_IntimidateLoopIncrement
 
@@ -7713,8 +7714,18 @@ BattleScript_IntimidateInReverse:
 	call BattleScript_AbilityPopUpTarget
 	pause B_WAIT_TIME_SHORT
 	trychangestats STAT_BUFF_ATK_1, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR
+	call BattleScript_IntimidateActivatesRattled
 	call BattleScript_TryAdrenalineOrb
 	goto BattleScript_IntimidateLoopIncrement
+
+BattleScript_IntimidateActivatesRattled::
+.if B_UPDATED_INTIMIDATE >= GEN_8
+	jumpifcannotraise BS_TARGET, BIT_SPEED, BattleScript_IntimidateActivatesRattledRet
+	setstatchanger STAT_SPEED, 1, FALSE
+	jumpifability BS_TARGET, ABILITY_RATTLED, BattleScript_AbilityRaisesDefenderStat
+.endif
+BattleScript_IntimidateActivatesRattledRet::
+	return
 
 BattleScript_DroughtActivates::
 	pause B_WAIT_TIME_SHORT
