@@ -214,10 +214,10 @@
 #define STRINGID_STATROSE                             210
 #define STRINGID_STATHARSHLY                          211
 #define STRINGID_STATFELL                             212
-#define STRINGID_UNUSED213                            213
-#define STRINGID_UNUSED214                            214
-#define STRINGID_UNUSED215                            215
-#define STRINGID_UNUSED216                            216
+#define STRINGID_STATSCHANGEDGENERIC                  213
+#define STRINGID_SCRIPTINGABILITYSTATRAISE            214
+#define STRINGID_SCRIPTINGABILITYSTATRAISE2           215
+#define STRINGID_PKMNITEMCHANGEDSTATS                 216
 #define STRINGID_CRITICALHIT                          217
 #define STRINGID_ONEHITKO                             218
 #define STRINGID_123POOF                              219
@@ -326,7 +326,7 @@
 #define STRINGID_SOOTHINGAROMA                        322
 #define STRINGID_ITEMSCANTBEUSEDNOW                   323
 #define STRINGID_FORXCOMMAYZ                          324
-#define STRINGID_PKMNITEMCHANGEDSTATS                    325
+#define STRINGID_UNUSED325                            325
 #define STRINGID_PKMNUSEDXTOGETPUMPED                 326
 #define STRINGID_PKMNSXMADEYUSELESS                   327
 #define STRINGID_PKMNTRAPPEDBYSANDTOMB                328
@@ -452,7 +452,7 @@
 #define STRINGID_MISTYTERRAINENDS                     447
 #define STRINGID_PSYCHICTERRAINENDS                   448
 #define STRINGID_GRASSYTERRAINENDS                    449
-#define STRINGID_ATTACKERITEMCHANGEDSTATS             450
+#define STRINGID_UNUSED_450                           450
 #define STRINGID_TARGETSSTATWASMAXEDOUT               451
 #define STRINGID_UNUSED452                            452
 #define STRINGID_POISONHEALHPUP                       453
@@ -544,7 +544,7 @@
 #define STRINGID_ATTACKERCUREDTARGETSTATUS            539
 #define STRINGID_ATTACKERLOSTFIRETYPE                 540
 #define STRINGID_HEALERCURE                           541
-#define STRINGID_SCRIPTINGABILITYSTATRAISE            542
+#define STRINGID_UNUSED542                            542
 #define STRINGID_RECEIVERABILITYTAKEOVER              543
 #define STRINGID_PKNMABSORBINGPOWER                   544
 #define STRINGID_NOONEWILLBEABLETORUNAWAY             545
@@ -667,9 +667,8 @@
 #define STRINGID_SNOWCONTINUES                        662
 #define STRINGID_SNOWSTOPPED                          663
 #define STRINGID_SNOWWARNINGSNOW                      664
-#define STRINGID_STATSCHANGED                         665
 
-#define BATTLESTRINGS_COUNT                           666
+#define BATTLESTRINGS_COUNT                           665
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,

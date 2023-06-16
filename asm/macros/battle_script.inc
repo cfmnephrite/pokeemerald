@@ -2283,9 +2283,8 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro trydefiantandcompetitive battler:req
-	various \battler, VARIOUS_UNUSED_75
-	.byte \battler
+	.macro trydefiantcompetitive battler:req
+	various \battler, VARIOUS_TRY_DEFIANT_COMPETITIVE
 	.endm
 
 	@ you can set failPtr=TRUE if you don't even want to buffer strings on stat change failure
@@ -2300,7 +2299,7 @@
 		statbuffchange \flags, \failPtr
 	.endif
 	.if \animandstrings == TRUE
-		statchangeanimationandstrings \multistring
+		statchangeanimationandstrings \multistring, TRUE, 0
 	.endif
 	.endm
 
@@ -2320,16 +2319,18 @@
 		setbyte cMULTISTRING_CHOOSER, B_MSG_STAT_CHANGE_GENERIC
 		goto 2f
 		1:
-		setbyte cMULTISTRING_CHOOSER, \multistring
+		.if \multistring != 0xFF @ don't set multichooser, use the one already loaded
+			setbyte cMULTISTRING_CHOOSER, \multistring
+		.endif
 	.endif
 	2:
-	.if \loop < 7 @prevents infinite loops - up to seven strings
+	.if \loop < 7 @ prevents infinite loops - up to seven strings
 		.if \anim == TRUE
 			displaystatchangeanimation
 		.endif
 		printfromtable gStatChangeStringIds
 		waitmessage B_WAIT_TIME_LONG
-		@trydefiantandcompetitive BS_SCRIPTING
+		trydefiantcompetitive BS_SCRIPTING
 		statchangeanimationandstrings cMULTISTRING_CHOOSER, FALSE, \loop + 1
 	.endif
 	3:
@@ -2368,4 +2369,10 @@
 
 	.macro jumpifcanlower battler:req, stats:req, ptr:req
 	jumpifstatscheck \battler, \stats, \ptr, CMP_GREATER_THAN, MIN_STAT_STAGE
+	.endm
+
+	.macro jumpifabilityisnt battler:req, ability:req, jumpPtr:req
+	jumpifability \battler, \ability, 1f
+	goto \jumpPtr
+	1:
 	.endm

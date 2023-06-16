@@ -598,6 +598,7 @@ static const u8 sText_WaterSportEnds[] = _("The effects of Water Sport have fade
 static const u8 sText_GravityEnds[] = _("Gravity returned to normal!");
 static const u8 sText_AquaRingHeal[] = _("Aqua Ring restored\n{B_ATK_NAME_WITH_PREFIX}'s HP!");
 static const u8 sText_ScriptingAbilityRaisedStat[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\n{B_BUFF3}!");
+static const u8 sText_ScriptingAbilityRaisedStat2[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\n{B_BUFF2}!"); // Exactly the same but with buff2
 static const u8 sText_AuroraVeilEnds[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nwore off!");
 static const u8 sText_ElectricTerrainEnds[] = _("The electricity disappeared\nfrom the battlefield.");
 static const u8 sText_MistyTerrainEnds[] = _("The mist disappeared\nfrom the battlefield.");
@@ -886,6 +887,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PKNMABSORBINGPOWER - BATTLESTRINGS_TABLE_START] = sText_PkmnAbsorbingPower,
     [STRINGID_RECEIVERABILITYTAKEOVER - BATTLESTRINGS_TABLE_START] = sText_ReceiverAbilityTakeOver,
     [STRINGID_SCRIPTINGABILITYSTATRAISE - BATTLESTRINGS_TABLE_START] = sText_ScriptingAbilityRaisedStat,
+    [STRINGID_SCRIPTINGABILITYSTATRAISE2 - BATTLESTRINGS_TABLE_START] = sText_ScriptingAbilityRaisedStat2,
     [STRINGID_HEALERCURE - BATTLESTRINGS_TABLE_START] = sText_HealerCure,
     [STRINGID_ATTACKERLOSTFIRETYPE - BATTLESTRINGS_TABLE_START] = sText_AttackerLostFireType,
     [STRINGID_ATTACKERCUREDTARGETSTATUS - BATTLESTRINGS_TABLE_START] = sText_AttackerCuredTargetStatus,
@@ -1359,7 +1361,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_FOREWARNACTIVATES - BATTLESTRINGS_TABLE_START] = sText_ForewarnActivates,
     [STRINGID_ICEBODYHPGAIN - BATTLESTRINGS_TABLE_START] = sText_IceBodyHpGain,
     [STRINGID_SNOWWARNINGHAIL - BATTLESTRINGS_TABLE_START] = sText_SnowWarningHail,
-    [STRINGID_STATSCHANGED - BATTLESTRINGS_TABLE_START] = sText_StatsChanged,
+    [STRINGID_STATSCHANGEDGENERIC - BATTLESTRINGS_TABLE_START] = sText_StatsChanged,
     [STRINGID_SNOWWARNINGSNOW - BATTLESTRINGS_TABLE_START] = sText_SnowWarningSnow,
     [STRINGID_FRISKACTIVATES - BATTLESTRINGS_TABLE_START] = sText_FriskActivates,
     [STRINGID_UNNERVEENTERS - BATTLESTRINGS_TABLE_START] = sText_UnnerveEnters,
@@ -3573,17 +3575,18 @@ static void IllusionNickHack(u32 battlerId, u32 partyId, u8 *dst)
 
 const u16 gStatChangeStringIds[] =
 {
-    [B_MSG_STAT_CHANGE_GENERIC]         = STRINGID_STATSCHANGED,
-    [B_MSG_STAT_CHANGE_ITEM]            = STRINGID_PKMNITEMCHANGEDSTATS,
-    [B_MSG_STAT_CHANGE_OWN_ABILITY]     = STRINGID_SCRIPTINGABILITYSTATRAISE,
-    [B_MSG_STAT_CHANGE_FOE_ABILITY]     = STRINGID_PKMNCUTSATTACKWITH
+    [B_MSG_STAT_CHANGE_GENERIC]             = STRINGID_STATSCHANGEDGENERIC,
+    [B_MSG_STAT_CHANGE_ITEM]                = STRINGID_PKMNITEMCHANGEDSTATS,
+    [B_MSG_STAT_CHANGE_OWN_ABILITY]         = STRINGID_SCRIPTINGABILITYSTATRAISE,
+    [B_MSG_STAT_CHANGE_FOE_ABILITY]         = STRINGID_PKMNCUTSATTACKWITH,
+    [B_MSG_STAT_CHANGE_ABILITY_INTERRUPT]   = STRINGID_SCRIPTINGABILITYSTATRAISE2
 };
 
 static const u8 sText_StatWontGoHigher[]    = _("won't go higher!");
 static const u8 sText_StatWontGoLower[]     = _("won't go lower!");
-static const u8 sText_StatRaised[]          = _("raised ");
-static const u8 sText_StatLowered[]         = _("lowered ");
-static const u8 sText_StatCut[]             = _("cut ");
+static const u8 sText_StatRaised[]          = _("raised");
+static const u8 sText_StatLowered[]         = _("lowered");
+static const u8 sText_StatCut[]             = _("cut");
 
 static const u8 *const sStatChangeStringsTable[] =
 {
@@ -3655,7 +3658,13 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             // keep track of the offset as we loop through strings
             // with MULTISTATE - but it's initially used to track whether or
             // not a stat change worked, so we need this max function to start
-            srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
+            // We can INTERRUPT a string printing loop by printing from gBattleTextBuff2
+            // This is ONLY called by Defiant/Competitive, hence B_MSG_STAT_CHANGE_ABILITY_INTERRUPT
+            // It does NOT allow looping and can ONLY print one string - so choose it wisely...
+            if (gBattleCommunication[MULTISTRING_CHOOSER] == B_MSG_STAT_CHANGE_ABILITY_INTERRUPT)
+                srcID++;
+            else
+                srcID = max(srcID + 1, gBattleCommunication[MULTIUSE_STATE]);
 
             // String tag - i.e. fell, rose, harshly fell, sharply rose etc.
             stringTag = src[srcID++];
@@ -3674,7 +3683,10 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                     // "X harshly cut Y's defence!"
                     // So we have to put mon name in the middle
                     if (stringTag == STAT_CHANGE_DRASTICALLY_ROSE)
+                    {
                         AddQuantifiersToStringWtihInbetween(dst, stringTag, degree, gText_NewLine);
+                        StringAppend(dst, gText_Space2);
+                    }
                     else
                     {
                         AddQuantifiersToString(dst, stringTag, degree);
@@ -3702,7 +3714,9 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                     break;
                 case B_MSG_STAT_CHANGE_ITEM:
                 case B_MSG_STAT_CHANGE_OWN_ABILITY:
+                case B_MSG_STAT_CHANGE_ABILITY_INTERRUPT:
                     AddQuantifiersToString(dst, stringTag, degree);
+                    StringAppend(dst, gText_Space2);
                     StringAppend(dst, gText_ItsSpace);
                     // Stat 1
                     value = StringAppendCountStat(dst, gStatNamesTable[src[srcID++]], value);
@@ -3770,19 +3784,30 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                     break;
             }
 
-            // We found the next set of stats to buff
-            if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
-                gBattleCommunication[MULTIUSE_STATE] = srcID + 1;
-            else if (value >= statCount || src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
-                gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
-            else // not the end? oh dear, recovery time
+            // We can ONLY print one string when chooser is B_MSG_STAT_CHANGE_ABILITY_INTERRUPT
+            // When using this, the previous value of MULTISTRING_CHOOSER is stored in
+            // the last three bits of MULTIUSE_STATE - so we need to put those back
+            if (gBattleCommunication[MULTISTRING_CHOOSER] == B_MSG_STAT_CHANGE_ABILITY_INTERRUPT)
             {
-                // An ability or item probably tried to raise
-                // too many stats to fit in a single string
-                // MAKE SURE WE'RE USING BUFFER 3
-                gBattleTextBuff3[--srcID] = statCount - value; // stat count
-                gBattleTextBuff3[--srcID] = stringTag; // string tag
-                gBattleCommunication[MULTIUSE_STATE] = srcID;
+                gBattleCommunication[MULTISTRING_CHOOSER] = gBattleCommunication[MULTIUSE_STATE] >> 5;
+                gBattleCommunication[MULTIUSE_STATE] &= 0x1F;
+            }
+            else // a normal string...
+            {
+                // We found the next set of stats to buff
+                if (src[srcID] == B_BUFF_STAT_CHANGE_STRING)
+                    gBattleCommunication[MULTIUSE_STATE] = srcID + 1;
+                else if (value >= statCount || src[srcID] == B_BUFF_EOS) // end string, set MULTIUSE_STATE to STAT_CHANGE_COMPLETE
+                    gBattleCommunication[MULTIUSE_STATE] = STAT_CHANGE_COMPLETE;
+                else // not the end? oh dear, recovery time
+                {
+                    // An ability or item probably tried to raise
+                    // too many stats to fit in a single string
+                    // MAKE SURE WE'RE USING BUFFER 3
+                    gBattleTextBuff3[--srcID] = statCount - value; // stat count
+                    gBattleTextBuff3[--srcID] = stringTag; // string tag
+                    gBattleCommunication[MULTIUSE_STATE] = srcID;
+                }
             }
             return;
         case B_BUFF_STRING: // battle string

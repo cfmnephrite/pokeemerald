@@ -51,13 +51,11 @@
 #define MULTISTRING_CHOOSER     5
 #define MISS_TYPE               6
 #define MSG_DISPLAY             7
-// #define STAT_CHANGE_COUNTER     8
 #define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
 
 #define cMULTIUSE_STATE         (gBattleCommunication + MULTIUSE_STATE)
 #define cMULTISTRING_CHOOSER    (gBattleCommunication + MULTISTRING_CHOOSER)
 #define cMISS_TYPE              (gBattleCommunication + MISS_TYPE)
-// #define cSTAT_CHANGE_COUNTER    (gBattleCommunication + STAT_CHANGE_COUNTER)
 
 // Battle Script defines for getting the wanted battler
 #define BS_TARGET                   0
@@ -166,7 +164,7 @@
 #define VARIOUS_TRY_THIRD_TYPE                       72
 #define VARIOUS_ACUPRESSURE                          73
 #define VARIOUS_SET_POWDER                           74
-#define VARIOUS_UNUSED_75                            75
+#define VARIOUS_TRY_DEFIANT_COMPETITIVE              75
 #define VARIOUS_GRAVITY_ON_AIRBORNE_MONS             76
 #define VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS        77
 #define VARIOUS_JUMP_IF_ROAR_FAILS                   78
@@ -277,9 +275,10 @@
 // Cmd_statbuffchange
 #define STAT_CHANGE_ALLOW_PTR               (1 << 0)   // If set, allow use of jumpptr. Set in every use of statbuffchange
 #define STAT_CHANGE_MIRROR_ARMOR            (1 << 1)   // Stat change redirection caused by Mirror Armor ability.
-#define STAT_CHANGE_NOT_PROTECT_AFFECTED    (1 << 5)
-#define STAT_CHANGE_UPDATE_MOVE_EFFECT      (1 << 6)
-#define STAT_CHANGE_SKIP_FAILED_STRINGS     (1 << 7)
+#define STAT_CHANGE_NOT_PROTECT_AFFECTED    (1 << 2)
+#define STAT_CHANGE_UPDATE_MOVE_EFFECT      (1 << 3)
+#define STAT_CHANGE_SKIP_FAILED_STRINGS     (1 << 4)
+#define STAT_CHANGE_INTERRUPT (1 << 5)
 
 // stat bit flags
 #define BIT_HP                      (1 << 0)
@@ -353,10 +352,11 @@
 #define STAT_CHANGE_SUCCESS(n) ((n >= STAT_CHANGE_ROSE))
 
 // string choosers
-#define B_MSG_STAT_CHANGE_GENERIC           0
-#define B_MSG_STAT_CHANGE_ITEM              1
-#define B_MSG_STAT_CHANGE_OWN_ABILITY       2
-#define B_MSG_STAT_CHANGE_FOE_ABILITY       3
+#define B_MSG_STAT_CHANGE_GENERIC           1
+#define B_MSG_STAT_CHANGE_ITEM              2
+#define B_MSG_STAT_CHANGE_OWN_ABILITY       3
+#define B_MSG_STAT_CHANGE_FOE_ABILITY       4
+#define B_MSG_STAT_CHANGE_ABILITY_INTERRUPT 5
 
 #define PARTY_SCREEN_OPTIONAL (1 << 7) // Flag for first argument to openpartyscreen
 

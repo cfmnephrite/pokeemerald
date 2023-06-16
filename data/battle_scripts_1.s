@@ -7483,7 +7483,7 @@ BattleScript_DrizzleActivates::
 BattleScript_AbilityRaisesDefenderStat::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
-	trychangestats NULL, STAT_CHANGE_NOT_PROTECT_AFFECTED, NULL, TRUE, B_MSG_STAT_CHANGE_OWN_ABILITY
+	statchangeanimationandstrings 0xFF @ multichooser already set
 	return
 
 BattleScript_AbilityPopUpTarget:
@@ -7656,10 +7656,10 @@ BattleScript_TryAdrenalineOrb::
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_ADRENALINE_ORB, BattleScript_TryAdrenalineOrbRet
 	copybyte sBATTLER, gBattlerTarget
 	jumpifcannotraise BS_TARGET, BIT_SPEED, BattleScript_TryAdrenalineOrbRet
+	trychangestats STAT_BUFF_SPE_1, STAT_CHANGE_ALLOW_PTR, NULL, FALSE
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	printstring STRINGID_PKMNITEMCHANGEDSTATS
-	trychangestats STAT_BUFF_SPE_1, MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR
+	statchangeanimationandstrings B_MSG_STAT_CHANGE_ITEM
 	removeitem BS_TARGET
 BattleScript_TryAdrenalineOrbRet:
 	return
@@ -7719,10 +7719,11 @@ BattleScript_IntimidateInReverse:
 	goto BattleScript_IntimidateLoopIncrement
 
 BattleScript_IntimidateActivatesRattled::
+	jumpifabilityisnt BS_TARGET, ABILITY_RATTLED, BattleScript_IntimidateActivatesRattledRet
 .if B_UPDATED_INTIMIDATE >= GEN_8
-	jumpifcannotraise BS_TARGET, BIT_SPEED, BattleScript_IntimidateActivatesRattledRet
-	setstatchanger STAT_SPEED, 1, FALSE
-	jumpifability BS_TARGET, ABILITY_RATTLED, BattleScript_AbilityRaisesDefenderStat
+	trychangestats BS_TARGET, STAT_BUFF_SPE_1, BattleScript_IntimidateActivatesRattledRet, FALSE
+	setbyte cMULTISTRING_CHOOSER, B_MSG_STAT_CHANGE_OWN_ABILITY
+	call BattleScript_AbilityRaisesDefenderStat
 .endif
 BattleScript_IntimidateActivatesRattledRet::
 	return

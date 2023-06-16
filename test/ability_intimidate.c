@@ -23,7 +23,7 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after switch ou
         {
             ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Foe Arbok's ability cut \nWobbuffet's Attack!");
+            MESSAGE("Foe Arbok's ability cut Wobbuffet's Attack!");
         }
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
@@ -49,7 +49,7 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after KO", s16 
         {
             ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-            MESSAGE("Foe Arbok's ability cut \nWobbuffet's Attack!");
+            MESSAGE("Foe Arbok's ability cut Wobbuffet's Attack!");
         }
         HP_BAR(opponent, captureDamage: &results[i].damage);
     } FINALLY {
@@ -57,11 +57,14 @@ SINGLE_BATTLE_TEST("Intimidate (opponent) lowers player's attack after KO", s16 
     }
 }
 
-SINGLE_BATTLE_TEST("Intimidate activates Rattled")
+SINGLE_BATTLE_TEST("Intimidate activates Rattled and Adrenaline Orb")
 {
+    u32 item;
+    PARAMETRIZE { item = ITEM_ADRENALINE_ORB; }
     GIVEN {
         ASSUME(B_UPDATED_INTIMIDATE >= GEN_8);
-        PLAYER(SPECIES_DUNSPARCE) { Ability(ABILITY_RATTLED); };
+        ASSUME(gItems[ITEM_ADRENALINE_ORB].holdEffect == HOLD_EFFECT_ADRENALINE_ORB);
+        PLAYER(SPECIES_DUNSPARCE) { Ability(ABILITY_RATTLED); Item(item); };
         OPPONENT(SPECIES_EKANS) { Ability(ABILITY_INTIMIDATE); };
     } WHEN {
         TURN { }
@@ -71,6 +74,12 @@ SINGLE_BATTLE_TEST("Intimidate activates Rattled")
         ABILITY_POPUP(player, ABILITY_RATTLED);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         MESSAGE("Dunsparce's Rattled raised its Speed!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Dunsparce's AdrenalineOrb raised its Speed!");
+    } FINALLY {
+        EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE - 1);
+        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 2);
     }
 }
 
@@ -101,15 +110,15 @@ DOUBLE_BATTLE_TEST("Intimidate doesn't activate on an empty field in a double ba
 
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-        MESSAGE("Ekans's ability cut \nfoe Arbok's Attack!");
+        MESSAGE("Ekans's ability cut foe Arbok's Attack!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Ekans's ability cut \nfoe Wynaut's Attack!");
+        MESSAGE("Ekans's ability cut foe Wynaut's Attack!");
 
         ABILITY_POPUP(opponentLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
-        MESSAGE("Foe Arbok's ability cut \nEkans's Attack!");
+        MESSAGE("Foe Arbok's ability cut Ekans's Attack!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
-        MESSAGE("Foe Arbok's ability cut \nAbra's Attack!");
+        MESSAGE("Foe Arbok's ability cut Abra's Attack!");
     }
 }
 
@@ -132,7 +141,7 @@ SINGLE_BATTLE_TEST("Intimidate and Eject Button force the opponent to attack")
         MESSAGE("Foe Wobbuffet is switched out with the Eject Button!");
         MESSAGE("2 sent out Hitmontop!");
         ABILITY_POPUP(opponent, ABILITY_INTIMIDATE);
-        MESSAGE("Foe Hitmontop's ability cut \nWobbuffet's Attack!");
+        MESSAGE("Foe Hitmontop's ability cut Wobbuffet's Attack!");
         NONE_OF {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
             MESSAGE("Foe Hitmontop used Tackle!");
@@ -170,9 +179,9 @@ DOUBLE_BATTLE_TEST("Intimidate activates on an empty slot")
         MESSAGE("Go! Hitmontop!");
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         NONE_OF {
-            MESSAGE("Hitmontop's ability cut \nfoe Ralts's Attack!");
+            MESSAGE("Hitmontop's ability cut foe Ralts's Attack!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
-        MESSAGE("Hitmontop's ability cut \nfoe Azurill's Attack!");
+        MESSAGE("Hitmontop's ability cut foe Azurill's Attack!");
     }
 }

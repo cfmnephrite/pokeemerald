@@ -849,44 +849,44 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
     case STRINGID_CRITICALHIT:
         AddMovePoints(PTS_CRITICAL_HIT, moveSlot, 0, 0);
         break;
-    case STRINGID_UNUSED213        :
-        if (gBattleTextBuff1[2] != 0)
-        {
-            if (*statStringId == STRINGID_STATSHARPLY)
-                AddMovePoints(PTS_STAT_INCREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
-            else
-                AddMovePoints(PTS_STAT_INCREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
-        }
-        break;
-    case STRINGID_UNUSED214        :
-        if (gBattleTextBuff1[2] != 0)
-        {
-            if (gBattlerAttacker == gBattlerTarget)
-            {
-                if (*statStringId == STRINGID_STATSHARPLY)
-                    AddMovePoints(PTS_STAT_INCREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
-                else
-                    AddMovePoints(PTS_STAT_INCREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
-            }
-            else
-            {
-                AddMovePoints(PTS_STAT_INCREASE_NOT_SELF, moveSlot, gBattleTextBuff1[2] - 1, 0);
-            }
-        }
-        break;
-    case STRINGID_UNUSED215        :
-        if (gBattleTextBuff1[2] != 0)
-            AddMovePoints(PTS_STAT_DECREASE_SELF, moveSlot, gBattleTextBuff1[2] - 1, 0);
-        break;
-    case STRINGID_UNUSED216        :
-        if (gBattleTextBuff1[2] != 0)
-        {
-            if (*statStringId == STRINGID_STATHARSHLY)
-                AddMovePoints(PTS_STAT_DECREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
-            else
-                AddMovePoints(PTS_STAT_DECREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
-        }
-        break;
+    // case STRINGID_UNUSED213        :
+    //     if (gBattleTextBuff1[2] != 0)
+    //     {
+    //         if (*statStringId == STRINGID_STATSHARPLY)
+    //             AddMovePoints(PTS_STAT_INCREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //         else
+    //             AddMovePoints(PTS_STAT_INCREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //     }
+    //     break;
+    // case STRINGID_UNUSED214        :
+    //     if (gBattleTextBuff1[2] != 0)
+    //     {
+    //         if (gBattlerAttacker == gBattlerTarget)
+    //         {
+    //             if (*statStringId == STRINGID_STATSHARPLY)
+    //                 AddMovePoints(PTS_STAT_INCREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //             else
+    //                 AddMovePoints(PTS_STAT_INCREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //         }
+    //         else
+    //         {
+    //             AddMovePoints(PTS_STAT_INCREASE_NOT_SELF, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //         }
+    //     }
+    //     break;
+    // case STRINGID_UNUSED215        :
+    //     if (gBattleTextBuff1[2] != 0)
+    //         AddMovePoints(PTS_STAT_DECREASE_SELF, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //     break;
+    // case STRINGID_UNUSED216        :
+    //     if (gBattleTextBuff1[2] != 0)
+    //     {
+    //         if (*statStringId == STRINGID_STATHARSHLY)
+    //             AddMovePoints(PTS_STAT_DECREASE_2, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //         else
+    //             AddMovePoints(PTS_STAT_DECREASE_1, moveSlot, gBattleTextBuff1[2] - 1, 0);
+    //     }
+    //     break;
     case STRINGID_PKMNLAIDCURSE:
         tvPtr->pos[defSide][defFlank].curseMonId = gBattlerPartyIndexes[gBattlerAttacker] + 1;
         tvPtr->pos[defSide][defFlank].curseMoveSlot = moveSlot;

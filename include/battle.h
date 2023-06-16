@@ -148,6 +148,7 @@ struct ProtectStruct
     u16 shellTrap:1;
     u16 silkTrapped:1;
     u16 eatMirrorHerb:1;
+    u16 defiantOrCompetitiveActivated:1;
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -715,12 +716,6 @@ struct BattleStruct
                                         || gProtectStructs[battlerId].banefulBunkered                                  \
                                         || gProtectStructs[battlerId].obstructed                                       \
                                         || gProtectStructs[battlerId].silkTrapped)
-
-#define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
-#define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
-#define GET_STAT_BUFF_VALUE(n)(((n >> 3) & 0xF))      // 0x8, 0x10, 0x20, 0x40                                                \
-
-#define SET_STAT_BUFF_VALUE(n)((((n) << 3) & 0xF8))
 
 #define SET_STATCHANGER(statId, stage, goesDown)(SET_STATCHANGER2(gBattleScripting.statChanger, statId, stage, goesDown))
 #define SET_STATCHANGER2(dst, statId, stage, goesDown)(dst = (min(3, stage) << (2 * (statId - 1))) | (goesDown << 14))
