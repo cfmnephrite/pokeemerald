@@ -51,7 +51,7 @@ SINGLE_BATTLE_TEST("Multiple stat drop status moves activate Defiant/Competitive
         MESSAGE("Foe Primeape's Defiant sharply raised its Attack!");
     } FINALLY {
         EXPECT_EQ(player->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 3);
-        EXPECT_EQ(opponent->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 3);
+        EXPECT_EQ(opponent->statStages[STAT_ATK], player->statStages[STAT_SPATK]);
     }
 }
 

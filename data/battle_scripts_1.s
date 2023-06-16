@@ -1829,11 +1829,16 @@ BattleScript_DefogWorks:
 	ppreduce
 	attackanimation
 	waitanimation
-	trychangestats STAT_BUFF_EVA_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_ALLOW_PTR, TRUE
+	trychangestats STAT_BUFF_EVA_1 | STAT_BUFF_NEGATIVE, STAT_CHANGE_ALLOW_PTR, BattleScript_DefogTryHazardsWithAnim
+BattleScript_DefogTryHazards:
 	copybyte gEffectBattler, gBattlerAttacker
 	defogclear BS_ATTACKER, TRUE, NULL
 	copybyte gBattlerAttacker, gEffectBattler
 	goto BattleScript_MoveEnd
+BattleScript_DefogTryHazardsWithAnim:
+	attackanimation
+	waitanimation
+	goto BattleScript_DefogTryHazards
 
 BattleScript_EffectCopycat:
 	attackcanceler
@@ -7721,7 +7726,7 @@ BattleScript_IntimidateInReverse:
 BattleScript_IntimidateActivatesRattled::
 	jumpifabilityisnt BS_TARGET, ABILITY_RATTLED, BattleScript_IntimidateActivatesRattledRet
 .if B_UPDATED_INTIMIDATE >= GEN_8
-	trychangestats BS_TARGET, STAT_BUFF_SPE_1, BattleScript_IntimidateActivatesRattledRet, FALSE
+	trychangestats STAT_BUFF_SPE_1, STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_IntimidateActivatesRattledRet, FALSE
 	setbyte cMULTISTRING_CHOOSER, B_MSG_STAT_CHANGE_OWN_ABILITY
 	call BattleScript_AbilityRaisesDefenderStat
 .endif
