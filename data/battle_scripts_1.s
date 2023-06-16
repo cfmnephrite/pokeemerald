@@ -493,7 +493,7 @@ BattleScript_EffectTeatime::
 	attackanimation
 	waitanimation
 BattleScript_TeatimeLoop:
-	jumpifteainvulnerable BS_TARGET, BattleScript_Teatimevul
+	jumpifteainvulnerable BS_TARGET, BattleScript_TeatimeBuffer
 	jumpifrodaffected BS_TARGET, BattleScript_Teatimerod
 	jumpifabsorbaffected BS_TARGET, BattleScript_Teatimesorb
 	jumpifmotoraffected BS_TARGET, BattleScript_Teatimemotor
@@ -503,45 +503,18 @@ BattleScript_TeatimeLoop:
 	bicword gHitMarker, HITMARKER_NO_ANIMATIONS | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_IGNORE_DISGUISE
 	setbyte sBERRY_OVERRIDE, FALSE
 	removeitem BS_TARGET
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_Teatimevul:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
+	goto BattleScript_TeatimeBuffer
 BattleScript_Teatimesorb:
 	call BattleScript_AbilityPopUpTarget
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
+	goto BattleScript_TeatimeBuffer
 BattleScript_Teatimerod:
 	call BattleScript_AbilityPopUpTarget
-	@playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_BY_TWO
-	setstatchanger STAT_SPATK, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
-	@printfromtable gStatUpStringIds
-	waitmessage 0x40
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
+	trychangestats STAT_BUFF_SPA_1, STAT_CHANGE_ALLOW_PTR
+	goto BattleScript_TeatimeBuffer
 BattleScript_Teatimemotor:
 	call BattleScript_AbilityPopUpTarget
-	@playstatchangeanimation BS_TARGET, BIT_SPEED, STAT_CHANGE_BY_TWO
-	setstatchanger STAT_SPEED, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_TeatimeBuffer
-	@printfromtable gStatUpStringIds
-	waitmessage 0x40
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
+	trychangestats STAT_BUFF_SPE_1, STAT_CHANGE_ALLOW_PTR
+	goto BattleScript_TeatimeBuffer
 BattleScript_TeatimeBuffer:
 	moveendto MOVEEND_NEXT_TARGET
 	jumpifnexttargetvalid BattleScript_TeatimeLoop
