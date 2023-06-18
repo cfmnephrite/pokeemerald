@@ -431,7 +431,6 @@ struct BattleMove
     u32 snatchAffected:1;
     u32 mirrorMoveBanned:1;
     u32 ignoresKingsRock:1;
-    u32 highCritRatio:1;
     u32 twoTurnMove:1;
     u32 punchingMove:1;
     u32 sheerForceBoost:1;
