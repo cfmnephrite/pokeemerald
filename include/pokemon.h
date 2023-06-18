@@ -334,21 +334,42 @@ struct SpeciesInfo /*0x24*/
  /* 0x20 */ u16 flags;
 };
 
+// struct MoveEffect { // Another time
+//     u16 certain:1;
+//     u16 affectsUser:1;
+//     u16 arg:7; // chance, status, field status... etc.
+//     u16 id:7;
+// };
+
 struct BattleMove
 {
     u16 effect;
-    u16 power;  //higher than 255 for z moves
-    u8 type;
+    u8 power;  //higher than 255 for z moves
+    u8 type:5;
+    u8 recoil:3;
+
     u8 accuracy;
-    u8 pp;
     u8 secondaryEffectChance;
-    u16 target;
-    u8 secondaryData;
     s8 priority;
+    u8 multihit:4;
+    u8 critRate:2;
+    u8 split:2;
+
+    u16 target;
+    u8 pp;
+    union {
+        u8 effect;
+        u8 powerOverride;
+    } zMove;
+
     u32 flags;
+
     u16 argument;
-    u8 split;
-    u8 zMoveEffect;
+
+    // union {
+    //     u32 arg0;
+    //     struct MoveEffect moveEffects[2];
+    // } args;
 };
 
 #define SPINDA_SPOT_WIDTH 16

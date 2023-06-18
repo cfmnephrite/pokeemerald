@@ -674,7 +674,6 @@ static s16 AI_CheckBadMove(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     // move data
     u8 atkPriority = GetMovePriority(battlerAtk, move);
     u16 moveEffect = gBattleMoves[move].effect;
-    u8 secondaryData = gBattleMoves[move].secondaryData;
     s32 moveType;
     u16 moveTarget = AI_GetBattlerMoveTargetType(battlerAtk, move);
     u16 accuracy = AI_GetMoveAccuracy(battlerAtk, battlerDef, move);
@@ -1844,7 +1843,7 @@ static s16 AI_CheckBadMove(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
         case EFFECT_RECOIL:
             if (AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->abilities[battlerAtk] != ABILITY_ROCK_HEAD)
             {
-                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(2, secondaryData));
+                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(1, gBattleMoves[move].recoil));
                 if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
                     score -= 10;
                 break;
@@ -2649,7 +2648,7 @@ static s16 AI_TryToFaint(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     else
     {
         // this move isn't expected to faint the target
-        if (TestMoveFlags(move, FLAG_HIGH_CRIT))
+        if (move.critRate > 0)
             score += 2; // crit makes it more likely to make them faint
 
         if (GetMoveDamageResult(move) == MOVE_POWER_OTHER)
@@ -3111,7 +3110,7 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     }
 
     // check high crit
-    if (TestMoveFlags(move, FLAG_HIGH_CRIT) && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
+    if (move.critRate > 0 && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
         score++;
 
     // check already dead
@@ -4975,7 +4974,7 @@ static s16 AI_Risky(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     if (IsTargetingPartner(battlerAtk, battlerDef))
         return score;
 
-    if (TestMoveFlags(move, FLAG_HIGH_CRIT))
+    if (move.critRate > 0)
         score += 2;
 
     switch (gBattleMoves[move].effect)
