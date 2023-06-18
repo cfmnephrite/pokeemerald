@@ -123,7 +123,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectSpite                   @ EFFECT_SPITE
 	.4byte BattleScript_EffectHit                     @ EFFECT_FALSE_SWIPE
 	.4byte BattleScript_EffectHealBell                @ EFFECT_HEAL_BELL
-	.4byte BattleScript_EffectHit                     @ EFFECT_ALWAYS_CRIT
+	.4byte BattleScript_EffectHit                     @ EFFECT_UNUSED_101
 	.4byte BattleScript_EffectTripleKick              @ EFFECT_TRIPLE_KICK
 	.4byte BattleScript_EffectThief                   @ EFFECT_THIEF
 	.4byte BattleScript_EffectMeanLook                @ EFFECT_MEAN_LOOK

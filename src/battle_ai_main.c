@@ -2648,7 +2648,7 @@ static s16 AI_TryToFaint(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     else
     {
         // this move isn't expected to faint the target
-        if (move.critRate > 0)
+        if (gBattleMoves[move].critRate > 0)
             score += 2; // crit makes it more likely to make them faint
 
         if (GetMoveDamageResult(move) == MOVE_POWER_OTHER)
@@ -2716,21 +2716,6 @@ static s16 AI_DoubleBattle(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
             {
                 if (IsTrappingMoveEffect(effect) || predictedMove == MOVE_INGRAIN)
                     score++;
-            }
-            break;
-        case EFFECT_ALWAYS_CRIT:
-            // Ally decided to use Frost Breath on us. we must have Anger Point as our ability
-            if (AI_DATA->abilities[battlerAtk] == ABILITY_ANGER_POINT)
-            {
-                if (AI_WhoStrikesFirst(battlerAtk, battlerAtkPartner, move) == AI_IS_SLOWER)   // Partner moving first
-                {
-                    // discourage raising our attack since it's about to be maxed out
-                    if (IsAttackBoostMoveEffect(effect))
-                        score -= 3;
-                    // encourage moves hitting multiple opponents
-                    if (!IS_MOVE_STATUS(move) && (moveTarget & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
-                        score += 3;
-                }
             }
             break;
         }
@@ -2902,6 +2887,18 @@ static s16 AI_DoubleBattle(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
                       && BattlerStatCanRise(battlerAtkPartner, atkPartnerAbility, STAT_SPATK))
                     {
                         RETURN_SCORE_PLUS(1);
+                    }
+                    break;
+                case ABILITY_ANGER_POINT:
+                    if (AI_WhoStrikesFirst(battlerAtk, battlerAtkPartner, move) == AI_IS_SLOWER
+                        && gBattleMoves[move].critRate == 3)   // Partner moving first
+                    {
+                        // discourage raising our attack since it's about to be maxed out
+                        if (IsAttackBoostMoveEffect(effect))
+                            score -= 3;
+                        // encourage moves hitting multiple opponents
+                        if (!IS_MOVE_STATUS(move) && (moveTarget & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
+                            score += 3;
                     }
                     break;
                 }
@@ -3110,7 +3107,7 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     }
 
     // check high crit
-    if (move.critRate > 0 && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
+    if (gBattleMoves[move].critRate > 0 && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
         score++;
 
     // check already dead
@@ -3569,7 +3566,7 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
         if (AI_DATA->abilities[battlerAtk] == ABILITY_SUPER_LUCK
           || AI_DATA->abilities[battlerAtk] == ABILITY_SNIPER
           || AI_DATA->holdEffects[battlerAtk] == HOLD_EFFECT_SCOPE_LENS
-          || TestMoveFlagsInMoveset(battlerAtk, FLAG_HIGH_CRIT))
+          || TestHighCritMovesInMoveset(battlerAtk))
             score += 2;
         break;
     case EFFECT_CONFUSE_HIT:
@@ -4974,7 +4971,7 @@ static s16 AI_Risky(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     if (IsTargetingPartner(battlerAtk, battlerDef))
         return score;
 
-    if (move.critRate > 0)
+    if (gBattleMoves[move].critRate > 0)
         score += 2;
 
     switch (gBattleMoves[move].effect)

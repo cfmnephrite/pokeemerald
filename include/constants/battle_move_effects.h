@@ -102,7 +102,7 @@
 #define EFFECT_SPITE                        98
 #define EFFECT_FALSE_SWIPE                  99
 #define EFFECT_HEAL_BELL                    100
-#define EFFECT_ALWAYS_CRIT                  101
+#define EFFECT_UNUSED_101                   101
 #define EFFECT_TRIPLE_KICK                  102
 #define EFFECT_THIEF                        103
 #define EFFECT_MEAN_LOOK                    104

@@ -760,18 +760,10 @@ static bool32 AI_GetIfCrit(u32 move, u8 battlerAtk, u8 battlerDef)
         isCrit = FALSE;
         break;
     case 1:
-        if (gBattleMoves[move].flags & FLAG_HIGH_CRIT && (Random() % 5 == 0))
-            isCrit = TRUE;
-        else
-            isCrit = FALSE;
+        isCrit = (Random() % (6 - gBattleMoves[move].critRate) == 0);
         break;
     case 2:
-        if (gBattleMoves[move].flags & FLAG_HIGH_CRIT && (Random() % 2 == 0))
-            isCrit = TRUE;
-        else if (!(gBattleMoves[move].flags & FLAG_HIGH_CRIT) && (Random() % 4) == 0)
-            isCrit = TRUE;
-        else
-            isCrit = FALSE;
+        isCrit = (Random() % max(1, 4 - (2 * gBattleMoves[move].critRate)) == 0);
         break;
     case -2:
     case 3:
@@ -2289,6 +2281,20 @@ bool32 TestMoveFlagsInMoveset(u8 battler, u32 flags)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE && moves[i] != 0xFFFF && TestMoveFlags(moves[i], flags))
+            return TRUE;
+    }
+    return FALSE;
+}
+
+bool32 TestHighCritMovesInMoveset(u8 battler)
+{
+    s32 i;
+    u16 *moves = GetMovesArray(battler);
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (moves[i] != MOVE_NONE && moves[i] != 0xFFFF && gBattleMoves[moves[i]].critRate > 0
+            && gBattleMoves[moves[i]].critRate < 3) // Always-crit moves don't count
             return TRUE;
     }
     return FALSE;
