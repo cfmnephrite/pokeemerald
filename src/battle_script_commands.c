@@ -5350,7 +5350,7 @@ static void Cmd_moveend(void)
                 switch (gBattleMoves[gCurrentMove].effect)
                 {
                 case EFFECT_RECOIL: // Take Down, 25% recoil
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / max(2, gBattleMoves[gCurrentMove].secondaryData));
+                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / max(1, gBattleMoves[gCurrentMove].recoil));
                     BattleScriptPushCursor();
                     if (gBattleMoves[gCurrentMove].argument) // Flare Blitz - can burn, Volt Tackle - can paralyze
                         gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
