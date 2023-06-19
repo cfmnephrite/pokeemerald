@@ -25,6 +25,7 @@ struct StatBuffsHelper {
     u8 statBuffStrings[NUM_BATTLE_STATS - 1];
     s8 successfulBuffs[NUM_BATTLE_STATS - 1];
     u16 activeBattlerAbility;
+    bool8 doubled;
 };
 
 s32 CalcCritChanceStage(u8 battlerAtk, u8 battlerDef, u32 move, bool32 recordAbility);

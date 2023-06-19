@@ -1540,7 +1540,7 @@ BattleScript_EffectMagneticFlux::
 	attackstring
 	ppreduce
 	setbyte gBattleCommunication, 0
-	copymoveargumenttostatchanger
+	argumenttostatchanger
 BattleScript_EffectMagneticFluxStart:
 	jumpifability BS_TARGET, ABILITY_MINUS, BattleScript_EffectMagneticFluxCheckStats
 	jumpifability BS_TARGET, ABILITY_PLUS, BattleScript_EffectMagneticFluxCheckStats
@@ -2021,7 +2021,7 @@ BattleScript_EffectGrowth:
 	attackcanceler
 	attackstring
 	ppreduce
-	copymoveargumenttostatchanger
+	argumenttostatchanger
 	jumpifnotweatheraffected BS_ATTACKER, B_WEATHER_SUN, BattleScript_TryStatChangerBuffsOnUser
 	sethword sSTATCHANGER, STAT_BUFF_ATK_SPA_2
 	goto BattleScript_TryStatChangerBuffsOnUser
@@ -2039,7 +2039,7 @@ BattleScript_EffectShiftGear::
 	attackcanceler
 	attackstring
 	ppreduce
-	copymoveargumenttostatchanger
+	argumenttostatchanger
 BattleScript_TryStatChangerBuffsOnUser:
 	trychangestats NULL, MOVE_EFFECT_AFFECTS_USER, BattleScript_CantChangeMultipleStats, FALSE
 	attackanimation

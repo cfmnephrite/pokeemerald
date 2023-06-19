@@ -315,7 +315,7 @@
 #define STAT_BUFF_EVA_2             (2 << 12)
 #define STAT_BUFF_EVA_3             (3 << 12)
 #define STAT_BUFF_NEGATIVE          (1 << 14)
-#define STAT_BUFF_DOUBLED           (1 << 15) // DOES NOT STACK WITH SIMPLE
+// #define STAT_BUFF_SELF              (1 << 15) // To be continued...
 
 // Some short cuts
 #define STAT_BUFF_ALL_STATS_1       (STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_SPA_1 | STAT_BUFF_SPD_1 | STAT_BUFF_SPE_1)
@@ -332,23 +332,23 @@
 #define STAT_BUFF_SPA_SPD_SPE_1     (STAT_BUFF_SPA_1 | STAT_BUFF_SPD_1 | STAT_BUFF_SPE_1)
 #define STAT_BUFF_ATK_DEF_SPE_1     (STAT_BUFF_ATK_1 | STAT_BUFF_DEF_1 | STAT_BUFF_SPE_1)
 
-#define STAT_CHANGE_COMPLETE        0
-#define STAT_CHANGE_DIDNT_WORK      1
-#define STAT_CHANGE_WORKED          2
+#define STAT_CHANGE_COMPLETE                0
+#define STAT_CHANGE_DIDNT_WORK              1
+#define STAT_CHANGE_WORKED                  2
 
 // Stat change results
-#define STAT_CHANGE_WONT_GO_HIGHER      1
-#define STAT_CHANGE_WONT_GO_LOWER       2
-#define STAT_CHANGE_ROSE                3
-#define STAT_CHANGE_SHARPLY_ROSE        4
-#define STAT_CHANGE_DRASTICALLY_ROSE    5
-#define STAT_CHANGE_FELL                6
-#define STAT_CHANGE_SHARPLY_FELL        7
-#define STAT_CHANGE_SEVERELY_FELL       8
+#define STAT_CHANGE_WONT_GO_HIGHER          1
+#define STAT_CHANGE_WONT_GO_LOWER           2
+#define STAT_CHANGE_ROSE                    3
+#define STAT_CHANGE_SHARPLY_ROSE            4
+#define STAT_CHANGE_DRASTICALLY_ROSE        5
+#define STAT_CHANGE_FELL                    6
+#define STAT_CHANGE_SHARPLY_FELL            7
+#define STAT_CHANGE_SEVERELY_FELL           8
 // Just for strings
-#define STAT_CHANGE_RAISED              9
-#define STAT_CHANGE_LOWERED             10
-#define STAT_CHANGE_CUT                 11
+#define STAT_CHANGE_RAISED                  9
+#define STAT_CHANGE_LOWERED                 10
+#define STAT_CHANGE_CUT                     11
 #define STAT_CHANGE_SUCCESS(n) ((n >= STAT_CHANGE_ROSE))
 
 // string choosers

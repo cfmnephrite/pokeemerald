@@ -1487,34 +1487,6 @@ void PrepareStringBattle(u16 stringId, u8 battler)
     u16 battlerAbility = GetBattlerAbility(battler);
     u16 targetAbility = GetBattlerAbility(gBattlerTarget);
 
-    // Check Defiant and Competitive stat raise whenever a stat is lowered.
-//     else if ((stringId == STRINGID_UNUSED216         || stringId == STRINGID_PKMNCUTSATTACKWITH)
-//               && ((targetAbility == ABILITY_DEFIANT && CompareStat(gBattlerTarget, STAT_ATK, MAX_STAT_STAGE, CMP_LESS_THAN))
-//                  || (targetAbility == ABILITY_COMPETITIVE && CompareStat(gBattlerTarget, STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN)))
-//               && gSpecialStatuses[gBattlerTarget].changedStatsBattlerId != BATTLE_PARTNER(gBattlerTarget)
-//               && ((gSpecialStatuses[gBattlerTarget].changedStatsBattlerId != gBattlerTarget) || gBattleScripting.stickyWebStatDrop == 1)
-//               && !(gBattleScripting.stickyWebStatDrop == 1 && gSideTimers[targetSide].stickyWebBattlerSide == targetSide)) // Sticky Web must have been set by the foe
-//     {
-//         gBattleScripting.stickyWebStatDrop = 0;
-//         gBattlerAbility = gBattlerTarget;
-//         BattleScriptPushCursor();
-//         gBattlescriptCurrInstr = BattleScript_AbilityRaisesDefenderStat;
-//         if (targetAbility == ABILITY_DEFIANT)
-//             SET_STATCHANGER(STAT_ATK, 2, FALSE);
-//         else
-//             SET_STATCHANGER(STAT_SPATK, 2, FALSE);
-//     }
-// #if  B_UPDATED_INTIMIDATE >= GEN_8
-//     else if (stringId == STRINGID_PKMNCUTSATTACKWITH && targetAbility == ABILITY_RATTLED
-//             && CompareStat(gBattlerTarget, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN))
-//     {
-//         gBattlerAbility = gBattlerTarget;
-//         BattleScriptPushCursor();
-//         gBattlescriptCurrInstr = BattleScript_AbilityRaisesDefenderStat;
-//         SET_STATCHANGER(STAT_SPEED, 1, FALSE);
-//     }
-// #endif
-
     // Signal for the trainer slide-in system.
     if ((stringId == STRINGID_ITDOESNTAFFECT || stringId == STRINGID_PKMNWASNTAFFECTED || stringId == STRINGID_PKMNUNAFFECTED)
      && GetBattlerSide(gBattlerTarget) == B_SIDE_OPPONENT

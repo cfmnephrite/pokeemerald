@@ -405,7 +405,7 @@
 	.byte \data
 	.endm
 
-	.macro copymoveargumenttostatchanger
+	.macro argumenttostatchanger
 	.byte 0x48
 	.endm
 

@@ -425,7 +425,7 @@ static void Cmd_endselectionscript(void);
 static void Cmd_playanimation(void);
 static void Cmd_playanimation_var(void);
 static void Cmd_setgraphicalstatchangevalues(void);
-static void Cmd_copymoveargumenttostatchanger(void);
+static void Cmd_argumenttostatchanger(void);
 static void Cmd_moveend(void);
 static void Cmd_sethealblock(void);
 static void Cmd_returnatktoball(void);
@@ -684,7 +684,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     Cmd_playanimation,                           //0x45
     Cmd_playanimation_var,                       //0x46
     Cmd_setgraphicalstatchangevalues,            //0x47
-    Cmd_copymoveargumenttostatchanger,           //0x48
+    Cmd_argumenttostatchanger,           //0x48
     Cmd_moveend,                                 //0x49
     Cmd_sethealblock,                            //0x4A
     Cmd_returnatktoball,                         //0x4B
@@ -5223,7 +5223,7 @@ static void Cmd_setgraphicalstatchangevalues(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_copymoveargumenttostatchanger(void)
+static void Cmd_argumenttostatchanger(void)
 {
     CMD_ARGS();
     gBattleScripting.statChanger = gBattleMoves[gCurrentMove].argument;
@@ -11683,16 +11683,13 @@ static u16 ReverseStatChangeMoveEffect(u16 moveEffect)
     }
 }
 
-static u8 GetStatBuff(u16 *statValue, u8 stat)
+static u8 GetStatBuff(u16 *statValue, u8 stat, bool8 doubled)
 {
     u8 result = gBattleStruct->stolenStats[0] ?
         gBattleStruct->stolenStats[stat] :
         (*(statValue) >> (2 * (stat - 1))) & 0x3;
 
-    if (*(statValue) & STAT_BUFF_DOUBLED)
-        result *= 2;
-
-    return result;
+    return result * (1 + doubled);
 }
 
 static u8 GetStringIndexForStatBuff(u8 stat)
@@ -11730,7 +11727,7 @@ static u8 TryLowerStats(u16 *statValue, u32 flags, struct StatBuffsHelper *statB
 
     for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
     {
-        if ((drop = GetStatBuff(statValue, i)))
+        if ((drop = GetStatBuff(statValue, i, statBuffsHelper->doubled)))
         {
             // Track how many stats we've attempted to change
             // Useful for Hyper Cutter etc. redirects
@@ -11883,7 +11880,7 @@ static u8 TryRaiseStats(u16 *statValue, u32 flags, struct StatBuffsHelper *statB
     u8 i, boost, statsChanged = 0;
     for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
     {
-        if ((boost = GetStatBuff(statValue, i)))
+        if ((boost = GetStatBuff(statValue, i, statBuffsHelper->doubled)))
         {
             if ((boost = min(MAX_STAT_STAGE - gBattleMons[gActiveBattler].statStages[i], boost)))
             {
@@ -11998,10 +11995,6 @@ static void PrepareStatBuffString(u8 *statBuffStrings, u8 successfulStatBuffCoun
         }
     }
     *(textBuffer + index) = B_BUFF_EOS;
-    // for (i = 0; i < 30; i++)
-    // {
-    //     DebugPrintf("gBattleTextBuff3[%d]: %d", i, gBattleTextBuff3[i]);
-    // }
 }
 
 static u32 SetStatChangerAndChangeStatBuffs(u16 statValue, u32 flags, const u8 *failPtr)
@@ -12044,7 +12037,7 @@ static u32 ChangeStatBuffs(u16 *statValue, u32 flags, const u8 *failPtr, u8 *tex
                 gBattleScripting.moveEffect = ReverseStatChangeMoveEffect(gBattleScripting.moveEffect);
         }
         else if (statBuffsHelper.activeBattlerAbility == ABILITY_SIMPLE)
-            *(statValue) |= STAT_BUFF_DOUBLED;
+            statBuffsHelper.doubled = TRUE;
 
         // Clear flags
         flags &= ~(MOVE_EFFECT_AFFECTS_USER
@@ -12072,11 +12065,6 @@ static u32 ChangeStatBuffs(u16 *statValue, u32 flags, const u8 *failPtr, u8 *tex
             gBattleScripting.battler = gActiveBattler;
             PrepareStatBuffString(statBuffsHelper.statBuffStrings, statsChanged, statBuffsHelper.activeBattlerAbility, textBuffer);
         }
-
-        // for (statAnimId = 0; statAnimId < 30; statAnimId++)
-        // {
-        //     DebugPrintf("gBattleTextBuff3[%d]: %d", statAnimId, gBattleTextBuff3[statAnimId]);
-        // }
     }
     memset(gBattleStruct->stolenStats, 0, sizeof(gBattleStruct->stolenStats));  // erase this, just to be safe
 

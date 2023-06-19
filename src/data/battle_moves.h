@@ -5771,7 +5771,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_BULK_UP] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_BULK_UP,
         .power = 0,
         .type = TYPE_FIGHTING,
         .accuracy = 0,
@@ -5912,7 +5912,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_CALM_MIND] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_CALM_MIND,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -5947,7 +5947,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
 
     [MOVE_DRAGON_DANCE] =
     {
-        .effect = EFFECT_SHIFT_GEAR,
+        .effect = EFFECT_DRAGON_DANCE,
         .power = 0,
         .type = TYPE_DRAGON,
         .accuracy = 0,
