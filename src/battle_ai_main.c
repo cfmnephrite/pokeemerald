@@ -2891,7 +2891,7 @@ static s16 AI_DoubleBattle(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
                     break;
                 case ABILITY_ANGER_POINT:
                     if (AI_WhoStrikesFirst(battlerAtk, battlerAtkPartner, move) == AI_IS_SLOWER
-                        && gBattleMoves[move].critBoost == 3)   // Partner moving first
+                        && gBattleMoves[move].critBoost == ALWAYS_CRIT)   // Partner moving first
                     {
                         // discourage raising our attack since it's about to be maxed out
                         if (IsAttackBoostMoveEffect(effect))

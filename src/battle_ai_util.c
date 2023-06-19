@@ -2298,7 +2298,7 @@ bool32 TestHighCritMovesInMoveset(u8 battler)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE && moves[i] != 0xFFFF && gBattleMoves[moves[i]].critBoost > 0
-            && gBattleMoves[moves[i]].critBoost < 3) // Always-crit moves don't count
+            && gBattleMoves[moves[i]].critBoost < ALWAYS_CRIT) // Always-crit moves don't count
             return TRUE;
     }
     return FALSE;

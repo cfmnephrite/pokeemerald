@@ -254,6 +254,9 @@
 // Just for readability
 #define RANDOM_2_5_MULTIHIT 1
 
+// ditto
+#define ALWAYS_CRIT         3
+
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
 #define GROWTH_ERRATIC      1
