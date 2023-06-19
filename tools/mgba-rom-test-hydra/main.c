@@ -101,7 +101,7 @@ static void handle_read(struct Runner *runner)
 add_to_results:
                     runner->results++;
                     soc += 2;
-                    fprintf(stdout, "%s: ", runner->test_name);
+                    fprintf(stdout, "[%d] %s: ", runner->pid, runner->test_name);
                     fwrite(soc, 1, eol - soc, stdout);
                     fwrite(runner->output_buffer, 1, runner->output_buffer_size, stdout);
                     strcpy(runner->test_name, "WAITING...");

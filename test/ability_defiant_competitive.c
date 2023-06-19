@@ -24,16 +24,16 @@ SINGLE_BATTLE_TEST("Status moves activate Competitive")
     PARAMETRIZE {}
     GIVEN {
         ASSUME(gBattleMoves[MOVE_SCARY_FACE].effect == EFFECT_SPEED_DOWN_2);
-        PLAYER(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
-        OPPONENT(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        PLAYER(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        OPPONENT(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
     } WHEN {
-        TURN { MOVE(player, MOVE_SCARY_FACE); }
+        TURN { MOVE(opponent, MOVE_SCARY_FACE); }
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_COMPETITIVE);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-        MESSAGE("Foe Wigglytuff's Competitive sharply raised its Sp. Atk!");
+        ABILITY_POPUP(player, ABILITY_COMPETITIVE);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Wigglytuff's Competitive sharply raised its Sp. Atk!");
     } FINALLY {
-        EXPECT_EQ(opponent->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 2);
+        EXPECT_EQ(player->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 2);
     }
 }
 
@@ -63,19 +63,19 @@ SINGLE_BATTLE_TEST("Multiple stat drop status moves activate Competitive multipl
     PARAMETRIZE {}
     GIVEN {
         ASSUME(gBattleMoves[MOVE_NOBLE_ROAR].effect == EFFECT_NOBLE_ROAR);
-        PLAYER(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
-        OPPONENT(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        PLAYER(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        OPPONENT(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
     } WHEN {
-        TURN { MOVE(player, MOVE_NOBLE_ROAR); }
+        TURN { MOVE(opponent, MOVE_NOBLE_ROAR); }
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_COMPETITIVE);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-        MESSAGE("Foe Wigglytuff's Competitive sharply raised its Sp. Atk!");
-        ABILITY_POPUP(opponent, ABILITY_COMPETITIVE);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-        MESSAGE("Foe Wigglytuff's Competitive sharply raised its Sp. Atk!");
+        ABILITY_POPUP(player, ABILITY_COMPETITIVE);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Wigglytuff's Competitive sharply raised its Sp. Atk!");
+        ABILITY_POPUP(player, ABILITY_COMPETITIVE);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Wigglytuff's Competitive sharply raised its Sp. Atk!");
     } FINALLY {
-        EXPECT_EQ(opponent->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 3);
+        EXPECT_EQ(player->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 3);
     }
 }
 
@@ -98,22 +98,22 @@ SINGLE_BATTLE_TEST("Attacking moves activate Defiant")
     }
 }
 
-SINGLE_BATTLE_TEST("Attacking moves activate Defiant/Competitive")
+SINGLE_BATTLE_TEST("Attacking moves activate Competitive")
 {
     PARAMETRIZE {}
     GIVEN {
         ASSUME(gBattleMoves[MOVE_ICY_WIND].effect == EFFECT_SPEED_DOWN_HIT);
         ASSUME(gBattleMoves[MOVE_ACID_SPRAY].effect == EFFECT_SPECIAL_DEFENSE_DOWN_HIT_2);
-        PLAYER(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
-        OPPONENT(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        PLAYER(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        OPPONENT(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
     } WHEN {
-        TURN { MOVE(player, MOVE_ICY_WIND); }
+        TURN { MOVE(opponent, MOVE_ICY_WIND); }
     } SCENE {
-        ABILITY_POPUP(opponent, ABILITY_COMPETITIVE);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-        MESSAGE("Foe Wigglytuff's Competitive sharply raised its Sp. Atk!");
+        ABILITY_POPUP(player, ABILITY_COMPETITIVE);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
+        MESSAGE("Wigglytuff's Competitive sharply raised its Sp. Atk!");
     } FINALLY {
-        EXPECT_EQ(opponent->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 2);
+        EXPECT_EQ(player->statStages[STAT_SPATK], DEFAULT_STAT_STAGE + 2);
     }
 }
 
@@ -139,14 +139,14 @@ SINGLE_BATTLE_TEST("Self-stat-dropping moves don't trigger Competitive")
     GIVEN {
         ASSUME(gBattleMoves[MOVE_HAMMER_ARM].effect == EFFECT_HAMMER_ARM);
         ASSUME(gBattleMoves[MOVE_OVERHEAT].effect == EFFECT_OVERHEAT);
-        PLAYER(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
-        OPPONENT(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        PLAYER(SPECIES_WIGGLYTUFF) { Ability(ABILITY_COMPETITIVE); };
+        OPPONENT(SPECIES_PRIMEAPE) { Ability(ABILITY_DEFIANT); };
     } WHEN {
-        TURN { MOVE(opponent, MOVE_OVERHEAT); }
+        TURN { MOVE(player, MOVE_OVERHEAT); }
     } SCENE {
         NONE_OF {
-            ABILITY_POPUP(opponent, ABILITY_COMPETITIVE);
-            MESSAGE("Foe Wigglytuff's Competitive sharply raised its Sp. Atk!");
+            ABILITY_POPUP(player, ABILITY_COMPETITIVE);
+            MESSAGE("Wigglytuff's Competitive sharply raised its Sp. Atk!");
         }
     }
 }

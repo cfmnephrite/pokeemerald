@@ -3673,9 +3673,9 @@ void SetMoveEffect(bool32 primary, u32 certain)
                             boost = min(MAX_STAT_STAGE - gBattleMons[gBattlerAttacker].statStages[i], gBattleMons[gBattlerTarget].statStages[i] - DEFAULT_STAT_STAGE);
                             if (boost > 3)
                             {
-                                // A little cheat...if boosting goes over 3, add bytes to gBattleStruct->stolenStats
-                                gBattleStruct->stolenStats[0] = TRUE;
-                                gBattleStruct->stolenStats[i] = boost;
+                                // A little cheat...if boosting goes over 3, add bytes to gBattleStruct->storedStatBuffs
+                                gBattleStruct->storedStatBuffs[0] = TRUE;
+                                gBattleStruct->storedStatBuffs[i] = boost;
                                 boost = 3; // for the sake of fitting into sSTATCHANGER
                             }
                             gBattleScripting.statChanger |= (boost << ((i - 1) * 2));
@@ -8944,6 +8944,7 @@ static void Cmd_various(void)
         u32 targetSide = GetBattlerSide(gActiveBattler);
         gBattlescriptCurrInstr = cmd->nextInstr;
 
+        DebugPrintf("Can we try Competitive? %d", gBattleScripting.statChanger);
         // Check Defiant and Competitive stat raise whenever a stat is lowered.
         if ((gBattleScripting.statChanger & STAT_BUFF_NEGATIVE) // we leave the original stat changer unmodified
             && !gProtectStructs[gActiveBattler].defiantOrCompetitiveActivated // prevents loops
@@ -8973,6 +8974,7 @@ static void Cmd_various(void)
             return;
         }
         gProtectStructs[gActiveBattler].defiantOrCompetitiveActivated = 0;
+        gBattleScripting.stickyWebStatDrop = 0; // this has to be cleared if not activated here
         break;
     }
     case VARIOUS_ACUPRESSURE:
@@ -10145,9 +10147,9 @@ case VARIOUS_ARGUMENT_STATUS_EFFECT:
             {
                 if (gTotemBoosts[gActiveBattler].stats & (1 << i))
                 {
-                    // These can be large (thanks to Mirror Herb) so use the stolenStats array
-                    gBattleStruct->stolenStats[0] = TRUE;
-                    gBattleStruct->stolenStats[i + 1] = gTotemBoosts[gActiveBattler].statChanges[i];
+                    // These can be large (thanks to Mirror Herb) so use the storedStatBuffs array
+                    gBattleStruct->storedStatBuffs[0] = TRUE;
+                    gBattleStruct->storedStatBuffs[i + 1] = gTotemBoosts[gActiveBattler].statChanges[i];
 
                     gTotemBoosts[gActiveBattler].stats &= ~(1 << i);
                     gBattleScripting.battler = gActiveBattler;
@@ -11685,8 +11687,8 @@ static u16 ReverseStatChangeMoveEffect(u16 moveEffect)
 
 static u8 GetStatBuff(u16 *statValue, u8 stat, bool8 doubled)
 {
-    u8 result = gBattleStruct->stolenStats[0] ?
-        gBattleStruct->stolenStats[stat] :
+    u8 result = gBattleStruct->storedStatBuffs[0] ?
+        gBattleStruct->storedStatBuffs[stat] :
         (*(statValue) >> (2 * (stat - 1))) & 0x3;
 
     return result * (1 + doubled);
@@ -11727,7 +11729,7 @@ static u8 TryLowerStats(u16 *statValue, u32 flags, struct StatBuffsHelper *statB
 
     for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
     {
-        if ((drop = GetStatBuff(statValue, i, statBuffsHelper->doubled)))
+        if ((drop = abs(GetStatBuff(statValue, i, statBuffsHelper->doubled))))
         {
             // Track how many stats we've attempted to change
             // Useful for Hyper Cutter etc. redirects
@@ -11880,7 +11882,7 @@ static u8 TryRaiseStats(u16 *statValue, u32 flags, struct StatBuffsHelper *statB
     u8 i, boost, statsChanged = 0;
     for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
     {
-        if ((boost = GetStatBuff(statValue, i, statBuffsHelper->doubled)))
+        if ((boost = abs(GetStatBuff(statValue, i, statBuffsHelper->doubled))))
         {
             if ((boost = min(MAX_STAT_STAGE - gBattleMons[gActiveBattler].statStages[i], boost)))
             {
@@ -12019,7 +12021,7 @@ static u32 ChangeStatBuffs(u16 *statValue, u32 flags, const u8 *failPtr, u8 *tex
     gBattleScripting.animArg1 = 0;
     gBattleScripting.animArg2 = 0;
 
-    if ((*(statValue) & 0x3FFF) || gBattleStruct->stolenStats[0] == TRUE) // make sure that there are actual stats to buff
+    if ((*(statValue) & 0x3FFF) || gBattleStruct->storedStatBuffs[0] == TRUE) // make sure that there are actual stats to buff
     {
         // Check who it affects, Contrary, Simple
         if (statBuffsHelper.affectsUser)
@@ -12066,7 +12068,7 @@ static u32 ChangeStatBuffs(u16 *statValue, u32 flags, const u8 *failPtr, u8 *tex
             PrepareStatBuffString(statBuffsHelper.statBuffStrings, statsChanged, statBuffsHelper.activeBattlerAbility, textBuffer);
         }
     }
-    memset(gBattleStruct->stolenStats, 0, sizeof(gBattleStruct->stolenStats));  // erase this, just to be safe
+    memset(gBattleStruct->storedStatBuffs, 0, sizeof(gBattleStruct->storedStatBuffs));  // erase this, just to be safe
 
     // Record stat change success/failure in gBattleCommunication[MULTIUSE_STATE]
     // unless specified otherwise...
@@ -13903,6 +13905,7 @@ static void Cmd_maxattackhalvehp(void)
     if (gBattleMons[gBattlerAttacker].statStages[STAT_ATK] < MAX_STAT_STAGE
         && gBattleMons[gBattlerAttacker].hp > halfHp)
     {
+        gBattleScripting.statChanger = 0; // wipe this to remove the chance of a negative stat buff
         gBattleMons[gBattlerAttacker].statStages[STAT_ATK] = MAX_STAT_STAGE;
         gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 2;
         if (gBattleMoveDamage == 0)
