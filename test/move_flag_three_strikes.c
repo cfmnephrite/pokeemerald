@@ -8,7 +8,7 @@ SINGLE_BATTLE_TEST("Three-strike flag turns a move into a 3-hit move")
     s16 thirdHit;
 
     GIVEN {
-        ASSUME(gBattleMoves[MOVE_TRIPLE_DIVE].flags & FLAG_THREE_STRIKES);
+        ASSUME(gBattleMoves[MOVE_TRIPLE_DIVE].multihit == 3);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
@@ -33,8 +33,10 @@ SINGLE_BATTLE_TEST("Surging Strikes hits 3 times with each hit being a critical 
     s16 secondHit;
     s16 thirdHit;
 
+    ASSUME(B_CRIT_CHANCE >= GEN_7);
+    PASSES_RANDOMLY(1, 1, RNG_CRITICAL_HIT);
     GIVEN {
-        ASSUME(gBattleMoves[MOVE_SURGING_STRIKES].flags & FLAG_THREE_STRIKES);
+        ASSUME(gBattleMoves[MOVE_SURGING_STRIKES].multihit == 3);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {

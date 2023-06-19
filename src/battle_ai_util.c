@@ -760,10 +760,10 @@ static bool32 AI_GetIfCrit(u32 move, u8 battlerAtk, u8 battlerDef)
         isCrit = FALSE;
         break;
     case 1:
-        isCrit = (Random() % (6 - gBattleMoves[move].critRate) == 0);
+        isCrit = (Random() % (6 - gBattleMoves[move].critBoost) == 0);
         break;
     case 2:
-        isCrit = (Random() % max(1, 4 - (2 * gBattleMoves[move].critRate)) == 0);
+        isCrit = (Random() % max(1, 4 - (2 * gBattleMoves[move].critBoost)) == 0);
         break;
     case -2:
     case 3:
@@ -829,9 +829,6 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef, u8 *typeEffectiveness,
             case EFFECT_SONICBOOM:
                 dmg = 20 * (AI_DATA->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
                 break;
-            case EFFECT_MULTI_HIT:
-                dmg *= (AI_DATA->abilities[battlerAtk] == ABILITY_SKILL_LINK ? 5 : 3);
-                break;
             case EFFECT_ENDEAVOR:
                 // If target has less HP than user, Endeavor does no damage
                 dmg = max(0, gBattleMons[battlerDef].hp - gBattleMons[battlerAtk].hp);
@@ -846,11 +843,18 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef, u8 *typeEffectiveness,
                 break;
             }
 
-            // Handle other multi-strike moves
-            if (gBattleMoves[move].flags & FLAG_TWO_STRIKES)
-                dmg *= 2;
-            else if (gBattleMoves[move].flags & FLAG_THREE_STRIKES || (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA_ASH))
+            // Handle multi-strike moves
+            if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA_ASH)
                 dmg *= 3;
+            else switch (gBattleMoves[move].multihit)
+            {
+                case RANDOM_2_5_MULTIHIT:
+                    dmg *= (AI_DATA->abilities[battlerAtk] == ABILITY_SKILL_LINK ? 5 : 3);
+                    break;
+                default:
+                    dmg *= gBattleMoves[move].multihit;
+                    break;
+            }
 
             if (dmg == 0)
                 dmg = 1;
@@ -2293,8 +2297,8 @@ bool32 TestHighCritMovesInMoveset(u8 battler)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != 0xFFFF && gBattleMoves[moves[i]].critRate > 0
-            && gBattleMoves[moves[i]].critRate < 3) // Always-crit moves don't count
+        if (moves[i] != MOVE_NONE && moves[i] != 0xFFFF && gBattleMoves[moves[i]].critBoost > 0
+            && gBattleMoves[moves[i]].critBoost < 3) // Always-crit moves don't count
             return TRUE;
     }
     return FALSE;

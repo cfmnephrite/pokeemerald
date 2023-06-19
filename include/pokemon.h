@@ -334,13 +334,6 @@ struct SpeciesInfo /*0x24*/
  /* 0x20 */ u16 flags;
 };
 
-// struct MoveEffect { // Another time
-//     u16 certain:1;
-//     u16 affectsUser:1;
-//     u16 arg:7; // chance, status, field status... etc.
-//     u16 id:7;
-// };
-
 struct BattleMove
 {
     u16 effect;
@@ -352,7 +345,7 @@ struct BattleMove
     u8 secondaryEffectChance;
     s8 priority;
     u8 multihit:4;
-    u8 critRate:2;
+    u8 critBoost:2;
     u8 split:2;
 
     u16 target;
@@ -365,11 +358,6 @@ struct BattleMove
     u32 flags;
 
     u16 argument;
-
-    // union {
-    //     u32 arg0;
-    //     struct MoveEffect moveEffects[2];
-    // } args;
 };
 
 #define SPINDA_SPOT_WIDTH 16

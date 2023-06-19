@@ -3768,7 +3768,7 @@ u8 AtkCanceller_UnableToUseMove(void)
             gBattleStruct->atkCancellerTracker++;
             break;
         case CANCELLER_MULTIHIT_MOVES:
-            if (gBattleMoves[gCurrentMove].effect == EFFECT_MULTI_HIT)
+            if (gBattleMoves[gCurrentMove].multihit == RANDOM_2_5_MULTIHIT)
             {
                 u16 ability = gBattleMons[gBattlerAttacker].ability;
 
@@ -3789,19 +3789,14 @@ u8 AtkCanceller_UnableToUseMove(void)
 
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleScripting.multihitString, 1, 0)
             }
-            else if (gBattleMoves[gCurrentMove].flags & FLAG_TWO_STRIKES)
+            else if (gBattleMoves[gCurrentMove].multihit > RANDOM_2_5_MULTIHIT)
             {
-                gMultiHitCounter = 2;
+                gMultiHitCounter = gBattleMoves[gCurrentMove].multihit;
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleScripting.multihitString, 1, 0)
                 if (gCurrentMove == MOVE_DRAGON_DARTS)
                 {
                     // TODO
                 }
-            }
-            else if (gBattleMoves[gCurrentMove].effect == EFFECT_TRIPLE_KICK || gBattleMoves[gCurrentMove].flags & FLAG_THREE_STRIKES)
-            {
-                gMultiHitCounter = 3;
-                PREPARE_BYTE_NUMBER_BUFFER(gBattleScripting.multihitString, 1, 0)
             }
             #if B_BEAT_UP >= GEN_5
             else if (gBattleMoves[gCurrentMove].effect == EFFECT_BEAT_UP)

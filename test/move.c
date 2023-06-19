@@ -99,7 +99,7 @@ SINGLE_BATTLE_TEST("Critical hits occur at a 1/24 rate")
 SINGLE_BATTLE_TEST("Slash's critical hits occur at a 1/8 rate")
 {
     ASSUME(B_CRIT_CHANCE >= GEN_7);
-    ASSUME(gBattleMoves[MOVE_SLASH].critRate == 1);
+    ASSUME(gBattleMoves[MOVE_SLASH].critBoost == 1);
     PASSES_RANDOMLY(1, 8, RNG_CRITICAL_HIT);
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET);
@@ -168,5 +168,20 @@ SINGLE_BATTLE_TEST("Critical hits ignore negative stat stages", s16 damage)
     } THEN {
         if (i > 0)
             EXPECT_EQ(results[0].damage, results[i].damage);
+    }
+}
+
+SINGLE_BATTLE_TEST("Leek Farfetch'd always crits with Leaf Blade")
+{
+    ASSUME(B_CRIT_CHANCE >= GEN_7);
+    ASSUME(gBattleMoves[MOVE_LEAF_BLADE].critBoost == 1);
+    PASSES_RANDOMLY(100, 100, RNG_CRITICAL_HIT);
+    GIVEN {
+        PLAYER(SPECIES_FARFETCHD) { Item(ITEM_LEEK); }
+        OPPONENT(SPECIES_WOBBUFFET);
+    } WHEN {
+        TURN { MOVE(player, MOVE_LEAF_BLADE); }
+    } SCENE {
+        MESSAGE("A critical hit!");
     }
 }

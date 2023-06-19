@@ -115,7 +115,6 @@ static const u16 sPoints_MoveEffect[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_BIDE]                       = 5,
     [EFFECT_RAMPAGE]                    = 4,
     [EFFECT_ROAR]                       = 5,
-    [EFFECT_MULTI_HIT]                  = 1,
     [EFFECT_CONVERSION]                 = 3,
     [EFFECT_FLINCH_HIT]                 = 1,
     [EFFECT_RESTORE_HP]                 = 3,

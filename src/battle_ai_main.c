@@ -2648,7 +2648,7 @@ static s16 AI_TryToFaint(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     else
     {
         // this move isn't expected to faint the target
-        if (gBattleMoves[move].critRate > 0)
+        if (gBattleMoves[move].critBoost > 0)
             score += 2; // crit makes it more likely to make them faint
 
         if (GetMoveDamageResult(move) == MOVE_POWER_OTHER)
@@ -2891,7 +2891,7 @@ static s16 AI_DoubleBattle(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
                     break;
                 case ABILITY_ANGER_POINT:
                     if (AI_WhoStrikesFirst(battlerAtk, battlerAtkPartner, move) == AI_IS_SLOWER
-                        && gBattleMoves[move].critRate == 3)   // Partner moving first
+                        && gBattleMoves[move].critBoost == 3)   // Partner moving first
                     {
                         // discourage raising our attack since it's about to be maxed out
                         if (IsAttackBoostMoveEffect(effect))
@@ -3107,7 +3107,7 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     }
 
     // check high crit
-    if (gBattleMoves[move].critRate > 0 && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
+    if (gBattleMoves[move].critBoost > 0 && effectiveness >= AI_EFFECTIVENESS_x2 && AI_RandLessThan(128))
         score++;
 
     // check already dead
@@ -3187,6 +3187,12 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
         }
         break;
     } // ability checks
+
+    // Multi hit moves
+    if (gBattleMoves[move].multihit > 0 && AI_MoveMakesContact(AI_DATA->abilities[battlerAtk], AI_DATA->holdEffects[battlerAtk], move)
+          && AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD
+          && AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_ROCKY_HELMET)
+            score -= 2;
 
     // move effect checks
     switch (moveEffect)
@@ -3450,13 +3456,6 @@ static s16 AI_CheckViability(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
             score += min(CountPositiveStatStages(battlerDef) + CountPositiveStatStages(BATTLE_PARTNER(battlerDef)), 7);
         else
             score += min(CountPositiveStatStages(battlerDef), 4);
-        break;
-    case EFFECT_MULTI_HIT:
-    case EFFECT_TRIPLE_KICK:
-        if (AI_MoveMakesContact(AI_DATA->abilities[battlerAtk], AI_DATA->holdEffects[battlerAtk], move)
-          && AI_DATA->abilities[battlerAtk] != ABILITY_MAGIC_GUARD
-          && AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_ROCKY_HELMET)
-            score -= 2;
         break;
     case EFFECT_CONVERSION:
         if (!IS_BATTLER_OF_TYPE(battlerAtk, gBattleMoves[gBattleMons[battlerAtk].moves[0]].type))
@@ -4971,7 +4970,7 @@ static s16 AI_Risky(u8 battlerAtk, u8 battlerDef, u16 move, s16 score)
     if (IsTargetingPartner(battlerAtk, battlerDef))
         return score;
 
-    if (gBattleMoves[move].critRate > 0)
+    if (gBattleMoves[move].critBoost > 0)
         score += 2;
 
     switch (gBattleMoves[move].effect)

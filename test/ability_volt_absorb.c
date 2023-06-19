@@ -51,7 +51,7 @@ SINGLE_BATTLE_TEST("Volt Absorb is only triggered once on multi strike moves")
 {
     GIVEN {
         ASSUME(gBattleMoves[MOVE_FURY_SWIPES].type == TYPE_NORMAL);
-        ASSUME(gBattleMoves[MOVE_FURY_SWIPES].effect == EFFECT_MULTI_HIT);
+        ASSUME(gBattleMoves[MOVE_FURY_SWIPES].multihit == RANDOM_2_5_MULTIHIT);
         PLAYER(SPECIES_JOLTEON) { Ability(ABILITY_VOLT_ABSORB); HP(1); MaxHP(TEST_MAX_HP); };
         OPPONENT(SPECIES_GRAVELER_ALOLAN) { Ability(ABILITY_GALVANIZE); };
     } WHEN {

@@ -30,7 +30,7 @@
 #define EFFECT_BIDE                         26
 #define EFFECT_RAMPAGE                      27
 #define EFFECT_ROAR                         28
-#define EFFECT_MULTI_HIT                    29
+#define EFFECT_UNUSED_29                    29
 #define EFFECT_CONVERSION                   30
 #define EFFECT_FLINCH_HIT                   31
 #define EFFECT_RESTORE_HP                   32
