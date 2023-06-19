@@ -414,7 +414,7 @@ struct BattleMove
     u8 secondaryEffectChance;
     s8 priority;
     u8 multihit:4;
-    u8 critRate:2;
+    u8 critBoost:2;
     u8 split:2;
 
     u16 target;
