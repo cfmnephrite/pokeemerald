@@ -844,16 +844,19 @@ s32 AI_CalcDamage(u16 move, u8 battlerAtk, u8 battlerDef, u8 *typeEffectiveness,
             }
 
             // Handle multi-strike moves
-            if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA_ASH)
-                dmg *= 3;
-            else switch (gBattleMoves[move].multihit)
+            if (gBattleMoves[move].multihit > 0)
             {
-                case RANDOM_2_5_MULTIHIT:
-                    dmg *= (AI_DATA->abilities[battlerAtk] == ABILITY_SKILL_LINK ? 5 : 3);
-                    break;
-                default:
-                    dmg *= gBattleMoves[move].multihit;
-                    break;
+                if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA_ASH)
+                    dmg *= 3;
+                else switch (gBattleMoves[move].multihit)
+                {
+                    case RANDOM_2_5_MULTIHIT:
+                        dmg *= (AI_DATA->abilities[battlerAtk] == ABILITY_SKILL_LINK ? 5 : 3);
+                        break;
+                    default:
+                        dmg *= gBattleMoves[move].multihit;
+                        break;
+                }
             }
 
             if (dmg == 0)
