@@ -221,7 +221,7 @@
 #define FLAG_MIRROR_MOVE_AFFECTED                 (1 << 4)
 #define FLAG_KINGS_ROCK_AFFECTED                  (1 << 5)
 #define FLAG_HIGH_CRIT                            (1 << 6)
-#define FLAG_RECKLESS_BOOST                       (1 << 7)
+#define FLAG_MULTIHIT_CHECKS_ACCURACY             (1 << 7)
 #define FLAG_IRON_FIST_BOOST                      (1 << 8)
 #define FLAG_SHEER_FORCE_BOOST                    (1 << 9)
 #define FLAG_STRONG_JAW_BOOST                     (1 << 10)
@@ -241,10 +241,8 @@
 #define FLAG_DMG_UNGROUNDED_IGNORE_TYPE_IF_FLYING (1 << 24) // Makes a Ground type move do 1x damage to flying and levitating targets
 #define FLAG_THAW_USER                            (1 << 25)
 #define FLAG_HIT_IN_SUBSTITUTE                    (1 << 26) // Hyperspace Fury
-#define FLAG_TWO_STRIKES                          (1 << 27) // A move with this flag will strike twice, and may apply its effect on each hit
-#define FLAG_THREE_STRIKES                        (1 << 28) // A move with this flag will strike thrice, and may apply its effect on each hit
-#define FLAG_WIND_MOVE                            (1 << 29)
-#define FLAG_SLICING_MOVE                         (1 << 30)
+#define FLAG_WIND_MOVE                            (1 << 27)
+#define FLAG_SLICING_MOVE                         (1 << 28)
 
 // Split defines.
 #define SPLIT_PHYSICAL  0x0

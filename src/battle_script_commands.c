@@ -1950,10 +1950,10 @@ static void Cmd_accuracycheck(void)
             gBattlescriptCurrInstr = cmd->nextInstr;
     }
     else if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_2ND_HIT
-        || (gSpecialStatuses[gBattlerAttacker].multiHitOn && (gBattleMoves[move].effect != EFFECT_TRIPLE_KICK
+        || (gSpecialStatuses[gBattlerAttacker].multiHitOn && (!(gBattleMoves[move].flags & FLAG_MULTIHIT_CHECKS_ACCURACY)
         || GetBattlerAbility(gBattlerAttacker) == ABILITY_SKILL_LINK)))
     {
-        // No acc checks for second hit of Parental Bond or multi hit moves, except Triple Kick/Triple Axel
+        // No acc checks for second hit of Parental Bond or multi hit moves, except Triple Kick/Triple Axel, Population Bomb
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
     else
