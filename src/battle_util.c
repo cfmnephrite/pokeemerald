@@ -8728,7 +8728,7 @@ static u32 CalcMoveBasePowerAfterModifiers(u16 move, u8 battlerAtk, u8 battlerDe
            MulModifier(&modifier, UQ_4_12(1.5));
         break;
     case ABILITY_RECKLESS:
-        if (gBattleMoves[move].flags & FLAG_RECKLESS_BOOST)
+        if (gBattleMoves[move].effect == EFFECT_RECOIL || gBattleMoves[move].effect == EFFECT_RECOIL_IF_MISS)
            MulModifier(&modifier, UQ_4_12(1.2));
         break;
     case ABILITY_IRON_FIST:

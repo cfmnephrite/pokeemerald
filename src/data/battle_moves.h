@@ -581,7 +581,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 90,
-        .recoil = 4,
+        .recoil = RECOIL_PERCENTAGE(25),
         .type = TYPE_NORMAL,
         .accuracy = 85,
         .pp = 20,
@@ -615,7 +615,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 15,
@@ -1082,7 +1082,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #endif
         .effect = EFFECT_RECOIL,
         .power = 80,
-        .recoil = 4,
+        .recoil = RECOIL_PERCENTAGE(25),
         .type = TYPE_FIGHTING,
         .accuracy = 80,
         .secondaryEffectChance = 0,
@@ -5683,7 +5683,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #endif
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
         .pp = 15,
@@ -6507,7 +6507,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .type = TYPE_FIRE,
         .accuracy = 100,
         .pp = 15,
@@ -6816,7 +6816,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .type = TYPE_FLYING,
         .accuracy = 100,
         .pp = 15,
@@ -7427,7 +7427,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = 15,
@@ -7501,7 +7501,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 150,
-        .recoil = 2,
+        .recoil = RECOIL_PERCENTAGE(50),
         .type = TYPE_ROCK,
         .accuracy = 80,
         .pp = 5,
@@ -8613,7 +8613,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 90,
-        .recoil = 4,
+        .recoil = RECOIL_PERCENTAGE(25),
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
         .pp = 15,
@@ -8840,7 +8840,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 120,
-        .recoil = 4,
+        .recoil = RECOIL_PERCENTAGE(25),
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 15,
@@ -9962,7 +9962,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
     {
         .effect = EFFECT_RECOIL,
         .power = 140,
-        .recoil = 2,
+        .recoil = RECOIL_PERCENTAGE(50),
         .type = TYPE_FAIRY,
         .accuracy = 90,
         .pp = 5,
@@ -12138,7 +12138,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .power = 75,
         #endif
-        .recoil = 3,
+        .recoil = RECOIL_PERCENTAGE(33),
         .effect = EFFECT_RECOIL,
         .type = TYPE_WATER,
         .accuracy = 100,
@@ -12157,7 +12157,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_Z] =
         #else
             .power = 120,
         #endif
-        .recoil = 2,
+        .recoil = RECOIL_PERCENTAGE(50),
         .effect = EFFECT_RECOIL,
         .type = TYPE_GRASS,
         .accuracy = 95,
