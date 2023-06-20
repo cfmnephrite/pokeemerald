@@ -213,7 +213,7 @@ static void BattleTest_Run(void *data)
     DATA.recordedBattle.rngSeed = RNG_SEED_DEFAULT;
 
     DATA.recordedBattle.textSpeed = OPTIONS_TEXT_SPEED_FAST;
-    DATA.recordedBattle.battleFlags = BATTLE_TYPE_RECORDED_IS_MASTER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_TRAINER | BATTLE_TYPE_IS_MASTER;
+    DATA.recordedBattle.battleFlags = BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_TRAINER | BATTLE_TYPE_IS_MASTER;
     if (test->type == BATTLE_TEST_DOUBLES)
         DATA.recordedBattle.battleFlags |= BATTLE_TYPE_DOUBLE;
     for (i = 0; i < STATE->battlersCount; i++)

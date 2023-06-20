@@ -1374,7 +1374,7 @@ static void CB2_EndTrainerBattle(void)
     }
     else if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
-        if (InBattlePyramid() || InTrainerHillChallenge() || VarGet(VAR_CONTINUE_AFTER_LOSING_BATTLE)) 
+        if (InBattlePyramid() || InTrainerHillChallenge()) 
         {
             HealPlayerParty();
             SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
@@ -1391,7 +1391,6 @@ static void CB2_EndTrainerBattle(void)
             SetBattledTrainersFlags();
         }
     }
-    VarSet(VAR_CONTINUE_AFTER_LOSING_BATTLE, 0);
 }
 
 static void CB2_EndRematchBattle(void)

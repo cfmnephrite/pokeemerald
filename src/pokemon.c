@@ -8719,7 +8719,7 @@ void BackupPlayerPartyEXPAndSetAllToLv50(void)
     {
         gPokemonStoragePtr->playerPartyEXPBackup[i] = GetMonData(&gPlayerParty[i], MON_DATA_EXP, NULL);
         SetMonData(&gPlayerParty[i], MON_DATA_EXP,
-            &gExperienceTables[gBaseStats[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL)].growthRate][50]);
+            &gExperienceTables[gSpeciesInfo[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL)].growthRate][50]);
         CalculateMonStats(&gPlayerParty[i]);
     }
 }

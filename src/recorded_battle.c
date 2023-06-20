@@ -324,26 +324,26 @@ bool32 MoveRecordedBattleToSaveData(void)
         // BATTLE_TYPE_RECORDED_IS_MASTER set indicates battle will play
         // out from player's perspective (i.e. player with back to camera)
         // Otherwise player will appear on "opponent" side
-        if (sBattleFlags & BATTLE_TYPE_IS_MASTER)
-        {
-            battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
-        }
-        else if (sBattleFlags & BATTLE_TYPE_MULTI)
-        {
-            switch (sPlayers[0].battlerId)
-            {
-            case 0:
-            case 2:
-                if (!(sPlayers[gRecordedBattleMultiplayerId].battlerId & 1))
-                    battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
-                break;
-            case 1:
-            case 3:
-                if ((sPlayers[gRecordedBattleMultiplayerId].battlerId & 1))
-                    battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
-                break;
-            }
-        }
+        // if (sBattleFlags & BATTLE_TYPE_IS_MASTER)
+        // {
+        //     battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
+        // }
+        // else if (sBattleFlags & BATTLE_TYPE_MULTI)
+        // {
+        //     switch (sPlayers[0].battlerId)
+        //     {
+        //     case 0:
+        //     case 2:
+        //         if (!(sPlayers[gRecordedBattleMultiplayerId].battlerId & 1))
+        //             battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
+        //         break;
+        //     case 1:
+        //     case 3:
+        //         if ((sPlayers[gRecordedBattleMultiplayerId].battlerId & 1))
+        //             battleSave->battleFlags |= BATTLE_TYPE_RECORDED_IS_MASTER;
+        //         break;
+        //     }
+        // }
     }
     else
     {
