@@ -251,7 +251,6 @@
 // Just for readability
 #define RANDOM_2_5_MULTIHIT 1
 #define ALWAYS_CRIT         3
-#define RECOIL_PERCENTAGE(n) (100 / max(1, n))
 
 // Growth rates
 #define GROWTH_MEDIUM_FAST  0
