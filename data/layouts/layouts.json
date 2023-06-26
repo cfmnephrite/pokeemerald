@@ -2834,8 +2834,8 @@
     {
       "id": "LAYOUT_SEALED_CHAMBER_OUTER_ROOM",
       "name": "SealedChamber_OuterRoom_Layout",
-      "width": 21,
-      "height": 23,
+      "width": 48,
+      "height": 64,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/SealedChamber_OuterRoom/border.bin",

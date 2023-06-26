@@ -12,18 +12,22 @@
   "allow_running": true,
   "show_map_name": true,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": null,
-  "object_events": [],
+  "connections": 0,
+  "object_events": [
+
+  ],
   "warp_events": [
     {
-      "x": 10,
+      "x": 15,
       "y": 2,
       "elevation": 3,
       "dest_map": "MAP_SEALED_CHAMBER_INNER_ROOM",
       "dest_warp_id": "0"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+
+  ],
   "bg_events": [
     {
       "type": "sign",
@@ -51,8 +55,8 @@
     },
     {
       "type": "sign",
-      "x": 5,
-      "y": 15,
+      "x": 10,
+      "y": 21,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SealedChamber_OuterRoom_EventScript_BrailleTUV"
@@ -83,31 +87,31 @@
     },
     {
       "type": "sign",
-      "x": 11,
-      "y": 15,
+      "x": 16,
+      "y": 21,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SealedChamber_OuterRoom_EventScript_BrailleWXYZ"
     },
     {
       "type": "sign",
-      "x": 16,
-      "y": 6,
+      "x": 21,
+      "y": 12,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SealedChamber_OuterRoom_EventScript_BraillePeriod"
     },
     {
       "type": "sign",
-      "x": 16,
-      "y": 9,
+      "x": 21,
+      "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "SealedChamber_OuterRoom_EventScript_BrailleComma"
     },
     {
       "type": "sign",
-      "x": 10,
+      "x": 15,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
@@ -163,87 +167,87 @@
     },
     {
       "type": "sign",
-      "x": 4,
-      "y": 15,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleTUV"
-    },
-    {
-      "type": "sign",
-      "x": 6,
-      "y": 15,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleTUV"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 6,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleDEF"
-    },
-    {
-      "type": "sign",
-      "x": 12,
-      "y": 6,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleDEF"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 9,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleJKL"
-    },
-    {
-      "type": "sign",
-      "x": 12,
-      "y": 9,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleJKL"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 12,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BraillePQRS"
-    },
-    {
-      "type": "sign",
-      "x": 12,
-      "y": 12,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BraillePQRS"
-    },
-    {
-      "type": "sign",
-      "x": 10,
-      "y": 15,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleWXYZ"
-    },
-    {
-      "type": "sign",
-      "x": 12,
-      "y": 15,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "SealedChamber_OuterRoom_EventScript_BrailleWXYZ"
-    },
-    {
-      "type": "sign",
       "x": 9,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleTUV"
+    },
+    {
+      "type": "sign",
+      "x": 11,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleTUV"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleDEF"
+    },
+    {
+      "type": "sign",
+      "x": 12,
+      "y": 6,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleDEF"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleJKL"
+    },
+    {
+      "type": "sign",
+      "x": 12,
+      "y": 9,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleJKL"
+    },
+    {
+      "type": "sign",
+      "x": 10,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BraillePQRS"
+    },
+    {
+      "type": "sign",
+      "x": 12,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BraillePQRS"
+    },
+    {
+      "type": "sign",
+      "x": 15,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleWXYZ"
+    },
+    {
+      "type": "sign",
+      "x": 17,
+      "y": 21,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "SealedChamber_OuterRoom_EventScript_BrailleWXYZ"
+    },
+    {
+      "type": "sign",
+      "x": 14,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
@@ -251,7 +255,7 @@
     },
     {
       "type": "sign",
-      "x": 11,
+      "x": 16,
       "y": 2,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
