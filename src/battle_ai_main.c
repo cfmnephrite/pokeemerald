@@ -1857,7 +1857,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_RECOIL:
             if (AI_IsDamagedByRecoil(battlerAtk))
             {
-                u32 recoilDmg = max(1, AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(1, gBattleMoves[move].recoil));
+                u32 recoilDmg = max(1, aiData->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] / max(1, gBattleMoves[move].recoil));
                 if (!ShouldUseRecoilMove(battlerAtk, battlerDef, recoilDmg, AI_THINKING_STRUCT->movesetIndex))
                     ADJUST_SCORE(-10);
                 break;

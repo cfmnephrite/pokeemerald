@@ -1892,13 +1892,13 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
     s32 critChance = 0;
 
     if (gSideStatuses[battlerDef] & SIDE_STATUS_LUCKY_CHANT || gStatuses3[battlerAtk] & STATUS3_CANT_SCORE_A_CRIT
-       || gBattleMoves[gCurrentMove].critBoost == ALWAYS_CRIT
-       || abilityDef == ABILITY_BATTLE_ARMOR || abilityDef == ABILITY_SHELL_ARMOR)
+        || abilityDef == ABILITY_BATTLE_ARMOR || abilityDef == ABILITY_SHELL_ARMOR)
     {
         critChance = -1;
     }
     else if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS
-             || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_PSN_ANY))
+        || gBattleMoves[gCurrentMove].critBoost == ALWAYS_CRIT
+        || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_PSN_ANY))
     {
         critChance = -2;
     }
@@ -5350,7 +5350,7 @@ static void Cmd_moveend(void)
                 switch (gBattleMoves[gCurrentMove].effect)
                 {
                 case EFFECT_RECOIL: // Take Down, 25% recoil
-                    gBattleMoveDamage = max(1, gBattleScripting.savedDmg / max(1, gBattleMoves[gCurrentMove].recoil));
+                    gBattleMoveDamage = max(1, (gBattleScripting.savedDmg * gBattleMoves[gCurrentMove].recoil) / 100);
                     BattleScriptPushCursor();
                     if (gBattleMoves[gCurrentMove].argument) // Flare Blitz - can burn, Volt Tackle - can paralyze
                         gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
