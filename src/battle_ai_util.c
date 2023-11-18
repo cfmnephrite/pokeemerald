@@ -2229,7 +2229,7 @@ bool32 HasSoundMove(u32 battler)
 bool32 HasHighCritRatioMove(u32 battler)
 {
     s32 i;
-    u16 *moves = GetMovesArray(battlerId);
+    u16 *moves = GetMovesArray(battler);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
