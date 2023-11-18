@@ -408,14 +408,13 @@ struct BattleMove
     u16 effect;
     u8 power;
     u8 type:5;
-    u8 recoil:3;
+    u8 split:3;
 
-    u8 accuracy;
+    u16 accuracy:7;
+    u16 recoil:7;
+    u16 critBoost:2;
     u8 secondaryEffectChance;
     s8 priority;
-    u8 multihit:4;
-    u8 critBoost:2;
-    u8 split:2;
 
     u16 target;
     u8 pp;
