@@ -843,15 +843,9 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
     u32 abilityDef = AI_DATA->abilities[battlerDef];
     u32 abilityAtk = AI_DATA->abilities[battlerAtk];
 
+
     switch (gBattleMoves[move].effect)
     {
-    case EFFECT_HIT:
-    default:
-        return FALSE;
-    case EFFECT_BURN_HIT:
-        if (AI_CanBurn(battlerAtk, battlerDef, abilityDef, BATTLE_PARTNER(battlerAtk), move, MOVE_NONE))
-            return TRUE;
-        break;
     case EFFECT_POISON_HIT:
     case EFFECT_POISON_FANG:
         if (AI_CanPoison(battlerAtk, battlerDef, abilityDef, move, MOVE_NONE))
@@ -946,8 +940,6 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
         break;
     }
 
-    return FALSE;
-
     // check ADDITIONAL_EFFECTS
     for (i = 0; i < gBattleMoves[move].numAdditionalEffects; i++)
     {
@@ -961,8 +953,14 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                 if (AI_CanParalyze(battlerAtk, battlerDef, abilityDef, move, MOVE_NONE))
                     return TRUE;
                 break;
+            case MOVE_EFFECT_BURN:
+                if (AI_CanBurn(battlerAtk, battlerDef, abilityDef, BATTLE_PARTNER(battlerAtk), move, MOVE_NONE))
+                    return TRUE;
+                break;
         }
     }
+
+    return FALSE;
 }
 
 static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s32 noOfHitsToKo)
