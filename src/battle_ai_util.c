@@ -809,6 +809,10 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
                 break;
             }
 
+            // Handle other multi-strike moves
+            if (gBattleMoves[move].strikeCount > 1 && gBattleMoves[move].effect != EFFECT_TRIPLE_KICK)
+                dmg *= gBattleMoves[move].strikeCount;
+
             if (dmg == 0)
                 dmg = 1;
         }
