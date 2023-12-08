@@ -26,7 +26,7 @@
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
 
-#define IS_DITTO(species) (gSpeciesInfo[species].eggGroups[0] == EGG_GROUP_DITTO || gSpeciesInfo[species].eggGroups[1] == EGG_GROUP_DITTO)
+#define IS_DITTO(species) (gSpeciesInfo[species].eggGroup1 == EGG_GROUP_DITTO || gSpeciesInfo[species].eggGroup2 == EGG_GROUP_DITTO)
 
 static void ClearDaycareMonMail(struct DaycareMail *mail);
 static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
@@ -1305,19 +1305,19 @@ u8 GetDaycareCompatibilityScore(struct DayCare *daycare)
         trainerIds[i] = GetBoxMonData(&daycare->mons[i].mon, MON_DATA_OT_ID);
         personality = GetBoxMonData(&daycare->mons[i].mon, MON_DATA_PERSONALITY);
         genders[i] = GetGenderFromSpeciesAndPersonality(species[i], personality);
-        eggGroups[i][0] = gSpeciesInfo[species[i]].eggGroups[0];
-        eggGroups[i][1] = gSpeciesInfo[species[i]].eggGroups[1];
+        eggGroups[i][0] = gSpeciesInfo[species[i]].eggGroup1;
+        eggGroups[i][1] = gSpeciesInfo[species[i]].eggGroup2;
     }
 
     // check unbreedable egg group
-    if (eggGroups[0][0] == EGG_GROUP_UNDISCOVERED || eggGroups[1][0] == EGG_GROUP_UNDISCOVERED)
+    if (eggGroup1[0] == EGG_GROUP_UNDISCOVERED || eggGroup2[0] == EGG_GROUP_UNDISCOVERED)
         return PARENTS_INCOMPATIBLE;
     // two Ditto can't breed
-    if (eggGroups[0][0] == EGG_GROUP_DITTO && eggGroups[1][0] == EGG_GROUP_DITTO)
+    if (eggGroup1[0] == EGG_GROUP_DITTO && eggGroup2[0] == EGG_GROUP_DITTO)
         return PARENTS_INCOMPATIBLE;
 
     // one parent is Ditto
-    if (eggGroups[0][0] == EGG_GROUP_DITTO || eggGroups[1][0] == EGG_GROUP_DITTO)
+    if (eggGroup1[0] == EGG_GROUP_DITTO || eggGroup2[0] == EGG_GROUP_DITTO)
     {
         if (trainerIds[0] == trainerIds[1])
             return PARENTS_LOW_COMPATIBILITY;
@@ -1331,7 +1331,7 @@ u8 GetDaycareCompatibilityScore(struct DayCare *daycare)
             return PARENTS_INCOMPATIBLE;
         if (genders[0] == MON_GENDERLESS || genders[1] == MON_GENDERLESS)
             return PARENTS_INCOMPATIBLE;
-        if (!EggGroupsOverlap(eggGroups[0], eggGroups[1]))
+        if (!EggGroupsOverlap(eggGroup1, eggGroup2))
             return PARENTS_INCOMPATIBLE;
 
         if (species[0] == species[1])

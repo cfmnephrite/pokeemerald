@@ -620,12 +620,12 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
 
 u32 GetTotalBaseStat(u32 species)
 {
-    return gSpeciesInfo[species].baseHP
-        + gSpeciesInfo[species].baseAttack
-        + gSpeciesInfo[species].baseDefense
-        + gSpeciesInfo[species].baseSpeed
-        + gSpeciesInfo[species].baseSpAttack
-        + gSpeciesInfo[species].baseSpDefense;
+    return gSpeciesInfo[species].baseStats.hp
+        + gSpeciesInfo[species].baseStats.atk
+        + gSpeciesInfo[species].baseStats.def
+        + gSpeciesInfo[species].baseStats.spe
+        + gSpeciesInfo[species].baseStats.spa
+        + gSpeciesInfo[species].baseStats.spd;
 }
 
 bool32 IsTruantMonVulnerable(u32 battlerAI, u32 opposingBattler)

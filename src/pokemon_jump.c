@@ -1994,7 +1994,7 @@ static const u16 sVineSpeedDelays[] = {0, 1, 1, 2};
 
 static void UpdateVineSpeed(void)
 {
-    int baseSpeed;
+    int baseStats.spe;
 
     sPokemonJump->vineSpeedAccel = 0;
     if (sPokemonJump->vineSpeedDelay)
@@ -2033,8 +2033,8 @@ static void UpdateVineSpeed(void)
                     sPokemonJump->atMaxSpeedStage = TRUE;
             }
 
-            baseSpeed = sVineBaseSpeeds[15 - sPokemonJump->vineBaseSpeedIdx];
-            sPokemonJump->nextVineSpeed = baseSpeed + (sPokemonJump->vineSpeedStage * 7);
+            baseStats.spe = sVineBaseSpeeds[15 - sPokemonJump->vineBaseSpeedIdx];
+            sPokemonJump->nextVineSpeed = baseStats.spe + (sPokemonJump->vineSpeedStage * 7);
             if (++sPokemonJump->vineBaseSpeedIdx > 15)
             {
                 if (PokeJumpRandom() % 4 == 0)

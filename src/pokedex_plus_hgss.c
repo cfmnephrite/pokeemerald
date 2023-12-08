@@ -364,12 +364,12 @@ struct PokemonStats
 {
     u16 species;
     u8  genderRatio;
-    u8  baseHP;
-    u8  baseSpeed;
-    u8  baseAttack;
-    u8  baseSpAttack;
-    u8  baseDefense;
-    u8  baseSpDefense;
+    u8  baseStats.hp;
+    u8  baseStats.spe;
+    u8  baseStats.atk;
+    u8  baseStats.spa;
+    u8  baseStats.def;
+    u8  baseStats.spd;
     u8  differentEVs;
     u8  evYield_HP;
     u8  evYield_Speed;
@@ -3638,12 +3638,12 @@ static void CreateStatBar(u8 *dst, u32 y, u32 width)
 }
 static const u8 sBaseStatOffsets[] =
 {
-    offsetof(struct SpeciesInfo, baseHP),
-    offsetof(struct SpeciesInfo, baseAttack),
-    offsetof(struct SpeciesInfo, baseDefense),
-    offsetof(struct SpeciesInfo, baseSpAttack),
-    offsetof(struct SpeciesInfo, baseSpDefense),
-    offsetof(struct SpeciesInfo, baseSpeed),
+    offsetof(struct SpeciesInfo, baseStats.hp),
+    offsetof(struct SpeciesInfo, baseStats.atk),
+    offsetof(struct SpeciesInfo, baseStats.def),
+    offsetof(struct SpeciesInfo, baseStats.spa),
+    offsetof(struct SpeciesInfo, baseStats.spd),
+    offsetof(struct SpeciesInfo, baseStats.spe),
 };
 static void TryDestroyStatBars(void)
 {
@@ -5007,12 +5007,12 @@ static void SaveMonDataInStruct(void)
 
     sPokedexView->sPokemonStats.species             = species;
     sPokedexView->sPokemonStats.genderRatio         = gSpeciesInfo[species].genderRatio;
-    sPokedexView->sPokemonStats.baseHP              = gSpeciesInfo[species].baseHP;
-    sPokedexView->sPokemonStats.baseSpeed           = gSpeciesInfo[species].baseSpeed;
-    sPokedexView->sPokemonStats.baseAttack          = gSpeciesInfo[species].baseAttack;
-    sPokedexView->sPokemonStats.baseSpAttack        = gSpeciesInfo[species].baseSpAttack;
-    sPokedexView->sPokemonStats.baseDefense         = gSpeciesInfo[species].baseDefense;
-    sPokedexView->sPokemonStats.baseSpDefense       = gSpeciesInfo[species].baseSpDefense;
+    sPokedexView->sPokemonStats.baseStats.hp              = gSpeciesInfo[species].baseStats.hp;
+    sPokedexView->sPokemonStats.baseStats.spe           = gSpeciesInfo[species].baseStats.spe;
+    sPokedexView->sPokemonStats.baseStats.atk          = gSpeciesInfo[species].baseStats.atk;
+    sPokedexView->sPokemonStats.baseStats.spa        = gSpeciesInfo[species].baseStats.spa;
+    sPokedexView->sPokemonStats.baseStats.def         = gSpeciesInfo[species].baseStats.def;
+    sPokedexView->sPokemonStats.baseStats.spd       = gSpeciesInfo[species].baseStats.spd;
     sPokedexView->sPokemonStats.differentEVs        = differentEVs;
     sPokedexView->sPokemonStats.evYield_HP          = evs[STAT_HP];
     sPokedexView->sPokemonStats.evYield_Speed       = evs[STAT_ATK];
@@ -5022,8 +5022,8 @@ static void SaveMonDataInStruct(void)
     sPokedexView->sPokemonStats.evYield_SpDefense   = evs[STAT_SPDEF];
     sPokedexView->sPokemonStats.catchRate           = gSpeciesInfo[species].catchRate;
     sPokedexView->sPokemonStats.growthRate          = gSpeciesInfo[species].growthRate;
-    sPokedexView->sPokemonStats.eggGroup1           = gSpeciesInfo[species].eggGroups[0];
-    sPokedexView->sPokemonStats.eggGroup2           = gSpeciesInfo[species].eggGroups[1];
+    sPokedexView->sPokemonStats.eggGroup1           = gSpeciesInfo[species].eggGroup1;
+    sPokedexView->sPokemonStats.eggGroup2           = gSpeciesInfo[species].eggGroup2;
     sPokedexView->sPokemonStats.eggCycles           = gSpeciesInfo[species].eggCycles;
     sPokedexView->sPokemonStats.expYield            = gSpeciesInfo[species].expYield;
     sPokedexView->sPokemonStats.friendship          = gSpeciesInfo[species].friendship;
@@ -5639,29 +5639,29 @@ static void PrintStatsScreen_Left(u8 taskId)
     if (gTasks[taskId].data[5] == 0)
     {
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_HP, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseHP, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.hp, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_Speed, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpeed, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.spe, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
 
         base_i++;
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_Attack, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.atk, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_SpAttack, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.spa, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
 
         base_i++;
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_Defense, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.def, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, sText_Stats_SpDefense, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseStats.spd, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
         base_i++;
     }

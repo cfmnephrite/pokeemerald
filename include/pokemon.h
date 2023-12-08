@@ -303,14 +303,142 @@ struct BattlePokemon
     /*0x59*/ u8 metLevel;
 };
 
-struct Evolution
+struct __attribute__((packed, aligned(2))) Evolution
 {
     u16 method;
     u16 param;
     u16 targetSpecies;
 };
 
-struct SpeciesInfo /*0x8C*/
+struct __attribute__((packed, aligned(2))) BaseStats
+{
+    u8 hp;
+    u8 atk;
+    u8 def;
+    u8 spe;
+    u8 spa;
+    u8 spd;
+};
+
+struct DexInfo /* 0x20 */
+{
+ /* 0x00 */ u8 categoryName[14];
+ /* 0x0E */ u16 cryId;
+ /* 0x10 */ u16 natDexNum:11;
+            u16 bodyColor:5;
+ /* 0x12 */ u16 height; //in decimeters
+ /* 0x14 */ u16 weight; //in hectograms
+ /* 0x16 */ u16 pokemonScale;
+ /* 0x18 */ u16 trainerScale;
+ /* 0x1A */ s8 pokemonOffset;
+ /* 0x1B */ s8 trainerOffset;
+ /* 0x1C */ const u8 *description;
+};
+
+// All Pokémon pics are 64x64, but this data table defines where in this 64x64 frame the sprite's non-transparent pixels actually are. \
+u8 picSize; // The dimensions of this drawn pixel area. \
+u8 picYOffset; // The number of pixels between the drawn pixel area and the bottom edge.
+
+#define MAIN_SPRITE_DATA    \
+    const u32 *const img;   \
+    u8 size;                \
+    u8 yOffset;             \
+    u8 animId;              \
+    u8 animDelay;
+
+struct FrontSpriteData
+{
+    MAIN_SPRITE_DATA
+};
+
+struct BackSpriteData
+{
+    MAIN_SPRITE_DATA
+    const union AnimCmd *const *frontAnimFrames;
+};
+
+// struct __attribute__((packed, aligned(2))) MiscSpriteData
+// {
+//     const u8 *const iconSprite;
+//     const u8 *const iconSpriteFemale;
+//     const u8 *const footprint;
+//     u8 iconPalIndex:3;
+//     u8 iconPalIndexFemale:3;
+//     u8 hasfemaleVariantFrontPic:1;
+//     u8 hasfemaleVariantBackPic:1;
+//     u8 noFlip:1;
+//     u8 enemyMonElevation:7; // This determines how much higher above the usual position the enemy Pokémon is during battle. Species that float or fly have nonzero values.
+// };
+
+struct SpeciesInfo /*0x7C*/
+{
+ /* 0x00 */ struct BaseStats baseStats;
+ /* 0x06 */ u8 types[2];
+
+ /* 0x08 */ u16 expYield; // expYield was changed from u8 to u16 for the new Exp System.
+ /* 0x0A */ u16 evYield_HP:2;
+            u16 evYield_Attack:2;
+            u16 evYield_Defense:2;
+            u16 evYield_Speed:2;
+            u16 evYield_SpAttack:2;
+            u16 evYield_SpDefense:2;
+            u16 growthRate:4;
+
+ /* 0x0C */ u32 itemCommon:12;
+            u32 itemRare:12;
+            u32 eggGroup1:4;
+            u32 eggGroup2:4;
+
+ /* 0x10 */ u8 genderRatio;
+ /* 0x11 */ u8 eggCycles;
+ /* 0x12 */ u8 friendship;
+ /* 0x13 */ u8 catchRate;
+
+ /* 0x14 */ u16 abilities[NUM_ABILITY_SLOTS]; // 3 abilities, no longer u8 because we have over 255 abilities now.
+            // Pokédex data
+ /* 0x18 */ u8 speciesName[12];
+ /* 0x24 */ struct DexInfo dexInfo;
+            // Graphical Data
+ /* 0x44 */ struct FrontSpriteData *frontSprite;
+ /* 0x50 */ struct BackSpriteData *backSprite;
+//  /* 0x58 */ struct MiscSpriteData miscSpriteData;
+            // Misc sprite data
+ /* 0x58 */ const u8 *const iconSprite;
+ /* 0x5C */ const u8 *const iconSpriteFemale;
+ /* 0x60 */ const u8 *const footprint;
+ /* 0x64 */ u8 iconPalIndex:3;
+            u8 iconPalIndexFemale:3;
+            u8 hasfemaleVariantFrontPic:1;
+            u8 hasfemaleVariantBackPic:1;
+ /* 0x65 */ u8 noFlip:1;
+            u8 enemyMonElevation:7; // This determines how much higher above the usual position the enemy Pokémon is during battle. Species that float or fly have nonzero values.
+            // Flags
+ /* 0x66 */ u16 isLegendary:1;
+            u16 isMythical:1;
+            u16 isUltraBeast:1;
+            u16 isParadoxForm:1;
+            u16 isMegaEvolution:1;
+            u16 isPrimalRevesion:1;
+            u16 isUltraBurst:1;
+            u16 isGigantamax:1;
+            u16 isAlolanForm:1;
+            u16 isGalarianForm:1;
+            u16 isHisuianForm:1;
+            u16 isPaldeanForm:1;
+            u16 cannotBeTraded:1;
+            u16 allPerfectIVs:1;
+            u16 unused1:1;
+            u16 unused2:1;
+            u16 unused3:1;
+            // Move Data
+ /* 0x68 */ const struct LevelUpMove *const levelUpLearnset;
+ /* 0x6C */ const u16 *const teachableLearnset;
+ /* 0x70 */ const struct Evolution *const evolutions;
+ /* 0x74 */ const u16 *const formSpeciesIdTable;
+ /* 0x78 */ const struct FormChange *const formChangeTable;
+};
+
+struct OldSpeciesInfo /*0x94*/
 {
  /* 0x00 */ u8 baseHP;
  /* 0x01 */ u8 baseAttack;
@@ -399,8 +527,8 @@ struct SpeciesInfo /*0x8C*/
  /* 0x80 */ const struct LevelUpMove *const levelUpLearnset;
  /* 0x84 */ const u16 *const teachableLearnset;
  /* 0x88 */ const struct Evolution *const evolutions;
- /* 0x84 */ const u16 *const formSpeciesIdTable;
- /* 0x84 */ const struct FormChange *const formChangeTable;
+ /* 0x8B */ const u16 *const formSpeciesIdTable;
+ /* 0x90 */ const struct FormChange *const formChangeTable;
 };
 
 struct BattleMove

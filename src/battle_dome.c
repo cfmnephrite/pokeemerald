@@ -2177,15 +2177,15 @@ static void CalcDomeMonStats(u16 species, int level, int ivs, u8 evBits, u8 natu
     }
     else
     {
-        int n = 2 * gSpeciesInfo[species].baseHP;
+        int n = 2 * gSpeciesInfo[species].baseStats.hp;
         stats[STAT_HP] = (((n + ivs + evs[STAT_HP] / 4) * level) / 100) + level + 10;
     }
 
-    CALC_STAT(baseAttack, STAT_ATK);
-    CALC_STAT(baseDefense, STAT_DEF);
-    CALC_STAT(baseSpeed, STAT_SPEED);
-    CALC_STAT(baseSpAttack, STAT_SPATK);
-    CALC_STAT(baseSpDefense, STAT_SPDEF);
+    CALC_STAT(baseStats.atk, STAT_ATK);
+    CALC_STAT(baseStats.def, STAT_DEF);
+    CALC_STAT(baseStats.spe, STAT_SPEED);
+    CALC_STAT(baseStats.spa, STAT_SPATK);
+    CALC_STAT(baseStats.spd, STAT_SPDEF);
 }
 
 static void SwapDomeTrainers(int id1, int id2, u16 *statsArray)
@@ -5976,12 +5976,12 @@ static void DecideRoundWinners(u8 roundId)
                     }
                 }
                 species = gFacilityTrainerMons[DOME_MONS[tournamentId1][monId1]].species;
-                points1 += ( gSpeciesInfo[species].baseHP
-                           + gSpeciesInfo[species].baseAttack
-                           + gSpeciesInfo[species].baseDefense
-                           + gSpeciesInfo[species].baseSpeed
-                           + gSpeciesInfo[species].baseSpAttack
-                           + gSpeciesInfo[species].baseSpDefense) / 10;
+                points1 += ( gSpeciesInfo[species].baseStats.hp
+                           + gSpeciesInfo[species].baseStats.atk
+                           + gSpeciesInfo[species].baseStats.def
+                           + gSpeciesInfo[species].baseStats.spe
+                           + gSpeciesInfo[species].baseStats.spa
+                           + gSpeciesInfo[species].baseStats.spd) / 10;
             }
             // Random part of the formula.
             points1 += (Random() & 0x1F);
@@ -5999,12 +5999,12 @@ static void DecideRoundWinners(u8 roundId)
                     }
                 }
                 species = gFacilityTrainerMons[DOME_MONS[tournamentId2][monId1]].species;
-                points2 += ( gSpeciesInfo[species].baseHP
-                           + gSpeciesInfo[species].baseAttack
-                           + gSpeciesInfo[species].baseDefense
-                           + gSpeciesInfo[species].baseSpeed
-                           + gSpeciesInfo[species].baseSpAttack
-                           + gSpeciesInfo[species].baseSpDefense) / 10;
+                points2 += ( gSpeciesInfo[species].baseStats.hp
+                           + gSpeciesInfo[species].baseStats.atk
+                           + gSpeciesInfo[species].baseStats.def
+                           + gSpeciesInfo[species].baseStats.spe
+                           + gSpeciesInfo[species].baseStats.spa
+                           + gSpeciesInfo[species].baseStats.spd) / 10;
             }
             // Random part of the formula.
             points2 += (Random() & 0x1F);
