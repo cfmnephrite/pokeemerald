@@ -5840,6 +5840,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .split = SPLIT_SPECIAL,
+        .skyBattleBanned = TRUE,
     },
 
     [MOVE_BULK_UP] =
@@ -8778,6 +8779,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .split = SPLIT_SPECIAL,
+        .skyBattleBanned = TRUE,
     },
 
     [MOVE_FIRE_PLEDGE] =
@@ -8795,6 +8797,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .split = SPLIT_SPECIAL,
+        .skyBattleBanned = TRUE,
     },
 
     [MOVE_GRASS_PLEDGE] =
@@ -8812,6 +8815,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .split = SPLIT_SPECIAL,
+        .skyBattleBanned = TRUE,
     },
 
     [MOVE_VOLT_SWITCH] =
@@ -10383,6 +10387,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .split = SPLIT_PHYSICAL,
+        .skyBattleBanned = TRUE,
     },
 
     [MOVE_LIGHT_OF_RUIN] =
@@ -13877,6 +13882,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT_DYNAMAX] =
         .secondaryEffectChance = 0,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
+        .critBoost = 1,
         .split = SPLIT_PHYSICAL,
         .metronomeBanned = TRUE,
         .argument = HOLD_EFFECT_MASK,

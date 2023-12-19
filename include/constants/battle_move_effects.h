@@ -412,11 +412,12 @@
 #define EFFECT_CHILLY_RECEPTION             406
 #define EFFECT_MATCHA_GOTCHA                407
 #define EFFECT_SYRUP_BOMB                   408
-#define EFFECT_MAX_MOVE                     409
-#define EFFECT_GLAIVE_RUSH                  410
-#define EFFECT_RAGING_BULL                  411
-#define EFFECT_RAGE_FIST                    412
+#define EFFECT_IVY_CUDGEL                   409
+#define EFFECT_MAX_MOVE                     410
+#define EFFECT_GLAIVE_RUSH                  411
+#define EFFECT_RAGING_BULL                  412
+#define EFFECT_RAGE_FIST                    413
 
-#define NUM_BATTLE_MOVE_EFFECTS             413
+#define NUM_BATTLE_MOVE_EFFECTS             414
 
 #endif  // GUARD_CONSTANTS_BATTLE_MOVE_EFFECTS_H
