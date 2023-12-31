@@ -514,6 +514,17 @@ struct Ability
     u8 name[ABILITY_NAME_LENGTH + 1];
     const u8 *description;
     s8 aiRating;
+    u32 canBeIgnored:1;
+    u32 cantBeSuppressed:1;
+    u32 cantBeTraced:1;
+    u32 cantBeRolePlayed:1;
+    u32 cantBeOverwrittenByRolePlay:1;
+    u32 cantBeEntrained:1;
+    u32 cantBeOverwrittenByEntrainment:1;
+    u32 cantBeSkillSwapped:1;
+    u32 cannotBeChangedByMummy:1;
+    u32 cannotBeChangedByWanderingSpirit:1;
+    u32 cannotBeChangedBySimpleBeam:1;
 };
 
 #define SPINDA_SPOT_WIDTH 16

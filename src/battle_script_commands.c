@@ -9353,8 +9353,8 @@ static void Cmd_various(void)
     case VARIOUS_TRY_ENTRAINMENT:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (IsEntrainmentBannedAbilityAttacker(gBattleMons[gBattlerAttacker].ability)
-          || IsEntrainmentBannedAbility(gBattleMons[gBattlerTarget].ability))
+        if (gAbilities[gBattleMons[gBattlerAttacker].ability].cantBeEntrained
+          || gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwrittenByEntrainment)
         {
             RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
             gBattlescriptCurrInstr = cmd->failInstr;
@@ -13950,10 +13950,9 @@ static void Cmd_trycopyability(void)
     u16 defAbility = gBattleMons[gBattlerTarget].ability;
 
     if (gBattleMons[battler].ability == defAbility
-      || defAbility == ABILITY_NONE
-      || IsRolePlayDoodleBannedAbilityAttacker(gBattleMons[battler].ability)
-      || IsRolePlayDoodleBannedAbilityAttacker(gBattleMons[BATTLE_PARTNER(battler)].ability)
-      || IsRolePlayDoodleBannedAbility(defAbility))
+      || gAbilities[gBattleMons[battler].ability].cantBeOverwrittenByRolePlay
+      || gAbilities[gBattleMons[BATTLE_PARTNER(battler)].ability].cantBeOverwrittenByRolePlay
+      || gAbilities[defAbility].cantBeRolePlayed)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }
@@ -14029,7 +14028,7 @@ static void Cmd_setgastroacid(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (IsGastroAcidBannedAbility(gBattleMons[gBattlerTarget].ability))
+    if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeSuppressed)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }
