@@ -127,6 +127,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prevents sleep."),
         .aiRating = 4,
         .canBeIgnored = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
     },
 
     [ABILITY_COLOR_CHANGE] =
@@ -204,6 +205,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .aiRating = 10,
         .canBeIgnored = TRUE,
         .cantBeRolePlayed = TRUE,
+        .cantBeSkillSwapped = TRUE,
     },
 
     [ABILITY_LEVITATE] =
@@ -426,6 +428,8 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Moves only every two turns."),
         .aiRating = -2,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_HUSTLE] =
@@ -663,6 +667,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prone to wild stat changes."),
         .aiRating = 8,
         .canBeIgnored = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_DRY_SKIN] =
@@ -920,6 +925,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_FLOWER_GIFT] =
@@ -1132,6 +1140,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
         .cantBeRolePlayed = TRUE,
         .cantBeEntrained = TRUE,
+        .cantBeSkillSwapped = TRUE,
     },
 
     [ABILITY_IMPOSTER] =
@@ -1227,6 +1236,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_VICTORY_STAR] =
@@ -1347,6 +1359,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_GALE_WINGS] =
@@ -1524,6 +1539,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_STAKEOUT] =
@@ -1608,6 +1626,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_DISGUISE] =
@@ -1622,6 +1643,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_BATTLE_BOND] =
@@ -1634,6 +1658,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_POWER_CONSTRUCT] =
@@ -1651,6 +1678,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_CORROSION] =
@@ -1670,6 +1700,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_QUEENLY_MAJESTY] =
@@ -1781,6 +1814,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_ELECTRIC_SURGE] =
@@ -1927,6 +1963,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_STALWART] =
@@ -1985,6 +2024,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_POWER_SPOT] =
@@ -2064,6 +2106,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
         .cantBeRolePlayed = TRUE,
         .cantBeEntrained = TRUE,
+        .cantBeSkillSwapped = TRUE,
     },
 
     [ABILITY_PASTEL_VEIL] =
@@ -2086,6 +2129,7 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
         .cantBeRolePlayed = TRUE,
         .cantBeEntrained = TRUE,
+        .cantBeSkillSwapped = TRUE,
     },
 
     [ABILITY_QUICK_DRAW] =
@@ -2156,6 +2200,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_AS_ONE_SHADOW_RIDER] =
@@ -2169,6 +2216,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_LINGERING_AROMA] =
@@ -2274,6 +2324,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_COMMANDER] =
@@ -2286,6 +2339,8 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
     },
 
     [ABILITY_ELECTROMORPHOSIS] =
@@ -2313,6 +2368,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_QUARK_DRIVE] =
@@ -2325,6 +2383,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_GOOD_AS_GOLD] =
@@ -2393,6 +2454,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_HADRON_ENGINE] =
@@ -2409,6 +2473,9 @@ const struct Ability gAbilities[ABILITIES_COUNT] =
         .cantBeOverwrittenByRolePlay = TRUE,
         .cantBeEntrained = TRUE,
         .cantBeOverwrittenByEntrainment = TRUE,
+        .cantBeSkillSwapped = TRUE,
+        .cantBeOverwrittenByWorrySeed = TRUE,
+        .cantBeOverwrittenBySimpleBeam = TRUE,
     },
 
     [ABILITY_OPPORTUNIST] =

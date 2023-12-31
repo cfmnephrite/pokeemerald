@@ -191,7 +191,6 @@ static const u16 sWorrySeedBannedAbilities[] =
     ABILITY_GULP_MISSILE,
     ABILITY_HADRON_ENGINE,
     ABILITY_ICE_FACE,
-    ABILITY_INSOMNIA,
     ABILITY_MULTITYPE,
     ABILITY_ORICHALCUM_PULSE,
     ABILITY_POWER_CONSTRUCT,
@@ -201,7 +200,6 @@ static const u16 sWorrySeedBannedAbilities[] =
     ABILITY_SCHOOLING,
     ABILITY_SHIELDS_DOWN,
     ABILITY_STANCE_CHANGE,
-    ABILITY_TRUANT,
     ABILITY_ZEN_MODE,
     ABILITY_ZERO_TO_HERO,
 };
@@ -283,7 +281,6 @@ static const u16 sSimpleBeamBannedAbilities[] =
     ABILITY_RKS_SYSTEM,
     ABILITY_SCHOOLING,
     ABILITY_SHIELDS_DOWN,
-    ABILITY_SIMPLE,
     ABILITY_STANCE_CHANGE,
     ABILITY_TRUANT,
     ABILITY_ZEN_MODE,
@@ -10821,40 +10818,6 @@ bool32 CanFling(u32 battler)
         return FALSE;
 
     return TRUE;
-}
-
-// Ability checks
-bool32 IsSkillSwapBannedAbility(u16 ability)
-{
-    u32 i;
-    for (i = 0; i < ARRAY_COUNT(sSkillSwapBannedAbilities); i++)
-    {
-        if (ability == sSkillSwapBannedAbilities[i])
-            return TRUE;
-    }
-    return FALSE;
-}
-
-bool32 IsWorrySeedBannedAbility(u16 ability)
-{
-    u32 i;
-    for (i = 0; i < ARRAY_COUNT(sWorrySeedBannedAbilities); i++)
-    {
-        if (ability == sWorrySeedBannedAbilities[i])
-            return TRUE;
-    }
-    return FALSE;
-}
-
-bool32 IsSimpleBeamBannedAbility(u16 ability)
-{
-    u32 i;
-    for (i = 0; i < ARRAY_COUNT(sSimpleBeamBannedAbilities); i++)
-    {
-        if (ability == sSimpleBeamBannedAbilities[i])
-            return TRUE;
-    }
-    return FALSE;
 }
 
 // Sort an array of battlers by speed

@@ -2183,13 +2183,13 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             break;
         case EFFECT_SKILL_SWAP:
             if (aiData->abilities[battlerAtk] == ABILITY_NONE || aiData->abilities[battlerDef] == ABILITY_NONE
-              || IsSkillSwapBannedAbility(aiData->abilities[battlerAtk]) || IsSkillSwapBannedAbility(aiData->abilities[battlerDef])
+              || gAbilities[aiData->abilities[battlerAtk]].cantBeSkillSwapped
+              || gAbilities[aiData->abilities[battlerDef]].cantBeSkillSwapped
               || aiData->holdEffects[battlerDef] == HOLD_EFFECT_ABILITY_SHIELD)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_WORRY_SEED:
-            if (aiData->abilities[battlerDef] == ABILITY_INSOMNIA
-              || IsWorrySeedBannedAbility(aiData->abilities[battlerDef])
+            if (gAbilities[aiData->abilities[battlerDef]].cantBeOverwrittenByWorrySeed
               || aiData->holdEffects[battlerDef] == HOLD_EFFECT_ABILITY_SHIELD)
                 ADJUST_SCORE(-10);
             break;
@@ -2199,8 +2199,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_ENTRAINMENT:
-            if (aiData->abilities[battlerAtk] == ABILITY_NONE
-              || gAbilities[aiData->abilities[battlerAtk]].cantBeEntrained
+            if (gAbilities[aiData->abilities[battlerAtk]].cantBeEntrained
               || gAbilities[aiData->abilities[battlerDef]].cantBeOverwrittenByEntrainment
               || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_ABILITY_SHIELD)
                 ADJUST_SCORE(-10);
@@ -2208,8 +2207,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_CORE_ENFORCER:
             break;
         case EFFECT_SIMPLE_BEAM:
-            if (aiData->abilities[battlerDef] == ABILITY_SIMPLE
-              || IsSimpleBeamBannedAbility(aiData->abilities[battlerDef])
+            if (gAbilities[aiData->abilities[battlerDef]].cantBeOverwrittenBySimpleBeam
               || aiData->holdEffects[battlerDef] == HOLD_EFFECT_ABILITY_SHIELD)
                 ADJUST_SCORE(-10);
             break;

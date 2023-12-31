@@ -522,9 +522,10 @@ struct Ability
     u32 cantBeEntrained:1;
     u32 cantBeOverwrittenByEntrainment:1;
     u32 cantBeSkillSwapped:1;
-    u32 cannotBeChangedByMummy:1;
-    u32 cannotBeChangedByWanderingSpirit:1;
-    u32 cannotBeChangedBySimpleBeam:1;
+    u32 cantBeOverwrittenByWorrySeed
+    u32 cantBeOverwrittenBySimpleBeam:1;
+    u32 cantBeOverwrittenByMummy:1;
+    u32 cantBeChangedByWanderingSpirit:1;
 };
 
 #define SPINDA_SPOT_WIDTH 16

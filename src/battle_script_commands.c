@@ -9329,8 +9329,7 @@ static void Cmd_various(void)
     case VARIOUS_SET_SIMPLE_BEAM:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (IsSimpleBeamBannedAbility(gBattleMons[gBattlerTarget].ability)
-            || gBattleMons[gBattlerTarget].ability == ABILITY_SIMPLE)
+        if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwrittenBySimpleBeam)
         {
             RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
             gBattlescriptCurrInstr = cmd->failInstr;
@@ -14128,8 +14127,8 @@ static void Cmd_tryswapabilities(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (IsSkillSwapBannedAbility(gBattleMons[gBattlerAttacker].ability)
-      || IsSkillSwapBannedAbility(gBattleMons[gBattlerTarget].ability))
+    if (gAbilities[gBattleMons[gBattlerAttacker].ability].cantBeSkillSwapped
+      || gAbilities[gBattleMons[gBattlerTarget].ability].cantBeSkillSwapped)
     {
         RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
         gBattlescriptCurrInstr = cmd->failInstr;
@@ -15488,7 +15487,7 @@ static void Cmd_tryworryseed(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (IsWorrySeedBannedAbility(gBattleMons[gBattlerTarget].ability))
+    if (gAbilities[gBattleMons[gBattlerTarget].ability].cantBeOverwrittenByWorrySeed)
     {
         RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
         gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
