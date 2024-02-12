@@ -196,7 +196,6 @@ EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
 EWRAM_DATA u8 gBattleCommunication[BATTLE_COMMUNICATION_ENTRIES_COUNT] = {0};
 EWRAM_DATA u8 gBattleOutcome = 0;
-EWRAM_DATA struct ProtectStruct gProtectStructs[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gBattleWeather = 0;
 EWRAM_DATA struct WishFutureKnock gWishFutureKnock = {0};
@@ -3260,38 +3259,37 @@ const u8* FaintClearSetData(u32 battler)
 
     memset(&gDisableStructs[battler], 0, sizeof(struct DisableStruct));
 
-    gProtectStructs[battler].protected = FALSE;
-    gProtectStructs[battler].spikyShielded = FALSE;
-    gProtectStructs[battler].kingsShielded = FALSE;
-    gProtectStructs[battler].banefulBunkered = FALSE;
-    gProtectStructs[battler].quash = FALSE;
-    gProtectStructs[battler].obstructed = FALSE;
-    gProtectStructs[battler].silkTrapped = FALSE;
-    gProtectStructs[battler].burningBulwarked = FALSE;
-    gProtectStructs[battler].endured = FALSE;
-    gProtectStructs[battler].noValidMoves = FALSE;
-    gProtectStructs[battler].helpingHand = FALSE;
-    gProtectStructs[battler].bounceMove = FALSE;
-    gProtectStructs[battler].stealMove = FALSE;
-    gProtectStructs[battler].prlzImmobility = FALSE;
-    gProtectStructs[battler].confusionSelfDmg = FALSE;
-    gProtectStructs[battler].targetAffected = FALSE;
-    gProtectStructs[battler].chargingTurn = FALSE;
-    gProtectStructs[battler].fleeType = 0;
-    gProtectStructs[battler].usedImprisonedMove = FALSE;
-    gProtectStructs[battler].loveImmobility = FALSE;
-    gProtectStructs[battler].usedDisabledMove = FALSE;
-    gProtectStructs[battler].usedTauntedMove = FALSE;
-    gProtectStructs[battler].flag2Unknown = FALSE;
-    gProtectStructs[battler].flinchImmobility = FALSE;
-    gProtectStructs[battler].notFirstStrike = FALSE;
-    gProtectStructs[battler].usedHealBlockedMove = FALSE;
-    gProtectStructs[battler].usesBouncedMove = FALSE;
-    gProtectStructs[battler].usedGravityPreventedMove = FALSE;
-    gProtectStructs[battler].usedThroatChopPreventedMove = FALSE;
-    gProtectStructs[battler].statRaised = FALSE;
-    gProtectStructs[battler].statFell = FALSE;
-    gProtectStructs[battler].pranksterElevated = FALSE;
+    gBattleMons[battler].protected = FALSE;
+    gBattleMons[battler].spikyShielded = FALSE;
+    gBattleMons[battler].kingsShielded = FALSE;
+    gBattleMons[battler].banefulBunkered = FALSE;
+    gBattleMons[battler].quash = FALSE;
+    gBattleMons[battler].obstructed = FALSE;
+    gBattleMons[battler].silkTrapped = FALSE;
+    gBattleMons[battler].burningBulwarked = FALSE;
+    gBattleMons[battler].endured = FALSE;
+    gBattleMons[battler].noValidMoves = FALSE;
+    gBattleMons[battler].helpingHand = FALSE;
+    gBattleMons[battler].bounceMove = FALSE;
+    gBattleMons[battler].stealMove = FALSE;
+    gBattleMons[battler].prlzImmobility = FALSE;
+    gBattleMons[battler].confusionSelfDmg = FALSE;
+    gBattleMons[battler].targetAffected = FALSE;
+    gBattleMons[battler].chargingTurn = FALSE;
+    gBattleMons[battler].fleeType = 0;
+    gBattleMons[battler].usedImprisonedMove = FALSE;
+    gBattleMons[battler].loveImmobility = FALSE;
+    gBattleMons[battler].usedDisabledMove = FALSE;
+    gBattleMons[battler].usedTauntedMove = FALSE;
+    gBattleMons[battler].flinchImmobility = FALSE;
+    gBattleMons[battler].notFirstStrike = FALSE;
+    gBattleMons[battler].usedHealBlockedMove = FALSE;
+    gBattleMons[battler].usesBouncedMove = FALSE;
+    gBattleMons[battler].usedGravityPreventedMove = FALSE;
+    gBattleMons[battler].usedThroatChopPreventedMove = FALSE;
+    gBattleMons[battler].statRaised = FALSE;
+    gBattleMons[battler].statFell = FALSE;
+    gBattleMons[battler].pranksterElevated = FALSE;
 
     gDisableStructs[battler].isFirstTurn = 2;
 
@@ -3769,7 +3767,7 @@ static void TryDoEventsBeforeFirstTurn(void)
     // Totem boosts
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (gQueuedStatBoosts[i].stats != 0 && !gProtectStructs[i].eatMirrorHerb && gProtectStructs[i].activateOpportunist == 0)
+        if (gQueuedStatBoosts[i].stats != 0 && !gBattleMons[i].eatMirrorHerb && gBattleMons[i].activateOpportunist == 0)
         {
             gBattlerAttacker = i;
             BattleScriptExecute(BattleScript_TotemVar);
@@ -4262,7 +4260,7 @@ static void HandleTurnActionSelectionState(void)
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler))), 1);
                     }
                     else if (gChosenActionByBattler[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))] == B_ACTION_USE_MOVE
-                             && (gProtectStructs[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))].noValidMoves
+                             && (gBattleMons[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))].noValidMoves
                                 || gDisableStructs[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))].encoredMove))
                     {
                         RecordedBattle_ClearBattlerAction(GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler))), 1);
@@ -4694,8 +4692,8 @@ s8 GetChosenMovePriority(u32 battler)
 {
     u16 move;
 
-    gProtectStructs[battler].pranksterElevated = 0;
-    if (gProtectStructs[battler].noValidMoves)
+    gBattleMons[battler].pranksterElevated = 0;
+    if (gBattleMons[battler].noValidMoves)
         move = MOVE_STRUGGLE;
     else
         move = gBattleMons[battler].moves[*(gBattleStruct->chosenMovePositions + battler)];
@@ -4725,7 +4723,7 @@ s8 GetMovePriority(u32 battler, u16 move)
     }
     else if (ability == ABILITY_PRANKSTER && IS_MOVE_STATUS(move))
     {
-        gProtectStructs[battler].pranksterElevated = 1;
+        gBattleMons[battler].pranksterElevated = 1;
         priority++;
     }
     else if (gMovesInfo[move].effect == EFFECT_GRASSY_GLIDE && gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && IsBattlerGrounded(battler))
@@ -4735,7 +4733,7 @@ s8 GetMovePriority(u32 battler, u16 move)
     else if (ability == ABILITY_TRIAGE && IsHealingMove(move))
         priority += 3;
 
-    if (gProtectStructs[battler].quash)
+    if (gBattleMons[battler].quash)
         priority = -8;
 
     return priority;
@@ -4753,13 +4751,13 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
         // LAGGING TAIL - always last
         // STALL - always last
 
-        if (gProtectStructs[battler1].quickDraw && !gProtectStructs[battler2].quickDraw)
+        if (gBattleMons[battler1].quickDraw && !gBattleMons[battler2].quickDraw)
             strikesFirst = 1;
-        else if (!gProtectStructs[battler1].quickDraw && gProtectStructs[battler2].quickDraw)
+        else if (!gBattleMons[battler1].quickDraw && gBattleMons[battler2].quickDraw)
             strikesFirst = -1;
-        else if (gProtectStructs[battler1].usedCustapBerry && !gProtectStructs[battler2].usedCustapBerry)
+        else if (gBattleMons[battler1].usedCustapBerry && !gBattleMons[battler2].usedCustapBerry)
             strikesFirst = 1;
-        else if (gProtectStructs[battler2].usedCustapBerry && !gProtectStructs[battler1].usedCustapBerry)
+        else if (gBattleMons[battler2].usedCustapBerry && !gBattleMons[battler1].usedCustapBerry)
             strikesFirst = -1;
         else if (holdEffectBattler1 == HOLD_EFFECT_LAGGING_TAIL && holdEffectBattler2 != HOLD_EFFECT_LAGGING_TAIL)
             strikesFirst = -1;
@@ -4943,17 +4941,17 @@ static void TurnValuesCleanUp(bool8 var0)
     {
         if (var0)
         {
-            gProtectStructs[i].protected = FALSE;
-            gProtectStructs[i].spikyShielded = FALSE;
-            gProtectStructs[i].kingsShielded = FALSE;
-            gProtectStructs[i].banefulBunkered = FALSE;
-            gProtectStructs[i].quash = FALSE;
-            gProtectStructs[i].usedCustapBerry = FALSE;
-            gProtectStructs[i].quickDraw = FALSE;
+            gBattleMons[i].protected = FALSE;
+            gBattleMons[i].spikyShielded = FALSE;
+            gBattleMons[i].kingsShielded = FALSE;
+            gBattleMons[i].banefulBunkered = FALSE;
+            gBattleMons[i].quash = FALSE;
+            gBattleMons[i].usedCustapBerry = FALSE;
+            gBattleMons[i].quickDraw = FALSE;
         }
         else
         {
-            memset(&gProtectStructs[i], 0, sizeof(struct ProtectStruct));
+            ResetTurnEndVolatiles();
             memset(&gQueuedStatBoosts[i], 0, sizeof(gQueuedStatBoosts));
 
             if (gDisableStructs[i].isFirstTurn)
@@ -5017,7 +5015,7 @@ static bool32 TryDoGimmicksBeforeMoves(void)
             }
             // Mega Evo Check
             if (gBattleStruct->mega.toEvolve & gBitTable[order[i]]
-                && !(gProtectStructs[order[i]].noValidMoves))
+                && !(gBattleMons[order[i]].noValidMoves))
             {
                 gBattlerAttacker = order[i];
                 gBattleStruct->mega.toEvolve &= ~(gBitTable[gBattlerAttacker]);
@@ -5030,7 +5028,7 @@ static bool32 TryDoGimmicksBeforeMoves(void)
             }
             // Ultra Burst Check
             if (gBattleStruct->burst.toBurst & gBitTable[order[i]]
-                && !(gProtectStructs[order[i]].noValidMoves))
+                && !(gBattleMons[order[i]].noValidMoves))
             {
                 battler = gBattlerAttacker = order[i];
                 gBattleStruct->burst.toBurst &= ~(gBitTable[battler]);
@@ -5060,7 +5058,7 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
             if (!(gBattleStruct->focusPunchBattlers & gBitTable[battlers[i]])
                 && !(gBattleMons[battlers[i]].status1 & STATUS1_SLEEP)
                 && !(gDisableStructs[battlers[i]].truantCounter)
-                && !(gProtectStructs[battlers[i]].noValidMoves))
+                && !(gBattleMons[battlers[i]].noValidMoves))
             {
                 gBattleStruct->focusPunchBattlers |= gBitTable[battlers[i]];
                 gBattlerAttacker = battlers[i];
@@ -5114,22 +5112,22 @@ static void TryChangingTurnOrderEffects(u32 battler1, u32 battler2)
     // Battler 1
     // Quick Draw
     if (ability1 == ABILITY_QUICK_DRAW && !IS_MOVE_STATUS(gChosenMoveByBattler[battler1]) && RandomPercentage(RNG_QUICK_DRAW, 30))
-        gProtectStructs[battler1].quickDraw = TRUE;
+        gBattleMons[battler1].quickDraw = TRUE;
     // Quick Claw and Custap Berry
-    if (!gProtectStructs[battler1].quickDraw
+    if (!gBattleMons[battler1].quickDraw
      && ((holdEffectBattler1 == HOLD_EFFECT_QUICK_CLAW && RandomPercentage(RNG_QUICK_CLAW, GetBattlerHoldEffectParam(battler1)))
      || (holdEffectBattler1 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler1, 4, gBattleMons[battler1].item))))
-        gProtectStructs[battler1].usedCustapBerry = TRUE;
+        gBattleMons[battler1].usedCustapBerry = TRUE;
 
     // Battler 2
     // Quick Draw
     if (ability2 == ABILITY_QUICK_DRAW && !IS_MOVE_STATUS(gChosenMoveByBattler[battler2]) && RandomPercentage(RNG_QUICK_DRAW, 30))
-        gProtectStructs[battler2].quickDraw = TRUE;
+        gBattleMons[battler2].quickDraw = TRUE;
     // Quick Claw and Custap Berry
-    if (!gProtectStructs[battler2].quickDraw
+    if (!gBattleMons[battler2].quickDraw
      && ((holdEffectBattler2 == HOLD_EFFECT_QUICK_CLAW && RandomPercentage(RNG_QUICK_CLAW, GetBattlerHoldEffectParam(battler2)))
      || (holdEffectBattler2 == HOLD_EFFECT_CUSTAP_BERRY && HasEnoughHpToEatBerry(battler2, 4, gBattleMons[battler2].item))))
-        gProtectStructs[battler2].usedCustapBerry = TRUE;
+        gBattleMons[battler2].usedCustapBerry = TRUE;
 }
 
 static void CheckChangingTurnOrderEffects(void)
@@ -5144,12 +5142,12 @@ static void CheckChangingTurnOrderEffects(void)
             gBattleStruct->quickClawBattlerId++;
             if (gChosenActionByBattler[battler] == B_ACTION_USE_MOVE
              && gChosenMoveByBattler[battler] != MOVE_FOCUS_PUNCH   // quick claw message doesn't need to activate here
-             && (gProtectStructs[battler].usedCustapBerry || gProtectStructs[battler].quickDraw)
+             && (gBattleMons[battler].usedCustapBerry || gBattleMons[battler].quickDraw)
              && !(gBattleMons[battler].status1 & STATUS1_SLEEP)
              && !(gDisableStructs[gBattlerAttacker].truantCounter)
-             && !(gProtectStructs[battler].noValidMoves))
+             && !(gBattleMons[battler].noValidMoves))
             {
-                if (gProtectStructs[battler].usedCustapBerry)
+                if (gBattleMons[battler].usedCustapBerry)
                 {
                     gLastUsedItem = gBattleMons[battler].item;
                     PREPARE_ITEM_BUFFER(gBattleTextBuff1, gLastUsedItem);
@@ -5164,7 +5162,7 @@ static void CheckChangingTurnOrderEffects(void)
                         BattleScriptExecute(BattleScript_QuickClawActivation);
                     }
                 }
-                else if (gProtectStructs[battler].quickDraw)
+                else if (gBattleMons[battler].quickDraw)
                 {
                     gBattlerAbility = battler;
                     gLastUsedAbility = gBattleMons[battler].ability;
@@ -5341,7 +5339,7 @@ static void HandleEndTurn_RanFromBattle(void)
     }
     else
     {
-        switch (gProtectStructs[gBattlerAttacker].fleeType)
+        switch (gBattleMons[gBattlerAttacker].fleeType)
         {
         default:
             gBattlescriptCurrInstr = BattleScript_GotAwaySafely;
@@ -5781,4 +5779,18 @@ bool32 IsWildMonSmart(void)
 #else
     return FALSE;
 #endif
+}
+
+void ResetTurnEndVolatiles(void)
+{
+    u32 i;
+    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
+        memset(
+            &gBattleMons[i].TURN_END_RESET_START,
+            0,
+            offsetof(struct BattlePokemon, TURN_END_RESET_END)
+                - offsetof(struct BattlePokemon, TURN_END_RESET_START)
+        );
+    }
 }

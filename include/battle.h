@@ -130,60 +130,6 @@ struct DisableStruct
     u8 usedProteanLibero:1;
 };
 
-struct ProtectStruct
-{
-    u32 protected:1;
-    u32 spikyShielded:1;
-    u32 kingsShielded:1;
-    u32 banefulBunkered:1;
-    u32 obstructed:1;
-    u32 endured:1;
-    u32 noValidMoves:1;
-    u32 helpingHand:1;
-    u32 bounceMove:1;
-    u32 stealMove:1;
-    u32 prlzImmobility:1;
-    u32 confusionSelfDmg:1;
-    u32 targetAffected:1;
-    u32 chargingTurn:1;
-    u32 fleeType:2; // 0: Normal, 1: FLEE_ITEM, 2: FLEE_ABILITY
-    u32 usedImprisonedMove:1;
-    u32 loveImmobility:1;
-    u32 usedDisabledMove:1;
-    u32 usedTauntedMove:1;
-    u32 flag2Unknown:1; // Only set to 0 once. Checked in 'WasUnableToUseMove' function.
-    u32 flinchImmobility:1;
-    u32 notFirstStrike:1;
-    u32 palaceUnableToUseMove:1;
-    u32 usesBouncedMove:1;
-    u32 usedHealBlockedMove:1;
-    u32 usedGravityPreventedMove:1;
-    u32 powderSelfDmg:1;
-    u32 usedThroatChopPreventedMove:1;
-    u32 statRaised:1;
-    u32 usedMicleBerry:1;
-    u32 usedCustapBerry:1;    // also quick claw
-    u32 touchedProtectLike:1;
-    // End of 32-bit bitfield
-    u16 disableEjectPack:1;
-    u16 statFell:1;
-    u16 pranksterElevated:1;
-    u16 quickDraw:1;
-    u16 beakBlastCharge:1;
-    u16 quash:1;
-    u16 shellTrap:1;
-    u16 maxGuarded:1;
-    u16 silkTrapped:1;
-    u16 burningBulwarked:1;
-    u16 eatMirrorHerb:1;
-    u16 activateOpportunist:2; // 2 - to copy stats. 1 - stats copied (do not repeat). 0 - no stats to copy
-    u16 usedAllySwitch:1;
-    u32 physicalDmg;
-    u32 specialDmg;
-    u8 physicalBattlerId;
-    u8 specialBattlerId;
-};
-
 struct SpecialStatus
 {
     s32 shellBellDmg;
@@ -818,17 +764,17 @@ STATIC_ASSERT(sizeof(((struct BattleStruct *)0)->palaceFlags) * 8 >= MAX_BATTLER
     gBattleMons[battlerId].type3 = TYPE_MYSTERY;                                            \
 }
 
-#define IS_BATTLER_PROTECTED(battlerId)(gProtectStructs[battlerId].protected                                           \
+#define IS_BATTLER_PROTECTED(battlerId)(gBattleMons[battlerId].protected                                           \
                                         || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD           \
                                         || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD          \
                                         || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD        \
                                         || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_MAT_BLOCK            \
-                                        || gProtectStructs[battlerId].spikyShielded                                    \
-                                        || gProtectStructs[battlerId].kingsShielded                                    \
-                                        || gProtectStructs[battlerId].banefulBunkered                                  \
-                                        || gProtectStructs[battlerId].burningBulwarked                                 \
-                                        || gProtectStructs[battlerId].obstructed                                       \
-                                        || gProtectStructs[battlerId].silkTrapped)
+                                        || gBattleMons[battlerId].spikyShielded                                    \
+                                        || gBattleMons[battlerId].kingsShielded                                    \
+                                        || gBattleMons[battlerId].banefulBunkered                                  \
+                                        || gBattleMons[battlerId].burningBulwarked                                 \
+                                        || gBattleMons[battlerId].obstructed                                       \
+                                        || gBattleMons[battlerId].silkTrapped)
 
 #define GET_STAT_BUFF_ID(n)((n & 7))              // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n)((n & 0xF8))
@@ -1062,7 +1008,6 @@ extern u16 gPauseCounterBattle;
 extern u16 gPaydayMoney;
 extern u8 gBattleCommunication[BATTLE_COMMUNICATION_ENTRIES_COUNT];
 extern u8 gBattleOutcome;
-extern struct ProtectStruct gProtectStructs[MAX_BATTLERS_COUNT];
 extern struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT];
 extern u16 gBattleWeather;
 extern struct WishFutureKnock gWishFutureKnock;

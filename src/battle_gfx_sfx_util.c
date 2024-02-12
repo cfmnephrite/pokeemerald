@@ -251,14 +251,14 @@ u16 ChooseMoveAndTargetInBattlePalace(u32 battler)
             // that it will be unable to use it. This could have been checked earlier to avoid the above work.
             if (Random() % 100 >= 50)
             {
-                gProtectStructs[battler].palaceUnableToUseMove = TRUE;
+                gBattleMons[battler].palaceUnableToUseMove = TRUE;
                 return 0;
             }
         }
         else
         {
             // All the battler's moves were flagged as unusable.
-            gProtectStructs[battler].palaceUnableToUseMove = TRUE;
+            gBattleMons[battler].palaceUnableToUseMove = TRUE;
             return 0;
         }
     }

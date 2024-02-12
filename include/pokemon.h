@@ -6,6 +6,7 @@
 #include "constants/region_map_sections.h"
 #include "constants/map_groups.h"
 #include "contest_effect.h"
+#include <stddef.h>
 
 #define GET_BASE_SPECIES_ID(speciesId) (GetFormSpeciesId(speciesId, 0))
 #define FORM_SPECIES_END (0xffff)
@@ -303,6 +304,8 @@ enum {
     MON_SPR_GFX_MANAGERS_COUNT
 };
 
+#define RESET_AT_TURN_END(...) u8 TURN_END_RESET_START; __VA_ARGS__ u8 TURN_END_RESET_END
+
 struct BattlePokemon
 {
     /*0x00*/ u16 species;
@@ -320,26 +323,79 @@ struct BattlePokemon
     /*0x17*/ u32 spDefenseIV:5;
     /*0x17*/ u32 abilityNum:2;
     /*0x18*/ s8 statStages[NUM_BATTLE_STATS];
-    /*0x20*/ u16 ability;
-    /*0x22*/ u8 type1;
-    /*0x23*/ u8 type2;
-    /*0x24*/ u8 type3;
-    /*0x25*/ u8 pp[MAX_MON_MOVES];
-    /*0x29*/ u16 hp;
-    /*0x2B*/ u8 level;
-    /*0x2C*/ u8 friendship;
-    /*0x2D*/ u16 maxHP;
-    /*0x2F*/ u16 item;
-    /*0x31*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
-    /*0x3C*/ u8 ppBonuses;
-    /*0x3D*/ u8 otName[PLAYER_NAME_LENGTH + 1];
-    /*0x45*/ u32 experience;
-    /*0x49*/ u32 personality;
-    /*0x4D*/ u32 status1;
-    /*0x51*/ u32 status2;
-    /*0x55*/ u32 otId;
-    /*0x59*/ u8 metLevel;
-    /*0x5A*/ bool8 isShiny;
+    /*0x20*/ u8 level;
+    /*0x21*/ u8 type1;
+    /*0x22*/ u8 type2;
+    /*0x23*/ u8 type3;
+    /*0x24*/ u8 pp[MAX_MON_MOVES];
+    /*0x28*/ u16 hp;
+    /*0x2A*/ u16 maxHP;
+    /*0x2C*/ u16 ability;
+    /*0x2E*/ u16 item;
+    /*0x30*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
+    /*0x3B*/ u8 ppBonuses;
+    /*0x3C*/ u8 otName[PLAYER_NAME_LENGTH + 1];
+    /*0x44*/ u32 experience;
+    /*0x48*/ u32 personality;
+    /*0x4C*/ u32 status1;
+    /*0x50*/ u32 status2;
+    /*0x54*/ u32 otId;
+    /*0x58*/ u8 metLevel;
+    /*0x59*/ bool8 isShiny;
+    /*0x5A*/ u8 friendship;
+
+    /*0x5B Formerly ProtectStruct*/
+    RESET_AT_TURN_END(
+        u32 protected:1;
+        u32 spikyShielded:1;
+        u32 kingsShielded:1;
+        u32 banefulBunkered:1;
+        u32 obstructed:1;
+        u32 endured:1;
+        u32 noValidMoves:1;
+        u32 helpingHand:1;
+        u32 bounceMove:1;
+        u32 stealMove:1;
+        u32 prlzImmobility:1;
+        u32 confusionSelfDmg:1;
+        u32 targetAffected:1;
+        u32 chargingTurn:1;
+        u32 fleeType:2; // 0: Normal, 1: FLEE_ITEM, 2: FLEE_ABILITY
+        u32 usedImprisonedMove:1;
+        u32 loveImmobility:1;
+        u32 usedDisabledMove:1;
+        u32 usedTauntedMove:1;
+        u32 flinchImmobility:1;
+        u32 notFirstStrike:1;
+        u32 palaceUnableToUseMove:1;
+        u32 usesBouncedMove:1;
+        u32 usedHealBlockedMove:1;
+        u32 usedGravityPreventedMove:1;
+        u32 powderSelfDmg:1;
+        u32 usedThroatChopPreventedMove:1;
+        u32 statRaised:1;
+        u32 usedMicleBerry:1;
+        u32 usedCustapBerry:1;    // also quick claw
+        u32 touchedProtectLike:1;
+        u32 disableEjectPack:1;
+        // End of 32-bit bitfield
+        u16 statFell:1;
+        u16 pranksterElevated:1;
+        u16 quickDraw:1;
+        u16 beakBlastCharge:1;
+        u16 quash:1;
+        u16 shellTrap:1;
+        u16 maxGuarded:1;
+        u16 silkTrapped:1;
+        u16 burningBulwarked:1;
+        u16 eatMirrorHerb:1;
+        u16 activateOpportunist:2; // 2 - to copy stats. 1 - stats copied (do not repeat). 0 - no stats to copy
+        u16 usedAllySwitch:1;
+        u8 physicalBattlerId;
+        u8 specialBattlerId;
+        u32 physicalDmg;
+        u32 specialDmg;
+    );
 };
 
 struct Evolution
