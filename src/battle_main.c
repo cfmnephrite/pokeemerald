@@ -3146,6 +3146,7 @@ void SwitchInClearSetData(u32 battler)
     gMoveSelectionCursor[battler] = 0;
 
     memset(&gDisableStructs[battler], 0, sizeof(struct DisableStruct));
+    ResetTurnEndVolatiles(battler);
 
     if (gMovesInfo[gCurrentMove].effect == EFFECT_BATON_PASS)
     {
@@ -4951,7 +4952,7 @@ static void TurnValuesCleanUp(bool8 var0)
         }
         else
         {
-            ResetTurnEndVolatiles();
+            ResetTurnEndVolatilesForAllBattlers();
             memset(&gQueuedStatBoosts[i], 0, sizeof(gQueuedStatBoosts));
 
             if (gDisableStructs[i].isFirstTurn)
@@ -5781,16 +5782,21 @@ bool32 IsWildMonSmart(void)
 #endif
 }
 
-void ResetTurnEndVolatiles(void)
+void ResetTurnEndVolatiles(u32 battler)
+{
+    memset(
+        &gBattleMons[battler].TURN_END_RESET_START,
+        0,
+        offsetof(struct BattlePokemon, TURN_END_RESET_END)
+            - offsetof(struct BattlePokemon, TURN_END_RESET_START)
+    );
+}
+
+void ResetTurnEndVolatilesForAllBattlers(void)
 {
     u32 i;
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        memset(
-            &gBattleMons[i].TURN_END_RESET_START,
-            0,
-            offsetof(struct BattlePokemon, TURN_END_RESET_END)
-                - offsetof(struct BattlePokemon, TURN_END_RESET_START)
-        );
+        ResetTurnEndVolatiles(i);
     }
 }

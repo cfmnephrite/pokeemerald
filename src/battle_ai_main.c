@@ -260,7 +260,7 @@ u32 BattleAI_ChooseMoveOrAction(void)
 
     // Clear protect structures, some flags may be set during AI calcs
     // e.g. pranksterElevated from GetMovePriority
-    ResetTurnEndVolatiles();
+    ResetTurnEndVolatilesForAllBattlers();
 
     #if TESTING
     TestRunner_Battle_CheckAiMoveScores(sBattler_AI);

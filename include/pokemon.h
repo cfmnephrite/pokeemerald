@@ -304,7 +304,9 @@ enum {
     MON_SPR_GFX_MANAGERS_COUNT
 };
 
-#define RESET_AT_TURN_END(...) u8 TURN_END_RESET_START; __VA_ARGS__ u8 TURN_END_RESET_END
+struct __attribute__((packed, aligned(1))) Marker {};
+
+#define RESET_AT_TURN_END(...) struct Marker TURN_END_RESET_START; __VA_ARGS__ struct Marker TURN_END_RESET_END
 
 struct BattlePokemon
 {
