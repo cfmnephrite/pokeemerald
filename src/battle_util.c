@@ -1032,8 +1032,7 @@ const u8* CancelMultiTurnMoves(u32 battler)
     const u8 *result = NULL;
     gBattleMons[battler].status2 &= ~(STATUS2_MULTIPLETURNS);
     gBattleMons[battler].status2 &= ~(STATUS2_LOCK_CONFUSE);
-    gBattleMons[battler].status2 &= ~(STATUS2_UPROAR);
-    gBattleMons[battler].status2 &= ~(STATUS2_BIDE);
+    REMOVE_BATTLER_VOLATILES(battler, VOLATILE_STATUS_UPROAR, VOLATILE_STATUS_BIDE);
 
     // Clear battler's semi-invulnerable bits if they are not held by Sky Drop.
     if (!(gStatuses3[battler] & STATUS3_SKY_DROPPED))
@@ -2615,7 +2614,7 @@ u8 DoBattlerEndTurnEffects(void)
         }
             break;
         case ENDTURN_UPROAR:  // uproar
-            if (gBattleMons[battler].status2 & STATUS2_UPROAR)
+            if (CHECK_BATTLER_VOLATILES(battler, VOLATILE_STATUS_UPROAR))
             {
                 for (gBattlerAttacker = 0; gBattlerAttacker < gBattlersCount; gBattlerAttacker++)
                 {
@@ -2639,13 +2638,14 @@ u8 DoBattlerEndTurnEffects(void)
                 else
                 {
                     gBattlerAttacker = battler;
-                    gBattleMons[battler].status2 -= STATUS2_UPROAR_TURN(1);  // uproar timer goes down
+                    if (--gDisableStructs[battler].uproarTimer == 0)
+                        REMOVE_BATTLER_VOLATILES(battler, VOLATILE_STATUS_UPROAR);
                     if (WasUnableToUseMove(battler))
                     {
                         CancelMultiTurnMoves(battler);
                         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_UPROAR_ENDS;
                     }
-                    else if (gBattleMons[battler].status2 & STATUS2_UPROAR)
+                    else if (CHECK_BATTLER_VOLATILES(battler, VOLATILE_STATUS_UPROAR))
                     {
                         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_UPROAR_CONTINUES;
                         gBattleMons[battler].status2 |= STATUS2_MULTIPLETURNS;
@@ -3415,17 +3415,13 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             gBattleStruct->atkCancellerTracker++;
             break;
         case CANCELLER_BIDE: // bide
-            if (gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE)
+            if (CHECK_BATTLER_VOLATILES(gBattlerAttacker, VOLATILE_STATUS_BIDE))
             {
-                gBattleMons[gBattlerAttacker].status2 -= STATUS2_BIDE_TURN(1);
-                if (gBattleMons[gBattlerAttacker].status2 & STATUS2_BIDE)
-                {
-                    gBattlescriptCurrInstr = BattleScript_BideStoringEnergy;
-                }
-                else
+                if (--gDisableStructs[gBattlerAttacker].bideTimer == 0)
                 {
                     // This is removed in FRLG and Emerald for some reason
                     //gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_MULTIPLETURNS;
+                    REMOVE_BATTLER_VOLATILES(gBattlerAttacker, VOLATILE_STATUS_BIDE);
                     if (gBideDmg[gBattlerAttacker])
                     {
                         gCurrentMove = MOVE_BIDE;
@@ -3440,6 +3436,8 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                         gBattlescriptCurrInstr = BattleScript_BideNoEnergyToAttack;
                     }
                 }
+                else
+                    gBattlescriptCurrInstr = BattleScript_BideStoringEnergy;
                 effect = 1;
             }
             gBattleStruct->atkCancellerTracker++;
@@ -8112,7 +8110,7 @@ u8 IsMonDisobedient(void)
             int i;
             for (i = 0; i < gBattlersCount; i++)
             {
-                if (gBattleMons[i].status2 & STATUS2_UPROAR)
+                if (CHECK_BATTLER_VOLATILES(i, VOLATILE_STATUS_UPROAR))
                     break;
             }
             if (i == gBattlersCount)
@@ -11230,11 +11228,19 @@ void SetBattlerVolatiles(u32 battler, u8 count, ...)
     {
         volatileStatus = va_arg(args, int);
         gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] |= (volatileStatus & 0xFFF8);
+
+        // Set timers
         switch (volatileStatus)
         {
             case VOLATILE_STATUS_CONFUSION:
                 gBattleMons[battler].status2 |= STATUS2_CONFUSION; // TEMPORARY
                 gDisableStructs[battler].confusionTimer = ((Random()) % 4) + 2;
+                break;
+            case VOLATILE_STATUS_UPROAR:
+                gDisableStructs[battler].uproarTimer = B_UPROAR_TURNS >= GEN_5 ? 3 : (Random() & 3) + 2;
+                break;
+            case VOLATILE_STATUS_BIDE:
+                gDisableStructs[battler].bideTimer = 2;
                 break;
         }
     }
@@ -11277,6 +11283,12 @@ void RemoveBattlerVolatiles(u32 battler, u8 count, ...)
             case VOLATILE_STATUS_CONFUSION:
                 gBattleMons[battler].status2 &= ~STATUS2_CONFUSION; // TEMPORARY
                 gDisableStructs[battler].confusionTimer = 0;
+                break;
+            case VOLATILE_STATUS_UPROAR:
+                gDisableStructs[battler].uproarTimer = 0;
+                break;
+            case VOLATILE_STATUS_BIDE:
+                gDisableStructs[battler].bideTimer = 0;
                 break;
         }
     }

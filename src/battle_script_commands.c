@@ -903,7 +903,6 @@ static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
     [MOVE_EFFECT_FROSTBITE]      = STATUS1_FROSTBITE,
     [MOVE_EFFECT_CONFUSION]      = STATUS2_CONFUSION,
     [MOVE_EFFECT_FLINCH]         = STATUS2_FLINCHED,
-    [MOVE_EFFECT_UPROAR]         = STATUS2_UPROAR,
     [MOVE_EFFECT_CHARGING]       = STATUS2_MULTIPLETURNS,
     [MOVE_EFFECT_WRAP]           = STATUS2_WRAPPED,
     [MOVE_EFFECT_RECHARGE]       = STATUS2_RECHARGE,
@@ -2845,7 +2844,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             // check active uproar
             if (battlerAbility != ABILITY_SOUNDPROOF || B_UPROAR_IGNORE_SOUNDPROOF >= GEN_5)
             {
-                for (i = 0; i < gBattlersCount && !(gBattleMons[i].status2 & STATUS2_UPROAR); i++)
+                for (i = 0; i < gBattlersCount && !(CHECK_BATTLER_VOLATILES(i, VOLATILE_STATUS_UPROAR)); i++)
                     ;
             }
             else
@@ -3179,11 +3178,11 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 break;
             case MOVE_EFFECT_UPROAR:
-                if (!(gBattleMons[gEffectBattler].status2 & STATUS2_UPROAR))
+                if (!CHECK_BATTLER_VOLATILES(gEffectBattler, VOLATILE_STATUS_UPROAR))
                 {
                     gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
                     gLockedMoves[gEffectBattler] = gCurrentMove;
-                    gBattleMons[gEffectBattler].status2 |= STATUS2_UPROAR_TURN(B_UPROAR_TURNS >= GEN_5 ? 3 : (Random() & 3) + 2);
+                    SET_BATTLER_VOLATILES(gEffectBattler, VOLATILE_STATUS_UPROAR);
 
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleScripting.moveEffect];
@@ -10141,8 +10140,7 @@ static void Cmd_various(void)
 
         // End any multiturn effects caused by the target except STATUS2_LOCK_CONFUSE
         gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_MULTIPLETURNS);
-        gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_UPROAR);
-        gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_BIDE);
+        REMOVE_BATTLER_VOLATILES(gBattlerTarget, VOLATILE_STATUS_UPROAR, VOLATILE_STATUS_BIDE);
         gDisableStructs[gBattlerTarget].rolloutTimer = 0;
         gDisableStructs[gBattlerTarget].furyCutterCounter = 0;
 
@@ -11182,7 +11180,7 @@ bool8 UproarWakeUpCheck(u8 battler)
 
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (!(gBattleMons[i].status2 & STATUS2_UPROAR) || (GetBattlerAbility(battler) == ABILITY_SOUNDPROOF && B_UPROAR_IGNORE_SOUNDPROOF < GEN_5))
+        if (!CHECK_BATTLER_VOLATILES(i, VOLATILE_STATUS_UPROAR) || (GetBattlerAbility(battler) == ABILITY_SOUNDPROOF && B_UPROAR_IGNORE_SOUNDPROOF < GEN_5))
             continue;
 
         gBattleScripting.battler = i;
@@ -11720,7 +11718,7 @@ static void Cmd_setbide(void)
     gBattleMons[gBattlerAttacker].status2 |= STATUS2_MULTIPLETURNS;
     gLockedMoves[gBattlerAttacker] = gCurrentMove;
     gBideDmg[gBattlerAttacker] = 0;
-    gBattleMons[gBattlerAttacker].status2 |= STATUS2_BIDE_TURN(2);
+    SET_BATTLER_VOLATILES(gBattlerAttacker, VOLATILE_STATUS_BIDE);
 
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
