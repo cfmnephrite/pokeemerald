@@ -88,6 +88,16 @@ struct DisableStruct
     s8 stockpileBeforeSpDef;
     u8 substituteHP;
     u8 encoredMovePos;
+    // REPLACE VOLATILES
+    u8 confusionTimer:3;
+    u8 uproarTimer:3;
+    u8 bideTimer:2;
+    u8 lockConfuseTimer:2;
+    u8 infatuationTimer:4;
+    u8 leechSeedBattler:2;
+    u8 alwaysHitstimer:2;
+    u8 yawnTimer:2;
+    // REPLACES VOLATILES
     u8 disableTimer:4;
     u8 encoreTimer:4;
     u8 perishSongTimer:4;

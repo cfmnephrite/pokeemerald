@@ -47,6 +47,7 @@
 #include "constants/trainers.h"
 #include "constants/weather.h"
 #include "constants/pokemon.h"
+#include <stdarg.h>
 
 /*
 NOTE: The data and functions in this file up until (but not including) sSoundMovesTable
@@ -11215,4 +11216,55 @@ void RemoveBattlerType(u32 battler, u8 type)
         if (*(u8 *)(&gBattleMons[battler].type1 + i) == type)
             *(u8 *)(&gBattleMons[battler].type1 + i) = TYPE_MYSTERY;
     }
+}
+
+void SetBattlerVolatiles(u32 battler, u8 count, ...)
+{
+    u32 i;
+    u16 volatileStatus;
+    va_list args;
+    va_start(args, count);
+
+    for (i = 0; i < count; i++)
+    {
+        volatileStatus = va_arg(args, u16);
+        gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] |= (volatileStatus & 0xFFF8);
+    }
+
+    va_end(args);
+}
+
+bool32 CheckBattlerVolatiles(u32 battler, u8 count, ...)
+{
+    u32 i;
+    u16 volatileStatus;
+    va_list args;
+    va_start(args, count);
+
+    for (i = 0; i < count; i++)
+    {
+        volatileStatus = va_arg(args, u16);
+        if (gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] & (volatileStatus & 0xFFF8))
+            return TRUE;
+    }
+
+    va_end(args);
+
+    return FALSE;
+}
+
+void RemoveBattlerVolatiles(u32 battler, u8 count, ...)
+{
+    u32 i;
+    u16 volatileStatus;
+    va_list args;
+    va_start(args, count);
+
+    for (i = 0; i < count; i++)
+    {
+        volatileStatus = va_arg(args, u16);
+        gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] &= ~volatileStatus;
+    }
+
+    va_end(args);
 }

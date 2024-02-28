@@ -55,6 +55,9 @@
 #define RECURSIVELY_2(...) RECURSIVELY_1(RECURSIVELY_1(RECURSIVELY_1(RECURSIVELY_1(__VA_ARGS__))))
 #define RECURSIVELY_1(...) __VA_ARGS__
 
+/* Useful for recursively counting arguments */
+#define PLUS_ONE(arg) + 1
+
 /* Useful for deferring expansion until the second scan. See
  * https://www.scs.stanford.edu/~dm/blog/va-opt.html for more info. */
 #define PARENS ()
