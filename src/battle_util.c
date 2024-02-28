@@ -11227,7 +11227,7 @@ void SetBattlerVolatiles(u32 battler, u8 count, ...)
     for (i = 0; i < count; i++)
     {
         volatileStatus = va_arg(args, int);
-        gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] |= (volatileStatus & 0xFFF8);
+        gBattleMons[battler].volatileStatuses[volatileStatus & 0x7] |= (volatileStatus & 0xFFF8);
 
         // Set timers
         switch (volatileStatus)
@@ -11258,7 +11258,7 @@ bool32 CheckBattlerVolatiles(u32 battler, u8 count, ...)
     for (i = 0; i < count; i++)
     {
         volatileStatus = va_arg(args, int);
-        if (gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] & (volatileStatus & 0xFFF8))
+        if (gBattleMons[battler].volatileStatuses[volatileStatus & 0x7] & (volatileStatus & 0xFFF8))
             return TRUE;
     }
 
@@ -11277,7 +11277,7 @@ void RemoveBattlerVolatiles(u32 battler, u8 count, ...)
     for (i = 0; i < count; i++)
     {
         volatileStatus = va_arg(args, int);
-        gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] &= ~volatileStatus;
+        gBattleMons[battler].volatileStatuses[volatileStatus & 0x7] &= ~volatileStatus;
         switch (volatileStatus)
         {
             case VOLATILE_STATUS_CONFUSION:
