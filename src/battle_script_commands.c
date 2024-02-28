@@ -3137,7 +3137,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 else
                 {
-                    gBattleMons[gEffectBattler].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2); // 2-5 turns
+                    SET_BATTLER_VOLATILES(gEffectBattler, VOLATILE_STATUS_CONFUSION);
 
                     // If the confusion is activating due to being released from Sky Drop, go to "confused due to fatigue" script.
                     // Otherwise, do normal confusion script.
@@ -10189,7 +10189,7 @@ static void Cmd_various(void)
             {
                 gBattleMons[gEffectBattler].status2 &= ~(STATUS2_LOCK_CONFUSE);
                 gBattlerAttacker = gEffectBattler;
-                gBattleMons[gBattlerTarget].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
+                SET_BATTLER_VOLATILES(gBattlerTarget, VOLATILE_STATUS_CONFUSION);
                 gBattlescriptCurrInstr = BattleScript_ThrashConfuses;
                 return;
             }

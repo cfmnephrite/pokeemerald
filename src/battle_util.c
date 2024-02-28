@@ -1066,7 +1066,7 @@ const u8* CancelMultiTurnMoves(u32 battler)
                 || IsBattlerTerrainAffected(otherSkyDropper, STATUS_FIELD_MISTY_TERRAIN)))
             {
                 // Set confused status
-                gBattleMons[otherSkyDropper].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
+                SET_BATTLER_VOLATILES(otherSkyDropper, VOLATILE_STATUS_CONFUSION);
 
                 // If this CancelMultiTurnMoves is occuring due to attackcanceller
                 if (gBattlescriptCurrInstr[0] == 0x0)
@@ -3352,8 +3352,9 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
         case CANCELLER_CONFUSED: // confusion
             if (!gBattleStruct->isAtkCancelerForCalledMove && gBattleMons[gBattlerAttacker].status2 & STATUS2_CONFUSION)
             {
-                if (!(gStatuses4[gBattlerAttacker] & STATUS4_INFINITE_CONFUSION))
-                    gBattleMons[gBattlerAttacker].status2 -= STATUS2_CONFUSION_TURN(1);
+                if (!(gStatuses4[gBattlerAttacker] & STATUS4_INFINITE_CONFUSION)
+                  && --gDisableStructs[gBattlerAttacker].confusionTimer == 0)
+                    gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_CONFUSION;
                 if (gBattleMons[gBattlerAttacker].status2 & STATUS2_CONFUSION)
                 {
                      // confusion dmg
@@ -11221,14 +11222,21 @@ void RemoveBattlerType(u32 battler, u8 type)
 void SetBattlerVolatiles(u32 battler, u8 count, ...)
 {
     u32 i;
-    u16 volatileStatus;
+    int volatileStatus;
     va_list args;
     va_start(args, count);
 
     for (i = 0; i < count; i++)
     {
-        volatileStatus = va_arg(args, u16);
+        volatileStatus = va_arg(args, int);
         gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] |= (volatileStatus & 0xFFF8);
+        switch (volatileStatus)
+        {
+            case VOLATILE_STATUS_CONFUSION:
+                gBattleMons[battler].status2 |= STATUS2_CONFUSION; // TEMPORARY
+                gDisableStructs[battler].confusionTimer = ((Random()) % 4) + 2;
+                break;
+        }
     }
 
     va_end(args);
@@ -11237,13 +11245,13 @@ void SetBattlerVolatiles(u32 battler, u8 count, ...)
 bool32 CheckBattlerVolatiles(u32 battler, u8 count, ...)
 {
     u32 i;
-    u16 volatileStatus;
+    int volatileStatus;
     va_list args;
     va_start(args, count);
 
     for (i = 0; i < count; i++)
     {
-        volatileStatus = va_arg(args, u16);
+        volatileStatus = va_arg(args, int);
         if (gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] & (volatileStatus & 0xFFF8))
             return TRUE;
     }
@@ -11256,14 +11264,21 @@ bool32 CheckBattlerVolatiles(u32 battler, u8 count, ...)
 void RemoveBattlerVolatiles(u32 battler, u8 count, ...)
 {
     u32 i;
-    u16 volatileStatus;
+    int volatileStatus;
     va_list args;
     va_start(args, count);
 
     for (i = 0; i < count; i++)
     {
-        volatileStatus = va_arg(args, u16);
+        volatileStatus = va_arg(args, int);
         gBattleMons[battler].volatileStatuses[volatileStatus & 0x3] &= ~volatileStatus;
+        switch (volatileStatus)
+        {
+            case VOLATILE_STATUS_CONFUSION:
+                gBattleMons[battler].status2 &= ~STATUS2_CONFUSION; // TEMPORARY
+                gDisableStructs[battler].confusionTimer = 0;
+                break;
+        }
     }
 
     va_end(args);

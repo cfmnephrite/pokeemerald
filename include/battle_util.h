@@ -252,9 +252,9 @@ bool8 IsMonBannedFromSkyBattles(u16 species);
 void RemoveBattlerType(u32 battler, u8 type);
 
 #define MACRO_BATTLER_VOLATILES(func, battler, volatile1, ...) func##BattlerVolatiles(battler, (1 __VA_OPT__(RECURSIVELY(R_FOR_EACH(PLUS_ONE, __VA_ARGS__)))), volatile1 __VA_OPT__(, __VA_ARGS__))
-#define SET_BATTLER_VOLATILES(...) MACRO_BATTLER_VOLATILES(Set, __VA_ARGS__)
-#define CHECK_BATTLER_VOLATILES(...) MACRO_BATTLER_VOLATILES(Check, __VA_ARGS__)
-#define REMOVE_BATTLER_VOLATILES(...) MACRO_BATTLER_VOLATILES(Remove, __VA_ARGS__)
+#define SET_BATTLER_VOLATILES(battler, volatile1, ...) MACRO_BATTLER_VOLATILES(Set, battler, volatile1, __VA_ARGS__)
+#define CHECK_BATTLER_VOLATILES(battler, volatile1, ...) MACRO_BATTLER_VOLATILES(Check, battler, volatile1, __VA_ARGS__)
+#define REMOVE_BATTLER_VOLATILES(battler, volatile1, ...) MACRO_BATTLER_VOLATILES(Remove, battler, volatile1, __VA_ARGS__)
 
 void SetBattlerVolatiles(u32 battler, u8 count, ...);
 bool32 CheckBattlerVolatiles(u32 battler, u8 count, ...);

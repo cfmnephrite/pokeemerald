@@ -3379,7 +3379,7 @@ const u8* FaintClearSetData(u32 battler)
                     || gBattleMons[otherSkyDropper].status2 & STATUS2_CONFUSION
                     || IsBattlerTerrainAffected(otherSkyDropper, STATUS_FIELD_MISTY_TERRAIN)))
                 {
-                    gBattleMons[otherSkyDropper].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
+                    SET_BATTLER_VOLATILES(otherSkyDropper, VOLATILE_STATUS_CONFUSION);
                     gBattlerAttacker = otherSkyDropper;
                     result = BattleScript_ThrashConfuses;
                 }

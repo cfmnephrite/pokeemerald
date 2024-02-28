@@ -970,7 +970,7 @@ void BS_TrySetStatus2(void)
         case STATUS2_CONFUSION:
             if (CanBeConfused(gBattlerTarget))
             {
-                gBattleMons[gBattlerTarget].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
+                SET_BATTLER_VOLATILES(gBattlerTarget, VOLATILE_STATUS_CONFUSION);
                 gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                 gBattleCommunication[MULTIUSE_STATE] = 1;
                 effect++;
