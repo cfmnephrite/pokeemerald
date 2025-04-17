@@ -4173,10 +4173,11 @@ static void Cmd_setadditionaleffects(void)
 
         // If we haven't had a single successful effect after
         // checking, go to to fail instruction
-        if (cmd->check && !hasAtLeastOneSuccess)
+        if (cmd->check)
         {
-            // use the blocker script in case of a single effect
-            if (additionalEffectsCount == 1)
+            if (hasAtLeastOneSuccess)
+                gBattleStruct->additionalEffectsCounter = 0; // reset counter, continue
+            else if (additionalEffectsCount == 1) // use the blocker script in case of a single effect
                 gBattlescriptCurrInstr = lastResult.nextScript;
             else if (cmd->checkFailInstr)
                 gBattlescriptCurrInstr = cmd->checkFailInstr;
