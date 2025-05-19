@@ -5619,10 +5619,13 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
     {
+        // Check for Water Absorb etc.
+        struct AbilityEffect *immunityAbilityEffect = GetAbilityEffectByEffectType(gAiLogicData->abilities[BATTLE_PARTNER(battlerAtk)], ABILITYEFFECT_IMMUNITY);
         if ((effect == EFFECT_HEAL_PULSE || effect == EFFECT_HIT_ENEMY_HEAL_ALLY)
-         || (moveType == TYPE_ELECTRIC && gAiLogicData->abilities[BATTLE_PARTNER(battlerAtk)] == ABILITY_VOLT_ABSORB)
-         || (moveType == TYPE_GROUND && gAiLogicData->abilities[BATTLE_PARTNER(battlerAtk)] == ABILITY_EARTH_EATER)
-         || (moveType == TYPE_WATER && (gAiLogicData->abilities[BATTLE_PARTNER(battlerAtk)] == ABILITY_DRY_SKIN || gAiLogicData->abilities[BATTLE_PARTNER(battlerAtk)] == ABILITY_WATER_ABSORB)))
+         || (immunityAbilityEffect != NULL
+           && immunityAbilityEffect->immunityEffect == MOVE_ABSORBED_BY_DRAIN_HP_ABILITY
+           && immunityAbilityEffect->moveType == moveType
+           ))
         {
             if (gStatuses3[battlerDef] & STATUS3_HEAL_BLOCK)
                 return 0;

@@ -84,6 +84,15 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Turns electricity into HP."),
         .aiRating = 7,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_ELECTRIC,
+                .unlessTargetingAllBattlers = TRUE,
+                .immunityEffect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY,
+                .hpFraction = 4,
+            }
+        ),
     },
 
     [ABILITY_WATER_ABSORB] =
@@ -92,6 +101,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Changes water into HP."),
         .aiRating = 7,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_WATER,
+                .immunityEffect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY,
+                .hpFraction = 4,
+            }
+        ),
     },
 
     [ABILITY_OBLIVIOUS] =
@@ -145,6 +162,16 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Powers up if hit by fire."),
         .aiRating = 6,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_FIRE,
+                .immunityEffect = MOVE_ABSORBED_BY_BOOST_FLASH_FIRE,
+#if B_FLASH_FIRE_FROZEN >= GEN_5
+                .unlessStatus = STATUS1_FREEZE,
+#endif
+            }
+        ),
     },
 
     [ABILITY_SHIELD_DUST] =
@@ -245,6 +272,17 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Draws electrical moves."),
         .aiRating = 7,
         .breakable = TRUE,
+#if B_REDIRECT_ABILITY_IMMUNITY >= GEN_5
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_ELECTRIC,
+                .unlessTargetingAllBattlers = TRUE,
+                .immunityEffect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY,
+                .statBoost = {STAT_SPATK, 1},
+            }
+        ),
+#endif
     },
 
     [ABILITY_SERENE_GRACE] =
@@ -595,6 +633,15 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Electricity raises Speed."),
         .aiRating = 6,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_ELECTRIC,
+                .unlessTargetingAllBattlers = TRUE,
+                .immunityEffect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY,
+                .statBoost = {STAT_SPEED, 1},
+            }
+        ),
     },
 
     [ABILITY_RIVALRY] =
@@ -662,6 +709,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prefers moisture to heat."),
         .aiRating = 6,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_WATER,
+                .immunityEffect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY,
+                .hpFraction = 4,
+            }
+        ),
     },
 
     [ABILITY_DOWNLOAD] =
@@ -855,6 +910,16 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Draws in Water moves."),
         .aiRating = 7,
         .breakable = TRUE,
+#if B_REDIRECT_ABILITY_IMMUNITY >= GEN_5
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_WATER,
+                .immunityEffect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY,
+                .statBoost = {STAT_SPATK, 1},
+            }
+        ),
+#endif
     },
 
     [ABILITY_ICE_BODY] =
@@ -1185,6 +1250,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Grass increases Attack."),
         .aiRating = 7,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_GRASS,
+                .immunityEffect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY,
+                .statBoost = {STAT_ATK, 1},
+            }
+        ),
     },
 
     [ABILITY_PRANKSTER] =
@@ -2089,6 +2162,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Strengthened by Fire."),
         .aiRating = 5,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_FIRE,
+                .immunityEffect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY,
+                .statBoost = {STAT_DEF, 2},
+            }
+        ),
     },
 
     [ABILITY_WIND_RIDER] =

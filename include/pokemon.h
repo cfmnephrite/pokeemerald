@@ -490,6 +490,57 @@ struct SpeciesInfo /*0xC4*/
 #endif //OW_POKEMON_OBJECT_EVENTS
 };
 
+enum {
+    AEC_POKEMON_AT_FULL_HP,
+    AEC_POKEMON_AT_OVER_FRACTION_HP,
+    AEC_POKEMOM_AT_UNDER_FRACTION_HP,
+    AEC_POKEMON_SPECIES,
+    AEC_POKEMON_STATUS1,
+    AEC_POKEMON_STATUS2,
+    AEC_POKEMON_HAS_BERRY,
+    AEC_WEATHER_IS_ACTIVE,
+    AEC_TERRAIN_IS_ACTIVE,
+    AEC_MOVE_IS_TYPE,
+    AEC_MOVE_IS_SAME_TYPE_AS_POKEMON,
+    AEC_MOVE_IS_CATEGORY,
+    AEC_MOVE_EFFECTIVENESS,
+    AEC_MOVE_HAS_EFFECT,
+    AEC_OPPONENT_TYPE,
+    AEC_OPPONENT_NOT_SAME_GENDER,
+    AEC_PARTNER_ABILITY,
+    AEC_ABILITY_ON_FIELD,
+    AEC_RANDOM_CHANCE,
+    AEC_CUSTOM_CONDITION,
+};
+
+enum {
+    AFFECTS_SELF,
+    AFFECTS_OPPONENT, // i.e. the mon currently attacking the ability holder
+    AFFECTS_OWN_SIDE, // e.g. Pastel Veil
+    AFFECTS_FIELD, // e.g. Dark Aura
+};
+
+#define ABILITY_EFFECTS_ARR(...) (struct AbilityEffect[]) {__VA_ARGS__}
+#define ABILITY_EFFECTS(...) ABILITY_EFFECTS_ARR( __VA_ARGS__ ), .numAbilityEffects = ARRAY_COUNT(ABILITY_EFFECTS_ARR( __VA_ARGS__ ))
+
+struct __attribute__((packed, aligned(2))) AbilityEffect
+{
+    u8 abilityEffect;
+    u8 affectedBattlers:2; // Self, opponent, own field, whole field
+    union {
+        struct {
+            u8 moveType:7;
+            u8 unlessTargetingAllBattlers:1;
+            u8 immunityEffect;
+            union {
+                s8 statBoost[2];
+                u16 hpFraction;
+                u16 unlessStatus;
+            };
+        }; // ABILITYEFFECT_IMMUNITY
+    };
+};
+
 struct Ability
 {
     u8 name[ABILITY_NAME_LENGTH + 1];
@@ -503,6 +554,8 @@ struct Ability
     u8 breakable:1; // can be bypassed by Mold Breaker and clones
     u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
     u8 preventsCriticalHits:1; // Battle Armor, Shell Armor
+    u8 numAbilityEffects;
+    struct AbilityEffect *abilityEffects;
 };
 
 enum {

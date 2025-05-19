@@ -4580,46 +4580,71 @@ bool32 IsMoxieTypeAbility(u32 ability)
 // Should the AI use a spread move to deliberately activate its partner's ability?
 bool32 ShouldTriggerAbility(u32 battler, u32 ability)
 {
+    u32 stat, statBoost;
+    struct AbilityEffect *abilityEffect;
+
+    // Always return TRUE if Contrary
+    if (ability == ABILITY_CONTRARY)
+        return TRUE;
+
+    // Retrieve immunity abilities
+    if ((abilityEffect = GetAbilityEffectByEffectType(ability, ABILITYEFFECT_IMMUNITY)) != NULL)
+    {
+        switch (abilityEffect->immunityEffect)
+        {
+            case MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY:
+                stat = abilityEffect->statBoost[0];
+                statBoost = abilityEffect->statBoost[1];
+
+                // Stat boost must be positive
+                if (statBoost < 0)
+                    return FALSE;
+                break;
+
+            case MOVE_ABSORBED_BY_DRAIN_HP_ABILITY:
+                return (gAiThinkingStruct->aiFlags[battler] & AI_FLAG_HP_AWARE); 
+
+            case MOVE_ABSORBED_BY_BOOST_FLASH_FIRE:
+                return (HasMoveWithType(battler, TYPE_FIRE) && !gDisableStructs[battler].flashFireBoosted);
+        }
+    }
+
+    // To do...
     switch (ability)
     {
-        case ABILITY_LIGHTNING_ROD:
-        case ABILITY_STORM_DRAIN:
-            if (B_REDIRECT_ABILITY_IMMUNITY < GEN_5)
-                return FALSE;
-            else
-                return (BattlerStatCanRise(battler, ability, STAT_SPATK) && HasMoveWithCategory(battler, DAMAGE_CATEGORY_SPECIAL));
-
         case ABILITY_DEFIANT:
         case ABILITY_JUSTIFIED:
         case ABILITY_MOXIE:
-        case ABILITY_SAP_SIPPER:
         case ABILITY_THERMAL_EXCHANGE:
-            return (BattlerStatCanRise(battler, ability, STAT_ATK) && HasMoveWithCategory(battler, DAMAGE_CATEGORY_PHYSICAL));
+            stat = STAT_ATK;
+            break;
 
         case ABILITY_COMPETITIVE:
-            return (BattlerStatCanRise(battler, ability, STAT_SPATK) && HasMoveWithCategory(battler, DAMAGE_CATEGORY_SPECIAL));
-
-        case ABILITY_CONTRARY:
-            return TRUE;
-
-        case ABILITY_DRY_SKIN:
-        case ABILITY_VOLT_ABSORB:
-        case ABILITY_WATER_ABSORB:
-            return (gAiThinkingStruct->aiFlags[battler] & AI_FLAG_HP_AWARE);
+            stat = STAT_SPATK;
+            break;
 
         case ABILITY_RATTLED:
         case ABILITY_STEAM_ENGINE:
-            return BattlerStatCanRise(battler, ability, STAT_SPEED);
-
-        case ABILITY_FLASH_FIRE:
-            return (HasMoveWithType(battler, TYPE_FIRE) && !gDisableStructs[battler].flashFireBoosted);
+            stat = STAT_SPEED;
+            break;
 
         case ABILITY_WATER_COMPACTION:
-        case ABILITY_WELL_BAKED_BODY:
-            return (BattlerStatCanRise(battler, ability, STAT_DEF));
+            stat = STAT_DEF;
+            break;
 
         default:
             return FALSE;
+    }
+
+    // Switch over stat
+    switch (stat)
+    {
+        case STAT_ATK:
+            return (BattlerStatCanRise(battler, ability, STAT_ATK) && HasMoveWithCategory(battler, DAMAGE_CATEGORY_PHYSICAL));
+        case STAT_SPATK:
+            return (BattlerStatCanRise(battler, ability, STAT_SPATK) && HasMoveWithCategory(battler, DAMAGE_CATEGORY_SPECIAL));
+        default:
+            return BattlerStatCanRise(battler, ability, stat);
     }
 }
 

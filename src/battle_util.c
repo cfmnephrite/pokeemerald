@@ -3028,71 +3028,41 @@ bool32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 
     const u8 *battleScript = NULL;
     u32 statId = 0;
     u32 statAmount = 1;
+    u32 hpFraction = 1;
 
     switch (abilityDef)
     {
     default:
-        effect = MOVE_ABSORBED_BY_NO_ABILITY;
-        break;
-    case ABILITY_VOLT_ABSORB:
-        if (moveType == TYPE_ELECTRIC && GetBattlerMoveTargetType(battlerAtk, move) != MOVE_TARGET_ALL_BATTLERS)
-            effect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY;
-        break;
-    case ABILITY_WATER_ABSORB:
-    case ABILITY_DRY_SKIN:
-        if (moveType == TYPE_WATER)
-            effect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY;
-        break;
-    case ABILITY_EARTH_EATER:
-        if (moveType == TYPE_GROUND)
-            effect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY;
-        break;
-    case ABILITY_MOTOR_DRIVE:
-        if (moveType == TYPE_ELECTRIC && GetBattlerMoveTargetType(battlerAtk, move) != MOVE_TARGET_ALL_BATTLERS)
         {
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-            statId = STAT_SPEED;
+            struct AbilityEffect *immunityAbilityEffect = GetAbilityEffectByEffectType(abilityDef, ABILITYEFFECT_IMMUNITY);
+            if (immunityAbilityEffect != NULL)
+            {
+                // Certain abilities work differently when the move targets all battlers
+                if (immunityAbilityEffect->unlessTargetingAllBattlers && GetBattlerMoveTargetType(battlerAtk, move) == MOVE_TARGET_ALL_BATTLERS)
+                    break;
+
+                // For Flash Fire, have a blocking status:
+                if (immunityAbilityEffect->immunityEffect == MOVE_ABSORBED_BY_BOOST_FLASH_FIRE
+                 && gBattleMons[battlerDef].status1 & immunityAbilityEffect->unlessStatus)
+                    break;
+
+                // Otherwise, check that the type matches up
+                if (moveType == immunityAbilityEffect->moveType)
+                {
+                    effect = immunityAbilityEffect->immunityEffect;
+                    statId = min(STAT_EVASION, immunityAbilityEffect->statBoost[0]);
+                    statAmount = immunityAbilityEffect->statBoost[1];
+                    hpFraction = min(100, max(1, immunityAbilityEffect->hpFraction));
+                }
+            }
+            break;
         }
-        break;
-    case ABILITY_LIGHTNING_ROD:
-        if (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5 && moveType == TYPE_ELECTRIC && GetBattlerMoveTargetType(battlerAtk, move) != MOVE_TARGET_ALL_BATTLERS)
-        {
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-            statId = STAT_SPATK;
-        }
-        break;
-    case ABILITY_STORM_DRAIN:
-        if (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5 && moveType == TYPE_WATER)
-        {
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-            statId = STAT_SPATK;
-        }
-        break;
-    case ABILITY_SAP_SIPPER:
-        if (moveType == TYPE_GRASS)
-        {
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-            statId = STAT_ATK;
-        }
-        break;
-    case ABILITY_WELL_BAKED_BODY:
-        if (moveType == TYPE_FIRE)
-        {
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-            statAmount = 2;
-            statId = STAT_DEF;
-        }
-        break;
     case ABILITY_WIND_RIDER:
         if (IsWindMove(move) && !(GetBattlerMoveTargetType(battlerAtk, move) & MOVE_TARGET_USER))
         {
             effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
             statId = STAT_ATK;
         }
-        break;
-    case ABILITY_FLASH_FIRE:
-        if (moveType == TYPE_FIRE && (B_FLASH_FIRE_FROZEN >= GEN_5 || !(gBattleMons[battlerDef].status1 & STATUS1_FREEZE)))
-            effect = MOVE_ABSORBED_BY_BOOST_FLASH_FIRE;
         break;
     }
 
@@ -3119,7 +3089,7 @@ bool32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 
             else
                 battleScript = BattleScript_MoveHPDrain_PPLoss;
 
-            gBattleStruct->moveDamage[battlerDef] = GetNonDynamaxMaxHP(battlerDef) / 4;
+            gBattleStruct->moveDamage[battlerDef] = GetNonDynamaxMaxHP(battlerDef) / hpFraction;
             if (gBattleStruct->moveDamage[battlerDef] == 0)
                 gBattleStruct->moveDamage[battlerDef] = 1;
             gBattleStruct->moveDamage[battlerDef] *= -1;
@@ -11433,4 +11403,16 @@ void UpdateStallMons(void)
         }
     }
     //  Handling for moves that target multiple opponents in doubles not handled currently
+}
+
+struct AbilityEffect *GetAbilityEffectByEffectType(u32 ability, u32 effectType)
+{
+    u32 i;
+    for (i = 0; i < gAbilitiesInfo[ability].numAbilityEffects; i++)
+    {
+        if (gAbilitiesInfo[ability].abilityEffects[i].abilityEffect == effectType)
+            return &gAbilitiesInfo[ability].abilityEffects[i];
+    }
+
+    return NULL;
 }
