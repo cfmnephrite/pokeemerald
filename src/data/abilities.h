@@ -36,6 +36,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Blocks critical hits."),
         .aiRating = 2,
         .breakable = TRUE,
+        .preventsCriticalHits = TRUE,
     },
 
     [ABILITY_STURDY] =
@@ -570,6 +571,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Blocks critical hits."),
         .aiRating = 2,
         .breakable = TRUE,
+        .preventsCriticalHits = TRUE,
     },
 
     [ABILITY_AIR_LOCK] =
