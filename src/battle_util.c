@@ -3034,7 +3034,7 @@ bool32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 
     {
     default:
         {
-            struct AbilityEffect *immunityAbilityEffect = GetAbilityEffectByEffectType(abilityDef, ABILITYEFFECT_IMMUNITY);
+            const struct AbilityEffect *immunityAbilityEffect = GetAbilityEffectByEffectType(abilityDef, ABILITYEFFECT_IMMUNITY);
             if (immunityAbilityEffect != NULL)
             {
                 // Certain abilities work differently when the move targets all battlers
@@ -9804,7 +9804,7 @@ uq4_12_t GetOverworldTypeEffectiveness(struct Pokemon *mon, u8 moveType)
 
     if (moveType != TYPE_MYSTERY)
     {
-        struct AbilityEffect *abilityEffect;
+        const struct AbilityEffect *abilityEffect;
         MulByTypeEffectiveness(&modifier, MOVE_POUND, moveType, 0, 0, type1, 0, FALSE);
         if (type2 != type1)
             MulByTypeEffectiveness(&modifier, MOVE_POUND, moveType, 0, 0, type2, 0, FALSE);
@@ -11399,7 +11399,7 @@ void UpdateStallMons(void)
     //  Handling for moves that target multiple opponents in doubles not handled currently
 }
 
-struct AbilityEffect *GetAbilityEffectByEffectType(u32 ability, u32 effectType)
+const struct AbilityEffect *GetAbilityEffectByEffectType(u32 ability, u32 effectType)
 {
     u32 i;
     for (i = 0; i < gAbilitiesInfo[ability].numAbilityEffects; i++)

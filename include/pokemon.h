@@ -520,7 +520,7 @@ enum {
     AFFECTS_FIELD, // e.g. Dark Aura
 };
 
-#define ABILITY_EFFECTS_ARR(...) (struct AbilityEffect[]) {__VA_ARGS__}
+#define ABILITY_EFFECTS_ARR(...) (const struct AbilityEffect[]) {__VA_ARGS__}
 #define ABILITY_EFFECTS(...) ABILITY_EFFECTS_ARR( __VA_ARGS__ ), .numAbilityEffects = ARRAY_COUNT(ABILITY_EFFECTS_ARR( __VA_ARGS__ ))
 
 struct __attribute__((packed, aligned(2))) AbilityEffect
@@ -555,7 +555,7 @@ struct Ability
     u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
     u8 preventsCriticalHits:1; // Battle Armor, Shell Armor
     u8 numAbilityEffects;
-    struct AbilityEffect *abilityEffects;
+    const struct AbilityEffect *abilityEffects;
 };
 
 enum {

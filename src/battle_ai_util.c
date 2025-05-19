@@ -4581,7 +4581,7 @@ bool32 IsMoxieTypeAbility(u32 ability)
 bool32 ShouldTriggerAbility(u32 battler, u32 ability)
 {
     u32 stat, statBoost;
-    struct AbilityEffect *abilityEffect;
+    const struct AbilityEffect *abilityEffect;
 
     // Always return TRUE if Contrary
     if (ability == ABILITY_CONTRARY)
