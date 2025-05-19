@@ -2366,6 +2366,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Eats ground to heal HP."),
         .aiRating = 7,
         .breakable = TRUE,
+        .abilityEffects = ABILITY_EFFECTS(
+            {
+                .abilityEffect = ABILITYEFFECT_IMMUNITY,
+                .moveType = TYPE_GROUND,
+                .immunityEffect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY,
+                .hpFraction = 4,
+            }
+        ),
     },
 
     [ABILITY_MYCELIUM_MIGHT] =
