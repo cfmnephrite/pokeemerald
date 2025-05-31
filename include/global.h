@@ -650,8 +650,10 @@ struct WarpData
 
 struct ItemSlot
 {
-    u16 itemId;
-    u16 quantity;
+    u16 itemId:10;
+    u16 extraItemId:6;
+    u16 quantity:10;
+    u16 extraItemQuantity:6;
 };
 
 struct Pokeblock
