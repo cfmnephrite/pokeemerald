@@ -31,8 +31,15 @@ struct Item
 
 struct __attribute__((packed, aligned(2))) BagPocket
 {
+#if I_EXPANDED_BAG == TRUE
+    u8 *itemSlots;
+    u16 id:4;
+    u16 itemSize:2; // bytes - 1
+    u16 capacity:10;
+#else
     struct ItemSlot *itemSlots;
     u16 capacity;
+#endif
 };
 
 extern const struct Item gItemsInfo[];

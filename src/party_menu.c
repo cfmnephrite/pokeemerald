@@ -1586,10 +1586,11 @@ static bool8 IsSelectedMonNotEgg(u8 *slotPtr)
 
 static bool8 DoesSelectedMonKnowHM(u8 *slotPtr)
 {
+    u32 i;
     if (B_CATCH_SWAP_CHECK_HMS == FALSE)
         return FALSE;
 
-    for (u32 i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAX_MON_MOVES; i++)
     {
         u32 j = 0;
         u16 move = GetMonData(&gPlayerParty[*slotPtr], MON_DATA_MOVE1 + i);

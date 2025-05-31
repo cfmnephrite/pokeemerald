@@ -6,6 +6,7 @@
 #include "move.h"
 #include "pokeball.h"
 #include "pokemon_icon.h"
+#include "pokemon_storage_system.h"
 
 // The purpose of this struct is for outside applications to be
 // able to access parts of the ROM or its save file, like a public API.
@@ -142,8 +143,13 @@ static const struct GFRomHeader sGFRomHeader = {
     .unk17 = 12,
     .saveBlock2Size = sizeof(struct SaveBlock2),
     .saveBlock1Size = sizeof(struct SaveBlock1),
+#if I_EXPANDED_BAG == TRUE
+    .partyCountOffset = offsetof(struct PokemonStorage, playerPartyCount),
+    .partyOffset = offsetof(struct PokemonStorage, playerParty),
+#else
     .partyCountOffset = offsetof(struct SaveBlock1, playerPartyCount),
     .partyOffset = offsetof(struct SaveBlock1, playerParty),
+#endif
     .warpFlagsOffset = offsetof(struct SaveBlock2, specialSaveWarpFlags),
     .trainerIdOffset = offsetof(struct SaveBlock2, playerTrainerId),
     .playerNameOffset = offsetof(struct SaveBlock2, playerName),

@@ -24,6 +24,10 @@ struct PokemonStorage
     /*0x8344*/ u8 boxNames[TOTAL_BOXES_COUNT][BOX_NAME_LENGTH + 1];
     /*0x83C2*/ u8 boxWallpapers[TOTAL_BOXES_COUNT];
     /*0x8432*/ struct Pokemon fusions[MAX_FUSION_STORAGE];
+#if I_EXPANDED_BAG == TRUE
+    /*0x85C2*/ struct Pokemon playerParty[PARTY_SIZE];
+    /*0x881A*/ u8 playerPartyCount;
+#endif
 };
 
 extern struct PokemonStorage *gPokemonStoragePtr;

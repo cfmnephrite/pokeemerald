@@ -7169,6 +7169,22 @@ u32 GetTeraTypeFromPersonality(struct Pokemon *mon)
     return (GetMonData(mon, MON_DATA_PERSONALITY) & 0x1) == 0 ? types[0] : types[1];
 }
 
+#if I_EXPANDED_BAG == TRUE
+struct Pokemon *GetSavedPlayerPartyMon(u32 index)
+{
+    return &gPokemonStoragePtr->playerParty[index];
+}
+
+u8 *GetSavedPlayerPartyCount()
+{
+    return &gPokemonStoragePtr->playerPartyCount;
+}
+
+void SavePlayerPartyMon(u32 index, struct Pokemon *mon)
+{
+    gPokemonStoragePtr->playerParty[index] = *mon;
+}
+#else
 struct Pokemon *GetSavedPlayerPartyMon(u32 index)
 {
     return &gSaveBlock1Ptr->playerParty[index];
@@ -7183,3 +7199,4 @@ void SavePlayerPartyMon(u32 index, struct Pokemon *mon)
 {
     gSaveBlock1Ptr->playerParty[index] = *mon;
 }
+#endif

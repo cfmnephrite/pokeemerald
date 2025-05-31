@@ -77,11 +77,26 @@
 #define ROAMER_COUNT 1 // Number of maximum concurrent active roamers
 
 // Bag constants
+#if I_EXPANDED_BAG == TRUE
+// How many of each item can fit in the bag
+#define BAG_ITEMS_COUNT 188
+#define BAG_KEYITEMS_COUNT 104
+#define BAG_POKEBALLS_COUNT 40
+#define BAG_TMHM_COUNT 108
+#define BAG_BERRIES_COUNT 68
+// How many bytes a stack of each item takes per pocket
+#define BAG_ITEMS_BYTESIZE 3
+#define BAG_KEYITEMS_BYTESIZE 2
+#define BAG_POKEBALLS_BYTESIZE 3
+#define BAG_TMHM_BYTESIZE 3
+#define BAG_BERRIES_BYTESIZE 3
+#else
 #define BAG_ITEMS_COUNT 30
 #define BAG_KEYITEMS_COUNT 30
 #define BAG_POKEBALLS_COUNT 16
 #define BAG_TMHM_COUNT 64
 #define BAG_BERRIES_COUNT 46
+#endif
 
 // Number of facilities for Ranking Hall.
 // 7 facilities for single mode + tower double mode + tower multi mode.
