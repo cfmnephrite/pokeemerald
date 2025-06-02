@@ -3120,8 +3120,10 @@ void SwitchInClearSetData(u32 battler)
     s32 i;
     enum BattleMoveEffects effect = GetMoveEffect(gCurrentMove);
     struct DisableStruct disableStructCopy = gDisableStructs[battler];
+    struct VolatileStatuses volatileStatusCopy = gBattleMons[battler].volatileStatuses;
 
     ClearIllusionMon(battler);
+    memset(&gBattleMons[battler].volatileStatuses, 0, sizeof(struct VolatileStatuses));
     if (effect != EFFECT_BATON_PASS)
     {
         for (i = 0; i < NUM_BATTLE_STATS; i++)
@@ -3139,7 +3141,12 @@ void SwitchInClearSetData(u32 battler)
     }
     if (effect == EFFECT_BATON_PASS)
     {
-        gBattleMons[battler].status2 &= (STATUS2_CONFUSION | STATUS2_FOCUS_ENERGY_ANY | STATUS2_SUBSTITUTE | STATUS2_ESCAPE_PREVENTION | STATUS2_CURSED);
+        gBattleMons[battler].volatileStatuses.confusionTurns = volatileStatusCopy.confusionTurns;
+        gBattleMons[battler].volatileStatuses.focusEnergy = volatileStatusCopy.focusEnergy;
+        gBattleMons[battler].volatileStatuses.dragonCheer = volatileStatusCopy.dragonCheer;
+        gBattleMons[battler].volatileStatuses.substitute = volatileStatusCopy.substitute;
+        gBattleMons[battler].volatileStatuses.escapePrevention = volatileStatusCopy.escapePrevention;
+        gBattleMons[battler].volatileStatuses.cursed = volatileStatusCopy.cursed;
         gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED
                                        | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_HEAL_BLOCK
                                        | STATUS3_AQUA_RING | STATUS3_POWER_TRICK);
