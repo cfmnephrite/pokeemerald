@@ -16986,26 +16986,15 @@ void BS_ItemCureStatus(void)
 {
     NATIVE_ARGS(const u8 *noStatusInstr);
     u32 battler = gBattlerAttacker;
-    u32 previousStatus2 = 0;
     bool32 statusChanged = FALSE;
     struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
 
     // Heal Status2 conditions if battler is active.
     if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
-    {
-        previousStatus2 = gBattleMons[battler].status2;
-        gBattleMons[gBattlerAttacker].status2 &= ~GetItemStatus2Mask(gLastUsedItem);
-    }
+        statusChanged = ItemHealMonVolatileStatus(battler, gLastUsedItem);
     else if (IsDoubleBattle()
-                && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)])
-    {
-        battler = BATTLE_PARTNER(gBattlerAttacker);
-        previousStatus2 = gBattleMons[battler].status2;
-        gBattleMons[battler].status2 &= ~GetItemStatus2Mask(gLastUsedItem);
-    }
-
-    if (previousStatus2 != gBattleMons[battler].status2)
-        statusChanged = TRUE;
+     && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)])
+        statusChanged = ItemHealMonVolatileStatus(BATTLE_PARTNER(gBattlerAttacker), gLastUsedItem);
 
     // Heal Status1 conditions.
     if (!HealStatusConditions(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], GetItemStatus1Mask(gLastUsedItem), battler))
@@ -17013,7 +17002,7 @@ void BS_ItemCureStatus(void)
         statusChanged = TRUE;
         if (GetItemStatus1Mask(gLastUsedItem) & STATUS1_SLEEP)
             gBattleMons[battler].volatileStatuses.nightmare = FALSE;
-        if (GetItemStatus2Mask(gLastUsedItem) & STATUS2_CONFUSION)
+        if (ItemHealsVolatileStatus(gLastUsedItem, VOLATILE_STATUS_CONFUSION))
             gStatuses4[battler] &= ~STATUS4_INFINITE_CONFUSION;
     }
 

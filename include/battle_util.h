@@ -387,5 +387,6 @@ void UpdateStallMons(void);
 bool32 TryRestoreHPBerries(u32 battler, enum ItemCaseId caseId);
 u32 GetMonVolatileStatus(u32 battler, enum VolatileStatus volatileStatus);
 void SetMonVolatileStatus(u32 battler, enum VolatileStatus volatileStatus, u32 newValue);
+bool32 ItemHealMonVolatileStatus(u32 battler, u16 itemId);
 
 #endif // GUARD_BATTLE_UTIL_H
