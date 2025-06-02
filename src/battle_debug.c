@@ -1830,13 +1830,13 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         if (data->modifyArrows.currValue)
         {
             if (IsBattlerAlive(BATTLE_OPPOSITE(data->battlerId)))
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(BATTLE_OPPOSITE(data->battlerId));
+                gBattleMons[data->battlerId].volatileStatuses.infatuation = BATTLE_OPPOSITE(data->battlerId) + 1;
             else
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(BATTLE_PARTNER(BATTLE_OPPOSITE(data->battlerId)));
+                gBattleMons[data->battlerId].volatileStatuses.infatuation = BATTLE_PARTNER(BATTLE_OPPOSITE(data->battlerId)) + 1;
         }
         else
         {
-            gBattleMons[data->battlerId].status2 &= ~STATUS2_INFATUATION;
+            gBattleMons[data->battlerId].volatileStatuses.infatuation = 0;
         }
         break;
     }
@@ -2166,7 +2166,7 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
             data->modifyArrows.maxDigits = 1;
             data->modifyArrows.modifiedValPtr = NULL;
             data->modifyArrows.typeOfVal = VAR_IN_LOVE;
-            data->modifyArrows.currValue = (gBattleMons[data->battlerId].status2 & STATUS2_INFATUATION) != 0;
+            data->modifyArrows.currValue = gBattleMons[data->battlerId].volatileStatuses.infatuation != 0;
         }
         break;
     case LIST_ITEM_STATUS1:

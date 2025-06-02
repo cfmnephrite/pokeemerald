@@ -41,7 +41,7 @@ SINGLE_BATTLE_TEST("Covert Cloak blocks secondary effects")
             MESSAGE("The opposing Wobbuffet was prevented from healing!");
         }
     } THEN { // Can't find good way to test trapping
-        EXPECT(!(opponent->status2 & STATUS2_ESCAPE_PREVENTION));
+        EXPECT(!opponent->volatileStatuses.escapePrevention);
     }
 }
 
@@ -82,8 +82,8 @@ SINGLE_BATTLE_TEST("Covert Cloak does not block primary effects")
         }
     } THEN { // Can't find good way to test trapping
         if (move == MOVE_JAW_LOCK) {
-            EXPECT(opponent->status2 & STATUS2_ESCAPE_PREVENTION);
-            EXPECT(player->status2 & STATUS2_ESCAPE_PREVENTION);
+            EXPECT(opponent->volatileStatuses.escapePrevention);
+            EXPECT(player->volatileStatuses.escapePrevention);
         }
     }
 }

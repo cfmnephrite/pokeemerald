@@ -756,7 +756,7 @@ void RecordedBattle_CheckMovesetChanges(u8 mode)
                         gDisableStructs[battler].mimickedMoves |= mimickedMoveSlots[j] << j;
                     }
 
-                    if (!(gBattleMons[battler].status2 & STATUS2_TRANSFORMED))
+                    if (!(gBattleMons[battler].volatileStatuses.transformed))
                     {
                         for (j = 0; j < MAX_MON_MOVES; j++)
                             ppBonuses[j] = (GetMonData(GetBattlerMon(battler), MON_DATA_PP_BONUSES, NULL) & ((3 << (j << 1)))) >> (j << 1);

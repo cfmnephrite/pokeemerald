@@ -467,21 +467,21 @@ static bool32 HandleEndTurnFirstEventBlock(u32 battler)
         gBattleStruct->eventBlockCounter++;
         break;
     case FIRST_EVENT_BLOCK_THRASH:
-        if (gBattleMons[battler].status2 & STATUS2_LOCK_CONFUSE && !(gStatuses3[battler] & STATUS3_SKY_DROPPED))
+        if (gBattleMons[battler].volatileStatuses.lockConfusionTurns != 0 && !(gStatuses3[battler] & STATUS3_SKY_DROPPED))
         {
-            gBattleMons[battler].status2 -= STATUS2_LOCK_CONFUSE_TURN(1);
+            gBattleMons[battler].volatileStatuses.lockConfusionTurns--;
             if (WasUnableToUseMove(battler))
             {
                 CancelMultiTurnMoves(battler, SKY_DROP_IGNORE);
             }
-            else if (!(gBattleMons[battler].status2 & STATUS2_LOCK_CONFUSE) && (gBattleMons[battler].status2 & STATUS2_MULTIPLETURNS))
+            else if (!(gBattleMons[battler].volatileStatuses.lockConfusionTurns != 0) && gBattleMons[battler].volatileStatuses.multipleTurns)
             {
-                gBattleMons[battler].status2 &= ~STATUS2_MULTIPLETURNS;
-                if (!(gBattleMons[battler].status2 & STATUS2_CONFUSION))
+                gBattleMons[battler].volatileStatuses.multipleTurns = FALSE;
+                if (!gBattleMons[battler].volatileStatuses.confusionTurns)
                 {
                     gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER;
                     SetMoveEffect(TRUE, FALSE);
-                    if (gBattleMons[battler].status2 & STATUS2_CONFUSION)
+                    if (gBattleMons[battler].volatileStatuses.confusionTurns != 0)
                         BattleScriptExecute(BattleScript_ThrashConfuses);
                     effect = TRUE;
                 }
@@ -714,7 +714,7 @@ static bool32 HandleEndTurnNightmare(u32 battler)
 
     gBattleStruct->turnEffectsBattlerId++;
 
-    if (gBattleMons[battler].status2 & STATUS2_NIGHTMARE
+    if (gBattleMons[battler].volatileStatuses.nightmare
      && IsBattlerAlive(battler)
      && !IsBattlerProtectedByMagicGuard(battler, GetBattlerAbility(battler)))
     {
@@ -728,7 +728,7 @@ static bool32 HandleEndTurnNightmare(u32 battler)
         }
         else
         {
-            gBattleMons[battler].status2 &= ~STATUS2_NIGHTMARE;
+            gBattleMons[battler].volatileStatuses.nightmare = FALSE;
         }
     }
 
@@ -741,7 +741,7 @@ static bool32 HandleEndTurnCurse(u32 battler)
 
     gBattleStruct->turnEffectsBattlerId++;
 
-    if (gBattleMons[battler].status2 & STATUS2_CURSED
+    if (gBattleMons[battler].volatileStatuses.cursed
      && IsBattlerAlive(battler)
      && !IsBattlerProtectedByMagicGuard(battler, GetBattlerAbility(battler)))
     {
@@ -761,7 +761,7 @@ static bool32 HandleEndTurnWrap(u32 battler)
 
     gBattleStruct->turnEffectsBattlerId++;
 
-    if (gBattleMons[battler].status2 & STATUS2_WRAPPED && IsBattlerAlive(battler))
+    if (gBattleMons[battler].volatileStatuses.wrapped && IsBattlerAlive(battler))
     {
         if (--gDisableStructs[battler].wrapTurns != 0)
         {
@@ -782,7 +782,7 @@ static bool32 HandleEndTurnWrap(u32 battler)
         }
         else  // broke free
         {
-            gBattleMons[battler].status2 &= ~STATUS2_WRAPPED;
+            gBattleMons[battler].volatileStatuses.wrapped = FALSE;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleStruct->wrappedMove[battler]);
             BattleScriptExecute(BattleScript_WrapEnds);
         }
@@ -876,7 +876,7 @@ static bool32 HandleEndTurnTorment(u32 battler)
 
     if (gDisableStructs[battler].tormentTimer == gBattleTurnCounter)
     {
-        gBattleMons[battler].status2 &= ~STATUS2_TORMENT;
+        gBattleMons[battler].volatileStatuses.torment = FALSE;
         BattleScriptExecute(BattleScript_TormentEnds);
         effect = TRUE;
     }
@@ -1358,7 +1358,7 @@ static bool32 HandleEndTurnThirdEventBlock(u32 battler)
     switch (gBattleStruct->eventBlockCounter)
     {
     case THIRD_EVENT_BLOCK_UPROAR:
-        if (gBattleMons[battler].status2 & STATUS2_UPROAR)
+        if (gBattleMons[battler].volatileStatuses.uproarTurns)
         {
             for (gBattlerAttacker = 0; gBattlerAttacker < gBattlersCount; gBattlerAttacker++)
             {
@@ -1366,7 +1366,7 @@ static bool32 HandleEndTurnThirdEventBlock(u32 battler)
                 && GetBattlerAbility(gBattlerAttacker) != ABILITY_SOUNDPROOF)
                 {
                     gBattleMons[gBattlerAttacker].status1 &= ~STATUS1_SLEEP;
-                    gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_NIGHTMARE;
+                    gBattleMons[gBattlerAttacker].volatileStatuses.nightmare = FALSE;
                     gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                     BattleScriptExecute(BattleScript_MonWokeUpInUproar);
                     BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
@@ -1381,16 +1381,16 @@ static bool32 HandleEndTurnThirdEventBlock(u32 battler)
             else
             {
                 gBattlerAttacker = battler;
-                gBattleMons[battler].status2 -= STATUS2_UPROAR_TURN(1);  // uproar timer goes down
+                gBattleMons[battler].volatileStatuses.uproarTurns--;  // uproar timer goes down
                 if (WasUnableToUseMove(battler))
                 {
                     CancelMultiTurnMoves(battler, SKY_DROP_IGNORE);
                     gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_UPROAR_ENDS;
                 }
-                else if (gBattleMons[battler].status2 & STATUS2_UPROAR)
+                else if (gBattleMons[battler].volatileStatuses.uproarTurns)
                 {
                     gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_UPROAR_CONTINUES;
-                    gBattleMons[battler].status2 |= STATUS2_MULTIPLETURNS;
+                    gBattleMons[battler].volatileStatuses.multipleTurns = TRUE;
                 }
                 else
                 {
