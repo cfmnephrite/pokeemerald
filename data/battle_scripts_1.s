@@ -7148,7 +7148,7 @@ BattleScript_PrintUproarOverTurns::
 	end2
 
 BattleScript_ThrashConfuses::
-	chosenvolatilestatusanimation BS_ATTACKER, VOLATILE_STATUS_CONFUSION
+	volatilestatusanimation BS_ATTACKER, VOLATILE_STATUS_CONFUSION
 	printstring STRINGID_PKMNFATIGUECONFUSION
 	waitmessage B_WAIT_TIME_LONG
 	end2
@@ -7367,7 +7367,7 @@ BattleScript_MoveEffectWrap::
 	return
 
 BattleScript_MoveEffectConfusion::
-	chosenvolatilestatusanimation BS_EFFECT_BATTLER, VOLATILE_STATUS_CONFUSION
+	volatilestatusanimation BS_EFFECT_BATTLER, VOLATILE_STATUS_CONFUSION
 	printstring STRINGID_PKMNWASCONFUSED
 	waitmessage B_WAIT_TIME_LONG
 	return

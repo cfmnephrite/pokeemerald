@@ -167,6 +167,7 @@ enum BattlerId
 
 enum VolatileStatus
 {
+    VOLATILE_STATUS_NONE,
     VOLATILE_STATUS_DEFINITIONS(UNPACK_V_STATUS_ENUMS)
 };
 
