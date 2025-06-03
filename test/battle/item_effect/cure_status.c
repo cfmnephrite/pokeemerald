@@ -389,6 +389,6 @@ SINGLE_BATTLE_TEST("Full Heal, Heal Powder and Local Specialties heal a battler 
     } SCENE {
         MESSAGE("Wobbuffet had its status healed!");
     } THEN {
-        EXPECT_EQ(player->volatileStatuses.confusionTurns, 0);
+        EXPECT(player->volatileStatuses.confusionTurns == 0);
     }
 }

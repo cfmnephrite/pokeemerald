@@ -1001,7 +1001,7 @@ u32 GetItemStatus1Mask(u16 itemId)
     return 0;
 }
 
-bool32 ItemHealsVolatileStatus(u16 itemId, enum VolatileStatus volatileStatus)
+bool32 ItemHasVolatileStatusFlag(u16 itemId, enum VolatileStatus volatileStatus)
 {
     const u8 *effect = GetItemEffect(itemId);
     switch (volatileStatus)
@@ -1010,6 +1010,7 @@ bool32 ItemHealsVolatileStatus(u16 itemId, enum VolatileStatus volatileStatus)
             return (effect[3] & ITEM3_STATUS_ALL) || (effect[3] & ITEM3_CONFUSION);
         case VOLATILE_STATUS_INFATUATION:
             return (effect[3] & ITEM3_STATUS_ALL) || (effect[0] & ITEM0_INFATUATION);
+        default:
+            return FALSE;
     }
-    return FALSE;
 }

@@ -84,7 +84,7 @@ u8 GetItemBattleUsage(u16 itemId);
 u32 GetItemSecondaryId(u32 itemId);
 u32 GetItemFlingPower(u32 itemId);
 u32 GetItemStatus1Mask(u16 itemId);
-bool32 ItemHealsVolatileStatus(u16 itemId, enum VolatileStatus volatileStatus);
+bool32 ItemHasVolatileStatusFlag(u16 itemId, enum VolatileStatus volatileStatus);
 
 /* Expands to:
  * enum
