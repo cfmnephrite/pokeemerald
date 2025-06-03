@@ -523,7 +523,7 @@ static void Cmd_tryspiteppreduce(void);
 static void Cmd_healpartystatus(void);
 static void Cmd_cursetarget(void);
 static void Cmd_trysetspikes(void);
-static void Cmd_setforesight(void);
+static void Cmd_setvolatilestatus(void);
 static void Cmd_trysetperishsong(void);
 static void Cmd_handlerollout(void);
 static void Cmd_jumpifconfusedandstatmaxed(void);
@@ -537,7 +537,7 @@ static void Cmd_tryrestorehpberry(void);
 static void Cmd_halvehp(void);
 static void Cmd_copyfoestats(void);
 static void Cmd_rapidspinfree(void);
-static void Cmd_setdefensecurlbit(void);
+static void Cmd_unused_0xBF(void);
 static void Cmd_recoverbasedonsunlight(void);
 static void Cmd_setstickyweb(void);
 static void Cmd_selectfirstvalidtarget(void);
@@ -782,7 +782,7 @@ void (*const gBattleScriptingCommandsTable[])(void) =
     Cmd_healpartystatus,                         //0xAE
     Cmd_cursetarget,                             //0xAF
     Cmd_trysetspikes,                            //0xB0
-    Cmd_setforesight,                            //0xB1
+    Cmd_setvolatilestatus,                       //0xB1
     Cmd_trysetperishsong,                        //0xB2
     Cmd_handlerollout,                           //0xB3
     Cmd_jumpifconfusedandstatmaxed,              //0xB4
@@ -796,7 +796,7 @@ void (*const gBattleScriptingCommandsTable[])(void) =
     Cmd_halvehp,                                 //0xBC
     Cmd_copyfoestats,                            //0xBD
     Cmd_rapidspinfree,                           //0xBE
-    Cmd_setdefensecurlbit,                       //0xBF
+    Cmd_unused_0xBF,                             //0xBF
     Cmd_recoverbasedonsunlight,                  //0xC0
     Cmd_setstickyweb,                            //0xC1
     Cmd_selectfirstvalidtarget,                  //0xC2
@@ -10178,12 +10178,6 @@ static void Cmd_various(void)
         gStatuses3[battler] &= ~(STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS | STATUS3_ON_AIR | STATUS3_SKY_DROPPED);
         break;
     }
-    case VARIOUS_SET_POWDER:
-    {
-        VARIOUS_ARGS();
-        gBattleMons[battler].volatileStatuses.powder = TRUE;
-        break;
-    }
     case VARIOUS_ACUPRESSURE:
     {
         VARIOUS_ARGS(const u8 *failInstr);
@@ -13914,11 +13908,11 @@ static void Cmd_trysetspikes(void)
     }
 }
 
-static void Cmd_setforesight(void)
+static void Cmd_setvolatilestatus(void)
 {
-    CMD_ARGS();
+    CMD_ARGS(u8 volatileStatus, u8 battler, u8 value);
 
-    gBattleMons[gBattlerTarget].volatileStatuses.foresight = TRUE;
+    SetMonVolatileStatus(GetBattlerForBattleScript(cmd->battler), cmd->volatileStatus, cmd->value);
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
@@ -14306,12 +14300,8 @@ static void Cmd_rapidspinfree(void)
     }
 }
 
-static void Cmd_setdefensecurlbit(void)
+static void Cmd_unused_0xBF(void)
 {
-    CMD_ARGS();
-
-    gBattleMons[gBattlerAttacker].volatileStatuses.defenseCurl = TRUE;
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 static void Cmd_recoverbasedonsunlight(void)

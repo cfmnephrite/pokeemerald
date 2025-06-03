@@ -1370,7 +1370,7 @@ BattleScript_EffectPowder::
 	attackstring
 	ppreduce
 	jumpifvolatilestatus BS_TARGET, VOLATILE_STATUS_POWDER, BattleScript_ButItFailed
-	setpowder BS_TARGET
+	setvolatilestatus VOLATILE_STATUS_POWDER
 	attackanimation
 	waitanimation
 	printstring STRINGID_COVEREDINPOWDER
@@ -4089,7 +4089,7 @@ BattleScript_EffectForesight::
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
 	jumpifvolatilestatus BS_TARGET, VOLATILE_STATUS_FORESIGHT, BattleScript_ButItFailed
-	setforesight
+	setvolatilestatus VOLATILE_STATUS_FORESIGHT
 BattleScript_IdentifiedFoe:
 	attackanimation
 	waitanimation
@@ -4495,7 +4495,7 @@ BattleScript_EffectDefenseCurl::
 	attackcanceler
 	attackstring
 	ppreduce
-	setdefensecurlbit
+	setvolatilestatus VOLATILE_STATUS_DEFENSE_CURL
 	setstatchanger STAT_DEF, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DefenseCurlDoStatUpAnim
 	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_StatUpPrintString

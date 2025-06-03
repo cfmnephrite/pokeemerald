@@ -960,8 +960,11 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setforesight
+	.macro setvolatilestatus volatileStatus:req, battler=BS_TARGET, value=TRUE
 	.byte 0xb1
+	.byte \volatileStatus
+	.byte \battler
+	.byte \value
 	.endm
 
 	.macro trysetperishsong failInstr:req
@@ -1021,10 +1024,6 @@
 
 	.macro rapidspinfree
 	.byte 0xbe
-	.endm
-
-	.macro setdefensecurlbit
-	.byte 0xbf
 	.endm
 
 	.macro recoverbasedonsunlight failInstr:req
@@ -2091,10 +2090,6 @@
 	.macro tryaccupressure battler:req, failInstr:req
 	various \battler, VARIOUS_ACUPRESSURE
 	.4byte \failInstr
-	.endm
-
-	.macro setpowder battler:req
-	various \battler, VARIOUS_SET_POWDER
 	.endm
 
 	.macro bringdownairbornebattler battler:req
