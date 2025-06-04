@@ -4038,10 +4038,9 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 gBattlescriptCurrInstr = BattleScript_MoveEffectHaze;
                 break;
             case MOVE_EFFECT_LEECH_SEED:
-                if (!IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS) && !(gStatuses3[gBattlerTarget] & STATUS3_LEECHSEED))
+                if (!IS_BATTLER_OF_TYPE(gBattlerTarget, TYPE_GRASS) && !gBattleMons[gBattlerTarget].volatileStatuses.leechSeed)
                 {
-                    gStatuses3[gBattlerTarget] |= gBattlerAttacker;
-                    gStatuses3[gBattlerTarget] |= STATUS3_LEECHSEED;
+                    gBattleMons[gBattlerTarget].volatileStatuses.leechSeed = gBattlerAttacker + 1;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_MoveEffectLeechSeed;
                 }
@@ -11781,7 +11780,7 @@ static void Cmd_setseeded(void)
 {
     CMD_ARGS();
 
-    if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NO_EFFECT || gStatuses3[gBattlerTarget] & STATUS3_LEECHSEED)
+    if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NO_EFFECT || gBattleMons[gBattlerTarget].volatileStatuses.leechSeed)
     {
         gBattleStruct->moveResultFlags[gBattlerTarget] |= MOVE_RESULT_MISSED;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_LEECH_SEED_MISS;
@@ -11793,8 +11792,7 @@ static void Cmd_setseeded(void)
     }
     else
     {
-        gStatuses3[gBattlerTarget] |= gBattlerAttacker;
-        gStatuses3[gBattlerTarget] |= STATUS3_LEECHSEED;
+        gBattleMons[gBattlerTarget].volatileStatuses.leechSeed = gBattlerAttacker + 1;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_LEECH_SEED_SET;
     }
 
@@ -14258,10 +14256,9 @@ static void Cmd_rapidspinfree(void)
         PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleStruct->wrappedMove[gBattlerAttacker]);
         BattleScriptCall(BattleScript_WrapFree);
     }
-    else if (gStatuses3[gBattlerAttacker] & STATUS3_LEECHSEED)
+    else if (gBattleMons[gBattlerAttacker].volatileStatuses.leechSeed)
     {
-        gStatuses3[gBattlerAttacker] &= ~STATUS3_LEECHSEED;
-        gStatuses3[gBattlerAttacker] &= ~STATUS3_LEECHSEED_BATTLER;
+        gBattleMons[gBattlerAttacker].volatileStatuses.leechSeed = 0;
         BattleScriptCall(BattleScript_LeechSeedFree);
     }
     else if (gSideStatuses[atkSide] & SIDE_STATUS_SPIKES)

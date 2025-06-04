@@ -580,12 +580,12 @@ static bool32 HandleEndTurnLeechSeed(u32 battler)
 
     gBattleStruct->turnEffectsBattlerId++;
 
-    if (gStatuses3[battler] & STATUS3_LEECHSEED
-     && IsBattlerAlive(gStatuses3[battler] & STATUS3_LEECHSEED_BATTLER)
+    if (gBattleMons[battler].volatileStatuses.leechSeed
+     && IsBattlerAlive(gBattleMons[battler].volatileStatuses.leechSeed)
      && IsBattlerAlive(battler)
      && !IsBattlerProtectedByMagicGuard(battler, GetBattlerAbility(battler)))
     {
-        gBattlerTarget = gStatuses3[battler] & STATUS3_LEECHSEED_BATTLER; // Notice gBattlerTarget is actually the HP receiver.
+        gBattlerTarget = (gBattleMons[battler].volatileStatuses.leechSeed - 1); // Notice gBattlerTarget is actually the HP receiver.
         gBattleScripting.animArg1 = gBattlerTarget;
         gBattleScripting.animArg2 = gBattlerAttacker;
         gBattleStruct->moveDamage[gBattlerAttacker] = max(1, GetNonDynamaxMaxHP(battler) / 8);

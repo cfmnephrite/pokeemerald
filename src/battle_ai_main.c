@@ -1721,7 +1721,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-8);
             break;
         case EFFECT_LEECH_SEED:
-            if (gStatuses3[battlerDef] & STATUS3_LEECHSEED
+            if (gBattleMons[battlerDef].volatileStatuses.leechSeed
              || IS_BATTLER_OF_TYPE(battlerDef, TYPE_GRASS)
              || DoesPartnerHaveSameMoveEffect(BATTLE_PARTNER(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
@@ -3985,7 +3985,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(-2);
         if (gBattleMons[battlerDef].status1 & STATUS1_PSN_ANY && !AI_RandLessThan(70))
             ADJUST_SCORE(DECENT_EFFECT);
-        if (gStatuses3[battlerDef] & STATUS3_LEECHSEED && !AI_RandLessThan(70))
+        if (gBattleMons[battlerDef].volatileStatuses.leechSeed && !AI_RandLessThan(70))
             ADJUST_SCORE(DECENT_EFFECT);
         if (gStatuses3[battlerDef] & STATUS3_ROOTED && AI_RandLessThan(128))
             ADJUST_SCORE(WEAK_EFFECT);
@@ -4149,7 +4149,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         break;
     case EFFECT_LEECH_SEED:
         if (IS_BATTLER_OF_TYPE(battlerDef, TYPE_GRASS)
-          || gStatuses3[battlerDef] & STATUS3_LEECHSEED
+          || gBattleMons[battlerDef].volatileStatuses.leechSeed
           || HasMoveWithEffect(battlerDef, EFFECT_RAPID_SPIN)
           || aiData->abilities[battlerDef] == ABILITY_LIQUID_OOZE
           || aiData->abilities[battlerDef] == ABILITY_MAGIC_GUARD)
@@ -5082,7 +5082,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         break;
     case EFFECT_RAPID_SPIN:
         if ((gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerAtk) != 0)
-         || (gStatuses3[battlerAtk] & STATUS3_LEECHSEED || gBattleMons[battlerAtk].volatileStatuses.wrapped))
+         || (gBattleMons[battlerAtk].volatileStatuses.leechSeed || gBattleMons[battlerAtk].volatileStatuses.wrapped))
             ADJUST_SCORE(GOOD_EFFECT);
     case EFFECT_SPECTRAL_THIEF:
         ADJUST_SCORE(AI_ShouldCopyStatChanges(battlerAtk, battlerDef));
@@ -5625,7 +5625,7 @@ static s32 AI_PreferBatonPass(u32 battlerAtk, u32 battlerDef, u32 move, s32 scor
     case EFFECT_BATON_PASS:
         if (gStatuses3[battlerAtk] & (STATUS3_ROOTED | STATUS3_AQUA_RING))
             ADJUST_SCORE(DECENT_EFFECT);
-        if (gStatuses3[battlerAtk] & STATUS3_LEECHSEED)
+        if (gBattleMons[battlerAtk].volatileStatuses.leechSeed)
             ADJUST_SCORE(-3);
         ADJUST_SCORE(CountPositiveStatStages(battlerAtk) - CountNegativeStatStages(battlerAtk));
         break;

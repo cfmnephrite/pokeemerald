@@ -722,7 +722,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
                 return SetSwitchinAndSwitch(battler, PARTY_SIZE);
 
             //Leech Seed
-            if (gStatuses3[battler] & STATUS3_LEECHSEED
+            if (gBattleMons[battler].volatileStatuses.leechSeed
                 && (hasStatRaised ? RandomPercentage(RNG_AI_SWITCH_SEEDED, GetSwitchChance(SHOULD_SWITCH_SEEDED_STATS_RAISED)) : RandomPercentage(RNG_AI_SWITCH_SEEDED, GetSwitchChance(SHOULD_SWITCH_SEEDED))))
                 return SetSwitchinAndSwitch(battler, PARTY_SIZE);
         }

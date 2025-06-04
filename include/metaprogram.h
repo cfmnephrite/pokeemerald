@@ -58,9 +58,8 @@
  * */
 #define UNPACK_ARGS(...) __VA_ARGS__
 #define UNPACK_EXTRA(...) IF_YOU_SEE_ME_SOMETHING_IS_WRONG, __VA_ARGS__
-#define UNPACK(a) UNPACK_2(a, UNPACK_EXTRA a)
-#define UNPACK_2(a, b, ...) UNPACK_3(a, b)
-#define UNPACK_3(a, b, ...) __VA_OPT__(UNPACK_ARGS)a
+#define UNPACK(a) INVOKE(UNPACK_, a, UNPACK_EXTRA a)
+#define UNPACK_(a, b, ...) __VA_OPT__(UNPACK_ARGS)a
 
 /* Expands to 'macro(...args, ...)'. */
 #define INVOKE_WITH(macro, args, ...) INVOKE(macro, UNPACK_ARGS args __VA_OPT__(, __VA_ARGS__))
@@ -169,5 +168,8 @@ Input must be of the form (upper << lower) where upper can be up to 3, lower up 
 
 /* Finds the maximum value of the given number of bits (up to 32 - obviously)*/
 #define MAX_BITS(_bit) (MAX_u32 >> (32 - _bit))
+
+/* Finds the required digits to display the number (maximum 4) */
+#define MAX_DIGITS(_num) 1 + !!(_num / 10) + !!(_num / 100) + !!(_num / 1000)
 
 #endif

@@ -1769,7 +1769,7 @@ bool32 ShouldTryOHKO(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbil
     if (!DoesBattlerIgnoreAbilityChecks(battlerAtk, atkAbility, move) && defAbility == ABILITY_STURDY)
         return FALSE;
 
-    if ((((gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS)
+    if (((gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS
         && gDisableStructs[battlerDef].battlerWithSureHit == battlerAtk)
         || atkAbility == ABILITY_NO_GUARD || defAbility == ABILITY_NO_GUARD)
         && gBattleMons[battlerAtk].level >= gBattleMons[battlerDef].level)
@@ -1922,7 +1922,9 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
     if (gBattleMons[battlerAtk].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_FROSTBITE)
      || gBattleMons[battlerAtk].volatileStatuses.cursed
      || gBattleMons[battlerAtk].volatileStatuses.infatuation
-     || gStatuses3[battlerAtk] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED | STATUS3_YAWN))
+     || gBattleMons[battlerAtk].volatileStatuses.perishSong
+     || gBattleMons[battlerAtk].volatileStatuses.leechSeed
+     || gBattleMons[battlerAtk].volatileStatuses.yawn)
     {
         ADJUST_SCORE_PTR(-1);
     }
@@ -1930,7 +1932,9 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
     if (gBattleMons[battlerDef].status1 & STATUS1_TOXIC_POISON
       || gBattleMons[battlerDef].volatileStatuses.cursed
       || gBattleMons[battlerDef].volatileStatuses.infatuation
-      || gStatuses3[battlerDef] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED | STATUS3_YAWN))
+      || gBattleMons[battlerDef].volatileStatuses.perishSong
+      || gBattleMons[battlerDef].volatileStatuses.leechSeed
+      || gBattleMons[battlerDef].volatileStatuses.yawn)
         ADJUST_SCORE_PTR(DECENT_EFFECT);
 }
 
@@ -2801,8 +2805,8 @@ bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move)
 static u32 GetLeechSeedDamage(u32 battlerId)
 {
     u32 damage = 0;
-    if ((gStatuses3[battlerId] & STATUS3_LEECHSEED)
-     && gBattleMons[gStatuses3[battlerId] & STATUS3_LEECHSEED_BATTLER].hp != 0)
+    if ((gBattleMons[battlerId].volatileStatuses.leechSeed)
+     && gBattleMons[(gBattleMons[battlerId].volatileStatuses.leechSeed - 1)].hp != 0)
      {
         damage = GetNonDynamaxMaxHP(battlerId) / 8;
         if (damage == 0)
@@ -4812,9 +4816,9 @@ void IncreaseTidyUpScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
     if (gBattleMons[battlerDef].volatileStatuses.substitute)
         ADJUST_SCORE_PTR(GOOD_EFFECT);
 
-    if (gStatuses3[battlerAtk] & STATUS3_LEECHSEED)
+    if (gBattleMons[battlerAtk].volatileStatuses.leechSeed)
         ADJUST_SCORE_PTR(DECENT_EFFECT);
-    if (gStatuses3[battlerDef] & STATUS3_LEECHSEED)
+    if (gBattleMons[battlerDef].volatileStatuses.leechSeed)
         ADJUST_SCORE_PTR(-2);
 }
 
