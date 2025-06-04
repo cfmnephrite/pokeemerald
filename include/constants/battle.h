@@ -161,7 +161,32 @@ enum BattlerId
     F(VOLATILE_STATUS_CURSED,               u32,    (cursed, 1),                    TRUE,       "Cursed") \
     F(VOLATILE_STATUS_FORESIGHT,            u32,    (foresight, 1),                 FALSE,      "Foresight") \
     F(VOLATILE_STATUS_DRAGON_CHEER,         u32,    (dragonCheer, 1),               TRUE,       "Dragon Cheer") \
-    F(VOLATILE_STATUS_FOCUS_ENERGY,         u32,    (focusEnergy, 1),               TRUE,       "Focus Energy")
+    F(VOLATILE_STATUS_FOCUS_ENERGY,         u32,    (focusEnergy, 1),               TRUE,       "Focus Energy") \
+    F(VOLATILE_STATUS_LEECHSEED,            u32,    (leechSeed, 2),                 TRUE,       "Leech Seed") \
+    F(VOLATILE_STATUS_ALWAYS_HITS,          u32,    (alwaysHits, 1),                TRUE,       "Always Hits") \
+    F(VOLATILE_STATUS_PERISH_SONG,          u32,    (perishSong, 2),                TRUE,       "Perish Song") \
+    F(VOLATILE_STATUS_ON_AIR,               u32,    (onAir, 1),                     FALSE) \
+    F(VOLATILE_STATUS_UNDERGROUND,          u32,    (underGround, 1),               FALSE,      "Underground") \
+    F(VOLATILE_STATUS_MINIMIZED,            u32,    (minimized, 1),                 FALSE,      "Minimized") \
+    F(VOLATILE_STATUS_CHARGED_UP,           u32,    (chargedUp, 1),                 FALSE,      "Charged Up") \
+    F(VOLATILE_STATUS_ROOTED,               u32,    (rooted, 1),                    TRUE,       "Rooted") \
+    F(VOLATILE_STATUS_YAWN,                 u32,    (yawn, 2),                      FALSE,      "Yawn") \
+    F(VOLATILE_STATUS_IMPRISONED_OTHERS,    u32,    (imprisonedOthers, 1),          FALSE,      "Imprisoned Others") \
+    F(VOLATILE_STATUS_GRUDGE,               u32,    (grudge, 1),                    FALSE,      "Grudge") \
+    F(VOLATILE_STATUS_COMMANDER,            u32,    (commander, 1),                 FALSE) \
+    F(VOLATILE_STATUS_GASTRO_ACID,          u32,    (gastroAcid, 1),                TRUE,       "Gastro Acid") \
+    F(VOLATILE_STATUS_EMBARGO,              u32,    (embargo, 1),                   FALSE,      "Embargo") \
+    F(VOLATILE_STATUS_UNDERWATER,           u32,    (underwater, 1),                FALSE,      "Underwater") \
+    F(VOLATILE_STATUS_SMACKED_DOWN,         u32,    (smackedDown, 1),               FALSE,      "Smacked Down") \
+    F(VOLATILE_STATUS_TELEKINESIS,          u32,    (telekinesis, 1),               TRUE,       "Telekinesis") \
+    F(VOLATILE_STATUS_PHANTOM_FORCE,        u32,    (phantomForce, 1),              FALSE) \
+    F(VOLATILE_STATUS_MIRACLE_EYED,         u32,    (miracleEyed, 1),               FALSE,      "Miracle Eyed") \
+    F(VOLATILE_STATUS_MAGNET_RISE,          u32,    (magnetRise, 1),                TRUE,       "Magnet Rise") \
+    F(VOLATILE_STATUS_HEAL_BLOCK,           u32,    (healBlocked, 1),               TRUE,       "Heal Blocked") \
+    F(VOLATILE_STATUS_AQUA_RING,            u32,    (aquaRing, 1),                  TRUE,       "Aqua Ring") \
+    F(VOLATILE_STATUS_LASER_FOCUS,          u32,    (laserFocus, 1),                FALSE,      "Laser Focus") \
+    F(VOLATILE_STATUS_POWER_TRICK,          u32,    (powerTrick, 1),                TRUE,       "Power Trick") \
+    F(VOLATILE_STATUS_SKY_DROPPED,          u32,    (skyDropped, 1),                FALSE)
 
 #define UNPACK_V_STATUS_ENUMS(_enum, ...) _enum,
 
