@@ -82,6 +82,7 @@
 #define STAT_SPDEF   5
 #define NUM_STATS    6
 
+
 #define STAT_ACC     6 // Only in battles.
 #define STAT_EVASION 7 // Only in battles.
 
@@ -91,6 +92,9 @@
 #define MIN_STAT_STAGE     0
 #define DEFAULT_STAT_STAGE 6
 #define MAX_STAT_STAGE    12
+
+// Used in abilities.h
+#define ALL_STATS   STAT_HP
 
 // Shiny odds
 #define SHINY_ODDS 8 // Actual probability is SHINY_ODDS/65536

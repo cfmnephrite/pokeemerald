@@ -3,6 +3,7 @@
 
 #include "contest_effect.h"
 #include "sprite.h"
+#include "constants/abilities.h"
 #include "constants/battle.h"
 #include "constants/form_change_types.h"
 #include "constants/items.h"
@@ -497,13 +498,65 @@ struct Ability
     u8 name[ABILITY_NAME_LENGTH + 1];
     const u8 *description;
     s8 aiRating;
-    u8 cantBeCopied:1; // cannot be copied by Role Play or Doodle
-    u8 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
-    u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
-    u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
-    u8 cantBeOverwritten:1; // cannot be overwritten by Entrainment, Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed except for Truant
-    u8 breakable:1; // can be bypassed by Mold Breaker and clones
-    u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
+    u16 effect;
+    union {
+        union {
+            struct ALIGNED(2)
+            {
+                u16 weather:10;
+                s8 hpChangeFractionPerTurn:6;
+            };
+            u16 moveEffect;
+            u16 status1;
+            u16 status2;
+            u16 terrain;
+            u16 preventedStatDrops;
+            struct ALIGNED(2)
+            {
+                enum AbilityImmunityEffect immunityEffect:2;
+                enum AbilityTrapRequirement trapRequirement:2;
+                enum AbilityBoostMoveCondition boostMoveCondition:3;
+                bool8 redirects:1;
+                u8 type:7;
+            };
+            struct ALIGNED(2)
+            {
+                bool8 isPlus;
+                bool8 isMinus;
+            };
+        };
+        union {
+            struct ALIGNED(2)
+            {
+                union {
+                    struct PACKED
+                    {
+                        enum AbilityBoostStatCondition condition:4;
+                        u8 stat:4;
+                    };
+                    u8 hpPercentage;
+                };
+                u8 modifier;
+            };
+            struct ALIGNED(2)
+            {
+                u16 requiredWeather:13;
+                bool16 curesOnTurnEnd:1;
+                bool16 curesImmediately:1;
+            };
+            u16 moveEffectChance;
+            u16 turns;
+        };
+    } arguments;
+    u32 cantBeCopied:1; // cannot be copied by Role Play or Doodle
+    u32 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
+    u32 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
+    u32 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
+    u32 cantBeOverwritten:1; // cannot be overwritten by Entrainment, Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed except for Truant
+    u32 breakable:1; // can be bypassed by Mold Breaker and clones
+    u32 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
+    u32 blocksIntimidate:1;
+    enum AbilityEncounterRateModifier encounterRateModifier:2;
 };
 
 enum {

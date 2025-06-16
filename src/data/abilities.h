@@ -1,3 +1,5 @@
+#include "constants/abilities.h"
+
 const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
 {
     [ABILITY_NONE] =
@@ -5,6 +7,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("-------"),
         .description = COMPOUND_STRING("No special ability."),
         .aiRating = 0,
+        .effect = ABILITY_EFFECT_NONE,
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -14,6 +17,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Stench"),
         .description = COMPOUND_STRING("May cause a foe to flinch."),
         .aiRating = 1,
+        .effect = ABILITY_EFFECT_ADDS_MOVE_EFFECT,
+        .arguments = {
+            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffectChance = 10,
+        },
     },
 
     [ABILITY_DRIZZLE] =
@@ -21,6 +29,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Drizzle"),
         .description = COMPOUND_STRING("Summons rain in battle."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_SUMMONS_WEATHER,
+        .arguments = {
+            .weather = BATTLE_WEATHER_RAIN,
+            .turns = 5,
+        },
     },
 
     [ABILITY_SPEED_BOOST] =
@@ -28,6 +41,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Speed Boost"),
         .description = COMPOUND_STRING("Gradually boosts Speed."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_RAISES_STAT_STAGE,
+        .arguments = {
+            .condition = ABILITY_BOOST_STAT_STAGE_ON_TURN_END,
+            .stat = STAT_SPEED,
+            .modifier = 1,
+        },
     },
 
     [ABILITY_BATTLE_ARMOR] =
@@ -35,6 +54,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Battle Armor"),
         .description = COMPOUND_STRING("Blocks critical hits."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_PREVENTS_CRITICAL_HITS,
         .breakable = TRUE,
     },
 
@@ -43,6 +63,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Sturdy"),
         .description = COMPOUND_STRING("Negates 1-hit KO attacks."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_PREVENTS_OHKO,
         .breakable = TRUE,
     },
 
@@ -51,6 +72,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Damp"),
         .description = COMPOUND_STRING("Prevents self-destruction."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_DAMP,
         .breakable = TRUE,
     },
 
@@ -59,6 +81,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Limber"),
         .description = COMPOUND_STRING("Prevents paralysis."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = STATUS1_PARALYSIS,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -67,7 +94,15 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Sand Veil"),
         .description = COMPOUND_STRING("Ups evasion in a sandstorm."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .weather = B_WEATHER_SANDSTORM,
+            .condition = ABILITY_BOOST_STAT_ON_WEATHER,
+            .stat = STAT_EVASION,
+            .modifier = 50,
+        },
         .breakable = TRUE,
+        .encounterRateModifier = ABILITY_ENCOUNTER_RATE_HALVED_IN_WEATHER,
     },
 
     [ABILITY_STATIC] =
@@ -75,6 +110,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Static"),
         .description = COMPOUND_STRING("Paralyzes on contact."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_MOVE_EFFECT_ON_CONTACT,
+        .arguments = {
+            .moveEffect = MOVE_EFFECT_PARALYSIS,
+            .moveEffectChance = 30,
+        },
     },
 
     [ABILITY_VOLT_ABSORB] =
@@ -82,6 +122,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Volt Absorb"),
         .description = COMPOUND_STRING("Turns electricity into HP."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_IMMUNITY_TO_TYPE,
+        .arguments = {
+            .immunityEffect = ABILITY_IMMUNITY_ABSORPTION,
+            .type = TYPE_ELECTRIC,
+            .modifier = 25,
+        },
         .breakable = TRUE,
     },
 
@@ -90,6 +136,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Water Absorb"),
         .description = COMPOUND_STRING("Changes water into HP."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_IMMUNITY_TO_TYPE,
+        .arguments = {
+            .immunityEffect = ABILITY_IMMUNITY_ABSORPTION,
+            .type = TYPE_WATER,
+            .modifier = 25,
+        },
         .breakable = TRUE,
     },
 
@@ -98,7 +150,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Oblivious"),
         .description = COMPOUND_STRING("Prevents attraction."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_OBLIVIOUS,
         .breakable = TRUE,
+        .blocksIntimidate = B_UPDATED_INTIMIDATE >= GEN_8,
     },
 
     [ABILITY_CLOUD_NINE] =
@@ -106,6 +160,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Cloud Nine"),
         .description = COMPOUND_STRING("Negates weather effects."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_AIR_LOCK,
     },
 
     [ABILITY_COMPOUND_EYES] =
@@ -113,6 +168,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Compound Eyes"),
         .description = COMPOUND_STRING("Raises accuracy."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .stat = STAT_ACC,
+            .modifier = 30,
+        }
     },
 
     [ABILITY_INSOMNIA] =
@@ -120,6 +180,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Insomnia"),
         .description = COMPOUND_STRING("Prevents sleep."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = STATUS1_SLEEP,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -128,6 +193,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Color Change"),
         .description = COMPOUND_STRING("Changes type to foe's move."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_COLOR_CHANGE,
     },
 
     [ABILITY_IMMUNITY] =
@@ -135,6 +201,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Immunity"),
         .description = COMPOUND_STRING("Prevents poisoning."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = STATUS1_PSN_ANY,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -143,6 +214,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Flash Fire"),
         .description = COMPOUND_STRING("Powers up if hit by fire."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_IMMUNITY_TO_TYPE,
+        .arguments = {
+            .immunityEffect = ABILITY_IMMUNITY_FLASH_FIRE,
+            .type = TYPE_FIRE,
+        },
         .breakable = TRUE,
     },
 
@@ -151,6 +227,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Shield Dust"),
         .description = COMPOUND_STRING("Prevents added effects."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_PREVENTS_SECONDARY_EFFECTS,
         .breakable = TRUE,
     },
 
@@ -159,7 +236,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Own Tempo"),
         .description = COMPOUND_STRING("Prevents confusion."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS2,
+        .arguments = {
+            .status1 = STATUS2_CONFUSION,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
+        .blocksIntimidate = B_UPDATED_INTIMIDATE >= GEN_8,
     },
 
     [ABILITY_SUCTION_CUPS] =
@@ -167,6 +250,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Suction Cups"),
         .description = COMPOUND_STRING("Firmly anchors the body."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_PREVENTS_PHAZING,
         .breakable = TRUE,
     },
 
@@ -175,6 +259,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Intimidate"),
         .description = COMPOUND_STRING("Lowers the foe's Attack."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_INTIMIDATE,
     },
 
     [ABILITY_SHADOW_TAG] =
@@ -182,6 +267,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Shadow Tag"),
         .description = COMPOUND_STRING("Prevents the foe's escape."),
         .aiRating = 10,
+        .effect = ABILITY_EFFECT_TRAPS_OPPONENTS,
+        .arguments = {
+            .trapRequirement = ABILITY_TRAPS_ANY,
+        },
     },
 
     [ABILITY_ROUGH_SKIN] =
@@ -189,6 +278,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Rough Skin"),
         .description = COMPOUND_STRING("Hurts to touch."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_ROUGH_SKIN,
     },
 
     [ABILITY_WONDER_GUARD] =
@@ -196,6 +286,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Wonder Guard"),
         .description = COMPOUND_STRING("Only “Supereffective” hits."),
         .aiRating = 10,
+        .effect = ABILITY_EFFECT_WONDER_GUARD,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
         .breakable = TRUE,
@@ -206,6 +297,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Levitate"),
         .description = COMPOUND_STRING("Not hit by Ground attacks."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_LEVITATE,
         .breakable = TRUE,
     },
 
@@ -214,6 +306,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Effect Spore"),
         .description = COMPOUND_STRING("Leaves spores on contact."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_MOVE_EFFECT_ON_CONTACT,
+        .arguments = {
+            // .moveEffect = MOVE_EFFECT_EFFECT_SPORE, // To do
+            .moveEffectChance = 30,
+        },
     },
 
     [ABILITY_SYNCHRONIZE] =
@@ -221,6 +318,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Synchronize"),
         .description = COMPOUND_STRING("Passes on status problems."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_SYNCHRONIZE,
     },
 
     [ABILITY_CLEAR_BODY] =
@@ -228,6 +326,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Clear Body"),
         .description = COMPOUND_STRING("Prevents ability reduction."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STAT_DROPS,
+        .arguments = {
+            .preventedStatDrops = ALL_STATS,
+        },
         .breakable = TRUE,
     },
 
@@ -236,6 +338,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Natural Cure"),
         .description = COMPOUND_STRING("Heals upon switching out."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_NATURAL_CURE,
     },
 
     [ABILITY_LIGHTNING_ROD] =
@@ -243,6 +346,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Lightning Rod"),
         .description = COMPOUND_STRING("Draws electrical moves."),
         .aiRating = 7,
+        .effect = B_REDIRECT_ABILITY_IMMUNITY < GEN_5 ? ABILITY_EFFECT_REDIRECT_TYPE : ABILITY_EFFECT_IMMUNITY_TO_TYPE,
+        .arguments = {
+            .immunityEffect = ABILITY_IMMUNITY_STAT_BOOST,
+            .type = TYPE_ELECTRIC,
+            .stat = STAT_SPATK,
+            .modifier = 1,
+        },
         .breakable = TRUE,
     },
 
@@ -251,6 +361,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Serene Grace"),
         .description = COMPOUND_STRING("Promotes added effects."),
         .aiRating = 8,
+        .effect = ABILITY_EFFECT_SERENE_GRACE,
     },
 
     [ABILITY_SWIFT_SWIM] =
@@ -258,6 +369,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Swift Swim"),
         .description = COMPOUND_STRING("Raises Speed in rain."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .weather = B_WEATHER_RAIN,
+            .condition = ABILITY_BOOST_STAT_ON_WEATHER,
+            .stat = STAT_SPEED,
+            .modifier = 100,
+        }
     },
 
     [ABILITY_CHLOROPHYLL] =
@@ -265,6 +383,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Chlorophyll"),
         .description = COMPOUND_STRING("Raises Speed in sunshine."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .weather = B_WEATHER_SUN,
+            .condition = ABILITY_BOOST_STAT_ON_WEATHER,
+            .stat = STAT_SPEED,
+            .modifier = 100,
+        }
     },
 
     [ABILITY_ILLUMINATE] =
@@ -272,7 +397,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Illuminate"),
         .description = COMPOUND_STRING("Encounter rate increases."),
         .aiRating = 0,
+#if B_ILLUMINATE_EFFECT >= GEN_9
+        .effect = ABILITY_EFFECT_PREVENTS_STAT_DROPS,
+        .arguments = {
+            .stat = STAT_ACC,
+        },
         .breakable = TRUE,
+#endif
+        .encounterRateModifier = ABILITY_ENCOUNTER_RATE_DOUBLED,
     },
 
     [ABILITY_TRACE] =
@@ -280,6 +412,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Trace"),
         .description = COMPOUND_STRING("Copies special ability."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_TRACE,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -289,6 +422,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Huge Power"),
         .description = COMPOUND_STRING("Raises Attack."),
         .aiRating = 10,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .stat = STAT_ATK,
+            .modifier = 100,
+        },
     },
 
     [ABILITY_POISON_POINT] =
@@ -296,6 +434,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Poison Point"),
         .description = COMPOUND_STRING("Poisons foe on contact."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_MOVE_EFFECT_ON_CONTACT,
+        .arguments = {
+            .moveEffect = MOVE_EFFECT_POISON,
+            .moveEffectChance = 30,
+        },
     },
 
     [ABILITY_INNER_FOCUS] =
@@ -303,7 +446,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Inner Focus"),
         .description = COMPOUND_STRING("Prevents flinching."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS2,
+        .arguments = {
+            .status2 = STATUS2_FLINCHED,
+        },
         .breakable = TRUE,
+        .blocksIntimidate = B_UPDATED_INTIMIDATE >= GEN_8,
     },
 
     [ABILITY_MAGMA_ARMOR] =
@@ -311,6 +459,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Magma Armor"),
         .description = COMPOUND_STRING("Prevents freezing."),
         .aiRating = 1,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = (STATUS1_FREEZE | STATUS1_FROSTBITE),
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -319,6 +472,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Water Veil"),
         .description = COMPOUND_STRING("Prevents burns."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = STATUS1_BURN,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -327,6 +485,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Magnet Pull"),
         .description = COMPOUND_STRING("Traps Steel-type Pokémon."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_TRAPS_OPPONENTS,
+        .arguments = {
+            .trapRequirement = ABILITY_TRAPS_TYPE,
+            .type = TYPE_STEEL,
+        },
     },
 
     [ABILITY_SOUNDPROOF] =
@@ -334,6 +497,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Soundproof"),
         .description = COMPOUND_STRING("Avoids sound-based moves."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_SOUNDPROOF,
         .breakable = TRUE,
     },
 
@@ -342,6 +506,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Rain Dish"),
         .description = COMPOUND_STRING("Slight HP recovery in rain."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_UPDATE_HP_IN_WEATHER,
+        .arguments = {
+            .weather = B_WEATHER_RAIN,
+            .hpChangeFractionPerTurn = 16,
+        },
     },
 
     [ABILITY_SAND_STREAM] =
@@ -349,6 +518,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Sand Stream"),
         .description = COMPOUND_STRING("Summons a sandstorm."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_SUMMONS_WEATHER,
+        .arguments = {
+            .weather = BATTLE_WEATHER_SANDSTORM,
+            .turns = 5,
+        },
     },
 
     [ABILITY_PRESSURE] =
@@ -356,6 +530,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Pressure"),
         .description = COMPOUND_STRING("Raises foe's PP usage."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_PRESSURE,
     },
 
     [ABILITY_THICK_FAT] =
@@ -363,6 +538,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Thick Fat"),
         .description = COMPOUND_STRING("Heat-and-cold protection."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_THICK_FAT,
         .breakable = TRUE,
     },
 
@@ -371,6 +547,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Early Bird"),
         .description = COMPOUND_STRING("Awakens quickly from sleep."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_EARLY_BIRD,
     },
 
     [ABILITY_FLAME_BODY] =
@@ -378,6 +555,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Flame Body"),
         .description = COMPOUND_STRING("Burns the foe on contact."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_MOVE_EFFECT_ON_CONTACT,
+        .arguments = {
+            .moveEffect = MOVE_EFFECT_BURN,
+            .moveEffectChance = 30,
+        },
     },
 
     [ABILITY_RUN_AWAY] =
@@ -385,6 +567,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Run Away"),
         .description = COMPOUND_STRING("Makes escaping easier."),
         .aiRating = 0,
+        .effect = ABILITY_EFFECT_RUN_AWAY,
     },
 
     [ABILITY_KEEN_EYE] =
@@ -392,6 +575,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Keen Eye"),
         .description = COMPOUND_STRING("Prevents loss of accuracy."),
         .aiRating = 1,
+        .effect = ABILITY_EFFECT_PREVENTS_STAT_DROPS,
+        .arguments = {
+            .stat = STAT_ACC,
+        },
         .breakable = TRUE,
     },
 
@@ -400,6 +587,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Hyper Cutter"),
         .description = COMPOUND_STRING("Prevents Attack reduction."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_PREVENTS_STAT_DROPS,
+        .arguments = {
+            .stat = STAT_ATK,
+        },
         .breakable = TRUE,
     },
 
@@ -408,6 +599,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Pickup"),
         .description = COMPOUND_STRING("May pick up items."),
         .aiRating = 1,
+        .effect = ABILITY_EFFECT_PICKUP,
     },
 
     [ABILITY_TRUANT] =
@@ -415,6 +607,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Truant"),
         .description = COMPOUND_STRING("Moves only every two turns."),
         .aiRating = -2,
+        .effect = ABILITY_EFFECT_TRUANT,
         .cantBeOverwritten = TRUE,
     },
 
@@ -423,6 +616,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Hustle"),
         .description = COMPOUND_STRING("Trades accuracy for power."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_HUSTLE,
     },
 
     [ABILITY_CUTE_CHARM] =
@@ -430,6 +624,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Cute Charm"),
         .description = COMPOUND_STRING("Infatuates on contact."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_MOVE_EFFECT_ON_CONTACT,
+        .arguments = {
+            // .moveEffect = MOVE_EFFECT_INFATUATION, // To do
+            .moveEffectChance = 30,
+        },
     },
 
     [ABILITY_PLUS] =
@@ -437,6 +636,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Plus"),
         .description = COMPOUND_STRING("Powers up with Minus."),
         .aiRating = 0,
+        .effect = ABILITY_EFFECT_PLUS_MINUS,
+        .arguments = {
+            .isPlus = TRUE,
+        },
     },
 
     [ABILITY_MINUS] =
@@ -444,6 +647,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Minus"),
         .description = COMPOUND_STRING("Powers up with Plus."),
         .aiRating = 0,
+        .effect = ABILITY_EFFECT_PLUS_MINUS,
+        .arguments = {
+            .isMinus = TRUE,
+        },
     },
 
     [ABILITY_FORECAST] =
@@ -451,6 +658,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Forecast"),
         .description = COMPOUND_STRING("Changes with the weather."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_FORECAST,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -460,6 +668,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Sticky Hold"),
         .description = COMPOUND_STRING("Prevents item theft."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_STICKY_HOLD,
         .breakable = TRUE,
     },
 
@@ -468,6 +677,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Shed Skin"),
         .description = COMPOUND_STRING("Heals the body by shedding."),
         .aiRating = 7,
+        .effect = ABILITY_EFFECT_SHED_SKIN,
     },
 
     [ABILITY_GUTS] =
@@ -475,6 +685,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Guts"),
         .description = COMPOUND_STRING("Ups Attack if suffering."),
         .aiRating = 6,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .status1 = STATUS1_ANY,
+            .condition = ABILITY_BOOST_STAT_ON_STATUS1,
+            .stat = STAT_ATK,
+            .modifier = 50,
+        },
     },
 
     [ABILITY_MARVEL_SCALE] =
@@ -482,6 +699,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Marvel Scale"),
         .description = COMPOUND_STRING("Ups Defense if suffering."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .status1 = STATUS1_ANY,
+            .condition = ABILITY_BOOST_STAT_ON_STATUS1,
+            .stat = STAT_DEF,
+            .modifier = 50,
+        },
         .breakable = TRUE,
     },
 
@@ -490,6 +714,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Liquid Ooze"),
         .description = COMPOUND_STRING("Draining causes injury."),
         .aiRating = 3,
+        .effect = ABILITY_EFFECT_LIQUID_OOZE,
     },
 
     [ABILITY_OVERGROW] =
@@ -497,6 +722,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Overgrow"),
         .description = COMPOUND_STRING("Ups Grass moves in a pinch."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_BOOST_MOVE_POWER,
+        .arguments = {
+            .boostMoveCondition = ABILITY_BOOST_MOVE_IF_BELOW_HP_PERCENTAGE,
+            .type = TYPE_GRASS,
+            .hpPercentage = 33,
+            .modifier = 50,
+        },
     },
 
     [ABILITY_BLAZE] =
@@ -504,6 +736,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Blaze"),
         .description = COMPOUND_STRING("Ups Fire moves in a pinch."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_BOOST_MOVE_POWER,
+        .arguments = {
+            .boostMoveCondition = ABILITY_BOOST_MOVE_IF_BELOW_HP_PERCENTAGE,
+            .type = TYPE_FIRE,
+            .hpPercentage = 33,
+            .modifier = 50,
+        },
     },
 
     [ABILITY_TORRENT] =
@@ -511,6 +750,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Torrent"),
         .description = COMPOUND_STRING("Ups Water moves in a pinch."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_BOOST_MOVE_POWER,
+        .arguments = {
+            .boostMoveCondition = ABILITY_BOOST_MOVE_IF_BELOW_HP_PERCENTAGE,
+            .type = TYPE_WATER,
+            .hpPercentage = 33,
+            .modifier = 50,
+        },
     },
 
     [ABILITY_SWARM] =
@@ -518,6 +764,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Swarm"),
         .description = COMPOUND_STRING("Ups Bug moves in a pinch."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_BOOST_MOVE_POWER,
+        .arguments = {
+            .boostMoveCondition = ABILITY_BOOST_MOVE_IF_BELOW_HP_PERCENTAGE,
+            .type = TYPE_BUG,
+            .hpPercentage = 33,
+            .modifier = 50,
+        },
     },
 
     [ABILITY_ROCK_HEAD] =
@@ -525,6 +778,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Rock Head"),
         .description = COMPOUND_STRING("Prevents recoil damage."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_ROCK_HEAD,
     },
 
     [ABILITY_DROUGHT] =
@@ -532,6 +786,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Drought"),
         .description = COMPOUND_STRING("Summons sunlight in battle."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_SUMMONS_WEATHER,
+        .arguments = {
+            .weather = BATTLE_WEATHER_SUN,
+            .turns = 5,
+        },
     },
 
     [ABILITY_ARENA_TRAP] =
@@ -539,6 +798,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Arena Trap"),
         .description = COMPOUND_STRING("Prevents fleeing."),
         .aiRating = 9,
+        .effect = ABILITY_EFFECT_TRAPS_OPPONENTS,
+        .arguments = {
+            .trapRequirement = ABILITY_TRAPS_GROUNDED,
+        },
     },
 
     [ABILITY_VITAL_SPIRIT] =
@@ -546,6 +809,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Vital Spirit"),
         .description = COMPOUND_STRING("Prevents sleep."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STATUS1,
+        .arguments = {
+            .status1 = STATUS1_SLEEP,
+            .curesImmediately = TRUE,
+        },
         .breakable = TRUE,
     },
 
@@ -554,6 +822,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("White Smoke"),
         .description = COMPOUND_STRING("Prevents ability reduction."),
         .aiRating = 4,
+        .effect = ABILITY_EFFECT_PREVENTS_STAT_DROPS,
+        .arguments = {
+            .preventedStatDrops = ALL_STATS,
+        },
         .breakable = TRUE,
     },
 
@@ -562,6 +834,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Pure Power"),
         .description = COMPOUND_STRING("Raises Attack."),
         .aiRating = 10,
+        .effect = ABILITY_EFFECT_BOOSTS_STAT,
+        .arguments = {
+            .stat = STAT_ATK,
+            .modifier = 100,
+        },
     },
 
     [ABILITY_SHELL_ARMOR] =
@@ -569,6 +846,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Shell Armor"),
         .description = COMPOUND_STRING("Blocks critical hits."),
         .aiRating = 2,
+        .effect = ABILITY_EFFECT_PREVENTS_CRITICAL_HITS,
         .breakable = TRUE,
     },
 
@@ -577,6 +855,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Air Lock"),
         .description = COMPOUND_STRING("Negates weather effects."),
         .aiRating = 5,
+        .effect = ABILITY_EFFECT_AIR_LOCK,
     },
 
     [ABILITY_TANGLED_FEET] =
