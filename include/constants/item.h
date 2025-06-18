@@ -11,6 +11,12 @@ enum Pocket
     POCKETS_COUNT,
 };
 
+enum ItemSlotData
+{
+    ITEM_SLOT_ID,
+    ITEM_SLOT_QUANTITY,
+};
+
 #define POCKET_NONE POCKETS_COUNT
 
 #define REPEL_LURE_MASK         (1 << 15)

@@ -29,10 +29,12 @@ struct Item
     const u16 *iconPalette;
 };
 
-struct __attribute__((packed, aligned(2))) BagPocket
+struct ALIGNED(2) BagPocket
 {
     struct ItemSlot *itemSlots;
     u16 capacity;
+    u16 id;
+    u16 (*getSetFunc)(struct BagPocket*, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
 };
 
 extern const struct Item gItemsInfo[];
@@ -40,7 +42,6 @@ extern struct BagPocket gBagPockets[];
 
 u16 GetBagItemId(enum Pocket pocketId, u32 pocketPos);
 u16 GetBagItemQuantity(enum Pocket pocketId, u32 pocketPos);
-void SetBagItemQuantity(enum Pocket pocketId, u32 pocketPos, u16 newValue);
 void ApplyNewEncryptionKeyToBagItems(u32 newKey);
 void SetBagItemsPointers(void);
 u8 *CopyItemName(u16 itemId, u8 *dst);
