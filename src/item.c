@@ -21,10 +21,6 @@
 #include "constants/item_effects.h"
 #include "constants/hold_effects.h"
 
-static u16 GetSetPocketSlot_Generic(struct BagPocket *pocket, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
-static u16 GetSetPocketSlot_Items(struct BagPocket *pocket, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
-static u16 GetSetPocketSlot_KeyItems(struct BagPocket *pocket, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
-static u16 GetSetPocketSlot_TMsHMs(struct BagPocket *pocket, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
 static bool8 CheckPyramidBagHasItem(u16 itemId, u16 count);
 static bool8 CheckPyramidBagHasSpace(u16 itemId, u16 count);
 static const u8 *GetItemPluralName(u16);
@@ -111,6 +107,8 @@ static u16 GetSetPocketSlot_Items(struct BagPocket *pocket, u32 pocketPos, u16 i
 #define GET_OR_SET_EXTRA_KEY_ITEM_SLOT(_pocketPos, _keyItemSlot)                                                \
     if (isSetting)                                                                                              \
     {                                                                                                           \
+        if (!pocket->itemSlots[_pocketPos].expansionBit)                                                        \
+            pocket->itemSlots[_pocketPos].keyItemSlot2 = pocket->itemSlots[_pocketPos].keyItemSlot3 = 0;        \
         pocket->itemSlots[_pocketPos].expansionBit |= !!itemId;                                                 \
         pocket->itemSlots[_pocketPos]._keyItemSlot = itemId;                                                    \
         return 0;                                                                                               \
@@ -161,42 +159,53 @@ static u16 GetSetPocketSlot_TMsHMs(struct BagPocket *pocket, u32 pocketPos, u16 
     {
         // Adjust pocketPos to use additional slots in Key Items pocket
         pocketPos = (pocketPos - (BAG_TMHM_BASE_COUNT * 3 / 2)) * 2 + BAG_KEYITEMS_BASE_COUNT - KEY_ITEM_SLOTS_SIPHONED_FOR_TMS_HMS;
+        pocket = &gBagPockets[POCKET_KEY_ITEMS];
 
         if (isSetting)
         {
-            gBagPockets[POCKET_KEY_ITEMS].itemSlots[pocketPos].keyItemSlot2 = (itemId && quantity > 0) ? itemId : ITEM_NONE;
-            gBagPockets[POCKET_KEY_ITEMS].itemSlots[pocketPos].keyItemSlot3 = quantity;
+            pocket->itemSlots[pocketPos].expansionBit |= !!(itemId && quantity > 0);
+            pocket->itemSlots[pocketPos].keyItemSlot2 = (itemId && quantity > 0) ? itemId : ITEM_NONE;
+            pocket->itemSlots[pocketPos].keyItemSlot3 = quantity;
             return 0;
         }
 
-        return itemId ?
-            gBagPockets[POCKET_KEY_ITEMS].itemSlots[pocketPos].keyItemSlot2 :
-            gBagPockets[POCKET_KEY_ITEMS].itemSlots[pocketPos].keyItemSlot3;
+        return pocket->itemSlots[pocketPos].expansionBit ?
+            (itemId ? pocket->itemSlots[pocketPos].keyItemSlot2 : pocket->itemSlots[pocketPos].keyItemSlot3) :
+            0;
     }
 
     return GetSetPocketSlot_Generic(pocket, pocketPos, itemId, quantity, isSetting);
 }
 
+static u16 (*const sGetSetPocketSlotFuncs[])(struct BagPocket *pocket, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting) =
+{
+    [POCKET_ITEMS] = GetSetPocketSlot_Items,
+    [POCKET_KEY_ITEMS] = GetSetPocketSlot_KeyItems,
+    [POCKET_POKE_BALLS] = GetSetPocketSlot_Generic,
+    [POCKET_TM_HM] = GetSetPocketSlot_TMsHMs,
+    [POCKET_BERRIES] = GetSetPocketSlot_Generic,
+};
+
 static inline u16 GetBagItemIdPocket(struct BagPocket *pocket, u32 pocketPos)
 {
-    return pocket->getSetFunc(pocket, pocketPos, TRUE, FALSE, FALSE);
+    return sGetSetPocketSlotFuncs[pocket->id](pocket, pocketPos, TRUE, FALSE, FALSE);
 }
 
 // Returns zero if the slot contains no item
 static inline u16 GetBagItemQuantityPocket(struct BagPocket *pocket, u32 pocketPos)
 {
-    return pocket->getSetFunc(pocket, pocketPos, FALSE, TRUE, FALSE);
+    return sGetSetPocketSlotFuncs[pocket->id](pocket, pocketPos, FALSE, TRUE, FALSE);
 }
 
 static inline void SetBagItemIdPocket(struct BagPocket *pocket, u32 pocketPos, u16 itemId)
 {
-    pocket->getSetFunc(pocket, pocketPos, itemId, 1, TRUE); // quantity required, default is 1
+    sGetSetPocketSlotFuncs[pocket->id](pocket, pocketPos, itemId, 1, TRUE); // quantity required, default is 1
 }
 
 // If the new quantity is zero, make sure to clear the ID
 static inline void SetBagItemQuantityPocket(struct BagPocket *pocket, u32 pocketPos, u16 newValue)
 {
-    pocket->getSetFunc(pocket, pocketPos, 0, newValue, TRUE);
+    sGetSetPocketSlotFuncs[pocket->id](pocket, pocketPos, 0, newValue, TRUE);
 }
 
 u16 GetBagItemId(enum Pocket pocketId, u32 pocketPos)
@@ -242,27 +251,22 @@ void SetBagItemsPointers(void)
     gBagPockets[POCKET_ITEMS].itemSlots = gSaveBlock1Ptr->bag.items;
     gBagPockets[POCKET_ITEMS].capacity = BAG_ITEMS_COUNT * 3 / 2;
     gBagPockets[POCKET_ITEMS].id = POCKET_ITEMS;
-    gBagPockets[POCKET_ITEMS].getSetFunc = GetSetPocketSlot_Items;
 
     gBagPockets[POCKET_KEY_ITEMS].itemSlots = gSaveBlock1Ptr->bag.keyItems;
     gBagPockets[POCKET_KEY_ITEMS].capacity = BAG_KEYITEMS_COUNT * 3 / 2;
     gBagPockets[POCKET_KEY_ITEMS].id = POCKET_KEY_ITEMS;
-    gBagPockets[POCKET_KEY_ITEMS].getSetFunc = GetSetPocketSlot_KeyItems;
 
     gBagPockets[POCKET_POKE_BALLS].itemSlots = gSaveBlock1Ptr->bag.pokeBalls;
     gBagPockets[POCKET_POKE_BALLS].capacity = BAG_POKEBALLS_COUNT * 3 / 2;
     gBagPockets[POCKET_POKE_BALLS].id = POCKET_POKE_BALLS;
-    gBagPockets[POCKET_POKE_BALLS].getSetFunc = GetSetPocketSlot_Generic;
 
     gBagPockets[POCKET_TM_HM].itemSlots = gSaveBlock1Ptr->bag.TMsHMs;
     gBagPockets[POCKET_TM_HM].capacity = BAG_TMHM_COUNT * 3 / 2;
     gBagPockets[POCKET_TM_HM].id = POCKET_TM_HM;
-    gBagPockets[POCKET_TM_HM].getSetFunc = GetSetPocketSlot_TMsHMs;
 
     gBagPockets[POCKET_BERRIES].itemSlots = gSaveBlock1Ptr->bag.berries;
     gBagPockets[POCKET_BERRIES].capacity = BAG_BERRIES_COUNT * 3 / 2;
     gBagPockets[POCKET_BERRIES].id = POCKET_BERRIES;
-    gBagPockets[POCKET_BERRIES].getSetFunc = GetSetPocketSlot_Generic;
 }
 
 u8 *CopyItemName(u16 itemId, u8 *dst)
@@ -402,7 +406,6 @@ static inline u32 PrepareTempPocket(struct BagPocket *tempPocket, enum Pocket po
     tempPocket->itemSlots = AllocZeroed(size);
     tempPocket->capacity = gBagPockets[pocketId].capacity;
     tempPocket->id = gBagPockets[pocketId].id;
-    tempPocket->getSetFunc = gBagPockets[pocketId].getSetFunc;
     memcpy(tempPocket->itemSlots, gBagPockets[pocketId].itemSlots, size);
 
     return size;
@@ -515,6 +518,80 @@ bool8 AddBagItem(u16 itemId, u16 count)
     }
 }
 
+static inline bool32 CheckSlotAndUpdateCount(struct BagPocket *pocket, u16 itemId, u32 pocketPos, u32 *nextPocketPos, u16 *count, u16 *tempPocketSlotQuantities)
+{
+    u16 tempItemId, tempQuantity;
+    tempItemId = GetBagItemIdPocket(pocket, pocketPos);
+    if (tempItemId == ITEM_NONE || tempItemId == itemId)
+    {
+        // The quantity already at the slot
+        tempQuantity = (tempItemId == itemId) * GetBagItemQuantityPocket(pocket, pocketPos);
+
+        // Record slot quantity in tempPocketSlotQuantities, adjust count
+        tempPocketSlotQuantities[pocketPos] = min(MAX_BAG_ITEM_CAPACITY, *count + tempQuantity);
+        *count -= min(*count, MAX_BAG_ITEM_CAPACITY - tempQuantity);
+
+        // Set the starting index for the next loop to set items (shifted by one)
+        *nextPocketPos += !(*nextPocketPos) * (pocketPos + 1);
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 AddBagItemNew(u16 itemId, u16 count)
+{
+    if (GetItemPocket(itemId) >= POCKETS_COUNT)
+        return FALSE;
+
+    // check Battle Pyramid Bag
+    if (InBattlePyramid() || FlagGet(FLAG_STORING_ITEMS_IN_PYRAMID_BAG) == TRUE)
+    {
+        return AddPyramidBagItem(itemId, count);
+    }
+
+    u32 i, j = 0;
+    struct BagPocket *pocket = &gBagPockets[gItemsInfo[itemId].pocket];
+
+    // First, check that there is a free slot for this item
+    u16 *tempPocketSlotQuantities = AllocZeroed(sizeof(u16) * pocket->capacity);
+
+    switch (pocket->id)
+    {
+        case POCKET_BERRIES:
+        case POCKET_KEY_ITEMS:
+            for (i = 0; i < pocket->capacity && count > 0; i++)
+            {
+                // Check if we found a slot to store the item but weren't able to reduce count to 0
+                // This means that we have more than one stack's worth, which isn't allowed in these pockets
+                if (CheckSlotAndUpdateCount(pocket, itemId, i, &j, &count, tempPocketSlotQuantities) && count > 0)
+                {
+                    Free(tempPocketSlotQuantities);
+                    return FALSE;
+                }
+            }
+            break;
+        default:
+            for (i = 0; i < pocket->capacity && count > 0; i++)
+                CheckSlotAndUpdateCount(pocket, itemId, i, &j, &count, tempPocketSlotQuantities);
+    }
+
+    // If the count is still greater than zero, clearly we have not found enough slots for this...
+    // Otherwise, we have found slots - update the actual pockets with the updated quantities
+    if (count == 0)
+    {
+        for (j = j - 1; j <= i; j++)
+        {
+            if (tempPocketSlotQuantities[i] > 0)
+                sGetSetPocketSlotFuncs[pocket->id](pocket, j, itemId, tempPocketSlotQuantities[i], TRUE);
+        }
+    }
+
+    Free(tempPocketSlotQuantities);
+    return !(count > 0);
+}
+
 bool8 RemoveBagItem(u16 itemId, u16 count)
 {
     u8 i;
@@ -534,6 +611,69 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
         enum Pocket pocketId = GetItemPocket(itemId);
 
         for (i = 0; i < gBagPockets[pocketId].capacity; i++)
+        {
+            if (GetBagItemId(pocketId, i) == itemId)
+            {
+                if (totalQuantity == 0)
+                    firstStackIndex = i;
+                totalQuantity += GetBagItemQuantity(pocketId, i);
+            }
+        }
+
+        if (totalQuantity < count)
+            return FALSE;   // We don't have enough of the item
+
+        if (CurMapIsSecretBase() == TRUE)
+        {
+            VarSet(VAR_SECRET_BASE_LOW_TV_FLAGS, VarGet(VAR_SECRET_BASE_LOW_TV_FLAGS) | SECRET_BASE_USED_BAG);
+            VarSet(VAR_SECRET_BASE_LAST_ITEM_USED, itemId);
+        }
+
+        for (i = firstStackIndex; i < gBagPockets[pocketId].capacity; i++)
+        {
+            if (GetBagItemId(pocketId, i) == itemId)
+            {
+                ownedCount = GetBagItemQuantity(pocketId, i);
+                if (ownedCount >= count)
+                {
+                    SetBagItemQuantity(pocketId, i, ownedCount - count);
+                    count = 0;
+                }
+                else
+                {
+                    count -= ownedCount;
+                    SetBagItemQuantity(pocketId, i, 0);
+                }
+
+                if (GetBagItemQuantity(pocketId, i) == 0)
+                    SetBagItemId(pocketId, i, ITEM_NONE);
+
+                if (count == 0)
+                    return TRUE;
+            }
+        }
+        return TRUE;
+    }
+}
+
+bool32 RemoveBagItemNew(u16 itemId, u16 count)
+{
+    u8 i;
+    u16 totalQuantity = 0;
+
+    if (GetItemPocket(itemId) >= POCKETS_COUNT || itemId == ITEM_NONE)
+        return FALSE;
+
+    // check Battle Pyramid Bag
+    if (InBattlePyramid() || FlagGet(FLAG_STORING_ITEMS_IN_PYRAMID_BAG) == TRUE)
+    {
+        return RemovePyramidBagItem(itemId, count);
+    }
+
+        u16 ownedCount, firstStackIndex = 0;
+        struct BagPocket *pocket = &gBagPockets[GetItemPocket(itemId)];
+
+        for (i = 0; i < pocket->capacity; i++)
         {
             if (GetBagItemId(pocketId, i) == itemId)
             {

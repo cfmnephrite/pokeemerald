@@ -32,9 +32,8 @@ struct Item
 struct ALIGNED(2) BagPocket
 {
     struct ItemSlot *itemSlots;
-    u16 capacity;
-    u16 id;
-    u16 (*getSetFunc)(struct BagPocket*, u32 pocketPos, u16 itemId, u16 quantity, bool32 isSetting);
+    u16 capacity:10;
+    enum Pocket id:6;
 };
 
 extern const struct Item gItemsInfo[];
