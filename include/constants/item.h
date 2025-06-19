@@ -8,7 +8,7 @@ enum Pocket
     POCKET_TM_HM,
     POCKET_BERRIES,
     POCKET_KEY_ITEMS,
-    POCKETS_COUNT,
+    POCKETS_COUNT, // Also used as a dummy pocket
 };
 
 enum ItemSlotData
@@ -17,6 +17,7 @@ enum ItemSlotData
     ITEM_SLOT_QUANTITY,
 };
 
+#define POCKET_PC_DUMMY POCKETS_COUNT
 #define POCKET_NONE POCKETS_COUNT
 
 #define REPEL_LURE_MASK         (1 << 15)

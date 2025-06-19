@@ -62,7 +62,6 @@
 #define MAIL_COUNT (10 + PARTY_SIZE)
 #define SECRET_BASES_COUNT 20
 #define POKE_NEWS_COUNT 16
-#define PC_ITEMS_COUNT 50
 #define OBJECT_EVENT_TEMPLATES_COUNT 64
 #define DECOR_MAX_SECRET_BASE 16
 #define DECOR_MAX_PLAYERS_HOUSE 12
@@ -82,6 +81,9 @@
 #define BAG_POKEBALLS_BASE_COUNT 16
 #define BAG_TMHM_BASE_COUNT 64
 #define BAG_BERRIES_BASE_COUNT 46
+
+// PC storage
+#define PC_ITEMS_COUNT 50
 
 // Whether or not to mix up pockets and PC slots to increase storage
 #define KEY_ITEM_SLOTS_SIPHONED_FOR_TMS_HMS     12
