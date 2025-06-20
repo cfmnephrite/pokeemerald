@@ -295,10 +295,7 @@ static bool32 BagPocket_AddItem(struct BagPocket *pocket, u16 itemId, u16 count)
                 // Check if we found a slot to store the item but weren't able to reduce count to 0
                 // This means that we have more than one stack's worth, which isn't allowed in these pockets
                 if (CheckSlotAndUpdateCount(pocket, itemId, i, &j, &count, tempPocketSlotQuantities) && count > 0)
-                {
-                    Free(tempPocketSlotQuantities);
-                    return FALSE;
-                }
+                    return FreeAndReturn(tempPocketSlotQuantities, FALSE);
             }
             break;
         default:
@@ -317,8 +314,7 @@ static bool32 BagPocket_AddItem(struct BagPocket *pocket, u16 itemId, u16 count)
         }
     }
 
-    Free(tempPocketSlotQuantities);
-    return count == 0;
+    return FreeAndReturn(tempPocketSlotQuantities, count == 0);
 }
 
 bool32 AddBagItem(u16 itemId, u16 count)
@@ -349,17 +345,14 @@ static bool32 BagPocket_RemoveItem(struct BagPocket *pocket, u16 itemId, u16 cou
             // Index for the next loop
             j += (j == 0) * (i + 1);
 
-            // Gather quantities (+ 1 so that even if setting to 0 we know which indices to target)
+            // Gather quantities (+ 1 to tempPocketSlotQuantities so that even if setting to 0 we know which indices to target)
             totalQuantity += tempQuantity;
             tempPocketSlotQuantities[i] = (tempQuantity <= count ? 0 : tempQuantity - count) + 1;
         }
     }
 
-    if (totalQuantity < count)
-    {
-        Free(tempPocketSlotQuantities);
-        return FALSE;   // We don't have enough of the item
-    }
+    if (totalQuantity < count) // We don't have enough of the item
+        return FreeAndReturn(tempPocketSlotQuantities, FALSE);
 
     if (CurMapIsSecretBase() == TRUE)
     {
@@ -374,8 +367,7 @@ static bool32 BagPocket_RemoveItem(struct BagPocket *pocket, u16 itemId, u16 cou
             BagPocket_SetSlotData(pocket, j, &itemId, &tempPocketSlotQuantities[j]);
     }
 
-    Free(tempPocketSlotQuantities);
-    return TRUE;
+    return FreeAndReturn(tempPocketSlotQuantities, TRUE);
 }
 
 bool32 RemoveBagItem(u16 itemId, u16 count)
