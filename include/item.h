@@ -41,7 +41,6 @@ extern struct BagPocket gBagPockets[];
 
 u16 GetBagItemId(enum Pocket pocketId, u32 pocketPos);
 u16 GetBagItemQuantity(enum Pocket pocketId, u32 pocketPos);
-void SetBagItemQuantity(enum Pocket pocketId, u32 pocketPos, u16 newValue);
 void ApplyNewEncryptionKeyToBagItems(u32 newKey);
 void SetBagItemsPointers(void);
 u8 *CopyItemName(u16 itemId, u8 *dst);
@@ -52,8 +51,8 @@ bool8 HasAtLeastOneBerry(void);
 bool8 HasAtLeastOnePokeBall(void);
 bool8 CheckBagHasSpace(u16 itemId, u16 count);
 u32 GetFreeSpaceForItemInBag(u16 itemId);
-bool8 AddBagItem(u16 itemId, u16 count);
-bool8 RemoveBagItem(u16 itemId, u16 count);
+bool32 AddBagItem(u16 itemId, u16 count);
+bool32 RemoveBagItem(u16 itemId, u16 count);
 u8 CountUsedPCItemSlots(void);
 bool8 CheckPCHasItem(u16 itemId, u16 count);
 bool8 AddPCItem(u16 itemId, u16 count);
