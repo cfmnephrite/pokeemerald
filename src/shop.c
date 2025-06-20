@@ -155,7 +155,7 @@ static void Task_ReturnToItemListAfterDecorationPurchase(u8 taskId);
 static void Task_HandleShopMenuBuy(u8 taskId);
 static void Task_HandleShopMenuSell(u8 taskId);
 static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, struct ListMenu *list);
-static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y);
+static void BuyMenuPrintPriceInList(u8 windowId, u32 itemIndex, u32 itemId, u8 y);
 
 static const struct YesNoFuncTable sShopPurchaseYesNoFuncs =
 {
@@ -619,7 +619,7 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
     BuyMenuPrint(WIN_ITEM_DESCRIPTION, description, 3, 1, 0, COLORID_NORMAL);
 }
 
-static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
+static void BuyMenuPrintPriceInList(u8 windowId, u32 itemIndex, u32 itemId, u8 y)
 {
     u8 x;
 

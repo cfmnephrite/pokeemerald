@@ -174,7 +174,7 @@ static void ItemStorage_DrawItemIcon(u16);
 static void ItemStorage_PrintDescription(s32);
 static void ItemStorage_EraseMainMenu(u8);
 static void ItemStorage_MoveCursor(s32, bool8, struct ListMenu *);
-static void ItemStorage_PrintMenuItem(u8, u32, u8);
+static void ItemStorage_PrintMenuItem(u8, u32, u32, u8);
 
 static EWRAM_DATA const u8 *sTopMenuOptionOrder = NULL;
 static EWRAM_DATA u8 sTopMenuNumOptions = 0;
@@ -1038,18 +1038,18 @@ static void ItemStorage_MoveCursor(s32 id, bool8 onInit, struct ListMenu *list)
     }
 }
 
-static void ItemStorage_PrintMenuItem(u8 windowId, u32 id, u8 yOffset)
+static void ItemStorage_PrintMenuItem(u8 windowId, u32 itemIndex, u32 itemId, u8 yOffset)
 {
-    if (id != LIST_CANCEL)
+    if (itemIndex != LIST_CANCEL)
     {
         if (sItemStorageMenu->toSwapPos != NOT_SWAPPING)
         {
-            if (sItemStorageMenu->toSwapPos == (u8)id)
+            if (sItemStorageMenu->toSwapPos == (u8)itemIndex)
                 ItemStorage_DrawSwapArrow(yOffset, 0, TEXT_SKIP_DRAW);
             else
                 ItemStorage_DrawSwapArrow(yOffset, 0xFF, TEXT_SKIP_DRAW);
         }
-        ConvertIntToDecimalStringN(gStringVar1, gSaveBlock1Ptr->pcItems[id].quantity, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar1, gSaveBlock1Ptr->pcItems[itemIndex].quantity, STR_CONV_MODE_RIGHT_ALIGN, 3);
         StringExpandPlaceholders(gStringVar4, gText_xVar1);
         AddTextPrinterParameterized(windowId, FONT_NARROW, gStringVar4, GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 104), yOffset, TEXT_SKIP_DRAW, NULL);
     }

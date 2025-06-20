@@ -2,6 +2,7 @@
 #define GUARD_LIST_MENU_H
 
 #include "window.h"
+#include "constants/item.h"
 
 #define LIST_NOTHING_CHOSEN -1
 #define LIST_CANCEL -2
@@ -29,6 +30,12 @@ enum {
 
 struct ListMenu;
 
+struct ListMenuItemFunctions
+{
+    const u8* (*getItemName)(struct ListMenu *list, u32 index);
+    s32 (*getItemId)(struct ListMenu *list, u32 index);
+};
+
 struct ListMenuItem
 {
     const u8 *name;
@@ -37,9 +44,14 @@ struct ListMenuItem
 
 struct ListMenuTemplate
 {
-    const struct ListMenuItem *items;
+    union {
+        const struct ListMenuItem *items;
+        u16 *movesToLearn; // Used by the move relearner
+        enum Pocket pocketId; // Used by the bag menu
+    };
     void (*moveCursorFunc)(s32 itemIndex, bool8 onInit, struct ListMenu *list);
-    void (*itemPrintFunc)(u8 windowId, u32 itemId, u8 y);
+    void (*itemPrintFunc)(u8 windowId, u32 index, u32 itemId, u8 y);
+    const struct ListMenuItemFunctions *listMenuItemFunctions;
     u32 totalItems:12;
     u32 maxShowed:12;
     u32 textNarrowWidth:8;
@@ -61,12 +73,9 @@ struct ListMenuTemplate
 struct ListMenu
 {
     struct ListMenuTemplate template;
-    u16 scrollOffset;
-    u16 selectedRow;
-    u8 unk_1C;
-    u8 unk_1D;
-    u8 taskId;
-    u8 unk_1F;
+    u32 scrollOffset:12;
+    u32 selectedRow:12;
+    u32 taskId:8;
 };
 
 struct ListMenuWindowRect
