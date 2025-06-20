@@ -55,16 +55,6 @@
 #define TAG_POCKET_SCROLL_ARROW 110
 #define TAG_BAG_SCROLL_ARROW    111
 
-// The buffer for the bag item list needs to be large enough to hold the maximum
-// number of item slots that could fit in a single pocket, + 1 for Cancel.
-// This constant picks the max of the existing pocket sizes.
-// By default, the largest pocket is BAG_TMHM_COUNT at 64.
-#define MAX_POCKET_ITEMS  ((max(BAG_TMHM_COUNT,              \
-                            max(BAG_BERRIES_COUNT,           \
-                            max(BAG_ITEMS_COUNT,             \
-                            max(BAG_KEYITEMS_COUNT,          \
-                                BAG_POKEBALLS_COUNT))))) + 1)
-
 // Up to 8 item slots can be visible at a time
 #define MAX_ITEMS_SHOWN 8
 
@@ -104,6 +94,11 @@ enum {
 // Item list ID for toSwapPos to indicate an item is not currently being swapped
 #define NOT_SWAPPING 0xFF
 
+struct ListBuffer {
+    u8 name[max(ITEM_NAME_LENGTH, MOVE_NAME_LENGTH) + 15];
+    const u8 *buffer;
+};
+
 struct TempWallyBag {
     struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
     struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
@@ -118,6 +113,7 @@ static bool8 SetupBagMenu(void);
 static void BagMenu_InitBGs(void);
 static bool8 LoadBagMenu_Graphics(void);
 static void LoadBagMenuTextWindows(void);
+static void AllocateBagItemListBuffer(void);
 static void LoadBagItemListBuffers(u8);
 static void PrintPocketNames(const u8 *, const u8 *);
 static void CopyPocketNameToWindow(u32);
@@ -202,6 +198,8 @@ static void CancelToss(u8);
 static void ConfirmSell(u8);
 static void CancelSell(u8);
 static void Task_FadeAndCloseBagMenuIfMulch(u8 taskId);
+static s32 BagMenu_GetItemId(struct ListMenu *list, u32 index);
+static const u8 *BagMenu_GetItemName(struct ListMenu *list, u32 index);
 
 static const u8 sText_Var1CantBeHeldHere[] = _("The {STR_VAR_1} can't be held\nhere.");
 static const u8 sText_DepositHowManyVar1[] = _("Deposit how many\n{STR_VAR_1}?");
@@ -239,20 +237,6 @@ static const struct BgTemplate sBgTemplates_ItemMenu[] =
         .baseTile = 0,
     },
 };
-
-static s32 BagMenu_GetItemId(struct ListMenu *list, u32 index)
-{
-    u16 itemId = GetBagItemId(list->template.pocketId, index);
-
-    return itemId == ITEM_NONE ? LIST_CANCEL : itemId;
-}
-
-static const u8 *BagMenu_GetItemName(struct ListMenu *list, u32 index)
-{
-    u16 itemId = GetBagItemId(list->template.pocketId, index);
-
-    return itemId == ITEM_NONE ? gText_CloseBag : gItemsInfo[itemId].name;
-}
 
 static const struct ListMenuItemFunctions sItemListMenuFunctions =
 {
@@ -565,6 +549,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
 
 EWRAM_DATA struct BagMenu *gBagMenu = 0;
 EWRAM_DATA struct BagPosition gBagPosition = {0};
+static EWRAM_DATA struct ListBuffer *sListBuffer = 0;
 EWRAM_DATA u16 gSpecialVar_ItemId = 0;
 static EWRAM_DATA struct TempWallyBag *sTempWallyBag = 0;
 
@@ -754,7 +739,7 @@ static bool8 SetupBagMenu(void)
         gMain.state++;
         break;
     case 11:
-        // AllocateBagItemListBuffers();
+        AllocateBagItemListBuffer();
         gMain.state++;
         break;
     case 12:
@@ -874,6 +859,11 @@ static u8 CreateBagInputHandlerTask(u8 location)
     else
         taskId = CreateTask(Task_BagMenu_HandleInput, 0);
     return taskId;
+}
+
+static void AllocateBagItemListBuffer(void)
+{
+    sListBuffer = Alloc(sizeof(*sListBuffer));
 }
 
 static void LoadBagItemListBuffers(u8 pocketId)
@@ -1055,6 +1045,7 @@ static void DestroyPocketSwitchArrowPair(void)
 
 static void FreeBagMenu(void)
 {
+    Free(sListBuffer);
     FreeAllWindowBuffers();
     Free(gBagMenu);
 }
@@ -2613,4 +2604,24 @@ static void PrintTMHMMoveData(u16 itemId)
 
         CopyWindowToVram(WIN_TMHM_INFO, COPYWIN_GFX);
     }
+}
+
+static s32 BagMenu_GetItemId(struct ListMenu *list, u32 index)
+{
+    u16 itemId = GetBagItemId(list->template.pocketId, index);
+
+    return itemId == ITEM_NONE ? LIST_CANCEL : itemId;
+}
+
+static const u8 *BagMenu_GetItemName(struct ListMenu *list, u32 index)
+{
+    u16 itemId = GetBagItemId(list->template.pocketId, index);
+
+    if (itemId == ITEM_NONE)
+        return gText_CloseBag;
+
+    GetItemNameFromPocket(sListBuffer->name, itemId);
+    sListBuffer->buffer = sListBuffer->name;
+
+    return sListBuffer->buffer;
 }
