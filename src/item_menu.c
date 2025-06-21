@@ -94,11 +94,6 @@ enum {
 // Item list ID for toSwapPos to indicate an item is not currently being swapped
 #define NOT_SWAPPING 0xFF
 
-struct ListBuffer {
-    u8 name[max(ITEM_NAME_LENGTH, MOVE_NAME_LENGTH) + 15];
-    const u8 *buffer;
-};
-
 struct TempWallyBag {
     struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
     struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
@@ -113,7 +108,6 @@ static bool8 SetupBagMenu(void);
 static void BagMenu_InitBGs(void);
 static bool8 LoadBagMenu_Graphics(void);
 static void LoadBagMenuTextWindows(void);
-static void AllocateBagItemListBuffer(void);
 static void LoadBagItemListBuffers(u8);
 static void PrintPocketNames(const u8 *, const u8 *);
 static void CopyPocketNameToWindow(u32);
@@ -125,7 +119,6 @@ static void PrepareTMHMMoveWindow(void);
 static bool8 IsWallysBag(void);
 static void Task_WallyTutorialBagMenu(u8);
 static void Task_BagMenu_HandleInput(u8);
-static void GetItemNameFromPocket(u8 *, u16);
 static void PrintItemDescription(int);
 static void BagMenu_PrintCursorAtPos(u8, u8);
 static void BagMenu_Print(u8, u8, const u8 *, u8, u8, u8, u8, u8, u8);
@@ -177,7 +170,7 @@ static void InitPocketScrollPositions(void);
 static u8 CreateBagInputHandlerTask(u8);
 static void DrawItemListBgRow(u8);
 static void BagMenu_MoveCursorCallback(s32, bool8, struct ListMenu *);
-static void BagMenu_ItemPrintCallback(u8, u32, u32, u8);
+static void BagMenu_ListMenuPrintOverride(struct ListMenu *, u32, u8, u8);
 static void ItemMenu_UseOutOfBattle(u8);
 static void ItemMenu_Toss(u8);
 static void ItemMenu_Register(u8);
@@ -199,7 +192,6 @@ static void ConfirmSell(u8);
 static void CancelSell(u8);
 static void Task_FadeAndCloseBagMenuIfMulch(u8 taskId);
 static s32 BagMenu_GetItemId(struct ListMenu *list, u32 index);
-static const u8 *BagMenu_GetItemName(struct ListMenu *list, u32 index);
 
 static const u8 sText_Var1CantBeHeldHere[] = _("The {STR_VAR_1} can't be held\nhere.");
 static const u8 sText_DepositHowManyVar1[] = _("Deposit how many\n{STR_VAR_1}?");
@@ -238,22 +230,18 @@ static const struct BgTemplate sBgTemplates_ItemMenu[] =
     },
 };
 
-static const struct ListMenuItemFunctions sItemListMenuFunctions =
-{
-    .getItemId = BagMenu_GetItemId,
-    .getItemName = BagMenu_GetItemName,
-};
-
 static const struct ListMenuTemplate sItemListMenu =
 {
     .moveCursorFunc = BagMenu_MoveCursorCallback,
-    .itemPrintFunc = BagMenu_ItemPrintCallback,
-    .listMenuItemFunctions = &sItemListMenuFunctions,
+    .listMenuItemFunctions = &(const struct ListMenuItemFunctions){
+        .getItemId = BagMenu_GetItemId,
+        .printOverride = BagMenu_ListMenuPrintOverride,
+    },
     .totalItems = 0,
     .maxShowed = 0,
     .windowId = WIN_ITEM_LIST,
     .header_X = 0,
-    .item_X = 8,
+    .item_X = 8, // Shifted by 8 to the right in TMs and Berries in order to fit indices in LoadBagItemListBuffers
     .cursor_X = 0,
     .upText_Y = 1,
     .cursorPal = 1,
@@ -549,7 +537,6 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
 
 EWRAM_DATA struct BagMenu *gBagMenu = 0;
 EWRAM_DATA struct BagPosition gBagPosition = {0};
-static EWRAM_DATA struct ListBuffer *sListBuffer = 0;
 EWRAM_DATA u16 gSpecialVar_ItemId = 0;
 static EWRAM_DATA struct TempWallyBag *sTempWallyBag = 0;
 
@@ -739,7 +726,7 @@ static bool8 SetupBagMenu(void)
         gMain.state++;
         break;
     case 11:
-        AllocateBagItemListBuffer();
+        // AllocateBagItemListBuffer();
         gMain.state++;
         break;
     case 12:
@@ -861,51 +848,12 @@ static u8 CreateBagInputHandlerTask(u8 location)
     return taskId;
 }
 
-static void AllocateBagItemListBuffer(void)
-{
-    sListBuffer = Alloc(sizeof(*sListBuffer));
-}
-
 static void LoadBagItemListBuffers(u8 pocketId)
 {
     gMultiuseListMenuTemplate = sItemListMenu;
     gMultiuseListMenuTemplate.totalItems = gBagMenu->numItemStacks[pocketId];
     gMultiuseListMenuTemplate.pocketId = pocketId;
     gMultiuseListMenuTemplate.maxShowed = gBagMenu->numShownItems[pocketId];
-}
-
-static void GetItemNameFromPocket(u8 *dest, u16 itemId)
-{
-    u8 *end;
-    switch (gBagPosition.pocket)
-    {
-    case POCKET_TM_HM:
-        end = StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(itemId)));
-        PrependFontIdToFit(gStringVar2, end, FONT_NARROW, 61);
-        if (itemId >= ITEM_HM01)
-        {
-            // Get HM number
-            ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_HM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 1);
-            StringExpandPlaceholders(dest, gText_NumberItem_HM);
-        }
-        else
-        {
-            // Get TM number
-            ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_TM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
-            StringExpandPlaceholders(dest, gText_NumberItem_TMBerry);
-        }
-        break;
-    case POCKET_BERRIES:
-        ConvertIntToDecimalStringN(gStringVar1, itemId - FIRST_BERRY_INDEX + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
-        end = CopyItemName(itemId, gStringVar2);
-        PrependFontIdToFit(gStringVar2, end, FONT_NARROW, 61);
-        StringExpandPlaceholders(dest, gText_NumberItem_TMBerry);
-        break;
-    default:
-        end = CopyItemName(itemId, dest);
-        PrependFontIdToFit(dest, end, FONT_NARROW, 88);
-        break;
-    }
 }
 
 inline static void PrintItemDescriptionFromItemId(s32 itemId)
@@ -946,10 +894,18 @@ static void BagMenu_MoveCursorCallback(s32 itemId, bool8 onInit, struct ListMenu
     }
 }
 
-static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u32 itemId, u8 y)
+static inline void BagMenu_PrintItemQuantity(u16 quantity, u8 windowId, u8 y)
+{
+    ConvertIntToDecimalStringN(gStringVar1, quantity, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS);
+    StringExpandPlaceholders(gStringVar4, gText_xVar1);
+    BagMenu_Print(windowId, FONT_NARROW, gStringVar4, GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119), y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+}
+
+static void BagMenu_ListMenuPrintOverride(struct ListMenu *list, u32 itemIndex, u8 x, u8 y)
 {
     u16 itemQuantity;
-    int offset;
+    u8 windowId = list->template.windowId;
+    s32 itemId = BagMenu_GetItemId(list, itemIndex);
 
     if (itemId != LIST_CANCEL)
     {
@@ -964,25 +920,55 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u32 itemId, u8
 
         itemQuantity = GetBagItemQuantity(gBagPosition.pocket, itemIndex);
 
-        // Draw HM icon
-        if (itemId >= ITEM_HM01 && itemId <= ITEM_HM08)
-            BlitBitmapToWindow(windowId, gBagMenuHMIcon_Gfx, 8, y - 1, 16, 16);
+        switch (gBagPosition.pocket)
+        {
+            case POCKET_KEY_ITEMS:
+                // Print registered icon
+                if (gSaveBlock1Ptr->registeredItem != ITEM_NONE && gSaveBlock1Ptr->registeredItem == itemId)
+                    BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 96, y - 1, 24, 16);
+                break;
+            case POCKET_TM_HM:
+                if (itemId >= ITEM_HM01 && itemId <= ITEM_HM08) // Draw HM icon
+                    BlitBitmapToWindow(windowId, gBagMenuHMIcon_Gfx, x, y - 1, 16, 16);
 
-        if (gBagPosition.pocket != POCKET_KEY_ITEMS && GetItemImportance(itemId) == FALSE)
-        {
-            // Print item quantity
-            ConvertIntToDecimalStringN(gStringVar1, itemQuantity, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS);
-            StringExpandPlaceholders(gStringVar4, gText_xVar1);
-            offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
-            BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
-        }
-        else
-        {
-            // Print registered icon
-            if (gSaveBlock1Ptr->registeredItem != ITEM_NONE && gSaveBlock1Ptr->registeredItem == itemId)
-                BlitBitmapToWindow(windowId, sRegisteredSelect_Gfx, 96, y - 1, 24, 16);
+                PrependFontIdToFit(gStringVar2, StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(itemId))), FONT_NARROW, 61);
+                if (itemId >= ITEM_HM01)
+                {
+                    // Get HM number
+                    ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_HM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 1);
+                    StringExpandPlaceholders(gStringVar4, gText_NumberItem_HM);
+                }
+                else
+                {
+                    // Get TM number
+                    ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_TM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+                    StringExpandPlaceholders(gStringVar4, gText_NumberItem_TMBerry);
+                }
+                BagMenu_Print(windowId, FONT_NARROW, gStringVar4, x, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+
+                // Shift offset for name
+                x += 17;
+
+                // Print quantity
+                if (!GetItemImportance(itemId))
+                    BagMenu_PrintItemQuantity(itemQuantity, windowId, y);
+                return; // Printing the move name is handled by the above
+            case POCKET_BERRIES:
+                ConvertIntToDecimalStringN(gStringVar1, itemId - FIRST_BERRY_INDEX + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+                PrependFontIdToFit(gStringVar2, CopyItemName(itemId, gStringVar2), FONT_NARROW, 61);
+                StringExpandPlaceholders(gStringVar4, gText_NumberItem_TMBerry);
+                BagMenu_Print(windowId, FONT_NARROW, gStringVar4, x, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+
+                // Shift offset for name
+                x += 17;
+            default:
+                BagMenu_PrintItemQuantity(itemQuantity, windowId, y);
+                break;
         }
     }
+
+    // Print item name
+    ListMenuPrint(list, itemId == ITEM_NONE ? gText_CloseBag : gItemsInfo[itemId].name, x, y);
 }
 
 static void PrintItemDescription(int itemIndex)
@@ -1045,7 +1031,6 @@ static void DestroyPocketSwitchArrowPair(void)
 
 static void FreeBagMenu(void)
 {
-    Free(sListBuffer);
     FreeAllWindowBuffers();
     Free(gBagMenu);
 }
@@ -2611,17 +2596,4 @@ static s32 BagMenu_GetItemId(struct ListMenu *list, u32 index)
     u16 itemId = GetBagItemId(list->template.pocketId, index);
 
     return itemId == ITEM_NONE ? LIST_CANCEL : itemId;
-}
-
-static const u8 *BagMenu_GetItemName(struct ListMenu *list, u32 index)
-{
-    u16 itemId = GetBagItemId(list->template.pocketId, index);
-
-    if (itemId == ITEM_NONE)
-        return gText_CloseBag;
-
-    GetItemNameFromPocket(sListBuffer->name, itemId);
-    sListBuffer->buffer = sListBuffer->name;
-
-    return sListBuffer->buffer;
 }

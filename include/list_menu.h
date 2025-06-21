@@ -34,6 +34,7 @@ struct ListMenuItemFunctions
 {
     const u8* (*getItemName)(struct ListMenu *list, u32 index);
     s32 (*getItemId)(struct ListMenu *list, u32 index);
+    void (*printOverride)(struct ListMenu *list, u32 index, u8 x, u8 y);
 };
 
 struct ListMenuItem
@@ -138,5 +139,6 @@ void RemoveScrollIndicatorArrowPair(u8 taskId);
 void Task_ScrollIndicatorArrowPairOnMainMenu(u8 taskId);
 bool8 ListMenuChangeSelection(struct ListMenu *list, bool8 updateCursorAndCallCallback, u8 count, bool8 movingDown);
 bool8 ListMenuChangeSelectionFull(struct ListMenu *list, bool32 updateCursor, bool32 callCallback, u8 count, bool8 movingDown);
+void ListMenuPrint(struct ListMenu *list, const u8 *str, u8 x, u8 y);
 
 #endif //GUARD_LIST_MENU_H

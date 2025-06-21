@@ -595,7 +595,7 @@ static u8 ListMenuInitInternal(struct ListMenuTemplate *listMenuTemplate, u16 sc
     return listTaskId;
 }
 
-static void ListMenuPrint(struct ListMenu *list, const u8 *str, u8 x, u8 y)
+void ListMenuPrint(struct ListMenu *list, const u8 *str, u8 x, u8 y)
 {
     u8 colors[3];
     if (gListMenuOverride.enabled)
@@ -647,7 +647,10 @@ static void ListMenuPrintEntries(struct ListMenu *list, u16 startIndex, u16 yOff
         if (list->template.itemPrintFunc != NULL)
             list->template.itemPrintFunc(list->template.windowId, startIndex, ListMenu_GetItemId(list, startIndex), y);
 
-        ListMenuPrint(list, ListMenu_GetItemName(list, startIndex), x, y);
+        if (list->template.listMenuItemFunctions && list->template.listMenuItemFunctions->printOverride != NULL)
+            list->template.listMenuItemFunctions->printOverride(list, startIndex, x, y);
+        else
+            ListMenuPrint(list, ListMenu_GetItemName(list, startIndex), x, y);
         startIndex++;
     }
 }
