@@ -288,22 +288,21 @@ static bool32 CanLearnMove(u16 species, u16 move, u8 level)
 //     return species;
 // }
 
-static inline struct AvailableMon *GetRandomReplacement(struct AvailableMon *availableMon)
+static inline const struct AvailableMon *GetRandomReplacement(const struct AvailableMon *availableMon)
 {
     if (availableMon->replacementNum > 1)
-        return &availableMon->replacements[ModuloX(Random32(), availableMon->replacements)];
+        return &availableMon->replacements[RandomUniform(RNG_NONE, 0, availableMon->replacementNum)];
 
     return &availableMon->replacements[0];
 }
 
-static inline u16 GetSpeciesFromArray(struct AvailableMon *availableMons, u32 level, u32 arraySize)
+static inline u16 GetSpeciesFromArray(const struct AvailableMon *availableMons, u32 level, u32 arraySize)
 {
-    struct AvailableMon *selectedMon;
+    const struct AvailableMon *selectedMon;
     do {
-        selectedMon = &availableMons[ModuloX(Random32(), arraySize)];
-        while (selectedMon->maxLevel && level >= selectedMon->maxLevel)
+        selectedMon = &availableMons[RandomUniform(RNG_NONE, 0, arraySize)];
+        while (selectedMon->maxLevel && level >= selectedMon->maxLevel && selectedMon->replacementNum)
             selectedMon = GetRandomReplacement(selectedMon);
-
     } while (level < selectedMon->minLevel);
 
     return selectedMon->species;
@@ -710,7 +709,7 @@ static const u32 sNaturesByRole[] =
 u32 GenerateTrainerMon(struct Pokemon *pokemon, u32 trainerClass, u32 level, u32 iv)
 {
     u32 personality = Random32();
-    u8 i, ev, rand = Random32() % SPECIES_SUITABLE_ROLES_COUNT;
+    u32 i, ev;//, rand = Random32() % SPECIES_SUITABLE_ROLES_COUNT;
     sLevel = level;
     sSpecies = GetRandomSpeciesFromTrainerClass(trainerClass, level);
     sRole = 1; //gSpeciesInfo[sSpecies].suitableRoles[rand];
