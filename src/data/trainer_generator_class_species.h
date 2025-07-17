@@ -9,10 +9,10 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_BELLSPROUT,
         .maxLevel = 21,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_WEEPINBELL,
             .maxLevel = 36,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_VICTREEBEL
             })
         })
@@ -20,10 +20,10 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_BOUNSWEET,
         .maxLevel = 18,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_STEENEE,
             .maxLevel = 28,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_TSAREENA,
             })
         })
@@ -31,10 +31,10 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_BULBASAUR,
         .maxLevel = 16,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_IVYSAUR,
             .maxLevel = 36,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_VENUSAUR,
             })
         })
@@ -43,24 +43,24 @@ const struct AvailableMon sAromaLadySpecies[] =
         .species = SPECIES_CACNEA,
         .minLevel = 15,
         .maxLevel = 32,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_CACTURNE,
         })
     },
     {
         .species = SPECIES_CHERUBI,
         .maxLevel = 25,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_CHERRIM,
         })
     },
     {
         .species = SPECIES_CHIKORITA,
         .maxLevel = 16,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_BAYLEEF,
             .maxLevel = 32,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_MEGANIUM,
             })
         })
@@ -68,31 +68,31 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_COTTONEE,
         .maxLevel = 25,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_WHIMSICOTT,
         })
     },
     {
         .species = SPECIES_CUTIEFLY,
         .maxLevel = 25,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_RIBOMBEE,
         })
     },
     {
         .species = SPECIES_FERROSEED,
         .maxLevel = 40,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_FERROTHORN,
         })
     },
     {
         .species = SPECIES_FLABEBE,
         .maxLevel = 19,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_FLOETTE,
             .maxLevel = 35,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_FLORGES,
             })
         })
@@ -100,31 +100,31 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_FOMANTIS,
         .maxLevel = 34,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_LURANTIS,
         })
     },
     {
         .species = SPECIES_FOONGUS,
         .maxLevel = 39,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_AMOONGUSS,
         })
     },
     {
         .species = SPECIES_GOSSIFLEUR,
         .maxLevel = 20,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_ELDEGOSS,
         })
     },
     {
         .species = SPECIES_LOTAD,
         .maxLevel = 14,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_LOMBRE,
             .maxLevel = 30,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_LUDICOLO,
             })
         })
@@ -136,21 +136,21 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_MORELULL,
         .maxLevel = 24,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_SHIINOTIC,
         })
     },
     {
         .species = SPECIES_PARAS,
         .maxLevel = 24,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_PARASECT,
         })
     },
     {
         .species = SPECIES_PETILIL,
         .maxLevel = 25,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_LILLIGANT,
         }, {
             .species = SPECIES_LILLIGANT_HISUI,
@@ -159,10 +159,10 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_BUDEW,
         .maxLevel = 15,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_ROSELIA,
             .maxLevel = 30,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_ROSERADE,
             })
         })
@@ -170,10 +170,10 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_SEEDOT,
         .maxLevel = 14,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_NUZLEAF,
             .maxLevel = 30,
-            .replacement = REPLACEMENTS({
+            .replacements = REPLACEMENTS({
                 .species = SPECIES_SHIFTRY,
             })
         })
@@ -181,21 +181,21 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_SHROOMISH,
         .maxLevel = 23,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_BRELOOM,
         })
     },
     {
         .species = SPECIES_STUFFUL,
         .maxLevel = 27,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_BEWEAR,
         })
     },
     {
         .species = SPECIES_SPRITZEE,
         .maxLevel = 30,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_AROMATISSE,
         })
     },
@@ -203,7 +203,7 @@ const struct AvailableMon sAromaLadySpecies[] =
         .species = SPECIES_TANGELA,
         .minLevel = 20,
         .maxLevel = 32,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_TANGROWTH,
         })
     },
@@ -214,7 +214,7 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_BURMY,
         .maxLevel = 20,
-        .replacement = REPLACEMENTS({
+        .replacements = REPLACEMENTS({
             .species = SPECIES_WORMADAM,
         })
     },

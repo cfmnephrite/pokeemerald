@@ -67,16 +67,16 @@ struct AvailableMon
     u16 replacementNum:4;
     u8 minLevel;
     u8 maxLevel;
-    const struct AvailableMon *replacement;
+    const struct AvailableMon *replacements;
 };
 
-struct AttackOptions {
+struct AttackOptions{
     const u16 *baseAttacks;
     const u16 *priorityAttacks;
     const u16 *complexAttacks;
 };
 
-struct Coverage {
+struct Coverage{
     // u16 moves[MAX_MON_MOVES];
     // u16 moveTypes[MAX_MON_MOVES];
     u32 resisted;

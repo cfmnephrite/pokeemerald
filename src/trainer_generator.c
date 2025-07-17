@@ -159,6 +159,8 @@ static u8 sRole;
 static u8 sSlot;
 extern struct Evolution gEvolutionTable[][9];
 
+static NOINLINE ARM_FUNC u32 ModuloX(u32 num, u32 mod) { return num % mod; }
+
 static u8 popcount(u32 i)
 {
     i = i - ((i >> 1) & 0x55555555);        // add pairs of bits
@@ -181,109 +183,139 @@ static bool32 CanLearnMove(u16 species, u16 move, u8 level)
     return TRUE;
 }
 
-static u32 GetRandomSpeciesFromTrainerClass(u32 trainerClass, u32 level)
+// static u32 GetRandomSpeciesFromTrainerClass(u32 trainerClass, u32 level)
+// {
+//     u16 species = SPECIES_NONE;
+//     switch (trainerClass)
+//     {
+        // case TRAINER_CLASS_AROMA_LADY:
+        //     species = sAromaLadySpecies[Random32() % ARRAY_COUNT(sAromaLadySpecies)];
+        // break;
+        // case TRAINER_CLASS_BATTLE_GIRL:
+        //     species = sBattleGirlSpecies[Random32() % ARRAY_COUNT(sBattleGirlSpecies)];
+        // break;
+        // case TRAINER_CLASS_BEAUTY:
+        //     species = sBeautySpecies[Random32() % ARRAY_COUNT(sBeautySpecies)];
+        // break;
+        // case TRAINER_CLASS_BIRD_KEEPER:
+        //     species = sBirdKeeperSpecies[Random32() % ARRAY_COUNT(sBirdKeeperSpecies)];
+        // break;
+        // case TRAINER_CLASS_BLACK_BELT:
+        //     species = sBlackBeltSpecies[Random32() % ARRAY_COUNT(sBlackBeltSpecies)];
+        // break;
+        // case TRAINER_CLASS_BUG_CATCHER:
+        //     species = sBugCatcherSpecies[Random32() % ARRAY_COUNT(sBugCatcherSpecies)];
+        // break;
+        // case TRAINER_CLASS_CAMPER:
+        //     species = sCamperSpecies[Random32() % ARRAY_COUNT(sCamperSpecies)];
+        // break;
+        // case TRAINER_CLASS_COLLECTOR:
+        //     species = sCollectorSpecies[Random32() % ARRAY_COUNT(sCollectorSpecies)];
+        // break;
+        // case TRAINER_CLASS_COOLTRAINER:
+        //     species = sCoolTrainerSpecies[Random32() % ARRAY_COUNT(sCoolTrainerSpecies)];
+        // break;
+        // case TRAINER_CLASS_DRAGON_TAMER:
+        //     species = sDragonTamerSpecies[Random32() % ARRAY_COUNT(sDragonTamerSpecies)];
+        // break;
+        // case TRAINER_CLASS_EXPERT:
+        //     species = sExpertSpecies[Random32() % ARRAY_COUNT(sExpertSpecies)];
+        // break;
+        // case TRAINER_CLASS_FISHERMAN:
+        //     species = sFishermanSpecies[Random32() % ARRAY_COUNT(sFishermanSpecies)];
+        // break;
+        // case TRAINER_CLASS_GENTLEMAN:
+        //     species = sGentlemanSpecies[Random32() % ARRAY_COUNT(sGentlemanSpecies)];
+        // break;
+        // case TRAINER_CLASS_GUITARIST:
+        //     species = sGuitaristSpecies[Random32() % ARRAY_COUNT(sGuitaristSpecies)];
+        // break;
+        // case TRAINER_CLASS_HEX_MANIAC:
+        //     species = sHexManiacSpecies[Random32() % ARRAY_COUNT(sHexManiacSpecies)];
+        // break;
+        // case TRAINER_CLASS_HIKER:
+        //     species = sHikerSpecies[Random32() % ARRAY_COUNT(sHikerSpecies)];
+        // break;
+        // case TRAINER_CLASS_LADY:
+        //     species = sLadySpecies[Random32() % ARRAY_COUNT(sLadySpecies)];
+        // break;
+        // case TRAINER_CLASS_LASS:
+        //     species = sLassSpecies[Random32() % ARRAY_COUNT(sLassSpecies)];
+        // break;
+        // case TRAINER_CLASS_NINJA_BOY:
+        //     species = sNinjaBoySpecies[Random32() % ARRAY_COUNT(sNinjaBoySpecies)];
+        // break;
+        // case TRAINER_CLASS_PARASOL_LADY:
+        //     species = sParasolLadySpecies[Random32() % ARRAY_COUNT(sParasolLadySpecies)];
+        // break;
+        // case TRAINER_CLASS_PKMN_BREEDER:
+        //     species = sPkmnBreederSpecies[Random32() % ARRAY_COUNT(sPkmnBreederSpecies)];
+        // break;
+        // case TRAINER_CLASS_PKMN_RANGER:
+        //     species = sPkmnRangerSpecies[Random32() % ARRAY_COUNT(sPkmnRangerSpecies)];
+        // break;
+        // case TRAINER_CLASS_PSYCHIC:
+        //     species = sPsychicSpecies[Random32() % ARRAY_COUNT(sPsychicSpecies)];
+        // break;
+        // case TRAINER_CLASS_RICH_BOY:
+        //     species = sRichBoySpecies[Random32() % ARRAY_COUNT(sRichBoySpecies)];
+        // break;
+        // case TRAINER_CLASS_RUIN_MANIAC:
+        //     species = sRuinManiacSpecies[Random32() % ARRAY_COUNT(sRuinManiacSpecies)];
+        // break;
+        // case TRAINER_CLASS_SAILOR:
+        //     species = sSailorSpecies[Random32() % ARRAY_COUNT(sSailorSpecies)];
+        // break;
+        // case TRAINER_CLASS_SWIMMER_F:
+        // case TRAINER_CLASS_SWIMMER_M:
+        //     species = sSwimmerSpecies[Random32() % ARRAY_COUNT(sSwimmerSpecies)];
+        // break;
+        // case TRAINER_CLASS_TEAM_AQUA:
+        //     species = sTeamAquaSpecies[Random32() % ARRAY_COUNT(sTeamAquaSpecies)];
+        // break;
+        // case TRAINER_CLASS_TEAM_MAGMA:
+        //     species = sTeamMagmaSpecies[Random32() % ARRAY_COUNT(sTeamMagmaSpecies)];
+        // break;
+        // case TRAINER_CLASS_TRIATHLETE:
+        //     species = sTriathleteSpecies[Random32() % ARRAY_COUNT(sTriathleteSpecies)];
+        // break;
+        // default: // for now...
+        // case TRAINER_CLASS_YOUNGSTER:
+        //     species = sYoungsterSpecies[Random32() % ARRAY_COUNT(sYoungsterSpecies)];
+        // break;
+//     }
+
+//     return species;
+// }
+
+static inline struct AvailableMon *GetRandomReplacement(struct AvailableMon *availableMon)
 {
-    u16 species = SPECIES_NONE;
+    if (availableMon->replacementNum > 1)
+        return &availableMon->replacements[ModuloX(Random32(), availableMon->replacements)];
+
+    return &availableMon->replacements[0];
+}
+
+static inline u16 GetSpeciesFromArray(struct AvailableMon *availableMons, u32 level, u32 arraySize)
+{
+    struct AvailableMon *selectedMon;
+    do {
+        selectedMon = &availableMons[ModuloX(Random32(), arraySize)];
+        while (selectedMon->maxLevel && level >= selectedMon->maxLevel)
+            selectedMon = GetRandomReplacement(selectedMon);
+
+    } while (level < selectedMon->minLevel);
+
+    return selectedMon->species;
+}
+
+static u32 GetRandomSpeciesFromTrainerClass(enum TrainerClassID trainerClass, u32 level)
+{
     switch (trainerClass)
     {
-        case TRAINER_CLASS_AROMA_LADY:
-            // species = sAromaLadySpecies[Random32() % ARRAY_COUNT(sAromaLadySpecies)];
-        break;
-        case TRAINER_CLASS_BATTLE_GIRL:
-            species = sBattleGirlSpecies[Random32() % ARRAY_COUNT(sBattleGirlSpecies)];
-        break;
-        case TRAINER_CLASS_BEAUTY:
-            species = sBeautySpecies[Random32() % ARRAY_COUNT(sBeautySpecies)];
-        break;
-        case TRAINER_CLASS_BIRD_KEEPER:
-            species = sBirdKeeperSpecies[Random32() % ARRAY_COUNT(sBirdKeeperSpecies)];
-        break;
-        case TRAINER_CLASS_BLACK_BELT:
-            species = sBlackBeltSpecies[Random32() % ARRAY_COUNT(sBlackBeltSpecies)];
-        break;
-        case TRAINER_CLASS_BUG_CATCHER:
-            species = sBugCatcherSpecies[Random32() % ARRAY_COUNT(sBugCatcherSpecies)];
-        break;
-        case TRAINER_CLASS_CAMPER:
-            species = sCamperSpecies[Random32() % ARRAY_COUNT(sCamperSpecies)];
-        break;
-        case TRAINER_CLASS_COLLECTOR:
-            species = sCollectorSpecies[Random32() % ARRAY_COUNT(sCollectorSpecies)];
-        break;
-        case TRAINER_CLASS_COOLTRAINER:
-            species = sCoolTrainerSpecies[Random32() % ARRAY_COUNT(sCoolTrainerSpecies)];
-        break;
-        case TRAINER_CLASS_DRAGON_TAMER:
-            species = sDragonTamerSpecies[Random32() % ARRAY_COUNT(sDragonTamerSpecies)];
-        break;
-        case TRAINER_CLASS_EXPERT:
-            species = sExpertSpecies[Random32() % ARRAY_COUNT(sExpertSpecies)];
-        break;
-        case TRAINER_CLASS_FISHERMAN:
-            species = sFishermanSpecies[Random32() % ARRAY_COUNT(sFishermanSpecies)];
-        break;
-        case TRAINER_CLASS_GENTLEMAN:
-            species = sGentlemanSpecies[Random32() % ARRAY_COUNT(sGentlemanSpecies)];
-        break;
-        case TRAINER_CLASS_GUITARIST:
-            species = sGuitaristSpecies[Random32() % ARRAY_COUNT(sGuitaristSpecies)];
-        break;
-        case TRAINER_CLASS_HEX_MANIAC:
-            species = sHexManiacSpecies[Random32() % ARRAY_COUNT(sHexManiacSpecies)];
-        break;
-        case TRAINER_CLASS_HIKER:
-            species = sHikerSpecies[Random32() % ARRAY_COUNT(sHikerSpecies)];
-        break;
-        case TRAINER_CLASS_LADY:
-            species = sLadySpecies[Random32() % ARRAY_COUNT(sLadySpecies)];
-        break;
-        case TRAINER_CLASS_LASS:
-            species = sLassSpecies[Random32() % ARRAY_COUNT(sLassSpecies)];
-        break;
-        case TRAINER_CLASS_NINJA_BOY:
-            species = sNinjaBoySpecies[Random32() % ARRAY_COUNT(sNinjaBoySpecies)];
-        break;
-        case TRAINER_CLASS_PARASOL_LADY:
-            species = sParasolLadySpecies[Random32() % ARRAY_COUNT(sParasolLadySpecies)];
-        break;
-        case TRAINER_CLASS_PKMN_BREEDER:
-            species = sPkmnBreederSpecies[Random32() % ARRAY_COUNT(sPkmnBreederSpecies)];
-        break;
-        case TRAINER_CLASS_PKMN_RANGER:
-            species = sPkmnRangerSpecies[Random32() % ARRAY_COUNT(sPkmnRangerSpecies)];
-        break;
-        case TRAINER_CLASS_PSYCHIC:
-            species = sPsychicSpecies[Random32() % ARRAY_COUNT(sPsychicSpecies)];
-        break;
-        case TRAINER_CLASS_RICH_BOY:
-            species = sRichBoySpecies[Random32() % ARRAY_COUNT(sRichBoySpecies)];
-        break;
-        case TRAINER_CLASS_RUIN_MANIAC:
-            species = sRuinManiacSpecies[Random32() % ARRAY_COUNT(sRuinManiacSpecies)];
-        break;
-        case TRAINER_CLASS_SAILOR:
-            species = sSailorSpecies[Random32() % ARRAY_COUNT(sSailorSpecies)];
-        break;
-        case TRAINER_CLASS_SWIMMER_F:
-        case TRAINER_CLASS_SWIMMER_M:
-            species = sSwimmerSpecies[Random32() % ARRAY_COUNT(sSwimmerSpecies)];
-        break;
-        case TRAINER_CLASS_TEAM_AQUA:
-            species = sTeamAquaSpecies[Random32() % ARRAY_COUNT(sTeamAquaSpecies)];
-        break;
-        case TRAINER_CLASS_TEAM_MAGMA:
-            species = sTeamMagmaSpecies[Random32() % ARRAY_COUNT(sTeamMagmaSpecies)];
-        break;
-        case TRAINER_CLASS_TRIATHLETE:
-            species = sTriathleteSpecies[Random32() % ARRAY_COUNT(sTriathleteSpecies)];
-        break;
-        default: // for now...
-        case TRAINER_CLASS_YOUNGSTER:
-            species = sYoungsterSpecies[Random32() % ARRAY_COUNT(sYoungsterSpecies)];
-        break;
+        default:
+            return GetSpeciesFromArray(sAromaLadySpecies, level, NELEMS(sAromaLadySpecies));
     }
-
-    return species;
 }
 
 static bool32 AlreadyHaveMoveOfType(struct Pokemon *pokemon, u8 type)
@@ -682,7 +714,7 @@ u32 GenerateTrainerMon(struct Pokemon *pokemon, u32 trainerClass, u32 level, u32
     sLevel = level;
     sSpecies = GetRandomSpeciesFromTrainerClass(trainerClass, level);
     sRole = 1; //gSpeciesInfo[sSpecies].suitableRoles[rand];
-    DebugPrintf("Butterfree roles: %d, %d, %d, %d, %d", gSpeciesInfo[sSpecies].suitableRoles[0], gSpeciesInfo[sSpecies].suitableRoles[1], gSpeciesInfo[sSpecies].suitableRoles[2], gSpeciesInfo[sSpecies].suitableRoles[3], 0);
+    // DebugPrintf("Butterfree roles: %d, %d, %d, %d, %d", gSpeciesInfo[sSpecies].suitableRoles[0], gSpeciesInfo[sSpecies].suitableRoles[1], gSpeciesInfo[sSpecies].suitableRoles[2], gSpeciesInfo[sSpecies].suitableRoles[3], 0);
 
     // Adjust personality to fit nature - then create mon
     ModifyPersonalityForNature(&personality, sNaturesByRole[sRole] - 1);
