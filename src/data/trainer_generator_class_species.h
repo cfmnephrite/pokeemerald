@@ -1,34 +1,223 @@
 #include "global.h"
 #include "constants/pokemon.h"
 
-const u16 sAromaLadySpecies[] =
+#define REPLACEMENTS_ARR(...) (const struct AvailableMon[]) {__VA_ARGS__}
+#define REPLACEMENTS(...) REPLACEMENTS_ARR(__VA_ARGS__), .replacementNum = ARRAY_COUNT(REPLACEMENTS_ARR(__VA_ARGS__))
+
+const struct AvailableMon sAromaLadySpecies[] =
 {
-    SPECIES_BELLSPROUT,
-    SPECIES_BOUNSWEET,
-    SPECIES_BULBASAUR,
-    SPECIES_CACNEA,
-    SPECIES_CHERUBI,
-    SPECIES_CHIKORITA,
-    SPECIES_COTTONEE,
-    SPECIES_CUTIEFLY,
-    SPECIES_FERROSEED,
-    SPECIES_FLABEBE,
-    SPECIES_FOMANTIS,
-    SPECIES_FOONGUS,
-    SPECIES_GOSSIFLEUR,
-    SPECIES_LOTAD,
-    SPECIES_MARACTUS,
-    SPECIES_MORELULL,
-    SPECIES_PARAS,
-    SPECIES_PETILIL,
-    SPECIES_ROSELIA,
-    SPECIES_SEEDOT,
-    SPECIES_SHROOMISH,
-    SPECIES_STUFFUL,
-    SPECIES_SPRITZEE,
-    SPECIES_TANGELA,
-    SPECIES_TROPIUS,
-    SPECIES_WORMADAM,
+    {
+        .species = SPECIES_BELLSPROUT,
+        .maxLevel = 21,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_WEEPINBELL,
+            .maxLevel = 36,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_VICTREEBEL
+            })
+        })
+    },
+    {
+        .species = SPECIES_BOUNSWEET,
+        .maxLevel = 18,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_STEENEE,
+            .maxLevel = 28,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_TSAREENA,
+            })
+        })
+    },
+    {
+        .species = SPECIES_BULBASAUR,
+        .maxLevel = 16,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_IVYSAUR,
+            .maxLevel = 36,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_VENUSAUR,
+            })
+        })
+    },
+    {
+        .species = SPECIES_CACNEA,
+        .minLevel = 15,
+        .maxLevel = 32,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_CACTURNE,
+        })
+    },
+    {
+        .species = SPECIES_CHERUBI,
+        .maxLevel = 25,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_CHERRIM,
+        })
+    },
+    {
+        .species = SPECIES_CHIKORITA,
+        .maxLevel = 16,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_BAYLEEF,
+            .maxLevel = 32,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_MEGANIUM,
+            })
+        })
+    },
+    {
+        .species = SPECIES_COTTONEE,
+        .maxLevel = 25,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_WHIMSICOTT,
+        })
+    },
+    {
+        .species = SPECIES_CUTIEFLY,
+        .maxLevel = 25,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_RIBOMBEE,
+        })
+    },
+    {
+        .species = SPECIES_FERROSEED,
+        .maxLevel = 40,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_FERROTHORN,
+        })
+    },
+    {
+        .species = SPECIES_FLABEBE,
+        .maxLevel = 19,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_FLOETTE,
+            .maxLevel = 35,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_FLORGES,
+            })
+        })
+    },
+    {
+        .species = SPECIES_FOMANTIS,
+        .maxLevel = 34,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_LURANTIS,
+        })
+    },
+    {
+        .species = SPECIES_FOONGUS,
+        .maxLevel = 39,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_AMOONGUSS,
+        })
+    },
+    {
+        .species = SPECIES_GOSSIFLEUR,
+        .maxLevel = 20,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_ELDEGOSS,
+        })
+    },
+    {
+        .species = SPECIES_LOTAD,
+        .maxLevel = 14,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_LOMBRE,
+            .maxLevel = 30,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_LUDICOLO,
+            })
+        })
+    },
+    {
+        .species = SPECIES_MARACTUS,
+        .minLevel = 20,
+    },
+    {
+        .species = SPECIES_MORELULL,
+        .maxLevel = 24,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_SHIINOTIC,
+        })
+    },
+    {
+        .species = SPECIES_PARAS,
+        .maxLevel = 24,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_PARASECT,
+        })
+    },
+    {
+        .species = SPECIES_PETILIL,
+        .maxLevel = 25,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_LILLIGANT,
+        }, {
+            .species = SPECIES_LILLIGANT_HISUI,
+        })
+    },
+    {
+        .species = SPECIES_BUDEW,
+        .maxLevel = 15,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_ROSELIA,
+            .maxLevel = 30,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_ROSERADE,
+            })
+        })
+    },
+    {
+        .species = SPECIES_SEEDOT,
+        .maxLevel = 14,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_NUZLEAF,
+            .maxLevel = 30,
+            .replacement = REPLACEMENTS({
+                .species = SPECIES_SHIFTRY,
+            })
+        })
+    },
+    {
+        .species = SPECIES_SHROOMISH,
+        .maxLevel = 23,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_BRELOOM,
+        })
+    },
+    {
+        .species = SPECIES_STUFFUL,
+        .maxLevel = 27,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_BEWEAR,
+        })
+    },
+    {
+        .species = SPECIES_SPRITZEE,
+        .maxLevel = 30,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_AROMATISSE,
+        })
+    },
+    {
+        .species = SPECIES_TANGELA,
+        .minLevel = 20,
+        .maxLevel = 32,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_TANGROWTH,
+        })
+    },
+    {
+        .species = SPECIES_TROPIUS,
+        .minLevel = 20,
+    },
+    {
+        .species = SPECIES_BURMY,
+        .maxLevel = 20,
+        .replacement = REPLACEMENTS({
+            .species = SPECIES_WORMADAM,
+        })
+    },
 };
 
 const u16 sBattleGirlSpecies[] =

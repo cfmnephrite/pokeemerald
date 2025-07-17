@@ -61,6 +61,15 @@ enum BitType
     BIT_TYPE_NONE = 0xFFFFFFFF,
 };
 
+struct AvailableMon
+{
+    u16 species:12;
+    u16 replacementNum:4;
+    u8 minLevel;
+    u8 maxLevel;
+    const struct AvailableMon *replacement;
+};
+
 struct AttackOptions {
     const u16 *baseAttacks;
     const u16 *priorityAttacks;

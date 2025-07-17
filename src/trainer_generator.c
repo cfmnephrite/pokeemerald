@@ -183,11 +183,11 @@ static bool32 CanLearnMove(u16 species, u16 move, u8 level)
 
 static u32 GetRandomSpeciesFromTrainerClass(u32 trainerClass, u32 level)
 {
-    u16 species;
+    u16 species = SPECIES_NONE;
     switch (trainerClass)
     {
         case TRAINER_CLASS_AROMA_LADY:
-            species = sAromaLadySpecies[Random32() % ARRAY_COUNT(sAromaLadySpecies)];
+            // species = sAromaLadySpecies[Random32() % ARRAY_COUNT(sAromaLadySpecies)];
         break;
         case TRAINER_CLASS_BATTLE_GIRL:
             species = sBattleGirlSpecies[Random32() % ARRAY_COUNT(sBattleGirlSpecies)];
