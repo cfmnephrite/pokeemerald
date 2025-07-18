@@ -119,10 +119,4 @@ extern const u16 gStatusAfflictingMoves[];
 extern const u16 gPhazerHazerMoves[];
 extern const struct AttackOptions gMoveOptionsPerTypeByLevel[][2];
 
-#define MON_ROLE_IS_ALL_OUT_ATTACKER        (sRole / 2 == 0)
-#define MON_ROLE_IS_SETUP_SWEEPER           (sRole / 2 == 1)
-#define MON_ROLE_IS_TANK                    (sRole / 2 == 2)
-#define MON_ROLE_IS_OFFENSIVE               (sRole <= MON_ROLE_SPECIAL_TANK)
-#define MON_ROLE_IS_DEFENSIVE               (sRole > MON_ROLE_SPECIAL_TANK)
-
 #endif // GUARD_TRAINER_GENERATOR_H
