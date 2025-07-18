@@ -169,9 +169,9 @@ static u8 popcount(u32 i)
     return (i * 0x01010101) >> 24;          // horizontal sum of bytes
 }
 
-static inline u32 MinBPCap(void)
+static inline u32 MinBPCap(u32 level)
 {
-    if (sLevel < MIN_LEVEL_FOR_FULL_MOVESET)
+    if (level < MIN_LEVEL_FOR_FULL_MOVESET)
         return 30;
     return 60;
 }
@@ -370,7 +370,7 @@ static u32 GetRandomSpeciesFromTrainerClass(enum TrainerClassID trainerClass, u3
     }
 }
 
-static bool32 AlreadyHaveMoveOfType(struct GeneratedMon *pokemon, u8 type)
+static bool32 AlreadyHaveMoveOfType(struct GeneratedMon *pokemon, u32 type)
 {
     for (u32 i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -390,23 +390,23 @@ static bool32 AlreadyHaveMove(struct GeneratedMon *pokemon, u16 moveToFind, u8 i
     return FALSE;
 }
 
-static u8 AccuracyAdjustedForMoveAbilityItem(u16 move)
+static u32 AccuracyAdjustedForMoveAbilityItem(const struct MoveInfo *move)
 {
-    u16 accuracy = gMovesInfo[move].accuracy;
+    u32 accuracy = move->accuracy;
     uq4_12_t modifier = UQ_4_12(1.0);
 
     switch (sAtkAbility)
     {
         case ABILITY_COMPOUND_EYES:
-            if (gMovesInfo[move].effect != EFFECT_OHKO)
+            if (move->effect != EFFECT_OHKO)
                 modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
         break;
         case ABILITY_HUSTLE:
-            if (gMovesInfo[move].category == DAMAGE_CATEGORY_PHYSICAL && accuracy > 0)
+            if (move->category == DAMAGE_CATEGORY_PHYSICAL && accuracy > 0)
                 modifier = uq4_12_multiply(modifier, UQ_4_12(0.8));
         break;
         case ABILITY_VICTORY_STAR:
-            if (gMovesInfo[move].effect != EFFECT_OHKO)
+            if (move->effect != EFFECT_OHKO)
                 modifier = uq4_12_multiply(modifier, UQ_4_12(1.1));
         break;
         case ABILITY_NO_GUARD:
@@ -424,40 +424,45 @@ static u8 AccuracyAdjustedForMoveAbilityItem(u16 move)
     }
 
     // Always-hit moves have base accuracy of 0
-    if (move != MOVE_NONE && accuracy == 0)
+    if (accuracy == 0)
         accuracy = 100;
 
     return min(100, uq4_12_multiply_by_int_half_up(modifier, accuracy));
 }
 
-static u32 BPAdjustedForMultihitOnly(u32 move, u32 basePower)
+static inline u32 BPAdjustedForMultihitOnlyWithPower(const struct MoveInfo *move, u32 basePower)
 {
-    if (gMovesInfo[move].strikeCount > 0)
-        basePower *= gMovesInfo[move].strikeCount;
-    else if (gMovesInfo[move].effect == EFFECT_MULTI_HIT)
+    if (move->strikeCount > 0)
+        basePower *= move->strikeCount;
+    else if (move->effect == EFFECT_MULTI_HIT)
         basePower = (basePower * 5 / 2); // arbitrary, I know...
 
     return basePower;
 }
 
-static u32 BPAdjustedForMultihitAndEffects(u32 move, u32 moveType)
+static inline u32 BPAdjustedForMultihitOnly(const struct MoveInfo *move)
 {
-    u16 basePower = gMovesInfo[move].power;
+    return BPAdjustedForMultihitOnlyWithPower(move, move->power);
+}
+
+static u32 BPAdjustedForMultihitAndEffects(const struct MoveInfo *move, u32 moveType)
+{
+    u32 basePower = move->power;
     uq4_12_t modifier = UQ_4_12(1.0);
 
     // Duh
-    if (gMovesInfo[move].category == DAMAGE_CATEGORY_STATUS)
+    if (move->category == DAMAGE_CATEGORY_STATUS)
         return 0;
 
     // In case we have null moveType, revert to move's type
     if (moveType == TYPE_NONE)
-        moveType = gMovesInfo[move].type;
+        moveType = move->type;
 
     // To do - update
     // modifier = CalcMoveBasePowerBeforeBattle(move, sAtkAbility, sHoldEffectAtk, basePower, moveType, modifier, 0, FALSE);
 
     // Modifications based on assessed worth of effect (not necessarily raw power)
-    switch (gMovesInfo[move].effect)
+    switch (move->effect)
     {
         case EFFECT_MAGNITUDE:
             basePower = 60; // Avg power is actually 71
@@ -469,26 +474,27 @@ static u32 BPAdjustedForMultihitAndEffects(u32 move, u32 moveType)
         //    modifier = uq4_12_multiply(modifier, UQ_4_12(2));
         // break;
     }
-    return uq4_12_multiply_by_int_half_up(modifier, BPAdjustedForMultihitOnly(move, basePower));
+    return uq4_12_multiply_by_int_half_up(modifier, BPAdjustedForMultihitOnlyWithPower(move, basePower));
 }
 
 static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum MoveSlot slot, u32 type, const u16 *movesArray, u32 *move)
 {
-    u32 currentMove = movesArray[0],
-        currentMovePower = 0;
+    u32 currentMovePower = 0;
     s32 modifiedPower = -1; // this is to allow for the selection of moves with BP = 0
     *move = MOVE_NONE;
-    for (u32 i = 0; currentMove != MOVE_UNAVAILABLE; currentMove = movesArray[++i])
+
+    // Cycle through all moves in 
+    for (u32 currentMove = movesArray[0]; currentMove != MOVE_UNAVAILABLE; currentMove = *(++movesArray))
     {
         if (pokemon->level < MIN_LEVEL_FOR_FULL_MOVESET) { 
             // Don't allow lower levelled mons to have full BP moves like Fire Blast - would be a little unfair for the player
             // However, we cheat to allow them to run 2-5 hit multihit moves even though their BP can be a little higher
-            if (BPAdjustedForMultihitOnly(currentMove, gMovesInfo[currentMove].power) > LOWER_LEVEL_MON_MOVE_BP_LIMIT
+            if (BPAdjustedForMultihitOnly(&gMovesInfo[currentMove]) > LOWER_LEVEL_MON_MOVE_BP_LIMIT
                 || !CanLearnMove(pokemon, currentMove, pokemon->level))
             continue;
         } else if (CanLearnMove(pokemon, currentMove) // At higher levels, ignore level checks for level-up moves
-            && !(type == TYPE_NONE && AlreadyHaveMove(pokemon, currentMove, slot)) // only run this check when type is TYPE_NONE
-            && (currentMovePower = BPAdjustedForMultihitAndEffects(currentMove, type)) > modifiedPower)
+            // && !(type == TYPE_NONE && AlreadyHaveMove(pokemon, currentMove, slot)) // only run this check when type is TYPE_NONE
+            && (currentMovePower = BPAdjustedForMultihitAndEffects(&gMovesInfo[currentMove], type)) > modifiedPower)
         {
             *move = currentMove;
             modifiedPower = currentMovePower;
@@ -499,75 +505,83 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
     return max(0, modifiedPower);
 }
 
-static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, bool32 special, struct Coverage *coverage, bool32 haveMoves)
+static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, struct SpeciesInfo *speciesInfo, enum MoveSlot slot, bool32 special, struct Coverage *coverage, bool32 haveMoves)
 {
-    // u8 currType, currentMoveAcc, winningMoveAcc = 0, type1 = gSpeciesInfo[sSpecies].types[0], type2 = gSpeciesInfo[sSpecies].types[1];
-    // u16 currentMoveBP;
-    // s32 currentTypePoints;
-    // u16 winningTypePoints = 0, currentMove, winningMove = MOVE_NONE; // just use the regular learnset move
-    // u8 immunePoints, resistedPoints, combinedResistedPoints, threateningTypesPoints, neutralOrSePoints;
-    // s8 negativeResistPoints;
-    // for (currType = TYPE_NORMAL + 1; currType < NUMBER_OF_MON_TYPES; currType++)
-    // {
-    //     if (AlreadyHaveMoveOfType(pokemon, currType) || currType == TYPE_MYSTERY) // No mon ever wants Dragon coverage...
-    //         continue;
+    u8 currType, currentMoveAcc, winningMoveAcc = 0;
+    u16 currentMoveBP;
+    s32 currentTypePoints;
+    u16 winningTypePoints = 0, currentMove, winningMove = MOVE_NONE; // just use the regular learnset move
+    u8 immunePoints, resistedPoints, combinedResistedPoints, threateningTypesPoints, neutralOrSePoints;
+    s8 negativeResistPoints;
 
-    //     // Start with points at 0
-    //     immunePoints = resistedPoints = combinedResistedPoints = threateningTypesPoints = neutralOrSePoints = negativeResistPoints = 0;
-    //     currentTypePoints = 0;
+    // Cycle through types to try and find a good coverage move
+    for (currType = TYPE_NORMAL; currType < TYPE_STELLAR; currType++)
+    {
+        if (AlreadyHaveMoveOfType(pokemon, currType) || currType == TYPE_MYSTERY || currType == TYPE_DRAGON) // No mon ever wants Dragon coverage...
+            continue;
 
-    //     // 10 points for a move that hits something that's immune to All moves
-    //     if (coverage->immune)
-    //         currentTypePoints += (immunePoints = (10 * popcount(coverage->immune & sSuperEffectiveCoverageByType[currType])));
+        // Start with points at 0
+        immunePoints = 0;
+        resistedPoints = 0;
+        combinedResistedPoints = 0;
+        threateningTypesPoints = 0;
+        neutralOrSePoints = 0;
+        negativeResistPoints = 0;
+        currentTypePoints = 0;
 
-    //     // 5 points for every resisted type it hits for SE damage
-    //     if (coverage->resisted)
-    //         currentTypePoints += (resistedPoints = (5 * popcount(coverage->resisted & sSuperEffectiveCoverageByType[currType])));
+        // 10 points for a move that hits something that's immune to All moves
+        if (coverage->immune)
+            currentTypePoints += (immunePoints = (10 * popcount(coverage->immune & sSuperEffectiveCoverageByType[currType])));
 
-    //     // 3 points for hitting as many potential types that could resist in combination
-    //     if (coverage->combinedResisted)
-    //         currentTypePoints += (combinedResistedPoints = (3 * popcount(coverage->combinedResisted & sSuperEffectiveCoverageByType[currType])));
+        // 5 points for every resisted type it hits for SE damage
+        if (coverage->resisted)
+            currentTypePoints += (resistedPoints = (5 * popcount(coverage->resisted & sSuperEffectiveCoverageByType[currType])));
 
-    //     // 2 points for every threatening type hit super-effectively
-    //     currentTypePoints += (threateningTypesPoints = (2 * popcount(
-    //         (sWeaknessesByType[type1] | sWeaknessesByType[type2])
-    //         & ~(sResistancesByType[type1] | sResistancesByType[type2])
-    //         & ~(sImmunitiesByType[type1] | sImmunitiesByType[type2])
-    //         & sSuperEffectiveCoverageByType[currType]
-    //     )));
+        // 3 points for hitting as many potential types that could resist in combination
+        if (coverage->combinedResisted)
+            currentTypePoints += (combinedResistedPoints = (3 * popcount(coverage->combinedResisted & sSuperEffectiveCoverageByType[currType])));
 
-    //     // 1 point for every resisted or immune type it hits neutrally or better
-    //     currentTypePoints += (neutralOrSePoints = (popcount((coverage->combinedResisted & ~(sNotVeryEffectiveCoverageByType[currType])))));
+        // 2 points for every threatening type hit super-effectively
+        currentTypePoints += (threateningTypesPoints = (2 * popcount(
+            (sWeaknessesByType[speciesInfo->types[0]] | sWeaknessesByType[speciesInfo->types[1]])
+            & ~(sResistancesByType[speciesInfo->types[0]] | sResistancesByType[speciesInfo->types[1]])
+            & ~(sImmunitiesByType[speciesInfo->types[0]] | sImmunitiesByType[speciesInfo->types[1]])
+            & sSuperEffectiveCoverageByType[currType]
+        )));
 
-    //     // -1 point for every resistance
-    //     currentTypePoints = max(0, currentTypePoints + haveMoves * (negativeResistPoints = -(popcount(sNotVeryEffectiveCoverageByType[currType]))));
+        // 1 point for every resisted or immune type it hits neutrally or better
+        currentTypePoints += (neutralOrSePoints = (popcount((coverage->combinedResisted & ~(sNotVeryEffectiveCoverageByType[currType])))));
 
-    //     // If worth considering, try and find the strongest available move of this type
-    //     /* DebugPrintf("Checking coverage for type: %S: I: %d (%d), R: %d (%d), CR: %d (%d), T: %d, N: %d, NR: %d, total: %d",
-    //         gTypeNames[currType], immunePoints, coverage->immune, resistedPoints, coverage->resisted,
-    //         combinedResistedPoints, coverage->combinedResisted, threateningTypesPoints,
-    //         neutralOrSePoints, negativeResistPoints, currentTypePoints);*/
-    //     if (currentTypePoints > 0)
-    //     {
-    //         // Sometimes we want to take a stronger move with worse coverage or vice versa
-    //         // So we take move bp x points x accuracy as the determinant
-    //         // In case of a tie, the higher accuracy move wins
-    //         // If same accuracy, the move first picked wins
-    //         currentTypePoints *= ((currentMoveBP = TrySetChosenMoveForSpeciesReturnBP(pokemon, currType, gMoveOptionsPerTypeByLevel[currType][special].baseAttacks, &currentMove))
-    //             * (currentMoveAcc = AccuracyAdjustedForMoveAbilityItem(currentMove)));
-    //         if (currentMoveBP > MinBPCap() && (currentTypePoints > winningTypePoints || (currentTypePoints == winningTypePoints && winningMoveAcc > currentMoveAcc)))
-    //         {
-    //             winningMove = currentMove;
-    //             winningTypePoints = currentTypePoints;
-    //             winningMoveAcc = currentMoveAcc;
-    //         }
-    //         // DebugPrintf("Checking coverage for type: %S; best move: %S (%d); (BP: %d, Acc: %d), final points: %d", gTypeNames[currType], gMoveNames[currentMove], currentMove, currentMoveBP, currentMoveAcc, currentTypePoints);
-    //     }
-    // }
+        // -1 point for every resistance
+        currentTypePoints = max(0, currentTypePoints + haveMoves * (negativeResistPoints = -(popcount(sNotVeryEffectiveCoverageByType[currType]))));
+
+        // If worth considering, try and find the strongest available move of this type
+        /* DebugPrintf("Checking coverage for type: %S: I: %d (%d), R: %d (%d), CR: %d (%d), T: %d, N: %d, NR: %d, total: %d",
+            gTypeNames[currType], immunePoints, coverage->immune, resistedPoints, coverage->resisted,
+            combinedResistedPoints, coverage->combinedResisted, threateningTypesPoints,
+            neutralOrSePoints, negativeResistPoints, currentTypePoints);*/
+        if (currentTypePoints > 0)
+        {
+            // Sometimes we want to take a stronger move with worse coverage or vice versa
+            // So we take move bp x points x accuracy as the determinant
+            // In case of a tie, the higher accuracy move wins
+            // If same accuracy, the move first picked wins
+            currentMoveBP = TrySetChosenMoveForSpeciesReturnBP(pokemon, slot, currType, gMoveOptionsPerTypeByLevel[currType][special].baseAttacks, &currentMove);
+            currentMoveAcc = (currentMove ? AccuracyAdjustedForMoveAbilityItem(&gMovesInfo[currentMove]) : 0);
+            currentTypePoints *= currentMoveBP * currentMoveAcc;
+            if (currentMoveBP > MinBPCap(pokemon->level)
+              && (currentTypePoints > winningTypePoints || (currentTypePoints == winningTypePoints && currentMoveAcc > winningMoveAcc)))
+            {
+                winningMove = currentMove;
+                winningTypePoints = currentTypePoints;
+                winningMoveAcc = currentMoveAcc;
+            }
+            // DebugPrintf("Checking coverage for type: %S; best move: %S (%d); (BP: %d, Acc: %d), final points: %d", gTypeNames[currType], gMoveNames[currentMove], currentMove, currentMoveBP, currentMoveAcc, currentTypePoints);
+        }
+    }
 
     // DebugPrintf("Winning move! %S", gMoveNames[winningMove]);
-    // return winningMove;
-    return 0;
+    return winningMove;
 }
 
 static bool32 _SetGoodOtherMove(struct GeneratedMon *pokemon, bool32 special, u32 *chosenMove, u8 *choosersArray, u8 chooser, u8 chooserCount)
@@ -616,24 +630,23 @@ static void SetGoodOtherMove(struct GeneratedMon *pokemon, bool32 special, u32 *
 {
     // "other good move" depends on the role
     // Tanks may have set up moves but should otherwise use "defensive" moves
-    u8 tankRandomNum = Random() % 2, choosersArray[] = {
-        (MON_ROLE_IS_TANK & tankRandomNum) || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_PHAZER_HAZER : MOVE_PLACEHOLDER_SETUP,
-        (MON_ROLE_IS_TANK & !tankRandomNum) || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_STATUS : MOVE_PLACEHOLDER_SETUP,
-        MON_ROLE_IS_ALL_OUT_ATTACKER || MON_ROLE_IS_TANK ? MOVE_PLACEHOLDER_PRIORITY : MOVE_PLACEHOLDER_PIVOT,
-        MOVE_PLACEHOLDER_PIVOT, // every mon could do with a pivot move...
-        MON_ROLE_IS_TANK || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_RECOVERY : MOVE_PLACEHOLDER_NUKE,
-        MON_ROLE_IS_TANK || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_UTILITY : MOVE_PLACEHOLDER_NUKE,
-    };
+    // u8 tankRandomNum = Random() % 2, choosersArray[] = {
+    //     (MON_ROLE_IS_TANK & tankRandomNum) || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_PHAZER_HAZER : MOVE_PLACEHOLDER_SETUP,
+    //     (MON_ROLE_IS_TANK & !tankRandomNum) || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_STATUS : MOVE_PLACEHOLDER_SETUP,
+    //     MON_ROLE_IS_ALL_OUT_ATTACKER || MON_ROLE_IS_TANK ? MOVE_PLACEHOLDER_PRIORITY : MOVE_PLACEHOLDER_PIVOT,
+    //     MOVE_PLACEHOLDER_PIVOT, // every mon could do with a pivot move...
+    //     MON_ROLE_IS_TANK || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_RECOVERY : MOVE_PLACEHOLDER_NUKE,
+    //     MON_ROLE_IS_TANK || MON_ROLE_IS_DEFENSIVE ? MOVE_PLACEHOLDER_UTILITY : MOVE_PLACEHOLDER_NUKE,
+    // };
 
-    // Shuffle is shifted for set up sweepers as they MUST try to find a set up move first
-    Shuffle(choosersArray + MON_ROLE_IS_SETUP_SWEEPER, ARRAY_COUNT(choosersArray) - (MON_ROLE_IS_SETUP_SWEEPER ? 1 : 0), 1);
-    _SetGoodOtherMove(pokemon, special, chosenMove, choosersArray, 0, ARRAY_COUNT(choosersArray));
+    // // Shuffle is shifted for set up sweepers as they MUST try to find a set up move first
+    // Shuffle(choosersArray + MON_ROLE_IS_SETUP_SWEEPER, ARRAY_COUNT(choosersArray) - (MON_ROLE_IS_SETUP_SWEEPER ? 1 : 0), 1);
+    // _SetGoodOtherMove(pokemon, special, chosenMove, choosersArray, 0, ARRAY_COUNT(choosersArray));
 }
 
 static void FillAllOutAttackerMoveset(const struct SpeciesInfo *speciesInfo, struct GeneratedMon *pokemon, bool32 special)
 {
-    u32 i,
-        chosenMoveType,
+    u32 chosenMoveType,
         chosenMove,
         chosenMovePower,
         currTypeResisted,
@@ -641,21 +654,21 @@ static void FillAllOutAttackerMoveset(const struct SpeciesInfo *speciesInfo, str
         currTypeSuperEffective;
     struct Coverage coverage = {0}; // Track coverage options
 
-    for (u32 slot = 0; slot < MAX_MON_MOVES; slot++)
+    for (enum MoveSlot slot = MOVE_SLOT_1; slot < MAX_MON_MOVES; slot++)
     {
-        chosenMove = chosenMoveType = chosenMovePower = i = 0;
+        chosenMove = chosenMoveType = chosenMovePower = 0;
         switch (slot)
         {
             case MOVE_SLOT_1: // ALWAYS a STAB move
             case MOVE_SLOT_2: // ALWAYS a STAB move if the mon is an attacker with two types - otherwise fall through
-                if (!(slot == MOVE_SLOT_2 && speciesInfo->types[0] == speciesInfo->types[1])
+                if ((slot == MOVE_SLOT_1 || speciesInfo->types[0] != speciesInfo->types[1])
                     && TrySetChosenMoveForSpeciesReturnBP(
                         pokemon,
                         slot,
                         speciesInfo->types[slot],
-                        gMoveOptionsPerTypeByLevel[speciesInfo->types[slot]][special].baseAttacks,
+                        gMoveOptionsPerTypeByLevel[speciesInfo->types[slot]][special ? 1 : 0].baseAttacks,
                         &chosenMove
-                        ) > MinBPCap()
+                        ) > MinBPCap(pokemon->level)
                     )
                     break;
                 // fall-through
@@ -666,7 +679,7 @@ static void FillAllOutAttackerMoveset(const struct SpeciesInfo *speciesInfo, str
                     // Tanks might want an extra recovery move, a utility/phazing move, or a coverage move
                     // Get coverage based on typing and/or typechart
                     if (slot == MOVE_SLOT_2 || pokemon->role <= MON_ROLE_SPECIAL_SETUP_SWEEPER || Random() & 1) {
-                        chosenMove = GetGoodCoverageMove(pokemon, special, &coverage, slot > 0);
+                        chosenMove = GetGoodCoverageMove(pokemon, speciesInfo, slot, special, &coverage, slot > 0);
                         break;
                     }
                 }
@@ -783,7 +796,7 @@ u32 GenerateTrainerMon(struct GeneratedMon *generatedMon, u32 trainerClass, u32 
     // sHoldEffectAtk = 0;
 
     // Assign moves - second arg is whether they should be physical or special
-    FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon->species], &generatedMon, (generatedMon->role & 1));
+    FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon->species], generatedMon, (generatedMon->role & 1));
     // sGenerateTrainerMonMovesetByRole[sRole](pokemon, (sRole) % 2);
 
     // Assign EVs

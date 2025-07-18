@@ -426,7 +426,7 @@ static const u16 sSpecialWaterComplexAttacks[] =
 // Special priority
 // Physical "unique" (Pursuit or Stored Power etc. *maybe viable* moves that have to be considered on a case by case basis)
 // Special "unique"
-// When a move requests a move of a certain type, it takes an appropriate list and calculates the power of each move based on ability etc.
+// When a type requests a move of a certain type, it takes an appropriate list and calculates the power of each move based on ability etc.
 // and picks the strongest. "Unique" moves are also considered options when the mon uses a tier 2 list.
 // Ordered from best to worst (in my opinion)
 const struct AttackOptions gMoveOptionsPerTypeByLevel[][2] =
