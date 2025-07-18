@@ -153,11 +153,6 @@ static const u32 sImmunitiesByType[] =
 // Static variables
 static u16 sAtkAbility;
 static u16 sHoldEffectAtk;
-static u16 sSpecies;
-static u8 sLevel;
-static u8 sRole;
-static u8 sSlot;
-extern struct Evolution gEvolutionTable[][9];
 
 static NOINLINE ARM_FUNC u32 ModuloX(u32 num, u32 mod) { return num % mod; }
 
@@ -498,6 +493,7 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
         {
             *move = currentMove;
             modifiedPower = currentMovePower;
+            break;
         }
     }
 
@@ -505,13 +501,21 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
     return max(0, modifiedPower);
 }
 
-static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, struct SpeciesInfo *speciesInfo, enum MoveSlot slot, bool32 special, struct Coverage *coverage, bool32 haveMoves)
+static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, const struct SpeciesInfo *speciesInfo, enum MoveSlot slot, bool32 special, struct Coverage *coverage, bool32 haveMoves)
 {
-    u8 currType, currentMoveAcc, winningMoveAcc = 0;
-    u16 currentMoveBP;
+    u32 currType,
+        currentMoveAcc,
+        winningMoveAcc = 0,
+        winningTypePoints = 0,
+        currentMoveBP,
+        currentMove,
+        winningMove = MOVE_NONE, // just use the regular learnset move
+        immunePoints,
+        resistedPoints,
+        combinedResistedPoints,
+        threateningTypesPoints,
+        neutralOrSePoints;
     s32 currentTypePoints;
-    u16 winningTypePoints = 0, currentMove, winningMove = MOVE_NONE; // just use the regular learnset move
-    u8 immunePoints, resistedPoints, combinedResistedPoints, threateningTypesPoints, neutralOrSePoints;
     s8 negativeResistPoints;
 
     // Cycle through types to try and find a good coverage move
@@ -584,7 +588,7 @@ static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, struct SpeciesInfo 
     return winningMove;
 }
 
-static bool32 _SetGoodOtherMove(struct GeneratedMon *pokemon, enum MoveSlot slot, bool32 special, u32 *chosenMove, u8 *choosersArray, u32 chooser, u32 chooserCount)
+static bool32 _SetGoodOtherMove(struct GeneratedMon *pokemon, enum MoveSlot slot, bool32 special, u32 *chosenMove, enum MovePlaceHolder *choosersArray, u32 chooser, u32 chooserCount)
 {
     const u16 *movesArray = NULL;
 
@@ -620,11 +624,13 @@ static bool32 _SetGoodOtherMove(struct GeneratedMon *pokemon, enum MoveSlot slot
             // although tanks have a 50/50 chance of having a real recovery move
             movesArray = gRecoveryMoves;
             break;
+        case MOVE_PLACEHOLDERS_COUNT:
+            return FALSE;
     }
 
     // if can't find move, rerun
     TrySetChosenMoveForSpeciesReturnBP(pokemon, slot, TYPE_NONE, movesArray, chosenMove);
-    return (*chosenMove == MOVE_NONE || AlreadyHaveMove(pokemon, *chosenMove, sSlot)) ? _SetGoodOtherMove(pokemon, slot, special, chosenMove, choosersArray, chooser + 1, chooserCount) : TRUE;
+    return (*chosenMove == MOVE_NONE || AlreadyHaveMove(pokemon, *chosenMove, slot)) ? _SetGoodOtherMove(pokemon, slot, special, chosenMove, choosersArray, chooser + 1, chooserCount) : TRUE;
 }
 
 #define MON_ROLE_IS_ALL_OUT_ATTACKER        (pokemon->role / 2 == 0)
@@ -638,7 +644,7 @@ static void SetGoodOtherMove(struct GeneratedMon *pokemon, enum MoveSlot slot, b
     // "other good move" depends on the role
     // Tanks may have set up moves but should otherwise use "defensive" moves
     u32 tankRandomNum = Random() & 0x1;
-    u8 choosersArray[] = {
+    enum MovePlaceHolder choosersArray[] = {
         ((MON_ROLE_IS_TANK && tankRandomNum) || MON_ROLE_IS_DEFENSIVE) ? MOVE_PLACEHOLDER_PHAZER_HAZER : MOVE_PLACEHOLDER_SETUP,
         ((MON_ROLE_IS_TANK && !tankRandomNum) || MON_ROLE_IS_DEFENSIVE) ? MOVE_PLACEHOLDER_STATUS : MOVE_PLACEHOLDER_SETUP,
         (MON_ROLE_IS_ALL_OUT_ATTACKER || MON_ROLE_IS_TANK) ? MOVE_PLACEHOLDER_PRIORITY : MOVE_PLACEHOLDER_PIVOT,
@@ -647,8 +653,8 @@ static void SetGoodOtherMove(struct GeneratedMon *pokemon, enum MoveSlot slot, b
         (MON_ROLE_IS_TANK || MON_ROLE_IS_DEFENSIVE) ? MOVE_PLACEHOLDER_UTILITY : MOVE_PLACEHOLDER_NUKE,
     };
 
-    // // Shuffle is shifted for set up sweepers as they MUST try to find a set up move first
-    Shuffle(choosersArray + MON_ROLE_IS_SETUP_SWEEPER, ARRAY_COUNT(choosersArray) - (MON_ROLE_IS_SETUP_SWEEPER ? 1 : 0), 1);
+    // Shuffle is shifted for set up sweepers as they MUST try to find a set up move first
+    Shuffle(choosersArray + (MON_ROLE_IS_SETUP_SWEEPER ? 1 : 0), ARRAY_COUNT(choosersArray) - (MON_ROLE_IS_SETUP_SWEEPER ? 1 : 0), 1);
     _SetGoodOtherMove(pokemon, slot, special, chosenMove, choosersArray, 0, ARRAY_COUNT(choosersArray));
 }
 
