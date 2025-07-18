@@ -154,8 +154,6 @@ static const u32 sImmunitiesByType[] =
 static u16 sAtkAbility;
 static u16 sHoldEffectAtk;
 
-static NOINLINE ARM_FUNC u32 ModuloX(u32 num, u32 mod) { return num % mod; }
-
 static u8 popcount(u32 i)
 {
     i = i - ((i >> 1) & 0x55555555);        // add pairs of bits
@@ -226,111 +224,6 @@ static inline bool32 CanLearnMoveAtLevel(struct GeneratedMon *pokemon, u32 move,
         || CanLearnLevelUpMoveBaseMon(pokemon->baseMon, GetDefaultSpecies(pokemon->species), move, level);
 }
 
-// static u32 GetRandomSpeciesFromTrainerClass(u32 trainerClass, u32 level)
-// {
-//     u16 species = SPECIES_NONE;
-//     switch (trainerClass)
-//     {
-        // case TRAINER_CLASS_AROMA_LADY:
-        //     species = sAromaLadySpecies[Random32() % ARRAY_COUNT(sAromaLadySpecies)];
-        // break;
-        // case TRAINER_CLASS_BATTLE_GIRL:
-        //     species = sBattleGirlSpecies[Random32() % ARRAY_COUNT(sBattleGirlSpecies)];
-        // break;
-        // case TRAINER_CLASS_BEAUTY:
-        //     species = sBeautySpecies[Random32() % ARRAY_COUNT(sBeautySpecies)];
-        // break;
-        // case TRAINER_CLASS_BIRD_KEEPER:
-        //     species = sBirdKeeperSpecies[Random32() % ARRAY_COUNT(sBirdKeeperSpecies)];
-        // break;
-        // case TRAINER_CLASS_BLACK_BELT:
-        //     species = sBlackBeltSpecies[Random32() % ARRAY_COUNT(sBlackBeltSpecies)];
-        // break;
-        // case TRAINER_CLASS_BUG_CATCHER:
-        //     species = sBugCatcherSpecies[Random32() % ARRAY_COUNT(sBugCatcherSpecies)];
-        // break;
-        // case TRAINER_CLASS_CAMPER:
-        //     species = sCamperSpecies[Random32() % ARRAY_COUNT(sCamperSpecies)];
-        // break;
-        // case TRAINER_CLASS_COLLECTOR:
-        //     species = sCollectorSpecies[Random32() % ARRAY_COUNT(sCollectorSpecies)];
-        // break;
-        // case TRAINER_CLASS_COOLTRAINER:
-        //     species = sCoolTrainerSpecies[Random32() % ARRAY_COUNT(sCoolTrainerSpecies)];
-        // break;
-        // case TRAINER_CLASS_DRAGON_TAMER:
-        //     species = sDragonTamerSpecies[Random32() % ARRAY_COUNT(sDragonTamerSpecies)];
-        // break;
-        // case TRAINER_CLASS_EXPERT:
-        //     species = sExpertSpecies[Random32() % ARRAY_COUNT(sExpertSpecies)];
-        // break;
-        // case TRAINER_CLASS_FISHERMAN:
-        //     species = sFishermanSpecies[Random32() % ARRAY_COUNT(sFishermanSpecies)];
-        // break;
-        // case TRAINER_CLASS_GENTLEMAN:
-        //     species = sGentlemanSpecies[Random32() % ARRAY_COUNT(sGentlemanSpecies)];
-        // break;
-        // case TRAINER_CLASS_GUITARIST:
-        //     species = sGuitaristSpecies[Random32() % ARRAY_COUNT(sGuitaristSpecies)];
-        // break;
-        // case TRAINER_CLASS_HEX_MANIAC:
-        //     species = sHexManiacSpecies[Random32() % ARRAY_COUNT(sHexManiacSpecies)];
-        // break;
-        // case TRAINER_CLASS_HIKER:
-        //     species = sHikerSpecies[Random32() % ARRAY_COUNT(sHikerSpecies)];
-        // break;
-        // case TRAINER_CLASS_LADY:
-        //     species = sLadySpecies[Random32() % ARRAY_COUNT(sLadySpecies)];
-        // break;
-        // case TRAINER_CLASS_LASS:
-        //     species = sLassSpecies[Random32() % ARRAY_COUNT(sLassSpecies)];
-        // break;
-        // case TRAINER_CLASS_NINJA_BOY:
-        //     species = sNinjaBoySpecies[Random32() % ARRAY_COUNT(sNinjaBoySpecies)];
-        // break;
-        // case TRAINER_CLASS_PARASOL_LADY:
-        //     species = sParasolLadySpecies[Random32() % ARRAY_COUNT(sParasolLadySpecies)];
-        // break;
-        // case TRAINER_CLASS_PKMN_BREEDER:
-        //     species = sPkmnBreederSpecies[Random32() % ARRAY_COUNT(sPkmnBreederSpecies)];
-        // break;
-        // case TRAINER_CLASS_PKMN_RANGER:
-        //     species = sPkmnRangerSpecies[Random32() % ARRAY_COUNT(sPkmnRangerSpecies)];
-        // break;
-        // case TRAINER_CLASS_PSYCHIC:
-        //     species = sPsychicSpecies[Random32() % ARRAY_COUNT(sPsychicSpecies)];
-        // break;
-        // case TRAINER_CLASS_RICH_BOY:
-        //     species = sRichBoySpecies[Random32() % ARRAY_COUNT(sRichBoySpecies)];
-        // break;
-        // case TRAINER_CLASS_RUIN_MANIAC:
-        //     species = sRuinManiacSpecies[Random32() % ARRAY_COUNT(sRuinManiacSpecies)];
-        // break;
-        // case TRAINER_CLASS_SAILOR:
-        //     species = sSailorSpecies[Random32() % ARRAY_COUNT(sSailorSpecies)];
-        // break;
-        // case TRAINER_CLASS_SWIMMER_F:
-        // case TRAINER_CLASS_SWIMMER_M:
-        //     species = sSwimmerSpecies[Random32() % ARRAY_COUNT(sSwimmerSpecies)];
-        // break;
-        // case TRAINER_CLASS_TEAM_AQUA:
-        //     species = sTeamAquaSpecies[Random32() % ARRAY_COUNT(sTeamAquaSpecies)];
-        // break;
-        // case TRAINER_CLASS_TEAM_MAGMA:
-        //     species = sTeamMagmaSpecies[Random32() % ARRAY_COUNT(sTeamMagmaSpecies)];
-        // break;
-        // case TRAINER_CLASS_TRIATHLETE:
-        //     species = sTriathleteSpecies[Random32() % ARRAY_COUNT(sTriathleteSpecies)];
-        // break;
-        // default: // for now...
-        // case TRAINER_CLASS_YOUNGSTER:
-        //     species = sYoungsterSpecies[Random32() % ARRAY_COUNT(sYoungsterSpecies)];
-        // break;
-//     }
-
-//     return species;
-// }
-
 static inline const struct AvailableMon *GetRandomReplacement(const struct AvailableMon *availableMon)
 {
     if (availableMon->replacementNum > 1)
@@ -356,12 +249,45 @@ static inline u32 GetSpeciesFromArray(const struct AvailableMon *availableMons, 
     return selectedMon->species;
 }
 
+#define GET_SPECIES_FROM_TRAINER_CLASS(arr) GetSpeciesFromArray(arr, level, NELEMS(arr), baseMon)
+
 static u32 GetRandomSpeciesFromTrainerClass(enum TrainerClassID trainerClass, u32 level, const struct AvailableMon **baseMon)
 {
     switch (trainerClass)
     {
-        default:
-            return GetSpeciesFromArray(sAromaLadySpecies, level, NELEMS(sAromaLadySpecies), baseMon);
+    default: return GET_SPECIES_FROM_TRAINER_CLASS(sAromaLadySpecies);
+    // case TRAINER_CLASS_BATTLE_GIRL: return GET_SPECIES_FROM_TRAINER_CLASS(sBattleGirlSpecies);
+    // case TRAINER_CLASS_BEAUTY: return GET_SPECIES_FROM_TRAINER_CLASS(sBeautySpecies);
+    // case TRAINER_CLASS_BIRD_KEEPER: return GET_SPECIES_FROM_TRAINER_CLASS(sBirdKeeperSpecies);
+    // case TRAINER_CLASS_BLACK_BELT: return GET_SPECIES_FROM_TRAINER_CLASS(sBlackBeltSpecies);
+    // case TRAINER_CLASS_BUG_CATCHER: return GET_SPECIES_FROM_TRAINER_CLASS(sBugCatcherSpecies);
+    // case TRAINER_CLASS_CAMPER: return GET_SPECIES_FROM_TRAINER_CLASS(sCamperSpecies);
+    // case TRAINER_CLASS_COLLECTOR: return GET_SPECIES_FROM_TRAINER_CLASS(sCollectorSpecies);
+    // case TRAINER_CLASS_COOLTRAINER: return GET_SPECIES_FROM_TRAINER_CLASS(sCoolTrainerSpecies);
+    // case TRAINER_CLASS_DRAGON_TAMER: return GET_SPECIES_FROM_TRAINER_CLASS(sDragonTamerSpecies);
+    // case TRAINER_CLASS_EXPERT: return GET_SPECIES_FROM_TRAINER_CLASS(sExpertSpecies);
+    // case TRAINER_CLASS_FISHERMAN: return GET_SPECIES_FROM_TRAINER_CLASS(sFishermanSpecies);
+    // case TRAINER_CLASS_GENTLEMAN: return GET_SPECIES_FROM_TRAINER_CLASS(sGentlemanSpecies);
+    // case TRAINER_CLASS_GUITARIST: return GET_SPECIES_FROM_TRAINER_CLASS(sGuitaristSpecies);
+    // case TRAINER_CLASS_HEX_MANIAC: return GET_SPECIES_FROM_TRAINER_CLASS(sHexManiacSpecies);
+    // case TRAINER_CLASS_HIKER: return GET_SPECIES_FROM_TRAINER_CLASS(sHikerSpecies);
+    // case TRAINER_CLASS_LADY: return GET_SPECIES_FROM_TRAINER_CLASS(sLadySpecies);
+    // case TRAINER_CLASS_LASS: return GET_SPECIES_FROM_TRAINER_CLASS(sLassSpecies);
+    // case TRAINER_CLASS_NINJA_BOY: return GET_SPECIES_FROM_TRAINER_CLASS(sNinjaBoySpecies);
+    // case TRAINER_CLASS_PARASOL_LADY: return GET_SPECIES_FROM_TRAINER_CLASS(sParasolLadySpecies);
+    // case TRAINER_CLASS_PKMN_BREEDER: return GET_SPECIES_FROM_TRAINER_CLASS(sPkmnBreederSpecies);
+    // case TRAINER_CLASS_PKMN_RANGER: return GET_SPECIES_FROM_TRAINER_CLASS(sPkmnRangerSpecies);
+    // case TRAINER_CLASS_PSYCHIC: return GET_SPECIES_FROM_TRAINER_CLASS(sPsychicSpecies);
+    // case TRAINER_CLASS_RICH_BOY: return GET_SPECIES_FROM_TRAINER_CLASS(sRichBoySpecies);
+    // case TRAINER_CLASS_RUIN_MANIAC: return GET_SPECIES_FROM_TRAINER_CLASS(sRuinManiacSpecies);
+    // case TRAINER_CLASS_SAILOR: return GET_SPECIES_FROM_TRAINER_CLASS(sSailorSpecies);
+    // case TRAINER_CLASS_SWIMMER_F:
+    // case TRAINER_CLASS_SWIMMER_M:
+        // return GET_SPECIES_FROM_TRAINER_CLASS(sSwimmerSpecies);
+    // case TRAINER_CLASS_TEAM_AQUA: return GET_SPECIES_FROM_TRAINER_CLASS(sTeamAquaSpecies);
+    // case TRAINER_CLASS_TEAM_MAGMA: return GET_SPECIES_FROM_TRAINER_CLASS(sTeamMagmaSpecies);
+    // case TRAINER_CLASS_TRIATHLETE: return GET_SPECIES_FROM_TRAINER_CLASS(sTriathleteSpecies);
+    // case TRAINER_CLASS_YOUNGSTER: return GET_SPECIES_FROM_TRAINER_CLASS(sYoungsterSpecies);
     }
 }
 
@@ -474,8 +400,8 @@ static u32 BPAdjustedForMultihitAndEffects(const struct MoveInfo *move, u32 move
 
 static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum MoveSlot slot, u32 type, const u16 *movesArray, u32 *move)
 {
-    u32 currentMovePower = 0;
-    s32 modifiedPower = -1; // this is to allow for the selection of moves with BP = 0
+    u32 modifiedPower = 0,
+        currentMovePower = 0;
     *move = MOVE_NONE;
 
     // Cycle through all moves in 
@@ -489,7 +415,7 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
             continue;
         } else if (CanLearnMove(pokemon, currentMove) // At higher levels, ignore level checks for level-up moves
             // && !(type == TYPE_NONE && AlreadyHaveMove(pokemon, currentMove, slot)) // only run this check when type is TYPE_NONE
-            && (currentMovePower = BPAdjustedForMultihitAndEffects(&gMovesInfo[currentMove], type)) > modifiedPower)
+            && (currentMovePower = BPAdjustedForMultihitAndEffects(&gMovesInfo[currentMove], type)) >= modifiedPower)
         {
             *move = currentMove;
             modifiedPower = currentMovePower;
@@ -499,8 +425,8 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
         }
     }
 
-    // DebugPrintf("Move & power: %S; %d", gMoveNames[*move], modifiedPower);
-    return max(0, modifiedPower);
+    // DebugPrintf("Move & power: %S; %d", gMovesInfo[*move].name, modifiedPower);
+    return modifiedPower;
 }
 
 static u32 GetGoodCoverageMove(struct GeneratedMon *pokemon, const struct SpeciesInfo *speciesInfo, enum MoveSlot slot, bool32 special, struct Coverage *coverage, bool32 haveMoves)
@@ -711,7 +637,7 @@ static void FillAllOutAttackerMoveset(const struct SpeciesInfo *speciesInfo, str
         }
 
         // Set mon move
-        // DebugPrintf("chosenMove - %d: %S", chosenMove, gMoveNames[chosenMove]);
+        DebugPrintf("chosenMove (%d) %S", chosenMove, gMovesInfo[chosenMove].name);
         if (chosenMove != MOVE_NONE)
         {
             // Defensive mons don't need to bother calcing for a good coverage move
@@ -740,20 +666,20 @@ static void FillAllOutAttackerMoveset(const struct SpeciesInfo *speciesInfo, str
     }
 }
 
-static void FillTankMoveset(struct GeneratedMon *pokemon, bool32 special)
-{
-    // To do
-}
+// static void FillTankMoveset(struct GeneratedMon *pokemon, bool32 special)
+// {
+//     // To do
+// }
 
-static void FillSetupSweeperMoveset(struct GeneratedMon *pokemon, bool32 special)
-{
-    // To do
-}
+// static void FillSetupSweeperMoveset(struct GeneratedMon *pokemon, bool32 special)
+// {
+//     // To do
+// }
 
-static void FillWallMoveset(struct GeneratedMon *pokemon, bool32 special)
-{
-    // To do
-}
+// static void FillWallMoveset(struct GeneratedMon *pokemon, bool32 special)
+// {
+//     // To do
+// }
 
 // static void (* const sGenerateTrainerMonMovesetByRole[])(struct GeneratedMon*, bool32) =
 // {
@@ -856,6 +782,7 @@ TEST("Trainer Generator: (CanLearnLevelUpMoveBaseMon) Breloom can learn Giga Dra
 
 TEST("Trainer Generator: Can generate a decent Steelix")
 {
+    u32 timeTaken = 0;
     struct GeneratedMon generatedMon = {
         .species = SPECIES_STEELIX,
         .level = 50,
@@ -872,7 +799,9 @@ TEST("Trainer Generator: Can generate a decent Steelix")
         },
     };
 
+    CycleCountStart();
     FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon.species], &generatedMon, !(generatedMon.role & 1));
-    DebugPrintf("Generated mon Steelix: %S, %S, %S, %S", gMovesInfo[generatedMon.moves[0]].name, gMovesInfo[generatedMon.moves[1]].name, gMovesInfo[generatedMon.moves[2]].name, gMovesInfo[generatedMon.moves[3]].name);
+    timeTaken = CycleCountEnd() / 16800;
+    DebugPrintf("Generated mon Steelix: %S, %S, %S, %S in time: %d ms", gMovesInfo[generatedMon.moves[0]].name, gMovesInfo[generatedMon.moves[1]].name, gMovesInfo[generatedMon.moves[2]].name, gMovesInfo[generatedMon.moves[3]].name, timeTaken);
 }
 #endif
