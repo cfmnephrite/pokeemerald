@@ -493,7 +493,9 @@ static u32 TrySetChosenMoveForSpeciesReturnBP(struct GeneratedMon *pokemon, enum
         {
             *move = currentMove;
             modifiedPower = currentMovePower;
-            break;
+
+            if (modifiedPower == 0)
+                break;
         }
     }
 
@@ -816,7 +818,7 @@ u32 GenerateTrainerMon(struct GeneratedMon *generatedMon, u32 trainerClass, u32 
     // sHoldEffectAtk = 0;
 
     // Assign moves - second arg is whether they should be physical or special
-    FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon->species], generatedMon, (generatedMon->role & 1));
+    FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon->species], generatedMon, !(generatedMon->role & 1));
     // sGenerateTrainerMonMovesetByRole[sRole](pokemon, (sRole) % 2);
 
     // Assign EVs
@@ -836,7 +838,7 @@ u32 GenerateTrainerMon(struct GeneratedMon *generatedMon, u32 trainerClass, u32 
 
 #if TESTING
 #include "test/test.h"
-TEST("CanLearnLevelUpMoveBaseMon: Breloom can learn Giga Drain via level up")
+TEST("Trainer Generator: (CanLearnLevelUpMoveBaseMon) Breloom can learn Giga Drain via level up")
 {
     struct AvailableMon shroomish = {
         .species = SPECIES_SHROOMISH,
@@ -850,5 +852,27 @@ TEST("CanLearnLevelUpMoveBaseMon: Breloom can learn Giga Drain via level up")
 
     if (!CanLearnLevelUpMoveBaseMon(&shroomish, SPECIES_BRELOOM, MOVE_GIGA_DRAIN, 40))
         Test_ExitWithResult(TEST_RESULT_FAIL, __LINE__, ":L%s:%d: Breloom cannot learn Giga Drain", gTestRunnerState.test->filename, __LINE__);
+}
+
+TEST("Trainer Generator: Can generate a decent Steelix")
+{
+    struct GeneratedMon generatedMon = {
+        .species = SPECIES_STEELIX,
+        .level = 50,
+        .role = MON_ROLE_PHYSICAL_ALL_OUT_ATTACKER,
+        .personality = Random32(),
+        .baseMon = (const struct AvailableMon[]) {
+            {
+                .species = SPECIES_ONIX,
+                .maxLevel = 30,
+                .replacements = (const struct AvailableMon[]) {
+                    { .species = SPECIES_STEELIX, },
+                },
+            },
+        },
+    };
+
+    FillAllOutAttackerMoveset(&gSpeciesInfo[generatedMon.species], &generatedMon, !(generatedMon.role & 1));
+    DebugPrintf("Generated mon Steelix: %S, %S, %S, %S", gMovesInfo[generatedMon.moves[0]].name, gMovesInfo[generatedMon.moves[1]].name, gMovesInfo[generatedMon.moves[2]].name, gMovesInfo[generatedMon.moves[3]].name);
 }
 #endif
