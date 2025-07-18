@@ -21,7 +21,7 @@
 #define SPECIES_SUITABLE_ROLES_COUNT    4
 #define IS_Z_MOVE(move)     (move >= MOVE_BREAKNECK_BLITZ && move <= MOVE_SOUL_STEALING_7_STAR_STRIKE)
 
-enum MonRole
+enum PACKED MonRole
 {
     MON_ROLE_UNASSIGNED,
     MON_ROLE_PHYSICAL_ALL_OUT_ATTACKER,
@@ -61,6 +61,14 @@ enum BitType
     BIT_TYPE_NONE = 0xFFFFFFFF,
 };
 
+enum MoveSlot
+{
+    MOVE_SLOT_1,
+    MOVE_SLOT_2,
+    MOVE_SLOT_3,
+    MOVE_SLOT_4,
+};
+
 struct AvailableMon
 {
     u16 species:12;
@@ -68,6 +76,16 @@ struct AvailableMon
     u8 minLevel;
     u8 maxLevel;
     const struct AvailableMon *replacements;
+};
+
+struct GeneratedMon
+{
+    u16 species;
+    u8 level;
+    enum MonRole role;
+    u32 personality;
+    const struct AvailableMon *baseMon;
+    u16 moves[4];
 };
 
 struct AttackOptions{
@@ -85,7 +103,7 @@ struct Coverage{
     u32 superEffective;
 };
 
-u32 GenerateTrainerMon(struct Pokemon *pokemon, u32 trainerClass, u32 lvl, u32 iv);
+u32 GenerateTrainerMon(struct GeneratedMon *pokemon, u32 trainerClass, u32 lvl, u32 iv);
 extern const u16 gPriorityAttacks[];
 extern const u16 gSpecialPriorityAttacks[];
 extern const u16 gPivotOrSwitchMoves[];

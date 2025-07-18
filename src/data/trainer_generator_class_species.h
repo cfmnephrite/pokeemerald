@@ -4,6 +4,49 @@
 #define REPLACEMENTS_ARR(...) (const struct AvailableMon[]) {__VA_ARGS__}
 #define REPLACEMENTS(...) REPLACEMENTS_ARR(__VA_ARGS__), .replacementNum = ARRAY_COUNT(REPLACEMENTS_ARR(__VA_ARGS__))
 
+const struct AvailableMon sFlorgesReplacements[] =
+{
+    { .species = SPECIES_FLORGES_BLUE },
+    { .species = SPECIES_FLORGES_ORANGE },
+    { .species = SPECIES_FLORGES_RED },
+    { .species = SPECIES_FLORGES_WHITE },
+    { .species = SPECIES_FLORGES_YELLOW },
+};
+
+const struct AvailableMon sFloetteReplacements[] =
+{
+    {
+        .species = SPECIES_FLOETTE_BLUE,
+        .maxLevel = 35,
+        .replacementNum = NELEMS(sFlorgesReplacements),
+        .replacements = sFlorgesReplacements,
+    },
+    {
+        .species = SPECIES_FLOETTE_ORANGE,
+        .maxLevel = 35,
+        .replacementNum = NELEMS(sFlorgesReplacements),
+        .replacements = sFlorgesReplacements,
+    },
+    {
+        .species = SPECIES_FLOETTE_RED,
+        .maxLevel = 35,
+        .replacementNum = NELEMS(sFlorgesReplacements),
+        .replacements = sFlorgesReplacements,
+    },
+    {
+        .species = SPECIES_FLOETTE_WHITE,
+        .maxLevel = 35,
+        .replacementNum = NELEMS(sFlorgesReplacements),
+        .replacements = sFlorgesReplacements,
+    },
+    {
+        .species = SPECIES_FLOETTE_YELLOW,
+        .maxLevel = 35,
+        .replacementNum = NELEMS(sFlorgesReplacements),
+        .replacements = sFlorgesReplacements,
+    },
+};
+
 const struct AvailableMon sAromaLadySpecies[] =
 {
     {
@@ -89,13 +132,8 @@ const struct AvailableMon sAromaLadySpecies[] =
     {
         .species = SPECIES_FLABEBE,
         .maxLevel = 19,
-        .replacements = REPLACEMENTS({
-            .species = SPECIES_FLOETTE,
-            .maxLevel = 35,
-            .replacements = REPLACEMENTS({
-                .species = SPECIES_FLORGES,
-            })
-        })
+        .replacementNum = NELEMS(sFloetteReplacements),
+        .replacements = sFloetteReplacements,
     },
     {
         .species = SPECIES_FOMANTIS,
